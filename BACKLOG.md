@@ -1052,32 +1052,857 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ---
 
+## 🗄️ Adaptadores de Banco de Dados Adicionais
+
+### 49. Implementar adapter MongoDB
+
+**Projetos**:
+- `MarcusPrado.Platform.Abstractions.Document` — `IDocumentRepository<T>`, `IDocumentSession`, `IDocumentFilter<T>`
+- `MarcusPrado.Platform.MongoDb` — Adapter com `MongoDB.Driver` (≥ 3.x)
+
+**Implementar**:
+- `MongoDocumentRepository<T>` — `FindAsync`, `FindOneAsync`, `InsertAsync`, `ReplaceAsync`, `DeleteAsync`, `AggregateAsync`
+- `MongoSession` — implementa `IUnitOfWork` com sessões e transações multi-documento
+- `MongoPaginatedQuery<T>` — suporte a cursor-based e offset-based pagination
+- `MongoTenantFilter` — query filter global por `TenantId` via `BsonDocument`
+- `MongoHealthProbe` — `ping` command com timeout
+- `MongoExtensions.AddPlatformMongoDB()` — registra `MongoClient`, `IMongoDatabase`, health probe
+
+**Testes** (≥ 10 casos, `MongoDbContainer` do TestKit):
+- CRUD round-trip
+- Transação multi-documento rollback
+- Tenant filter aplicado corretamente
+- Paginação por cursor
+
+---
+
+### 50. Implementar adapter SQL Server (Dapper)
+
+**Projeto**: `MarcusPrado.Platform.SqlServer`
+
+**Dependências NuGet**: `Dapper`, `Microsoft.Data.SqlClient`
+
+**Implementar**:
+- `SqlServerConnectionFactory` — pool de conexões via `SqlConnection`
+- `DapperRepository<T>` — implementa `IReadRepository<T>` com Dapper para leituras de alta performance
+- `SqlServerHealthProbe` — `SELECT @@VERSION` com timeout
+- `SqlServerExtensions.AddPlatformSqlServer()` — registra connection factory, health probe
+- `BulkInsertExtensions` — `SqlBulkCopy` para inserções em massa
+
+**Equivalência Java**: `commons-adapters-persistence-sqlserver` com JDBC + Dapper equivalent
+
+---
+
+### 51. Implementar adapter MySQL/MariaDB
+
+**Projeto**: `MarcusPrado.Platform.MySql`
+
+**Dependências NuGet**: `Pomelo.EntityFrameworkCore.MySql`
+
+**Implementar**:
+- `MySqlConnectionFactory` — pool de conexões via `MySqlConnection`
+- `MySqlHealthProbe` — `SELECT 1` com timeout
+- `MySqlExtensions.AddPlatformMySql()` — registra `MySqlDataSource`, `AppDbContext` com Pomelo provider
+
+**Equivalência Java**: `commons-adapters-persistence-mysql`
+
+---
+
+## 📨 Adaptadores de Mensageria Avançados
+
+### 52. Implementar adapter NATS
+
+**Projetos**:
+- `MarcusPrado.Platform.Nats` — Adapter com `NATS.Net` (≥ 2.x)
+
+**Implementar**:
+- `NatsPublisher` — implementa `IMessagePublisher`; suporte a JetStream (at-least-once)
+- `NatsConsumer` — implementa `IMessageConsumer`; consumer groups via JetStream consumer
+- `NatsHealthProbe` — `PING` com timeout
+- `NatsExtensions.AddPlatformNats()`
+
+**Testes** (≥ 8 casos, `NatsContainer` do TestKit):
+- Publish/consume round-trip
+- JetStream persistent delivery
+
+---
+
+### 53. Implementar adapter Azure Service Bus
+
+**Projeto**: `MarcusPrado.Platform.AzureServiceBus`
+
+**Dependências NuGet**: `Azure.Messaging.ServiceBus`
+
+**Implementar**:
+- `ServiceBusPublisher` — implementa `IMessagePublisher`; suporte a `Queue` e `Topic`
+- `ServiceBusConsumer` — implementa `IMessageConsumer`; `ServiceBusProcessor` com lock renewal automático
+- `ServiceBusDeadLetterSink` — implementa `IDeadLetterSink`
+- `ServiceBusExtensions.AddPlatformServiceBus()` — suporte a `DefaultAzureCredential`
+
+**Equivalência Java**: `commons-adapters-messaging-azure-servicebus`
+
+---
+
+### 54. Implementar adapter AWS SQS/SNS
+
+**Projetos**:
+- `MarcusPrado.Platform.AwsSqs` — via `AWSSDK.SQS`
+- `MarcusPrado.Platform.AwsSns` (messaging) — via `AWSSDK.SimpleNotificationService`
+
+**Implementar**:
+- `SqsConsumer` — long polling, visibility timeout, DLQ automático
+- `SqsPublisher` / `SnsPublisher` — implementam `IMessagePublisher`
+- Fan-out pattern: SNS Topic → múltiplas filas SQS
+- `AwsMessagingExtensions.AddPlatformAwsMessaging()`
+
+**Equivalência Java**: `commons-adapters-messaging-sqs` / `commons-adapters-messaging-sns`
+
+---
+
+## 🌐 Adaptadores Web Avançados
+
+### 55. Implementar adapter SignalR / WebSockets
+
+**Projeto**: `MarcusPrado.Platform.SignalR`
+
+**Dependências NuGet**: `Microsoft.AspNetCore.SignalR`
+
+**Implementar**:
+- `PlatformHub<T>` — base class com authenticação JWT, tenant isolation, correlation propagation
+- `IRealtimePublisher` — publica eventos domain → clientes SignalR conectados
+- `SignalRDomainEventSink` — listener de `IDomainEvent` → broadcast via hub
+- `SignalRExtensions.AddPlatformSignalR()` — registra hubs e autenticação
+
+**Equivalência Java**: `commons-adapters-websocket-stomp`
+
+---
+
+### 56. Implementar configuração CORS avançada
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `PlatformCorsPolicy` — política CORS configurável por ambiente: DevPermissive / StagingRestricted / ProductionLocked
+- `TenantAwareCorsPolicy` — origins permitidas por tenant via `ITenantContext`
+- `CorsExtensions.AddPlatformCors(options)` — regista policies e middleware em ordem correta
+
+**Testes** (≥ 5 casos):
+- Preflight request retorna headers corretos
+- Origin não permitida → 403
+- Tenant-specific origin aceita
+
+---
+
+### 57. Implementar convenções de Minimal API (Endpoint base class)
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `IEndpoint` — interface `MapEndpoints(IEndpointRouteBuilder app)`
+- `EndpointGroupBase` — base class com `RouteGroupBuilder` e route prefix automático
+- `EndpointDiscovery.MapPlatformEndpoints()` — descoberta automática de `IEndpoint` via reflection nos assemblies
+- `ApiEnvelopeFilter` — `IEndpointFilter` que wrapa responses em `ApiEnvelope<T>`
+- `ValidationFilter<TRequest>` — valida `TRequest` via `IValidator<T>` antes do handler
+
+**Equivalência Java**: `commons-adapters-rest-endpoint-convention`
+
+---
+
+### 58. Implementar versionamento de API
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Dependências NuGet**: `Asp.Versioning.Http`, `Asp.Versioning.Mvc`
+
+**Implementar**:
+- `ApiVersioningExtensions.AddPlatformApiVersioning()` — URL + header + media-type versioning
+- `DeprecationHeaderMiddleware` — adiciona `Deprecation` e `Sunset` headers via `DeprecationSchedule`
+- `IApiVersionPolicy` com estratégias: `UrlSegment`, `Header`, `QueryString`
+- `ApiVersionDiscovery` — lista versões ativas no `/api-versions` endpoint
+
+**Equivalência Java**: `commons-adapters-rest-versioning` com Spring MVC versioning
+
+---
+
+### 59. Implementar OpenAPI / Scalar
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Dependências NuGet**: `Microsoft.AspNetCore.OpenApi`, `Scalar.AspNetCore`
+
+**Implementar**:
+- `OpenApiExtensions.AddPlatformOpenApi()` — configura OpenAPI 3.1 com autenticação JWT + API Key
+- `PlatformOperationTransformer` — adiciona `X-Correlation-ID`, `X-Tenant-ID` nos headers de todos os endpoints
+- `ProblemDetailsSchemaFilter` — documenta responses de erro conforme RFC 9457
+- `ScalarExtensions.UseScalarApiReference()` — UI de documentação no `/scalar`
+
+---
+
+### 60. Implementar Rate Limiting ASP.NET Core
+
+**Módulo**: `MarcusPrado.Platform.RateLimiting`
+
+**Dependências NuGet**: `System.Threading.RateLimiting` (built-in .NET 7+)
+
+**Implementar**:
+- `RateLimitingExtensions.AddPlatformRateLimiting()` — registra policies: `global`, `per-tenant`, `per-user`, `per-ip`
+- `TenantRateLimitPolicy` — `IPartitionedRateLimiter<HttpContext>` por `TenantId` via `RedisQuotaStore`
+- `UserRateLimitPolicy` — por `UserId` com sliding window
+- Middleware de resposta 429 com `Retry-After` header e `ProblemDetails` body
+
+**Equivalência Java**: `commons-app-rate-limiting` com Bucket4j + Redis
+
+---
+
+### 61. Implementar middleware de Compressão de Response
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `ResponseCompressionExtensions.AddPlatformResponseCompression()` — Brotli (primário) + Gzip (fallback)
+- Lista de MIME types comprimíveis: `application/json`, `text/plain`, `application/x-protobuf`
+- Threshold mínimo configurável (padrão: 1KB)
+
+---
+
+### 62. Implementar middleware de Security Headers
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `SecurityHeadersMiddleware` — adiciona headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 0`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, `Content-Security-Policy`
+- `HstsExtensions.AddPlatformHsts()` — HSTS com `max-age=31536000; includeSubDomains; preload` em produção
+- `SecurityHeadersOptions` — configurável por ambiente (desabilitar CSP em dev)
+
+---
+
+### 63. Implementar middleware de IP Filtering
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `IpFilterMiddleware` — whitelist e blacklist de CIDRs configuráveis
+- `IIpFilterStore` — interface; `InMemoryIpFilterStore` + `RedisIpFilterStore`
+- `TenantIpPolicy` — política IP por tenant
+- Resposta 403 com `ProblemDetails` body para IPs bloqueados
+- Integração com `X-Forwarded-For` e `X-Real-IP` (reverse proxy aware)
+
+---
+
+### 64. Implementar middleware de Request Size Limiting
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `RequestSizeLimitAttribute` override — limite configurável por endpoint via atributo ou options
+- `TenantRequestSizePolicy` — limites por tier de tenant (Free/Pro/Enterprise)
+- Resposta 413 com `ProblemDetails` body para payloads acima do limite
+
+---
+
+## 📡 Observabilidade Avançada
+
+### 65. Implementar propagação W3C TraceContext
+
+**Módulo**: `MarcusPrado.Platform.Observability`
+
+**Implementar**:
+- `W3CTraceContextPropagator` — extrai/injeta `traceparent` e `tracestate` em headers HTTP e mensagens de fila
+- `KafkaTracePropagator` — propaga contexto via `MessageHeaders` em mensagens Kafka
+- `RabbitMqTracePropagator` — propaga via `IBasicProperties.Headers`
+- `ActivityExtensions` — helpers: `SetTenantId`, `SetUserId`, `SetCorrelationId`, `SetErrorStatus`
+
+**Equivalência Java**: `commons-adapters-otel-propagation`
+
+---
+
+### 66. Implementar Distributed Tracing para banco de dados
+
+**Módulo**: `MarcusPrado.Platform.EfCore` / `MarcusPrado.Platform.Postgres`
+
+**Implementar**:
+- `EfCoreTracingInterceptor` — `IDbCommandInterceptor` que cria spans para cada query EF Core com SQL sanitizado
+- `DapperTracingWrapper` — extension methods `QueryWithTraceAsync` / `ExecuteWithTraceAsync`
+- Atributos de span: `db.system=postgresql`, `db.operation`, `db.statement` (sanitizado), `db.rows_affected`
+
+---
+
+### 67. Implementar métricas de negócio (Business Metrics)
+
+**Módulo**: `MarcusPrado.Platform.Observability`
+
+**Implementar**:
+- `IBusinessMetrics` (implementação concreta `OtelBusinessMetrics`):
+  - `RecordOrderPlaced(tenantId, value, currency)`
+  - `RecordPaymentProcessed(tenantId, status, gateway)`
+  - `RecordUserSignup(tenantId, plan)`
+  - `RecordEventConsumed(topic, consumerGroup, latencyMs)`
+- `BusinessMetricsExtensions.AddPlatformBusinessMetrics()` — registra todos os instrumentos
+- Dashboard Grafana template (JSON) em `docs/dashboards/platform-business.json`
+
+**Equivalência Java**: `commons-app-business-metrics`
+
+---
+
+### 68. Implementar SLO / Error Budget tracking
+
+**Módulo**: `MarcusPrado.Platform.Observability`
+
+**Implementar**:
+- `ServiceLevelObjective` record — `Name`, `Target` (double 0–1), `Window` (TimeSpan), `MetricQuery`
+- `ErrorBudgetCalculator` — `CalculateRemainingBudget(SLO slo, double currentAvailability)`
+- `SloMetricsCollector` — coleta e expõe via OTel Metrics: `slo.availability`, `slo.error_budget_remaining`
+- Alertas baseados em burn rate (4x, 14.4x, 1x)
+
+---
+
+## 🔐 Segurança Avançada
+
+### 69. Implementar OAuth2 / OIDC Client Credentials
+
+**Módulo**: `MarcusPrado.Platform.Security`
+
+**Dependências NuGet**: `Microsoft.AspNetCore.Authentication.OpenIdConnect`, `Duende.AccessTokenManagement`
+
+**Implementar**:
+- `OidcClientService` — client credentials flow com token caching automático
+- `TokenCache` — cache de access tokens com renovação proativa 30s antes do expiry
+- `MachineToMachineHttpHandler` — `DelegatingHandler` que injeta token Bearer automaticamente
+- `OidcExtensions.AddPlatformOidcClient()` — registra com `DefaultAzureCredential` ou Keycloak
+
+**Equivalência Java**: `commons-adapters-security-oauth2-client`
+
+---
+
+### 70. Implementar criptografia de dados em repouso
+
+**Módulo**: `MarcusPrado.Platform.Security`
+
+**Implementar**:
+- `IDataEncryption` — `EncryptAsync(plaintext)` / `DecryptAsync(ciphertext)`
+- `AesGcmEncryption` — implementação com AES-256-GCM (nonce aleatório por operação)
+- `EncryptedAttribute` — para marcar propriedades de entidades EF Core que devem ser criptografadas
+- `EncryptingValueConverter` — `ValueConverter` do EF Core que aplica `IDataEncryption` automaticamente
+- `KeyRotationService` — re-criptografia de dados ao rotacionar DEK (Data Encryption Key)
+
+**Equivalência Java**: `commons-adapters-security-encryption`
+
+---
+
+### 71. Implementar Digital Signatures (RSA/ECDSA)
+
+**Módulo**: `MarcusPrado.Platform.Security`
+
+**Implementar**:
+- `ISignatureService` — `SignAsync(payload)` / `VerifyAsync(payload, signature)`
+- `RsaSignatureService` — RSA-PSS com SHA-256
+- `EcdsaSignatureService` — ECDSA com P-256
+- `WebhookSignatureMiddleware` — verifica assinatura HMAC-SHA256 em webhooks recebidos (`X-Signature` header)
+- `SignedPayloadEnvelope<T>` — wrapper para payloads assinados com timestamp anti-replay
+
+**Equivalência Java**: `commons-adapters-security-signature`
+
+---
+
+### 72. Implementar PII Masking completo
+
+**Módulo**: `MarcusPrado.Platform.Security`
+
+**Implementar**:
+- `[PiiData]` attribute — marca propriedades como PII no modelo
+- `PiiClassifier` — identifica campos PII por nome (email, cpf, phone, ssn) e por atributo
+- `PiiRedactor` — mascara valores: `email@domain.com → e***@d***.com`, `123.456.789-00 → ***.***.***-00`
+- `SerilogPiiDestructuringPolicy` — policy do Serilog que aplica `PiiRedactor` antes de logar
+- `GdprComplianceReport` — lista todos os campos PII em entidades registradas no `DbContext`
+
+**Equivalência Java**: `commons-app-pii-masking`
+
+---
+
+### 73. Implementar mTLS support
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore.Auth`
+
+**Implementar**:
+- `MtlsAuthenticationHandler` — valida certificado cliente via `IClientCertificateFeature`
+- `CertificateTenantResolver` — extrai `TenantId` do Subject Alternative Name (SAN) do certificado
+- `CertificateRevocationChecker` — verifica CRL / OCSP em certificados cliente
+- `MtlsExtensions.AddPlatformMtls()` — configura Kestrel para exigir certificado cliente
+
+**Equivalência Java**: `commons-adapters-security-mtls`
+
+---
+
+### 74. Implementar sanitização de input / prevenção XSS
+
+**Módulo**: `MarcusPrado.Platform.Security`
+
+**Dependências NuGet**: `HtmlSanitizer`
+
+**Implementar**:
+- `IInputSanitizer` — `Sanitize(input)` / `SanitizeHtml(html)` / `StripTags(html)`
+- `HtmlSanitizerAdapter` — implementa `IInputSanitizer` via HtmlSanitizer
+- `SanitizingModelBinder` — model binder ASP.NET Core que aplica sanitização automaticamente em `string` inputs marcados com `[SanitizeInput]`
+- `SqlInjectionDetector` — detecta padrões comuns em strings antes de usar em queries dapper
+
+**Equivalência Java**: `commons-adapters-security-input-sanitization`
+
+---
+
+## 🔄 Event Sourcing e CQRS Avançado
+
+### 75. Implementar Event Sourcing
+
+**Módulo**: `MarcusPrado.Platform.Application.EventSourcing` (novo projeto em `src/core/`)
+
+**Implementar**:
+- `IEventStore` — `AppendAsync(streamId, events, expectedVersion)` / `ReadAsync(streamId, fromVersion)`
+- `EventStoreDbAdapter` — implementa `IEventStore` via EventStoreDB (kurrent); alternativa PostgreSQL via `Marten`
+- `EventSourcedRepository<T>` — reconstitui aggregate a partir dos events
+- `EventSnapshot<T>` — snapshot a cada N eventos para performance
+- `AggregateEventReplayer` — replay de events para reconstruir estado em ponto no tempo
+
+**Dependências NuGet**: `EventStore.Client.Grpc.Streams` ou `Marten`
+
+**Equivalência Java**: `commons-app-event-sourcing` com Axon Framework / EventStoreDB
+
+---
+
+### 76. Implementar Projeções / Read Models
+
+**Módulo**: `MarcusPrado.Platform.Application.Projections` (novo projeto em `src/core/`)
+
+**Implementar**:
+- `IProjection<TEvent, TReadModel>` — interface de projeção
+- `ProjectionEngine` — processa eventos e atualiza read models via `IReadModelStore`
+- `IReadModelStore<T>` — `GetAsync(id)`, `UpsertAsync(model)`, `QueryAsync(filter)`
+- `EfReadModelStore<T>` — implementa via EF Core
+- `RedisReadModelStore<T>` — implementa via Redis para leituras ultra-rápidas
+- `ProjectionRebuildJob` — job que reconstrói projeções do zero a partir do event store
+
+**Equivalência Java**: `commons-app-projections` com CQRS read side
+
+---
+
+### 77. Implementar Saga Orchestration
+
+**Módulo**: `MarcusPrado.Platform.Application.Saga` (novo projeto em `src/core/`)
+
+**Implementar**:
+- `ISaga<TState>` — interface com `Handle(event)` e `Compensate(failedStep)`
+- `SagaOrchestrator` — executa steps em sequência, persiste estado entre steps
+- `ISagaStore` — `SaveAsync(saga)` / `LoadAsync(sagaId)`
+- `EfSagaStore` — persiste state via EF Core
+- `SagaCompensationHandler` — handler automático de compensação em falha
+- `SagaStep<TCommand>` — step tipado: `Execute`, `Compensate`, `Timeout`
+
+**Equivalência Java**: `commons-app-saga` com Axon Saga
+
+---
+
+### 78. Implementar Domain Event Router
+
+**Módulo**: `MarcusPrado.Platform.Application`
+
+**Implementar**:
+- `DomainEventRouter` — registra handlers por tipo de evento; resolve via DI
+- `IDomainEventHandler<TEvent>` — interface análoga a `ICommandHandler` para domain events
+- `DomainEventDispatcher` — despacha domain events acumulados no aggregate após `SaveChanges`
+- `CrossBoundaryEventBridge` — converte `IDomainEvent` → `IEventContract` para publicar no barramento externo (Kafka/RabbitMQ)
+- `EventHandlerPipeline` — pipeline de behaviors para domain event handlers (logging, retry, metrics)
+
+**Equivalência Java**: `commons-app-domain-event-dispatcher`
+
+---
+
+## ⏰ Background Jobs Avançados
+
+### 79. Implementar adapter Quartz.NET
+
+**Projeto**: `MarcusPrado.Platform.QuartzNet`
+
+**Dependências NuGet**: `Quartz.Extensions.Hosting`
+
+**Implementar**:
+- `QuartzJobScheduler` — implementa `IJobScheduler` via Quartz.NET
+- `PlatformJobFactory` — factory que resolve `IJobHandler<T>` via DI
+- `QuartzClusterStore` — `AdoJobStore` com PostgreSQL para clustering
+- `JobTriggerBuilder` — fluent API para criar triggers CRON / Simple / Calendar
+- `QuartzExtensions.AddPlatformQuartz()` — registra com clustering habilitado por padrão
+
+**Equivalência Java**: `commons-app-scheduled-jobs` com Quartz (Java)
+
+---
+
+### 80. Implementar adapter Hangfire
+
+**Projeto**: `MarcusPrado.Platform.Hangfire`
+
+**Dependências NuGet**: `Hangfire.AspNetCore`, `Hangfire.PostgreSql`
+
+**Implementar**:
+- `HangfireJobScheduler` — implementa `IJobScheduler` via Hangfire
+- `HangfireRecurringJobRegistrar` — auto-registra jobs com `[RecurringJob(cron)]` via reflection
+- `HangfireExtensions.AddPlatformHangfire()` — registra dashboard, PostgreSQL storage, retry policy
+
+---
+
+### 81. Implementar fila de reprocessamento DLQ
+
+**Módulo**: `MarcusPrado.Platform.Messaging`
+
+**Implementar**:
+- `DlqReprocessingJob` — `IJob` que lê mensagens da DLQ e tenta reprocessar
+- `DlqInspectorEndpoints` — Minimal API endpoints: `GET /dlq/{topic}`, `POST /dlq/{topic}/reprocess/{messageId}`, `DELETE /dlq/{topic}/{messageId}`
+- `IDlqMetrics` — contador de mensagens em DLQ por topic, métricas via OTel
+- `DlqAlertRule` — emite alerta quando DLQ ultrapassa threshold configurável
+
+---
+
+## ⚙️ Configuração Avançada
+
+### 82. Implementar hot reload de configuração
+
+**Módulo**: `MarcusPrado.Platform.Runtime`
+
+**Implementar**:
+- `IOptionsHotReload<T>` — wrapper sobre `IOptionsMonitor<T>` com callback tipado `OnChange(T newValue)`
+- `ConfigurationChangeLogger` — loga toda alteração de configuração em produção (auditoria)
+- `ConfigurationValidator<T>` — valida nova configuração antes de aplicar via `DataAnnotations` + custom rules
+- `HotReloadExtensions.AddPlatformOptionsHotReload<T>()` — helper de registro
+
+---
+
+### 83. Implementar provider de configuração encriptada
+
+**Módulo**: `MarcusPrado.Platform.Runtime`
+
+**Implementar**:
+- `EncryptedJsonConfigurationProvider` — `IConfigurationProvider` que descriptografa valores marcados com `ENC(...)` usando `IDataEncryption`
+- `EncryptedEnvironmentVariableProvider` — idem para variáveis de ambiente
+- `ConfigCipherTool` — CLI tool (`dotnet platform-config encrypt`) para encriptar valores antes de commitar
+
+---
+
+### 84. Implementar Startup Verification
+
+**Módulo**: `MarcusPrado.Platform.Runtime`
+
+**Implementar**:
+- `IStartupVerification` — interface: `VerifyAsync(CancellationToken)` retorna `StartupVerificationResult`
+- `DatabaseConnectivityVerification` — verifica conexão com DB antes do app aceitar tráfego
+- `RequiredSecretsVerification` — verifica que secrets obrigatórios estão presentes no `ISecretProvider`
+- `StartupVerificationHostedService` — roda todas as verificações antes de `IHostApplicationLifetime.ApplicationStarted`
+- Em falha: loga detalhes e chama `IHostApplicationLifetime.StopApplication()`
+
+**Equivalência Java**: `commons-app-startup-verification` com Spring Boot `ApplicationRunner`
+
+---
+
+## 🧪 Testing Avançado
+
+### 85. Implementar Test Data Builders (Bogus)
+
+**Projeto**: `MarcusPrado.Platform.TestKit`
+
+**Dependências NuGet**: `Bogus`
+
+**Implementar**:
+- `FakerExtensions` — `Faker<T>` pré-configurados para entidades da plataforma
+- `EntityFaker<T>` — base class para builders de entidades de domínio
+- `CommandFaker<T>` — builder para commands com dados válidos por padrão
+- `TestDataScenarios` — cenários nomeados reutilizáveis: `ValidUser`, `PremiumTenant`, `ExpiredSubscription`
+
+**Equivalência Java**: `commons-test-data-builders` com JavaFaker
+
+---
+
+### 86. Implementar Approval Testing (Verify)
+
+**Projeto**: `MarcusPrado.Platform.TestKit`
+
+**Dependências NuGet**: `Verify.Xunit`
+
+**Implementar**:
+- `PlatformVerifySettings` — configuração global: scrubbers para `DateTimeOffset`, `Guid`, `CorrelationId`
+- `ApiResponseVerifier` — snapshot do response HTTP completo (status + headers + body)
+- `DomainEventVerifier` — snapshot de domain events emitidos por um aggregate
+- `SqlQueryVerifier` — snapshot das queries SQL geradas pelo EF Core
+
+---
+
+### 87. Implementar Performance Testing Kit (NBomber)
+
+**Projeto**: `MarcusPrado.Platform.PerformanceTestKit` (novo projeto em `src/kits/`)
+
+**Dependências NuGet**: `NBomber`, `NBomber.Http`
+
+**Implementar**:
+- `PlatformLoadTest` — base class para cenários de carga pré-configurados
+- `CommandThroughputScenario` — mede throughput do pipeline CQRS sob carga
+- `ApiEndpointScenario` — mede latência de endpoints com P50/P95/P99
+- `MessagingThroughputScenario` — mede throughput de publish/consume Kafka/RabbitMQ
+- `LoadTestReport` — HTML report gerado automaticamente via NBomber
+
+**Equivalência Java**: `commons-test-performance` com Gatling
+
+---
+
+### 88. Implementar Mutation Testing (Stryker.NET)
+
+**Projeto**: `src/tooling/MarcusPrado.Platform.MutationTests`
+
+**Dependências**: `dotnet-stryker` (global tool)
+
+**Implementar**:
+- `stryker-config.json` — configuração por projeto: thresholds (break: 60, low: 70, high: 80)
+- Script `run-mutation.sh` — roda Stryker em todos os projetos core
+- Badge de mutation score no `README.md`
+- CI step opcional (não bloqueia build principal)
+
+---
+
+### 89. Implementar Integration Test Environment
+
+**Projeto**: `MarcusPrado.Platform.TestKit`
+
+**Implementar**:
+- `PlatformTestEnvironment` — configura todos os containers (Postgres, Redis, Kafka, RabbitMQ) em paralelo
+- `TestNetworkBuilder` — cria rede Docker compartilhada entre containers do mesmo teste
+- `SnapshotRestorer` — cria e restaura snapshot do banco de dados entre testes para isolamento
+- `TestEnvironmentHealthCheck` — aguarda todos os containers estarem `healthy` antes de rodar testes
+
+---
+
+## 📦 NuGet e Release Management
+
+### 90. Implementar automação de release
+
+**Arquivo**: `.github/workflows/release.yml`
+
+**Implementar**:
+- `MinVer` ou `GitVersion` para versão semântica automática a partir de tags Git
+- Geração automática de `CHANGELOG.md` via `git-cliff`
+- GitHub Release com release notes
+- Push para NuGet.org com `NUGET_API_KEY` secret
+- GitHub Packages como feed espelho
+
+**Arquivo**: `Directory.Build.props` (additions):
+```xml
+<PackageProjectUrl>https://github.com/marcusPrado02/csharp-commons</PackageProjectUrl>
+<RepositoryUrl>https://github.com/marcusPrado02/csharp-commons</RepositoryUrl>
+<PackageLicense>MIT</PackageLicense>
+<PackageIcon>icon.png</PackageIcon>
+```
+
+---
+
+### 91. Implementar geração de changelog de API
+
+**Projeto**: `src/tooling/MarcusPrado.Platform.ApiChangelog`
+
+**Implementar**:
+- `ApiSurfaceExtractor` — extra assinaturas públicas de assemblies via Reflection
+- `ApiDiffEngine` — compara dois snapshots: detecta breaking changes (remoção/renomeação), adições, deprecações
+- `ChangelogRenderer` — gera `API-CHANGELOG.md` com seções `### Breaking Changes`, `### New`, `### Deprecated`
+- Integração CI: roda em PRs e comenta no pull request com diff da API pública
+
+**Equivalência Java**: `commons-tooling-api-changelog` com japicmp
+
+---
+
+## 🏥 Confiabilidade e Operações
+
+### 92. Implementar Circuit Breaker Dashboard
+
+**Projeto**: `MarcusPrado.Platform.Resilience`
+
+**Implementar**:
+- `CircuitBreakerRegistry` — registry central de todos os circuit breakers ativos
+- `CircuitBreakerEndpoints` — Minimal API: `GET /circuit-breakers` (lista estado), `POST /circuit-breakers/{name}/reset`
+- `CircuitBreakerMetrics` — OTel Metrics: `circuit_breaker.state` (gauge: 0=closed, 1=open, 2=half-open), `circuit_breaker.failures_total`
+
+---
+
+### 93. Implementar Structured Error Catalog
+
+**Módulo**: `MarcusPrado.Platform.Domain` / `MarcusPrado.Platform.Contracts`
+
+**Implementar**:
+- `ErrorCatalog` — static class com todos os `Error` instances por domínio: `ErrorCatalog.Payment.NotFound`, `ErrorCatalog.Auth.TokenExpired`
+- `IErrorTranslator` — traduz códigos de erro para mensagens localizadas via `IStringLocalizer`
+- `ErrorDocumentationGenerator` — gera `docs/errors/error-catalog.md` com todos os erros e seus contextos
+- Validação em ArchTests: todo `Error` deve estar registrado no `ErrorCatalog`
+
+---
+
+### 94. Implementar Graceful Degradation
+
+**Módulo**: `MarcusPrado.Platform.Resilience`
+
+**Implementar**:
+- `IDegradationMode` — `None`, `PartiallyDegraded`, `ReadOnly`, `Maintenance`
+- `DegradationController` — gerencia modo atual; persiste em Redis
+- `DegradationMiddleware` — verifica modo antes de processar request; retorna 503 em manutenção
+- `FeatureFlagDegradation` — degrada features individualmente via `IFeatureFlagProvider`
+- `DegradationEndpoints` — `GET /degradation/status`, `POST /degradation/mode`
+
+---
+
+### 95. Implementar Distributed Lock
+
+**Módulo**: `MarcusPrado.Platform.Redis`
+
+**Implementar**:
+- `IDistributedLock` — `AcquireAsync(key, ttl, retry)` retorna `IAsyncDisposable`
+- `RedisDistributedLock` — Redlock algorithm com fencing token
+- `PostgresAdvisoryLock` — `pg_try_advisory_xact_lock` para locks em transação DB
+- `DistributedLockExtensions.WithLockAsync(key, action)` — helper fluente
+
+**Equivalência Java**: `commons-adapters-distributed-lock`
+
+---
+
+### 96. Implementar Cache Stampede Prevention
+
+**Módulo**: `MarcusPrado.Platform.Redis`
+
+**Implementar**:
+- `StampedeProtectedCache` — wraps `ICache` com `IDistributedLock` por chave
+- `ProbabilisticEarlyExpiry` — algoritmo XFetch: recomputa cache com probabilidade crescente próximo do expiry
+- `CacheWarmupService` — `IHostedService` que aquece cache de dados críticos na inicialização
+
+---
+
+### 97. Implementar Health Check avançado com degradação
+
+**Módulo**: `MarcusPrado.Platform.HealthChecks`
+
+**Implementar**:
+- `DegradedHealthCheck` — retorna `Degraded` (não falha, mas sinaliza degradação parcial)
+- `MemoryPressureHealthCheck` — monitora GC pressure; reporta `Degraded` acima de threshold
+- `ThreadPoolStarvationHealthCheck` — detecta thread pool starvation via `ThreadPool.GetAvailableThreads`
+- `ExternalDependencyHealthCheck` — testa dependências externas (terceiros) com timeout agressivo (1s)
+- Health check custom endpoint `/health/extended` com JSON detalhado + histórico das últimas N verificações
+
+---
+
+## 🌍 Internacionalização e Localização
+
+### 98. Implementar i18n e l10n
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Dependências NuGet**: `Microsoft.Extensions.Localization`
+
+**Implementar**:
+- `AcceptLanguageMiddleware` — extrai locale de `Accept-Language` header, popula `IRequestContext.Culture`
+- `PlatformLocalizationExtensions.AddPlatformLocalization()` — configura `RequestLocalizationMiddleware` com fallback para `en-US`
+- `IErrorTranslator` implementação `LocalizedErrorTranslator` — traduz erros por cultura
+- `ValidationMessageLocalizer` — mensagens de validação traduzidas (en-US, pt-BR, es-ES)
+- Recursos de localização em `src/core/MarcusPrado.Platform.Contracts/Resources/`
+
+**Equivalência Java**: `commons-app-i18n` com Spring MessageSource
+
+---
+
+## 🔍 Developer Experience
+
+### 99. Implementar Exception Enrichment e Debugging
+
+**Módulo**: `MarcusPrado.Platform.AspNetCore`
+
+**Implementar**:
+- `DeveloperExceptionPageEnricher` — em Development, adiciona ao ProblemDetails: stack trace, inner exceptions, request body, query params, ambient context (tenantId, userId, correlationId)
+- `ExceptionFingerprinter` — gera hash determinístico da exception para deduplicação em alertas
+- `ExceptionGrouper` — agrupa exceptions similares via fingerprint no `IAppLogger`
+- Integração opcional com Sentry: `SentryExtensions.AddPlatformSentry()`
+
+---
+
+### 100. Implementar Platform CLI (dotnet tool)
+
+**Projeto**: `src/tooling/MarcusPrado.Platform.Cli`
+
+**Dependências NuGet**: `System.CommandLine`
+
+**Comandos**:
+- `platform scaffold api <name>` — scaffolda Minimal API com todos os middlewares
+- `platform scaffold worker <name>` — scaffolda Worker Service
+- `platform scaffold domain <name>` — scaffolda aggregate + command + handler + validator
+- `platform config encrypt <value>` — encripta valor de configuração
+- `platform catalog errors` — lista todos os erros do `ErrorCatalog` em formato tabular
+- `platform arch validate` — roda ArchTests e exibe resultado no terminal
+- `platform dlq inspect <topic>` — lista mensagens na DLQ de um tópico
+- `platform health <service-url>` — chama `/health/extended` e exibe resultado formatado
+
+**Instalação**: `dotnet tool install -g MarcusPrado.Platform.Cli`
+
+**Equivalência Java**: `commons-cli` com Picocli
+
+---
+
 ## 🎯 Pendências Priorizadas
 
 ### Ordem de implementação sugerida
 
-| # | Módulo | Justificativa |
-|---|--------|---------------|
-| 1 | `Result<T>` + Erros (item 2) | Blocker: usado por tudo |
-| 2 | Primitivos de Domain (item 3) | Blocker: Entity, ValueObject |
-| 3 | Pipeline CQRS (item 28) | Core value: dispatcher + behaviors |
-| 4 | `Directory.Packages.props` (item 47) | Build: versões centralizadas |
-| 5 | ArchTests (item 8) | Qualidade: enforce architecture |
-| 6 | `AspNetCore` middlewares (item 9) | Essencial para qualquer API |
-| 7 | EF Core + Postgres (itens 12, 13) | Persistência básica |
-| 8 | Redis (item 20) | Cache + Rate limit + Idempotency |
-| 9 | Kafka (item 14) | Event-driven core |
-| 10 | OpenTelemetry (item 16) | Observabilidade em produção |
-| 11 | Serilog (item 17) | Logging estruturado |
-| 12 | Resilience / Polly (item 19) | Produção-ready |
-| 13 | OutboxInbox processor (item 27) | Eventual consistency |
-| 14 | HealthChecks (item 18) | Kubernetes liveness/readiness |
-| 15 | TestKit completo (item 22) | Habilita integration tests |
-| 16 | Roslyn Analyzers (item 46) | Enforcement automático |
-| 17 | MultiTenancy avançado (item 43) | Feature diferencial |
-| 18 | FeatureFlags (item 40) | Rollout gradual |
-| 19 | Auth completo (item 10) | Segurança |
-| 20 | Workflow Engine (item 41) | Saga pattern |
+| # | Item | Módulo | Justificativa |
+|---|------|--------|---------------|
+| 1 | 2 | `Result<T>` + Erros | Blocker: usado por tudo |
+| 2 | 3 | Primitivos de Domain | Blocker: Entity, ValueObject |
+| 3 | 47 | `Directory.Packages.props` | Build: versões centralizadas |
+| 4 | 28 | Pipeline CQRS | Core value: dispatcher + behaviors |
+| 5 | 8 | ArchTests (NetArchTest) | Qualidade: enforce architecture |
+| 6 | 9 | `AspNetCore` middlewares | Essencial para qualquer API |
+| 7 | 57 | Minimal API Endpoint conventions | Dev experience: base class uniforme |
+| 8 | 58 | API Versioning | Contratos versionados |
+| 9 | 59 | OpenAPI / Scalar | Documentação pública |
+| 10 | 12 | EF Core base context | Persistência básica |
+| 11 | 13 | Postgres extension | Persistência básica |
+| 12 | 20 | Redis (cache + quota) | Cache + Rate limit + Idempotency |
+| 13 | 60 | Rate Limiting ASP.NET Core | Proteção por tenant/user |
+| 14 | 14 | Kafka | Event-driven core |
+| 15 | 15 | RabbitMQ | Mensageria alternativa |
+| 16 | 16 | OpenTelemetry | Observabilidade em produção |
+| 17 | 17 | Serilog | Logging estruturado |
+| 18 | 65 | W3C TraceContext propagation | Distributed tracing end-to-end |
+| 19 | 67 | Business Metrics | KPIs de negócio |
+| 20 | 19 | Resilience / Polly | Produção-ready |
+| 21 | 27 | OutboxInbox processor | Eventual consistency |
+| 22 | 95 | Distributed Lock | Coordenação entre instâncias |
+| 23 | 18 | HealthChecks | Kubernetes liveness/readiness |
+| 24 | 97 | Health check avançado | Degradação parcial visível |
+| 25 | 22 | TestKit completo | Habilita integration tests |
+| 26 | 85 | Test Data Builders (Bogus) | Dados realistas em testes |
+| 27 | 86 | Approval Testing (Verify) | Snapshot regression tests |
+| 28 | 46 | Roslyn Analyzers | Enforcement automático |
+| 29 | 4 | Static analysis config | Qualidade de código |
+| 30 | 5 | CI/CD pipeline | Automação de build e deploy |
+| 31 | 90 | Release automation | NuGet + changelog automático |
+| 32 | 10 | Auth JWT + API Key | Segurança básica |
+| 33 | 69 | OAuth2 / OIDC client | M2M auth |
+| 34 | 70 | Criptografia em repouso | Dados sensíveis |
+| 35 | 72 | PII Masking completo | LGPD/GDPR compliance |
+| 36 | 74 | Input sanitization / XSS | Segurança de input |
+| 37 | 43 | MultiTenancy avançado | Feature diferencial |
+| 38 | 40 | FeatureFlags | Rollout gradual |
+| 39 | 41 | Workflow Engine | Saga pattern |
+| 40 | 77 | Saga Orchestration | Transações distribuídas |
+| 41 | 75 | Event Sourcing | Audit trail completo |
+| 42 | 76 | Projeções / Read Models | CQRS read side |
+| 43 | 78 | Domain Event Router | Desacoplamento cross-boundary |
+| 44 | 93 | Structured Error Catalog | Erros padronizados e documentados |
+| 45 | 98 | i18n / l10n | Produto multilíngue |
+| 46 | 94 | Graceful Degradation | Resiliência operacional |
+| 47 | 30 | Governance (contratos ADR) | Evolução controlada de contratos |
+| 48 | 79 | Quartz.NET adapter | Jobs robustos com clustering |
+| 49 | 53 | Azure Service Bus | Mensageria cloud-native |
+| 50 | 54 | AWS SQS/SNS | Mensageria AWS |
+| 51 | 52 | NATS adapter | Mensageria de baixa latência |
+| 52 | 49 | MongoDB adapter | Document database |
+| 53 | 91 | API Changelog generator | Breaking changes detectados no CI |
+| 54 | 99 | Exception Enrichment | Dev experience: debugging |
+| 55 | 100 | Platform CLI | Developer experience |
 
 ---
 
