@@ -1,0 +1,29 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- ── Analyzers (dev-only, applied to all projects via Directory.Build.props) ── -->
+  <ItemGroup Label="Analyzers">
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.103" />
+    <PackageVersion Include="Roslynator.Analyzers"                Version="4.15.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp"               Version="10.20.0.135146" />
+    <PackageVersion Include="StyleCop.Analyzers"                  Version="1.1.118" />
+  </ItemGroup>
+
+  <!-- ── Samples ── -->
+  <ItemGroup Label="Samples">
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
+  </ItemGroup>
+
+  <!-- ── Test infrastructure ── -->
+  <ItemGroup Label="Testing">
+    <PackageVersion Include="coverlet.collector"           Version="6.0.4" />
+    <PackageVersion Include="FluentAssertions"             Version="6.12.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk"       Version="17.14.1" />
+    <PackageVersion Include="xunit"                        Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio"   Version="3.1.4" />
+  </ItemGroup>
+
+</Project>

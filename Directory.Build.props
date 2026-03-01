@@ -1,0 +1,92 @@
+<Project>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Baseline — applies to every project in the repository
+  ══════════════════════════════════════════════════════════════════ -->
+  <PropertyGroup Label="Language">
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <!-- Enforce .editorconfig code-style rules at build time -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Enable the "recommended" set of .NET / Roslyn CA* analyzers -->
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+  </PropertyGroup>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Source projects (core + extensions + kits + tooling):
+       promote warnings to errors — keeps production code clean.
+       CS1591 (missing XML doc) is excluded so partially-documented
+       APIs don't block the build while the library is being built up.
+  ══════════════════════════════════════════════════════════════════ -->
+  <PropertyGroup Label="WarningsAsErrors"
+    Condition="$(MSBuildProjectDirectory.Contains('/src/core/'))      Or
+               $(MSBuildProjectDirectory.Contains('/src/extensions/')) Or
+               $(MSBuildProjectDirectory.Contains('/src/kits/'))       Or
+               $(MSBuildProjectDirectory.Contains('/src/tooling/'))">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--
+      CS1591  – missing XML documentation comment (incremental – not enforced yet)
+      CS1574  – XML comment cref that cannot be resolved
+      CS1584  – XML comment cref is ambiguous
+      CS1587  – XML comment not placed on a valid language element
+    -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS1591;CS1574;CS1584;CS1587</WarningsNotAsErrors>
+  </PropertyGroup>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Test projects: relax documentation requirements and allow
+       common test-specific patterns.
+  ══════════════════════════════════════════════════════════════════ -->
+  <PropertyGroup Label="TestProjects"
+    Condition="$(MSBuildProjectDirectory.Contains('/tests/'))">
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Sample projects: likewise relaxed (exploratory code).
+  ══════════════════════════════════════════════════════════════════ -->
+  <PropertyGroup Label="Samples"
+    Condition="$(MSBuildProjectDirectory.Contains('/src/samples/'))">
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       Analyzer packages — development-only, never shipped to consumers.
+       PrivateAssets=all  → not included in NuGet package dependency graph.
+       Versions managed by Directory.Packages.props (CPM).
+  ══════════════════════════════════════════════════════════════════ -->
+  <ItemGroup Label="Analyzers">
+
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="StyleCop.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Roslynator.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="SonarAnalyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+  </ItemGroup>
+
+  <!-- Provide stylecop.json to all projects automatically -->
+  <ItemGroup Label="StyleCopSettings"
+    Condition="Exists('$(MSBuildThisFileDirectory)stylecop.json')">
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
+
+</Project>
