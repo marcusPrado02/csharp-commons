@@ -111,7 +111,7 @@
 
 ---
 
-### 4. Configurar análise estática de código
+### 4. ✅ Configurar análise estática de código
 
 **Arquivos a criar/atualizar**:
 - `.editorconfig` — regras Roslyn + CSharpier
