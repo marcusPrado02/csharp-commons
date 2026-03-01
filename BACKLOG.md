@@ -131,7 +131,7 @@
 
 ---
 
-### 5. Configurar pipeline CI/CD
+### 5. ✅ Configurar pipeline CI/CD
 
 **Arquivo**: `.github/workflows/ci.yml`
 
