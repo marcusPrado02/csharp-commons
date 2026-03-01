@@ -7,4 +7,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../MarcusPrado.Platform.Abstractions/MarcusPrado.Platform.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

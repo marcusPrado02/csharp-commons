@@ -45,4 +45,8 @@
     <Project Path="src/tooling/MarcusPrado.Platform.Analyzers/MarcusPrado.Platform.Analyzers.csproj" />
     <Project Path="src/tooling/MarcusPrado.Platform.ArchTests/MarcusPrado.Platform.ArchTests.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/unit/">
+    <Project Path="tests/unit/MarcusPrado.Platform.Abstractions.Tests/MarcusPrado.Platform.Abstractions.Tests.csproj" />
+  </Folder>
 </Solution>
