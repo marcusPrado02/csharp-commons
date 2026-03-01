@@ -94,7 +94,7 @@
 
 ---
 
-### 3. Implementar primitivos de domínio completos
+### 3. ✅ Implementar primitivos de domínio completos
 
 **Módulo**: `MarcusPrado.Platform.Domain`
 
