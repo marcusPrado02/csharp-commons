@@ -1,0 +1,48 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/core/">
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions/MarcusPrado.Platform.Abstractions.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Application/MarcusPrado.Platform.Application.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.BackgroundJobs/MarcusPrado.Platform.BackgroundJobs.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Contracts/MarcusPrado.Platform.Contracts.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Domain/MarcusPrado.Platform.Domain.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.FeatureFlags/MarcusPrado.Platform.FeatureFlags.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Governance/MarcusPrado.Platform.Governance.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Messaging/MarcusPrado.Platform.Messaging.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.MultiTenancy/MarcusPrado.Platform.MultiTenancy.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Observability/MarcusPrado.Platform.Observability.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.OutboxInbox/MarcusPrado.Platform.OutboxInbox.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Persistence/MarcusPrado.Platform.Persistence.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.RateLimiting/MarcusPrado.Platform.RateLimiting.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Resilience/MarcusPrado.Platform.Resilience.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Runtime/MarcusPrado.Platform.Runtime.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Security/MarcusPrado.Platform.Security.csproj" />
+  </Folder>
+  <Folder Name="/src/extensions/">
+    <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore.Auth/MarcusPrado.Platform.AspNetCore.Auth.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore.ProblemDetails/MarcusPrado.Platform.AspNetCore.ProblemDetails.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore/MarcusPrado.Platform.AspNetCore.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.EfCore/MarcusPrado.Platform.EfCore.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.HealthChecks/MarcusPrado.Platform.HealthChecks.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Kafka/MarcusPrado.Platform.Kafka.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.OpenTelemetry/MarcusPrado.Platform.OpenTelemetry.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Postgres/MarcusPrado.Platform.Postgres.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.RabbitMq/MarcusPrado.Platform.RabbitMq.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Redis/MarcusPrado.Platform.Redis.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Serilog/MarcusPrado.Platform.Serilog.csproj" />
+  </Folder>
+  <Folder Name="/src/kits/">
+    <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
+    <Project Path="src/kits/MarcusPrado.Platform.ContractTestKit/MarcusPrado.Platform.ContractTestKit.csproj" />
+    <Project Path="src/kits/MarcusPrado.Platform.ObservabilityTestKit/MarcusPrado.Platform.ObservabilityTestKit.csproj" />
+    <Project Path="src/kits/MarcusPrado.Platform.TestKit/MarcusPrado.Platform.TestKit.csproj" />
+  </Folder>
+  <Folder Name="/src/samples/">
+    <Project Path="src/samples/Sample.Service.MinimalApi/Sample.Service.MinimalApi.csproj" />
+    <Project Path="src/samples/Sample.Service.Worker/Sample.Service.Worker.csproj" />
+  </Folder>
+  <Folder Name="/src/tooling/">
+    <Project Path="src/tooling/MarcusPrado.Platform.Analyzers/MarcusPrado.Platform.Analyzers.csproj" />
+    <Project Path="src/tooling/MarcusPrado.Platform.ArchTests/MarcusPrado.Platform.ArchTests.csproj" />
+  </Folder>
+</Solution>
