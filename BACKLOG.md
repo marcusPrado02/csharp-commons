@@ -180,7 +180,7 @@
 
 ## 🏗️ ArchTests e Validação de Arquitetura
 
-### 8. Implementar regras ArchTests com NetArchTest
+### 8. ✅ Implementar regras ArchTests com NetArchTest
 
 **Projeto**: `src/tooling/MarcusPrado.Platform.ArchTests`
 

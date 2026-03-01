@@ -1,8 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- Suppress style rules — perf/style irrelevant for arch-test code -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>SA1101;SA1200;SA1600;SA1601;SA1633;CS1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NetArchTest.Rules" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+  <!-- Core assemblies under test -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Domain\MarcusPrado.Platform.Domain.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Contracts\MarcusPrado.Platform.Contracts.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Observability\MarcusPrado.Platform.Observability.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Messaging\MarcusPrado.Platform.Messaging.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Persistence\MarcusPrado.Platform.Persistence.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.MultiTenancy\MarcusPrado.Platform.MultiTenancy.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Security\MarcusPrado.Platform.Security.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Runtime\MarcusPrado.Platform.Runtime.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Resilience\MarcusPrado.Platform.Resilience.csproj" />
+  </ItemGroup>
+
 </Project>
+
