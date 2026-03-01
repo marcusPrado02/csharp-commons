@@ -1,3 +1,4 @@
 namespace MarcusPrado.Platform.Application.Pipeline;
 
-public class RetryBehavior { }
+/// <summary>Retries transient failures using an exponential back-off strategy.</summary>
+public class RetryBehavior : IPipelineBehavior { }

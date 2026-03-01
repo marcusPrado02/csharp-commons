@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- Suppress style rules — tests use pragmatic style -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>SA1101;SA1200;SA1600;SA1601;SA1633;CS1591;CA1707</NoWarn>
+  </PropertyGroup>
+
+  <!-- ASP.NET Core framework (TestServer, HttpContext …) -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <!-- Test infrastructure packages -->
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+  <!-- Library under test -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\extensions\MarcusPrado.Platform.AspNetCore\MarcusPrado.Platform.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\src\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
+    <ProjectReference Include="..\..\..\src\core\MarcusPrado.Platform.Domain\MarcusPrado.Platform.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

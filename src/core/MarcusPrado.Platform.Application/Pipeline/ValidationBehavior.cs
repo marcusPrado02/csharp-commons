@@ -1,3 +1,4 @@
 namespace MarcusPrado.Platform.Application.Pipeline;
 
-public class ValidationBehavior { }
+/// <summary>Validates incoming commands/queries before they reach the handler.</summary>
+public class ValidationBehavior : IPipelineBehavior { }

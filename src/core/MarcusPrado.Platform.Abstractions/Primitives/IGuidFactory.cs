@@ -1,3 +1,10 @@
 namespace MarcusPrado.Platform.Abstractions.Primitives;
 
-public interface IGuidFactory { }
+/// <summary>
+/// Abstraction over GUID creation to enable sequential IDs and testability.
+/// </summary>
+public interface IGuidFactory
+{
+    /// <summary>Creates and returns a new unique identifier.</summary>
+    Guid NewGuid();
+}

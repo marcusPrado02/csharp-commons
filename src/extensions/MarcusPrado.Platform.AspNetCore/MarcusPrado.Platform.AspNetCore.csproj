@@ -1,10 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Shared ASP.NET Core framework — no version pinning needed -->
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <!-- ASP.NET Core framework (HttpContext, IApplicationBuilder, ProblemDetails …) -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <!-- Platform core libraries -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Domain\MarcusPrado.Platform.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

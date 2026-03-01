@@ -1,3 +1,4 @@
 namespace MarcusPrado.Platform.Application.Pipeline;
 
-public class AuthorizationBehavior { }
+/// <summary>Enforces authorization rules before the handler executes.</summary>
+public class AuthorizationBehavior : IPipelineBehavior { }

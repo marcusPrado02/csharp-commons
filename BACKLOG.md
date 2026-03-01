@@ -217,7 +217,7 @@
 
 ## 🔌 Extensões ASP.NET Core
 
-### 9. Implementar `MarcusPrado.Platform.AspNetCore` completo
+### 9. ✅ Implementar `MarcusPrado.Platform.AspNetCore` completo
 
 **Dependências NuGet**: `Microsoft.AspNetCore.App`
 

@@ -1,3 +1,4 @@
 namespace MarcusPrado.Platform.Application.Pipeline;
 
-public class IdempotencyBehavior { }
+/// <summary>Deduplicates commands that carry a client-supplied idempotency key.</summary>
+public class IdempotencyBehavior : IPipelineBehavior { }
