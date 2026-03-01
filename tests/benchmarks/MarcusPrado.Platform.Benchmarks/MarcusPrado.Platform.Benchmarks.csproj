@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <!-- Benchmarks intentionally disable most warning-as-error rules -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <!-- Suppress SA/RCS/S* in benchmarks — style is irrelevant for perf code -->
+    <NoWarn>SA1101;SA1200;SA1600;SA1601;SA1633;CS1591</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+    <PackageReference Include="MessagePack" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="protobuf-net" />
+    <PackageReference Include="System.Threading.RateLimiting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

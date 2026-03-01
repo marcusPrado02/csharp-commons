@@ -160,15 +160,19 @@
 
 ---
 
-### 7. Benchmarks de performance
+### 7. ✅ Benchmarks de performance
+
+**Status**: Concluído em 01/03/2026
 
 **Projeto**: `tests/benchmarks/MarcusPrado.Platform.Benchmarks` (BenchmarkDotNet)
 
-**Benchmarks prioritários**:
-- `ResultBenchmark` — alocações de `Result<T>` vs exceptions
-- `PipelineBenchmark` — throughput do pipeline CQRS com N behaviors
-- `MessageSerializerBenchmark` — JSON vs MessagePack vs Protobuf
-- `ConcurrencyLimiterBenchmark` — `AdaptiveConcurrencyLimiter` sob carga
+**Benchmarks implementados**:
+- `ResultBenchmark` — alocações de `Result<T>` vs exceptions (+ Map/Bind chain)
+- `PipelineBenchmark` — throughput do pipeline CQRS com 0/2/4/8 behaviors
+- `MessageSerializerBenchmark` — System.Text.Json vs Newtonsoft vs MessagePack vs protobuf-net
+- `ConcurrencyLimiterBenchmark` — SemaphoreSlim vs ConcurrencyLimiter vs SlidingWindow vs TokenBucket
+
+**Executar**: `dotnet run -c Release --project tests/benchmarks/MarcusPrado.Platform.Benchmarks`
 
 **Equivalência Java**: JMH benchmarks em `commons-kernel-benchmarks`
 
