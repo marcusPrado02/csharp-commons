@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.MultiTenancy.Strategy;
 
-public interface ITenantIsolationStrategy
-{
-}
+public interface ITenantIsolationStrategy { }

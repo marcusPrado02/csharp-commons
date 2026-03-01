@@ -81,7 +81,8 @@ public readonly record struct Error
         string message,
         ErrorCategory category = ErrorCategory.Technical,
         ErrorSeverity severity = ErrorSeverity.Error,
-        IReadOnlyDictionary<string, object>? metadata = null)
+        IReadOnlyDictionary<string, object>? metadata = null
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(code, nameof(code));
         ArgumentException.ThrowIfNullOrWhiteSpace(message, nameof(message));
@@ -117,29 +118,23 @@ public readonly record struct Error
         code: "NONE",
         message: "(no error)",
         category: ErrorCategory.Technical,
-        severity: ErrorSeverity.Info);
+        severity: ErrorSeverity.Info
+    );
 
     // ── Factory methods ───────────────────────────────────────────────────────
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.Validation"/> error (HTTP 422 / 400).
     /// </summary>
-    public static Error Validation(
-        string code,
-        string message,
-        IReadOnlyDictionary<string, object>? metadata = null)
-        => new(code, message, ErrorCategory.Validation, ErrorSeverity.Warning, metadata);
+    public static Error Validation(string code, string message, IReadOnlyDictionary<string, object>? metadata = null) =>
+        new(code, message, ErrorCategory.Validation, ErrorSeverity.Warning, metadata);
 
     /// <summary>
     /// Creates a field-level <see cref="ErrorCategory.Validation"/> error with
     /// the field name and attempted value stored in <see cref="Metadata"/>.
     /// </summary>
-    public static Error Validation(
-        string code,
-        string message,
-        string fieldName,
-        object? attemptedValue = null)
-        => new(
+    public static Error Validation(string code, string message, string fieldName, object? attemptedValue = null) =>
+        new(
             code,
             message,
             ErrorCategory.Validation,
@@ -148,69 +143,58 @@ public readonly record struct Error
             {
                 ["field"] = fieldName,
                 ["attemptedValue"] = attemptedValue!,
-            }.ToFrozenDictionary()!);
+            }.ToFrozenDictionary()!
+        );
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.NotFound"/> error (HTTP 404).
     /// </summary>
-    public static Error NotFound(
-        string code,
-        string message,
-        IReadOnlyDictionary<string, object>? metadata = null)
-        => new(code, message, ErrorCategory.NotFound, ErrorSeverity.Info, metadata);
+    public static Error NotFound(string code, string message, IReadOnlyDictionary<string, object>? metadata = null) =>
+        new(code, message, ErrorCategory.NotFound, ErrorSeverity.Info, metadata);
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.Conflict"/> error (HTTP 409).
     /// </summary>
-    public static Error Conflict(
-        string code,
-        string message,
-        IReadOnlyDictionary<string, object>? metadata = null)
-        => new(code, message, ErrorCategory.Conflict, ErrorSeverity.Warning, metadata);
+    public static Error Conflict(string code, string message, IReadOnlyDictionary<string, object>? metadata = null) =>
+        new(code, message, ErrorCategory.Conflict, ErrorSeverity.Warning, metadata);
 
     /// <summary>
     /// Creates an <see cref="ErrorCategory.Unauthorized"/> error (HTTP 401).
     /// </summary>
-    public static Error Unauthorized(string code, string message)
-        => new(code, message, ErrorCategory.Unauthorized, ErrorSeverity.Warning);
+    public static Error Unauthorized(string code, string message) =>
+        new(code, message, ErrorCategory.Unauthorized, ErrorSeverity.Warning);
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.Forbidden"/> error (HTTP 403).
     /// </summary>
-    public static Error Forbidden(string code, string message)
-        => new(code, message, ErrorCategory.Forbidden, ErrorSeverity.Warning);
+    public static Error Forbidden(string code, string message) =>
+        new(code, message, ErrorCategory.Forbidden, ErrorSeverity.Warning);
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.Technical"/> error (HTTP 500).
     /// Use for unexpected internal failures.
     /// </summary>
-    public static Error Technical(
-        string code,
-        string message,
-        IReadOnlyDictionary<string, object>? metadata = null)
-        => new(code, message, ErrorCategory.Technical, ErrorSeverity.Error, metadata);
+    public static Error Technical(string code, string message, IReadOnlyDictionary<string, object>? metadata = null) =>
+        new(code, message, ErrorCategory.Technical, ErrorSeverity.Error, metadata);
 
     /// <summary>
     /// Creates an <see cref="ErrorCategory.External"/> error (HTTP 502).
     /// Use when a downstream dependency returns an error.
     /// </summary>
-    public static Error External(
-        string code,
-        string message,
-        IReadOnlyDictionary<string, object>? metadata = null)
-        => new(code, message, ErrorCategory.External, ErrorSeverity.Error, metadata);
+    public static Error External(string code, string message, IReadOnlyDictionary<string, object>? metadata = null) =>
+        new(code, message, ErrorCategory.External, ErrorSeverity.Error, metadata);
 
     /// <summary>
     /// Creates a <see cref="ErrorCategory.Timeout"/> error (HTTP 504).
     /// </summary>
-    public static Error Timeout(string code, string message)
-        => new(code, message, ErrorCategory.Timeout, ErrorSeverity.Error);
+    public static Error Timeout(string code, string message) =>
+        new(code, message, ErrorCategory.Timeout, ErrorSeverity.Error);
 
     /// <summary>
     /// Creates an <see cref="ErrorCategory.Unavailable"/> error (HTTP 503).
     /// </summary>
-    public static Error Unavailable(string code, string message)
-        => new(code, message, ErrorCategory.Unavailable, ErrorSeverity.Error);
+    public static Error Unavailable(string code, string message) =>
+        new(code, message, ErrorCategory.Unavailable, ErrorSeverity.Error);
 
     // ── Fluent enrichment ────────────────────────────────────────────────────
 
@@ -227,7 +211,10 @@ public readonly record struct Error
             ? new Dictionary<string, object>(Metadata, StringComparer.Ordinal) { [key] = value }
             : new Dictionary<string, object>(StringComparer.Ordinal) { [key] = value };
 
-        return this with { Metadata = dict.ToFrozenDictionary() };
+        return this with
+        {
+            Metadata = dict.ToFrozenDictionary(),
+        };
     }
 
     /// <summary>

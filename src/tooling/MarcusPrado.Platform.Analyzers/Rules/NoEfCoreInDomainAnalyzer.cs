@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Analyzers.Rules;
 
-public class NoEfCoreInDomainAnalyzer
-{
-}
+public class NoEfCoreInDomainAnalyzer { }

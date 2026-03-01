@@ -337,6 +337,11 @@ dotnet_diagnostic.SA1025.severity = suggestion
 # SA1010 — opening square brackets preceded by space
 dotnet_diagnostic.SA1010.severity = suggestion
 
+# SA1111 — Closing parenthesis should be on line of last parameter
+#           CSharpier puts closing parens on their own line — suppress so that
+#           the two formatters don't conflict.
+dotnet_diagnostic.SA1111.severity = none
+
 # SA1116 — parameters should begin on line after declaration
 #           Too prescriptive for short multi-line LINQ / factory calls
 dotnet_diagnostic.SA1116.severity = suggestion

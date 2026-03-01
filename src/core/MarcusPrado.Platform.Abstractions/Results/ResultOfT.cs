@@ -65,12 +65,14 @@ public readonly struct Result<T> : IEquatable<Result<T>>
     /// Check <see cref="IsSuccess"/> before accessing <see cref="Value"/>,
     /// or use <see cref="ResultExtensions.Match{TIn,TOut}"/> to handle both branches.
     /// </exception>
-    public T Value => IsSuccess
-        ? _value!
-        : throw new InvalidOperationException(
-            $"Cannot access Value of a failed Result<{typeof(T).Name}>. " +
-            $"Error: {_error}. " +
-            "Check IsSuccess before accessing Value, or use Match/Map instead.");
+    public T Value =>
+        IsSuccess
+            ? _value!
+            : throw new InvalidOperationException(
+                $"Cannot access Value of a failed Result<{typeof(T).Name}>. "
+                    + $"Error: {_error}. "
+                    + "Check IsSuccess before accessing Value, or use Match/Map instead."
+            );
 
     /// <summary>
     /// Gets the <see cref="Error"/> associated with this failure.
@@ -79,11 +81,13 @@ public readonly struct Result<T> : IEquatable<Result<T>>
     /// Thrown when accessed on a successful result.
     /// Check <see cref="IsFailure"/> first, or use <see cref="ResultExtensions.Match{TIn,TOut}"/>.
     /// </exception>
-    public Error Error => IsFailure
-        ? _error
-        : throw new InvalidOperationException(
-            $"Cannot access Error of a successful Result<{typeof(T).Name}>. " +
-            "Check IsFailure before accessing Error, or use Match instead.");
+    public Error Error =>
+        IsFailure
+            ? _error
+            : throw new InvalidOperationException(
+                $"Cannot access Error of a successful Result<{typeof(T).Name}>. "
+                    + "Check IsFailure before accessing Error, or use Match instead."
+            );
 
     // ── Factory ──────────────────────────────────────────────────────────────
 
@@ -141,20 +145,16 @@ public readonly struct Result<T> : IEquatable<Result<T>>
     /// <inheritdoc/>
     public bool Equals(Result<T> other)
     {
-        if (IsSuccess != other.IsSuccess) return false;
-        return IsSuccess
-            ? EqualityComparer<T>.Default.Equals(_value, other._value)
-            : _error.Equals(other._error);
+        if (IsSuccess != other.IsSuccess)
+            return false;
+        return IsSuccess ? EqualityComparer<T>.Default.Equals(_value, other._value) : _error.Equals(other._error);
     }
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Result<T> other && Equals(other);
 
     /// <inheritdoc/>
-    public override int GetHashCode() =>
-        IsSuccess
-            ? HashCode.Combine(true, _value)
-            : HashCode.Combine(false, _error);
+    public override int GetHashCode() => IsSuccess ? HashCode.Combine(true, _value) : HashCode.Combine(false, _error);
 
     /// <inheritdoc/>
     public static bool operator ==(Result<T> left, Result<T> right) => left.Equals(right);

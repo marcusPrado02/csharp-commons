@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ChaosKit.Faults;
 
-public class PacketLossFault
-{
-}
+public class PacketLossFault { }

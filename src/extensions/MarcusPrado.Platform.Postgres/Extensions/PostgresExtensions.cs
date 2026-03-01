@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Postgres.Extensions;
 
-public class PostgresExtensions
-{
-}
+public class PostgresExtensions { }

@@ -46,15 +46,15 @@ public sealed class ErrorTests
 
         var error = category switch
         {
-            ErrorCategory.NotFound     => Error.NotFound(code, message),
-            ErrorCategory.Conflict     => Error.Conflict(code, message),
+            ErrorCategory.NotFound => Error.NotFound(code, message),
+            ErrorCategory.Conflict => Error.Conflict(code, message),
             ErrorCategory.Unauthorized => Error.Unauthorized(code, message),
-            ErrorCategory.Forbidden    => Error.Forbidden(code, message),
-            ErrorCategory.Technical    => Error.Technical(code, message),
-            ErrorCategory.External     => Error.External(code, message),
-            ErrorCategory.Timeout      => Error.Timeout(code, message),
-            ErrorCategory.Unavailable  => Error.Unavailable(code, message),
-            _                          => throw new InvalidOperationException()
+            ErrorCategory.Forbidden => Error.Forbidden(code, message),
+            ErrorCategory.Technical => Error.Technical(code, message),
+            ErrorCategory.External => Error.External(code, message),
+            ErrorCategory.Timeout => Error.Timeout(code, message),
+            ErrorCategory.Unavailable => Error.Unavailable(code, message),
+            _ => throw new InvalidOperationException(),
         };
 
         error.Category.Should().Be(category);
@@ -89,8 +89,7 @@ public sealed class ErrorTests
     [Fact]
     public void WithMetadata_AddsKeyValueToMetadata()
     {
-        var error = Error.Technical("SVC.ERROR", "Something failed.")
-                         .WithMetadata("traceId", "abc-123");
+        var error = Error.Technical("SVC.ERROR", "Something failed.").WithMetadata("traceId", "abc-123");
 
         error.Metadata.Should().ContainKey("traceId").WhoseValue.Should().Be("abc-123");
     }
@@ -98,9 +97,7 @@ public sealed class ErrorTests
     [Fact]
     public void WithMetadata_OverwritesExistingKey()
     {
-        var error = Error.Technical("SVC.ERROR", "msg")
-                         .WithMetadata("key", "original")
-                         .WithMetadata("key", "updated");
+        var error = Error.Technical("SVC.ERROR", "msg").WithMetadata("key", "original").WithMetadata("key", "updated");
 
         error.Metadata["key"].Should().Be("updated");
     }
@@ -120,8 +117,7 @@ public sealed class ErrorTests
     [Fact]
     public void WithSeverity_ReturnsCopyWithNewSeverity()
     {
-        var error = Error.Technical("SVC.ERROR", "msg")
-                         .WithSeverity(ErrorSeverity.Critical);
+        var error = Error.Technical("SVC.ERROR", "msg").WithSeverity(ErrorSeverity.Critical);
 
         error.Severity.Should().Be(ErrorSeverity.Critical);
     }
@@ -132,7 +128,7 @@ public sealed class ErrorTests
     public void Equality_SameCodeAndCategory_AreEqual()
     {
         var a = Error.Validation("USER.INVALID", "msg1");
-        var b = Error.Validation("USER.INVALID", "msg2");   // same code + category
+        var b = Error.Validation("USER.INVALID", "msg2"); // same code + category
 
         a.Should().Be(b);
     }
@@ -153,15 +149,13 @@ public sealed class ErrorTests
     {
         var error = Error.NotFound("ORDER.NOT_FOUND", "Order not found.");
 
-        error.ToString().Should().Contain("ORDER.NOT_FOUND")
-                                 .And.Contain("Order not found.");
+        error.ToString().Should().Contain("ORDER.NOT_FOUND").And.Contain("Order not found.");
     }
 
     [Fact]
     public void ToString_WithMetadata_IncludesMetadata()
     {
-        var error = Error.Technical("SVC.ERROR", "msg")
-                         .WithMetadata("traceId", "xyz");
+        var error = Error.Technical("SVC.ERROR", "msg").WithMetadata("traceId", "xyz");
 
         error.ToString().Should().Contain("traceId").And.Contain("xyz");
     }

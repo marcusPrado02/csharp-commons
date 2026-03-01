@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.BackgroundJobs.Execution;
 
-public class JobRunner
-{
-}
+public class JobRunner { }

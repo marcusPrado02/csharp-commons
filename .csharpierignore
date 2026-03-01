@@ -1,0 +1,29 @@
+# Exclude non-C# files from CSharpier formatting
+# CSharpier is a C# formatter — XML/YAML/JSON/Markdown are handled by .editorconfig / other tools
+
+# MSBuild / NuGet
+*.props
+*.targets
+*.csproj
+*.vbproj
+*.slnx
+*.sln
+
+# Configuration
+*.json
+*.yaml
+*.yml
+*.xml
+*.resx
+*.config
+*.runsettings
+
+# Documentation
+*.md
+docs/
+
+# Generated / build output
+obj/
+bin/
+.git/
+.trunk/

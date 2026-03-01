@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Contracts.Async;
 
-public class EventContractEnvelope
-{
-}
+public class EventContractEnvelope { }

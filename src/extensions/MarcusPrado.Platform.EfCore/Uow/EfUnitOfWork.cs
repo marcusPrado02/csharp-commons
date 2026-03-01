@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.EfCore.Uow;
 
-public class EfUnitOfWork
-{
-}
+public class EfUnitOfWork { }

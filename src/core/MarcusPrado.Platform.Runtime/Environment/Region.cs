@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Runtime.Environment;
 
-public class Region
-{
-}
+public class Region { }

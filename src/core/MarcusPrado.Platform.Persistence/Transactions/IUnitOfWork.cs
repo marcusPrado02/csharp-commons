@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Transactions;
 
-public interface IUnitOfWork
-{
-}
+public interface IUnitOfWork { }

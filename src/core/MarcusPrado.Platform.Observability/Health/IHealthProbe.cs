@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Observability.Health;
 
-public interface IHealthProbe
-{
-}
+public interface IHealthProbe { }

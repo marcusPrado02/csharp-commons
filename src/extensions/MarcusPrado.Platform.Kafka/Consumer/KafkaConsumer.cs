@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Kafka.Consumer;
 
-public class KafkaConsumer
-{
-}
+public class KafkaConsumer { }

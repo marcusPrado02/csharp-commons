@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.RateLimiting.Quotas;
 
-public class QuotaKey
-{
-}
+public class QuotaKey { }

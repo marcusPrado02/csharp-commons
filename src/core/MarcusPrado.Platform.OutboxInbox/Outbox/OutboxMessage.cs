@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OutboxInbox.Outbox;
 
-public class OutboxMessage
-{
-}
+public class OutboxMessage { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Resilience.Overload;
 
-public class OverloadException: Exception
-{
-}
+public class OverloadException : Exception { }

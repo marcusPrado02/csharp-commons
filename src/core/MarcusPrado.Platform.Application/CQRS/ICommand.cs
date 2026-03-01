@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.CQRS;
 
-public interface ICommand
-{
-}
+public interface ICommand { }

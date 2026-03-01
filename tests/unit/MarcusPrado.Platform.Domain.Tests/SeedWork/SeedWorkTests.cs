@@ -18,7 +18,8 @@ file sealed class Order : AggregateRoot<OrderId>
     public IReadOnlyList<string> Lines { get; } = [];
     private readonly List<string> _lines = [];
 
-    public Order(OrderId id) : base(id) { }
+    public Order(OrderId id)
+        : base(id) { }
 
     public void Place()
     {
@@ -38,8 +39,11 @@ file sealed class Order : AggregateRoot<OrderId>
 file sealed class OrderMustHaveItemsRule : IBusinessRule
 {
     private readonly int _count;
+
     public OrderMustHaveItemsRule(int count) => _count = count;
+
     public bool IsBroken() => _count == 0;
+
     public string Message => "An order must contain at least one item.";
 }
 
@@ -119,8 +123,7 @@ public sealed class AggregateRootTests
         order.AddLine("Widget");
         order.Place();
 
-        order.DomainEvents.Should().HaveCount(1)
-             .And.ContainItemsAssignableTo<OrderPlaced>();
+        order.DomainEvents.Should().HaveCount(1).And.ContainItemsAssignableTo<OrderPlaced>();
     }
 
     [Fact]
@@ -157,8 +160,10 @@ public sealed class AggregateRootTests
         // Arrange: no items added
         var act = () => order.Place();
 
-        act.Should().Throw<BusinessRuleViolationException>()
-           .Which.BrokenRule.Message.Should().Contain("at least one item");
+        act.Should()
+            .Throw<BusinessRuleViolationException>()
+            .Which.BrokenRule.Message.Should()
+            .Contain("at least one item");
     }
 }
 
@@ -170,6 +175,7 @@ public sealed class ValueObjectTests
     {
         public decimal Amount { get; } = Amount;
         public string Currency { get; } = Currency;
+
         protected override IEnumerable<object?> GetEqualityComponents()
         {
             yield return Amount;
@@ -200,8 +206,7 @@ public sealed class ValueObjectTests
     [Fact]
     public void GetHashCode_SameComponents_SameHash()
     {
-        new Money(5m, "GBP").GetHashCode()
-            .Should().Be(new Money(5m, "GBP").GetHashCode());
+        new Money(5m, "GBP").GetHashCode().Should().Be(new Money(5m, "GBP").GetHashCode());
     }
 
     [Fact]
@@ -226,12 +231,14 @@ public sealed class BusinessRuleTests
     private sealed class AlwaysBrokenRule : IBusinessRule
     {
         public bool IsBroken() => true;
+
         public string Message => "Always broken.";
     }
 
     private sealed class NeverBrokenRule : IBusinessRule
     {
         public bool IsBroken() => false;
+
         public string Message => "Never broken.";
     }
 
@@ -241,16 +248,21 @@ public sealed class BusinessRuleTests
         var rule = new AlwaysBrokenRule();
         var act = () => ThrowIfBroken(rule);
 
-        act.Should().Throw<BusinessRuleViolationException>()
-           .Which.Message.Should().Be("Always broken.");
+        act.Should().Throw<BusinessRuleViolationException>().Which.Message.Should().Be("Always broken.");
     }
 
     [Fact]
     public void BrokenRule_Exception_ExposesRule()
     {
         var rule = new AlwaysBrokenRule();
-        try { ThrowIfBroken(rule); }
-        catch (BusinessRuleViolationException ex) { ex.BrokenRule.Should().Be(rule); }
+        try
+        {
+            ThrowIfBroken(rule);
+        }
+        catch (BusinessRuleViolationException ex)
+        {
+            ex.BrokenRule.Should().Be(rule);
+        }
     }
 
     [Fact]
@@ -262,6 +274,7 @@ public sealed class BusinessRuleTests
 
     private static void ThrowIfBroken(IBusinessRule rule)
     {
-        if (rule.IsBroken()) throw new BusinessRuleViolationException(rule);
+        if (rule.IsBroken())
+            throw new BusinessRuleViolationException(rule);
     }
 }

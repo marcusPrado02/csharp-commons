@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Observability.Metrics;
 
-public interface IBusinessMetrics
-{
-}
+public interface IBusinessMetrics { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Authorization;
 
-public class Permission
-{
-}
+public class Permission { }

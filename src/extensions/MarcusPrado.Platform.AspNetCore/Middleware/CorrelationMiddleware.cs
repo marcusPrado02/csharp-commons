@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.AspNetCore.Middleware;
 
-public class CorrelationMiddleware
-{
-}
+public class CorrelationMiddleware { }

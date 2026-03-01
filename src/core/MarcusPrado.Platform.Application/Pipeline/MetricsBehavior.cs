@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.Pipeline;
 
-public class MetricsBehavior
-{
-}
+public class MetricsBehavior { }

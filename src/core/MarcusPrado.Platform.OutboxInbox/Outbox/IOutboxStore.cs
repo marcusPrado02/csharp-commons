@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OutboxInbox.Outbox;
 
-public interface IOutboxStore
-{
-}
+public interface IOutboxStore { }

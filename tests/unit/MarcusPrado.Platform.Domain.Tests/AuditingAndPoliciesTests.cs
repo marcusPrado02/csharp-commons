@@ -11,8 +11,8 @@ public sealed class AuditRecordTests
     public void Create_SetsCreatedByAndAt()
     {
         var before = DateTimeOffset.UtcNow;
-        var audit  = AuditRecord.Create("alice");
-        var after  = DateTimeOffset.UtcNow;
+        var audit = AuditRecord.Create("alice");
+        var after = DateTimeOffset.UtcNow;
 
         audit.CreatedBy.Should().Be("alice");
         audit.CreatedAt.Should().BeOnOrAfter(before).And.BeOnOrBefore(after);
@@ -40,7 +40,7 @@ public sealed class AuditRecordTests
     [Fact]
     public void Update_ReturnsNewRecord_WithUpdatedFields()
     {
-        var audit   = AuditRecord.Create("alice");
+        var audit = AuditRecord.Create("alice");
         var updated = audit.Update("bob");
 
         updated.UpdatedBy.Should().Be("bob");
@@ -52,7 +52,7 @@ public sealed class AuditRecordTests
     [Fact]
     public void Delete_SetsDeletedFields_IsDeletedTrue()
     {
-        var audit   = AuditRecord.Create("alice");
+        var audit = AuditRecord.Create("alice");
         var deleted = audit.Delete("admin");
 
         deleted.IsDeleted.Should().BeTrue();
@@ -63,7 +63,7 @@ public sealed class AuditRecordTests
     [Fact]
     public void Restore_ClearsDeletedFields()
     {
-        var deleted  = AuditRecord.Create("alice").Delete("admin");
+        var deleted = AuditRecord.Create("alice").Delete("admin");
         var restored = deleted.Restore();
 
         restored.IsDeleted.Should().BeFalse();
@@ -144,8 +144,8 @@ public sealed class PolicyResultTests
 
     private sealed class MinimumBalancePolicy(decimal Minimum) : IPolicy<decimal>
     {
-        public PolicyResult Evaluate(decimal balance)
-            => balance >= Minimum
+        public PolicyResult Evaluate(decimal balance) =>
+            balance >= Minimum
                 ? PolicyResult.Allow()
                 : PolicyResult.Deny($"Balance {balance} is below minimum {Minimum}.");
     }

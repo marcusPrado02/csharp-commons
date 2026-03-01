@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Contracts.Http;
 
-public class Sort
-{
-}
+public class Sort { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Audit;
 
-public class SecurityAuditEvent
-{
-}
+public class SecurityAuditEvent { }

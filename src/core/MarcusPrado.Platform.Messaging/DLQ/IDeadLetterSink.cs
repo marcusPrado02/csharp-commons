@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Messaging.DLQ;
 
-public interface IDeadLetterSink
-{
-}
+public interface IDeadLetterSink { }

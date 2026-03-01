@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Storage;
 
-public interface IUnitOfWork
-{
-}
+public interface IUnitOfWork { }

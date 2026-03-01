@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.MultiTenancy.Context;
 
-public class TenantContext
-{
-}
+public class TenantContext { }

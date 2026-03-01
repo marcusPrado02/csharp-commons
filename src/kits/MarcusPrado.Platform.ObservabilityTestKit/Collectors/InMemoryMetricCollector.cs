@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ObservabilityTestKit.Collectors;
 
-public class InMemoryMetricCollector
-{
-}
+public class InMemoryMetricCollector { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.FeatureFlags.Flags;
 
-public class FeatureFlag
-{
-}
+public class FeatureFlag { }

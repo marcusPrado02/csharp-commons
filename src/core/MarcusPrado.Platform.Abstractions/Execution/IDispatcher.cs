@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Execution;
 
-public interface IDispatcher
-{
-}
+public interface IDispatcher { }

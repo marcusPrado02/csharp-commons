@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Audit;
 
-public interface ISecurityAuditSink
-{
-}
+public interface ISecurityAuditSink { }

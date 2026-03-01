@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Messaging.Serialization;
 
-public interface IMessageSerializer
-{
-}
+public interface IMessageSerializer { }

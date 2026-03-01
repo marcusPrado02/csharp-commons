@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.MultiTenancy.Strategy;
 
-public class SchemaPerTenantStrategy
-{
-}
+public class SchemaPerTenantStrategy { }

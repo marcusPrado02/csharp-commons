@@ -29,7 +29,7 @@ public sealed class IdentityTests
     public void TenantId_ImplicitFromGuid()
     {
         var guid = Guid.NewGuid();
-        TenantId id = guid;     // implicit conversion
+        TenantId id = guid; // implicit conversion
 
         id.Value.Should().Be(guid);
     }
@@ -38,7 +38,7 @@ public sealed class IdentityTests
     public void TenantId_ImplicitToGuid()
     {
         var id = TenantId.New();
-        Guid raw = id;           // implicit conversion
+        Guid raw = id; // implicit conversion
 
         raw.Should().Be(id.Value);
     }
@@ -67,7 +67,7 @@ public sealed class IdentityTests
     {
         var guid = Guid.NewGuid();
         var tenantId = new TenantId(guid);
-        var userId   = new UserId(guid);
+        var userId = new UserId(guid);
 
         // Record equality = type + value, so different types are NOT equal
         tenantId.Equals(userId).Should().BeFalse();

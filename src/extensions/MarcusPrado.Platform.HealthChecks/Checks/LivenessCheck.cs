@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.HealthChecks.Checks;
 
-public class LivenessCheck
-{
-}
+public class LivenessCheck { }

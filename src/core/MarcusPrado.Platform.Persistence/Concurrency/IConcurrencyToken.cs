@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Concurrency;
 
-public interface IConcurrencyToken
-{
-}
+public interface IConcurrencyToken { }

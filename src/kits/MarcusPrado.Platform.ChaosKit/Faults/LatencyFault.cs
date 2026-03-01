@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ChaosKit.Faults;
 
-public class LatencyFault
-{
-}
+public class LatencyFault { }

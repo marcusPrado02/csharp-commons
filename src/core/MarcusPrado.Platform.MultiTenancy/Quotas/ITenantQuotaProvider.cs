@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.MultiTenancy.Quotas;
 
-public interface ITenantQuotaProvider
-{
-}
+public interface ITenantQuotaProvider { }

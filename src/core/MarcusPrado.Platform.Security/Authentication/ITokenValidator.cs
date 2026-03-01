@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Authentication;
 
-public interface ITokenValidator
-{
-}
+public interface ITokenValidator { }

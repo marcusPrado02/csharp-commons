@@ -1,0 +1,284 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CI pipeline — MarcusPrado Platform Commons
+#
+# Stages
+#   build    → restore + compile (gate for all downstream jobs)
+#   test     → unit tests + XPlat Code Coverage → Codecov
+#   analyze  → dotnet format --verify-no-changes + CSharpier check
+#   pack     → NuGet packages for core + extensions (main branch & v* tags)
+#   publish  → push packages to NuGet.org (v* tags only)
+# ──────────────────────────────────────────────────────────────────────────────
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  # Redirect NuGet cache so actions/cache can cache it between jobs
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Shared step templates (YAML anchors)
+# ──────────────────────────────────────────────────────────────────────────────
+# Note: GitHub Actions does not support top-level anchors; the setup steps are
+# repeated per job. The NuGet cache key is based on Directory.Packages.props so
+# any version bump invalidates the cache correctly.
+
+jobs:
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 1. BUILD
+  #    Restore NuGet packages and compile the entire solution in Release mode.
+  #    All downstream jobs depend on this succeeding first.
+  # ────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 2. TEST
+  #    Run all unit tests, collect XPlat Code Coverage, upload results to
+  #    Codecov and store the TRX report as a workflow artefact.
+  # ────────────────────────────────────────────────────────────────────────────
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Test
+        run: |
+          dotnet test --no-build -c Release \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./coverage \
+            --logger "trx;LogFileName=results.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: ./coverage/**/*.trx
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          directory: ./coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          # Non-blocking: coverage is a quality metric, not a build gate.
+          # Set to true once a coverage baseline is established.
+          fail_ci_if_error: false
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 3. ANALYZE
+  #    a) dotnet format  — verifies Roslyn code-style rules from .editorconfig
+  #       without modifying any files (fails if files would change)
+  #    b) CSharpier check — verifies formatter output matches committed code
+  # ────────────────────────────────────────────────────────────────────────────
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        # dotnet format needs a successful build to evaluate IDE-level rules
+        run: dotnet build --no-restore -c Release
+
+      - name: Restore .NET tools
+        # Installs tools listed in .config/dotnet-tools.json (e.g. CSharpier)
+        run: dotnet tool restore
+
+      - name: dotnet format — Roslyn style check
+        run: dotnet format --verify-no-changes --severity error
+
+      - name: CSharpier — formatter check
+        run: dotnet csharpier check .
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 4. PACK
+  #    Build NuGet packages for all core + extension libraries.
+  #    Runs only on pushes (not PRs) and only when test + analyze both pass.
+  #
+  #    Version strategy:
+  #      - On a v* tag  → strip the leading 'v'  (e.g. v1.2.3 → 1.2.3)
+  #      - On main push → 0.0.0-preview.<run_number>  (pre-release for testing)
+  # ────────────────────────────────────────────────────────────────────────────
+  pack:
+    name: Pack
+    runs-on: ubuntu-latest
+    needs: [test, analyze]
+    if: github.event_name == 'push'
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Full history lets version-from-tag strategies work
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Determine package version
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="0.0.0-preview.${{ github.run_number }}"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Packaging version: $VERSION"
+
+      - name: Pack — core libraries
+        run: |
+          dotnet pack src/core --no-build -c Release \
+            -p:PackageVersion=${{ steps.version.outputs.version }} \
+            --output ./nupkgs
+
+      - name: Pack — extension libraries
+        run: |
+          dotnet pack src/extensions --no-build -c Release \
+            -p:PackageVersion=${{ steps.version.outputs.version }} \
+            --output ./nupkgs
+
+      - name: List packages
+        run: ls -lh ./nupkgs/
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkgs-${{ steps.version.outputs.version }}
+          path: ./nupkgs/*.nupkg
+          if-no-files-found: error
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 5. PUBLISH
+  #    Push all NuGet packages to NuGet.org.
+  #    Triggered only when the pipeline runs on a v* tag.
+  #    Protected by the "nuget-production" GitHub Environment so that releases
+  #    require manual approval before publishing.
+  # ────────────────────────────────────────────────────────────────────────────
+  publish:
+    name: Publish to NuGet.org
+    runs-on: ubuntu-latest
+    needs: pack
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    environment:
+      name: nuget-production
+      url: https://www.nuget.org/profiles/MarcusPrado
+
+    permissions:
+      contents: read
+      id-token: write  # for OIDC (future: trusted signing / attestation)
+
+    steps:
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkgs-${{ needs.pack.outputs.version }}
+          path: ./nupkgs
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish to NuGet.org
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate

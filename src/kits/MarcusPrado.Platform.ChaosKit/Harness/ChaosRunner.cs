@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ChaosKit.Harness;
 
-public class ChaosRunner
-{
-}
+public class ChaosRunner { }

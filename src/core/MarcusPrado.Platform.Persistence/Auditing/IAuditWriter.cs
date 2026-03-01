@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Auditing;
 
-public interface IAuditWriter
-{
-}
+public interface IAuditWriter { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Concurrency;
 
-public class OptimisticConcurrencyException: Exception
-{
-}
+public class OptimisticConcurrencyException : Exception { }

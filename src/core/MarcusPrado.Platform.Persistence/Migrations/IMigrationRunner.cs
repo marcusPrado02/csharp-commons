@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Migrations;
 
-public interface IMigrationRunner
-{
-}
+public interface IMigrationRunner { }

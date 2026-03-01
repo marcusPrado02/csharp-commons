@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.TestKit.Containers;
 
-public class RedisContainer
-{
-}
+public class RedisContainer { }

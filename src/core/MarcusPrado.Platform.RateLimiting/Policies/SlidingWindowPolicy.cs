@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.RateLimiting.Policies;
 
-public class SlidingWindowPolicy
-{
-}
+public class SlidingWindowPolicy { }

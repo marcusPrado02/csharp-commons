@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.AspNetCore.Middleware;
 
-public class TenantResolutionMiddleware
-{
-}
+public class TenantResolutionMiddleware { }

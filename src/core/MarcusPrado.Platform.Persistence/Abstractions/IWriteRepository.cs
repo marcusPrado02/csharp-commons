@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Persistence.Abstractions;
 
-public interface IWriteRepository
-{
-}
+public interface IWriteRepository { }

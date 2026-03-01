@@ -32,12 +32,13 @@ public abstract class ValueObject : IEquatable<ValueObject>
     /// <inheritdoc/>
     public bool Equals(ValueObject? other)
     {
-        if (other is null) return false;
-        if (ReferenceEquals(this, other)) return true;
-        if (GetType() != other.GetType()) return false;
-        return GetEqualityComponents()
-            .SequenceEqual(other.GetEqualityComponents(),
-                EqualityComparer<object?>.Default);
+        if (other is null)
+            return false;
+        if (ReferenceEquals(this, other))
+            return true;
+        if (GetType() != other.GetType())
+            return false;
+        return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents(), EqualityComparer<object?>.Default);
     }
 
     /// <inheritdoc/>
@@ -53,10 +54,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
     }
 
     /// <summary>Two value objects are equal when all components are equal.</summary>
-    public static bool operator ==(ValueObject? left, ValueObject? right)
-        => left?.Equals(right) ?? right is null;
+    public static bool operator ==(ValueObject? left, ValueObject? right) => left?.Equals(right) ?? right is null;
 
     /// <summary>Two value objects differ when any component differs.</summary>
-    public static bool operator !=(ValueObject? left, ValueObject? right)
-        => !(left == right);
+    public static bool operator !=(ValueObject? left, ValueObject? right) => !(left == right);
 }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Observability.Logging;
 
-public class LogSanitizer
-{
-}
+public class LogSanitizer { }

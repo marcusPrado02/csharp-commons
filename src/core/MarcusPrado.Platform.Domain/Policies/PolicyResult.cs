@@ -33,6 +33,5 @@ public sealed record PolicyResult
     }
 
     /// <inheritdoc/>
-    public override string ToString()
-        => IsAllowed ? $"Allowed: {Reason}" : $"Denied: {Reason}";
+    public override string ToString() => IsAllowed ? $"Allowed: {Reason}" : $"Denied: {Reason}";
 }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.TestKit.Fixtures;
 
-public class IntegrationFixture
-{
-}
+public class IntegrationFixture { }

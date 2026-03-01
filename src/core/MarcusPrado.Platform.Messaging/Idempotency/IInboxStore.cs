@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Messaging.Idempotency;
 
-public interface IInboxStore
-{
-}
+public interface IInboxStore { }

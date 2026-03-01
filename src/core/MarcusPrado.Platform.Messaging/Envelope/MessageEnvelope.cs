@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Messaging.Envelope;
 
-public class MessageEnvelope
-{
-}
+public class MessageEnvelope { }

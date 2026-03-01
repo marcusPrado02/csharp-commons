@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Governance.Contracts;
 
-public class ContractRegistration
-{
-}
+public class ContractRegistration { }

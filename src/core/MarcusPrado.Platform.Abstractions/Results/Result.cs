@@ -54,11 +54,13 @@ public readonly struct Result : IEquatable<Result>
     /// Thrown when accessed on a successful result. Check <see cref="IsFailure"/>
     /// first, or use <see cref="ResultExtensions.Match{TOut}"/> to handle both branches.
     /// </exception>
-    public Error Error => IsFailure
-        ? _error
-        : throw new InvalidOperationException(
-            "Cannot access the Error of a successful Result. " +
-            "Check IsFailure before accessing Error, or use Match instead.");
+    public Error Error =>
+        IsFailure
+            ? _error
+            : throw new InvalidOperationException(
+                "Cannot access the Error of a successful Result. "
+                    + "Check IsFailure before accessing Error, or use Match instead."
+            );
 
     // ── Factory ──────────────────────────────────────────────────────────────
 
@@ -92,8 +94,7 @@ public readonly struct Result : IEquatable<Result>
     // ── Equality ─────────────────────────────────────────────────────────────
 
     /// <inheritdoc/>
-    public bool Equals(Result other) =>
-        IsSuccess == other.IsSuccess && _error.Equals(other._error);
+    public bool Equals(Result other) => IsSuccess == other.IsSuccess && _error.Equals(other._error);
 
     /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Result other && Equals(other);
@@ -111,7 +112,5 @@ public readonly struct Result : IEquatable<Result>
 
     /// <inheritdoc/>
     public override string ToString() =>
-        IsSuccess
-            ? "Result { IsSuccess = true }"
-            : $"Result {{ IsSuccess = false, Error = {_error} }}";
+        IsSuccess ? "Result { IsSuccess = true }" : $"Result {{ IsSuccess = false, Error = {_error} }}";
 }

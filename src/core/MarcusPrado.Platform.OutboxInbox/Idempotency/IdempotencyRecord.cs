@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OutboxInbox.Idempotency;
 
-public class IdempotencyRecord
-{
-}
+public class IdempotencyRecord { }

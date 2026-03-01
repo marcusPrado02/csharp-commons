@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.AspNetCore.ProblemDetails.Extensions;
 
-public class ProblemDetailsExtensions
-{
-}
+public class ProblemDetailsExtensions { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.AspNetCore.Extensions;
 
-public class WebApplicationExtensions
-{
-}
+public class WebApplicationExtensions { }

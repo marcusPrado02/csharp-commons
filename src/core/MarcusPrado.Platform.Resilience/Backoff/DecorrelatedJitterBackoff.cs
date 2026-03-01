@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Resilience.Backoff;
 
-public class DecorrelatedJitterBackoff
-{
-}
+public class DecorrelatedJitterBackoff { }

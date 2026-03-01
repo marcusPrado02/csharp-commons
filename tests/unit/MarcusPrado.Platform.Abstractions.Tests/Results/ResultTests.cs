@@ -94,8 +94,7 @@ public sealed class ResultTests
         var result = Result.Failure<int>(Error.Validation("X.Y", "msg"));
         var act = () => result.Value;
 
-        act.Should().Throw<InvalidOperationException>()
-           .WithMessage("*Cannot access*");
+        act.Should().Throw<InvalidOperationException>().WithMessage("*Cannot access*");
     }
 
     [Fact]

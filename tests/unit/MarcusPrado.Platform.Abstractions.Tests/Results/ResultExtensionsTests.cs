@@ -43,9 +43,7 @@ public sealed class ResultExtensionsTests
     public void Bind_OnSuccess_ChainsNextResult()
     {
         Result<int> result = 5;
-        var bound = result.Bind(x => x > 0
-            ? Result.Success(x.ToString())
-            : SomeError);
+        var bound = result.Bind(x => x > 0 ? Result.Success(x.ToString()) : SomeError);
 
         bound.IsSuccess.Should().BeTrue();
         bound.Value.Should().Be("5");
@@ -67,7 +65,11 @@ public sealed class ResultExtensionsTests
     {
         Result<int> result = SomeError;
         var invoked = false;
-        result.Bind(x => { invoked = true; return Result.Success(x); });
+        result.Bind(x =>
+        {
+            invoked = true;
+            return Result.Success(x);
+        });
 
         invoked.Should().BeFalse();
     }
@@ -164,7 +166,7 @@ public sealed class ResultExtensionsTests
         var otherError = Error.Technical("Y.ERR", "other");
         var ensured = result.Ensure(_ => true, otherError);
 
-        ensured.Error.Should().Be(SomeError);   // original error preserved
+        ensured.Error.Should().Be(SomeError); // original error preserved
     }
 
     // ── MapError ──────────────────────────────────────────────────────────────
@@ -184,7 +186,11 @@ public sealed class ResultExtensionsTests
     {
         Result<int> result = 5;
         var invoked = false;
-        var mapped = result.MapError(e => { invoked = true; return e; });
+        var mapped = result.MapError(e =>
+        {
+            invoked = true;
+            return e;
+        });
 
         invoked.Should().BeFalse();
         mapped.IsSuccess.Should().BeTrue();
@@ -239,7 +245,11 @@ public sealed class ResultExtensionsTests
     {
         Result<int> result = 7;
         var invoked = false;
-        var value = result.GetValueOrElse(_ => { invoked = true; return 0; });
+        var value = result.GetValueOrElse(_ =>
+        {
+            invoked = true;
+            return 0;
+        });
 
         invoked.Should().BeFalse();
         value.Should().Be(7);
@@ -285,20 +295,13 @@ public sealed class ResultExtensionsTests
     {
         var err1 = Error.Validation("X.A", "a");
         var err2 = Error.Validation("X.B", "b");
-        var results = new[]
-        {
-            Result.Success(1),
-            Result.Failure<int>(err1),
-            Result.Failure<int>(err2)
-        };
+        var results = new[] { Result.Success(1), Result.Failure<int>(err1), Result.Failure<int>(err2) };
 
         var combined = results.CombineAll();
 
         combined.IsFailure.Should().BeTrue();
         combined.Error.Code.Should().Be("VALIDATION.MULTIPLE_ERRORS");
-        combined.Error.Metadata.Should().ContainKey("errors[0].code")
-                                         .WhoseValue.Should().Be("X.A");
-        combined.Error.Metadata.Should().ContainKey("errors[1].code")
-                                         .WhoseValue.Should().Be("X.B");
+        combined.Error.Metadata.Should().ContainKey("errors[0].code").WhoseValue.Should().Be("X.A");
+        combined.Error.Metadata.Should().ContainKey("errors[1].code").WhoseValue.Should().Be("X.B");
     }
 }

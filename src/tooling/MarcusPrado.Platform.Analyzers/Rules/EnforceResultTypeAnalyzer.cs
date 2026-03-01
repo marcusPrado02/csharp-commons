@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Analyzers.Rules;
 
-public class EnforceResultTypeAnalyzer
-{
-}
+public class EnforceResultTypeAnalyzer { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Authorization;
 
-public interface IPolicyAuthorizer
-{
-}
+public interface IPolicyAuthorizer { }

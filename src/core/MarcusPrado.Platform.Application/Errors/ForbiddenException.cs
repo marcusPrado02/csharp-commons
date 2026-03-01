@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.Errors;
 
-public class ForbiddenException: AppException
-{
-}
+public class ForbiddenException : AppException { }

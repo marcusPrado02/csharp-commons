@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ContractTestKit.Pact;
 
-public class PactVerifier
-{
-}
+public class PactVerifier { }

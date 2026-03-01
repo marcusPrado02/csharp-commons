@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Contracts.ProblemDetails;
 
-public class ProblemDetailsMapper
-{
-}
+public class ProblemDetailsMapper { }

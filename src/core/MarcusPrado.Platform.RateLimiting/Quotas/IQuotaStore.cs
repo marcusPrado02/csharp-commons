@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.RateLimiting.Quotas;
 
-public interface IQuotaStore
-{
-}
+public interface IQuotaStore { }

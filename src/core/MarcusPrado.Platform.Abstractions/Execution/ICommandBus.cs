@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Execution;
 
-public interface ICommandBus
-{
-}
+public interface ICommandBus { }

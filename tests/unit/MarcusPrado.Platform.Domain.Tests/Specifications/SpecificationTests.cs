@@ -18,9 +18,9 @@ public sealed class SpecificationTests
         public override bool IsSatisfiedBy(Product candidate) => candidate.Price <= MaxPrice;
     }
 
-    private readonly Product _cheapActive     = new("Widget",  9.99m,  true);
+    private readonly Product _cheapActive = new("Widget", 9.99m, true);
     private readonly Product _expensiveActive = new("Gadget", 99.99m, true);
-    private readonly Product _cheapInactive   = new("Junk",   4.99m,  false);
+    private readonly Product _cheapInactive = new("Junk", 4.99m, false);
 
     [Fact]
     public void ActiveSpec_ActiveProduct_IsTrue()
@@ -109,7 +109,7 @@ public sealed class SpecificationTests
     {
         var spec = Specification<Product>.Create(p => p.Name.StartsWith("W"));
 
-        spec.IsSatisfiedBy(_cheapActive).Should().BeTrue();   // "Widget"
+        spec.IsSatisfiedBy(_cheapActive).Should().BeTrue(); // "Widget"
         spec.IsSatisfiedBy(_expensiveActive).Should().BeFalse(); // "Gadget"
     }
 

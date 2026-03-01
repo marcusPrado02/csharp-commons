@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OutboxInbox.Outbox;
 
-public enum OutboxState
-{
-}
+public enum OutboxState { }

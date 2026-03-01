@@ -14,12 +14,13 @@ public sealed class DomainEventTests
     {
         public override string EventType => "order.cancelled";
     }
+
     [Fact]
     public void DomainEvent_AutoPopulates_EventId_OccurredOn()
     {
         var before = DateTimeOffset.UtcNow;
-        var evt    = new ItemShipped(Guid.NewGuid(), "TRACK-001");
-        var after  = DateTimeOffset.UtcNow;
+        var evt = new ItemShipped(Guid.NewGuid(), "TRACK-001");
+        var after = DateTimeOffset.UtcNow;
 
         evt.EventId.Should().NotBe(Guid.Empty);
         evt.OccurredOn.Should().BeOnOrAfter(before).And.BeOnOrBefore(after);
@@ -43,8 +44,7 @@ public sealed class DomainEventTests
     [Fact]
     public void EventType_CanBeOverridden_WithStableName()
     {
-        new OrderCancelled(Guid.NewGuid(), "Customer requested").EventType
-            .Should().Be("order.cancelled");
+        new OrderCancelled(Guid.NewGuid(), "Customer requested").EventType.Should().Be("order.cancelled");
     }
 
     // ── DomainEventEnvelope ───────────────────────────────────────────────────
@@ -52,7 +52,7 @@ public sealed class DomainEventTests
     [Fact]
     public void Envelope_Create_PopulatesAllFields()
     {
-        var evt      = new ItemShipped(Guid.NewGuid(), "TRACK-001");
+        var evt = new ItemShipped(Guid.NewGuid(), "TRACK-001");
         var envelope = DomainEventEnvelope.Create(evt, Guid.NewGuid(), "Order", 3);
 
         envelope.Event.Should().Be(evt);
@@ -76,7 +76,7 @@ public sealed class DomainEventTests
         public Task PublishAsync<T>(T domainEvent, CancellationToken ct = default)
             where T : IDomainEvent => Task.CompletedTask;
 
-        public Task PublishAllAsync(IEnumerable<IDomainEvent> events, CancellationToken ct = default)
-            => Task.CompletedTask;
+        public Task PublishAllAsync(IEnumerable<IDomainEvent> events, CancellationToken ct = default) =>
+            Task.CompletedTask;
     }
 }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Authentication;
 
-public class AuthenticationResult
-{
-}
+public class AuthenticationResult { }

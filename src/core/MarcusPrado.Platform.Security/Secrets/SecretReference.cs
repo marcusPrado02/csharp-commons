@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Secrets;
 
-public class SecretReference
-{
-}
+public class SecretReference { }

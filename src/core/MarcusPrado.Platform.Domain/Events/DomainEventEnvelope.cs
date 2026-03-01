@@ -15,7 +15,8 @@ public sealed record DomainEventEnvelope(
     IDomainEvent Event,
     string AggregateId,
     string AggregateType,
-    int AggregateVersion)
+    int AggregateVersion
+)
 {
     /// <summary>
     /// Convenience factory that infers the <paramref name="aggregateType"/> from
@@ -25,11 +26,13 @@ public sealed record DomainEventEnvelope(
         IDomainEvent domainEvent,
         TId aggregateId,
         string aggregateType,
-        int aggregateVersion)
-        where TId : notnull
-        => new(
+        int aggregateVersion
+    )
+        where TId : notnull =>
+        new(
             Event: domainEvent,
             AggregateId: aggregateId.ToString()!,
             AggregateType: aggregateType,
-            AggregateVersion: aggregateVersion);
+            AggregateVersion: aggregateVersion
+        );
 }

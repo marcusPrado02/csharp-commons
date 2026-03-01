@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.ObservabilityTestKit.Assertions;
 
-public class TraceAssertions
-{
-}
+public class TraceAssertions { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Redis.Caching;
 
-public class RedisCache
-{
-}
+public class RedisCache { }

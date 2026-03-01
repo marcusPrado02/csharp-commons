@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.Scheduling;
 
-public interface IScheduler
-{
-}
+public interface IScheduler { }

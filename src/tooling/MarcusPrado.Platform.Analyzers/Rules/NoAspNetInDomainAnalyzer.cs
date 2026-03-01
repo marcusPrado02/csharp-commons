@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Analyzers.Rules;
 
-public class NoAspNetInDomainAnalyzer
-{
-}
+public class NoAspNetInDomainAnalyzer { }

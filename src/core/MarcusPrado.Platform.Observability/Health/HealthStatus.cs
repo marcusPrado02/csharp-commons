@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Observability.Health;
 
-public enum HealthStatus
-{
-}
+public enum HealthStatus { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.CQRS;
 
-public interface IQueryHandler
-{
-}
+public interface IQueryHandler { }

@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OpenTelemetry.Setup;
 
-public class OpenTelemetryConfigurator
-{
-}
+public class OpenTelemetryConfigurator { }

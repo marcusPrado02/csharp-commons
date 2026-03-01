@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Context;
 
-public interface IRequestContext
-{
-}
+public interface IRequestContext { }

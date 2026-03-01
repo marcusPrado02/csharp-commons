@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.Errors;
 
-public class NotFoundException: AppException
-{
-}
+public class NotFoundException : AppException { }

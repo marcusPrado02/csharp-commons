@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Pii;
 
-public interface IPiiRedactor
-{
-}
+public interface IPiiRedactor { }

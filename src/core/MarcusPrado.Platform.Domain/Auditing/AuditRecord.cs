@@ -46,8 +46,8 @@ public sealed record AuditRecord
     /// <summary>Creates an audit record for a newly-created entity.</summary>
     /// <param name="createdBy">Identifier of the creator (user id, service name, etc.).</param>
     /// <param name="at">Creation timestamp; defaults to <see cref="DateTimeOffset.UtcNow"/> when <c>null</c>.</param>
-    public static AuditRecord Create(string createdBy, DateTimeOffset? at = null)
-        => new(createdBy, at ?? DateTimeOffset.UtcNow);
+    public static AuditRecord Create(string createdBy, DateTimeOffset? at = null) =>
+        new(createdBy, at ?? DateTimeOffset.UtcNow);
 
     // ── Mutations (returns a new record — immutable) ──────────────────────────
 

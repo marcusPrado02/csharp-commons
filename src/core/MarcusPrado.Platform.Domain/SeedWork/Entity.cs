@@ -62,9 +62,12 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     /// <inheritdoc/>
     public bool Equals(Entity<TId>? other)
     {
-        if (other is null) return false;
-        if (ReferenceEquals(this, other)) return true;
-        if (GetType() != other.GetType()) return false;
+        if (other is null)
+            return false;
+        if (ReferenceEquals(this, other))
+            return true;
+        if (GetType() != other.GetType())
+            return false;
         return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 
@@ -72,16 +75,13 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public override bool Equals(object? obj) => Equals(obj as Entity<TId>);
 
     /// <inheritdoc/>
-    public override int GetHashCode()
-        => HashCode.Combine(GetType(), EqualityComparer<TId>.Default.GetHashCode(Id!));
+    public override int GetHashCode() => HashCode.Combine(GetType(), EqualityComparer<TId>.Default.GetHashCode(Id!));
 
     /// <summary>Two entities are equal when their IDs are equal (identity equality).</summary>
-    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
-        => left?.Equals(right) ?? right is null;
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right) => left?.Equals(right) ?? right is null;
 
     /// <summary>Two entities are not equal when their IDs differ.</summary>
-    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
-        => !(left == right);
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right) => !(left == right);
 
     /// <inheritdoc/>
     public override string ToString() => $"{GetType().Name}#{Id}";

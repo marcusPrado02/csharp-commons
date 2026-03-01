@@ -21,7 +21,5 @@ public interface IDomainEventPublisher
     /// </summary>
     /// <param name="domainEvents">Events to dispatch.</param>
     /// <param name="cancellationToken">Propagates cancellation.</param>
-    Task PublishAllAsync(
-        IEnumerable<IDomainEvent> domainEvents,
-        CancellationToken cancellationToken = default);
+    Task PublishAllAsync(IEnumerable<IDomainEvent> domainEvents, CancellationToken cancellationToken = default);
 }

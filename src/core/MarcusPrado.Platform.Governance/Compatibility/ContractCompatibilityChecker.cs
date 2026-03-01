@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Governance.Compatibility;
 
-public class ContractCompatibilityChecker
-{
-}
+public class ContractCompatibilityChecker { }

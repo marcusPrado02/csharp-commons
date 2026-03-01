@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Security.Pii;
 
-public class RedactionRule
-{
-}
+public class RedactionRule { }

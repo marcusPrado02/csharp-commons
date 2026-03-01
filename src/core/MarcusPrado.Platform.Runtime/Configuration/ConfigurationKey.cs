@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Runtime.Configuration;
 
-public class ConfigurationKey
-{
-}
+public class ConfigurationKey { }

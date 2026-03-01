@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.OutboxInbox.Inbox;
 
-public class InboxProcessor
-{
-}
+public class InboxProcessor { }

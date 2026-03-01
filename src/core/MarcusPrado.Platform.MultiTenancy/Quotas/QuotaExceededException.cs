@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.MultiTenancy.Quotas;
 
-public class QuotaExceededException: Exception
-{
-}
+public class QuotaExceededException : Exception { }

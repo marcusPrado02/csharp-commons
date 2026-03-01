@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Primitives;
 
-public interface IEncryption
-{
-}
+public interface IEncryption { }

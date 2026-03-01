@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Observability.Logging;
 
-public class LogEvent
-{
-}
+public class LogEvent { }

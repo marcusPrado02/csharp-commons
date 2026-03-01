@@ -29,7 +29,8 @@ public static class ResultAsyncExtensions
     /// </summary>
     public static async Task<Result<TOut>> MapAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
-        Func<TIn, TOut> mapper)
+        Func<TIn, TOut> mapper
+    )
     {
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         var result = await resultTask.ConfigureAwait(false);
@@ -42,11 +43,13 @@ public static class ResultAsyncExtensions
     /// </summary>
     public static async Task<Result<TOut>> MapAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
-        Func<TIn, Task<TOut>> mapper)
+        Func<TIn, Task<TOut>> mapper
+    )
     {
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         var result = await resultTask.ConfigureAwait(false);
-        if (result.IsFailure) return result.Error;
+        if (result.IsFailure)
+            return result.Error;
         var value = await mapper(result.Value).ConfigureAwait(false);
         return value;
     }
@@ -59,11 +62,13 @@ public static class ResultAsyncExtensions
     /// </summary>
     public static async Task<Result<TOut>> BindAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
-        Func<TIn, Task<Result<TOut>>> binder)
+        Func<TIn, Task<Result<TOut>>> binder
+    )
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         var result = await resultTask.ConfigureAwait(false);
-        if (result.IsFailure) return result.Error;
+        if (result.IsFailure)
+            return result.Error;
         return await binder(result.Value).ConfigureAwait(false);
     }
 
@@ -73,7 +78,8 @@ public static class ResultAsyncExtensions
     /// </summary>
     public static async Task<Result<TOut>> BindAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
-        Func<TIn, Result<TOut>> binder)
+        Func<TIn, Result<TOut>> binder
+    )
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         var result = await resultTask.ConfigureAwait(false);
@@ -84,13 +90,12 @@ public static class ResultAsyncExtensions
     /// Awaits the <paramref name="resultTask"/> and chains a non-generic
     /// asynchronous fallible operation, discarding the value on success.
     /// </summary>
-    public static async Task<Result> BindAsync<TIn>(
-        this Task<Result<TIn>> resultTask,
-        Func<TIn, Task<Result>> binder)
+    public static async Task<Result> BindAsync<TIn>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result>> binder)
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         var result = await resultTask.ConfigureAwait(false);
-        if (result.IsFailure) return result.Error;
+        if (result.IsFailure)
+            return result.Error;
         return await binder(result.Value).ConfigureAwait(false);
     }
 
@@ -103,7 +108,8 @@ public static class ResultAsyncExtensions
     public static async Task<TOut> MatchAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
         Func<TIn, TOut> onSuccess,
-        Func<Error, TOut> onFailure)
+        Func<Error, TOut> onFailure
+    )
     {
         ArgumentNullException.ThrowIfNull(onSuccess, nameof(onSuccess));
         ArgumentNullException.ThrowIfNull(onFailure, nameof(onFailure));
@@ -118,7 +124,8 @@ public static class ResultAsyncExtensions
     public static async Task<TOut> MatchAsync<TIn, TOut>(
         this Task<Result<TIn>> resultTask,
         Func<TIn, Task<TOut>> onSuccess,
-        Func<Error, Task<TOut>> onFailure)
+        Func<Error, Task<TOut>> onFailure
+    )
     {
         ArgumentNullException.ThrowIfNull(onSuccess, nameof(onSuccess));
         ArgumentNullException.ThrowIfNull(onFailure, nameof(onFailure));
@@ -134,13 +141,12 @@ public static class ResultAsyncExtensions
     /// Awaits the <paramref name="resultTask"/> and invokes the asynchronous
     /// <paramref name="action"/> if successful. Returns the original result.
     /// </summary>
-    public static async Task<Result<T>> OnSuccessAsync<T>(
-        this Task<Result<T>> resultTask,
-        Func<T, Task> action)
+    public static async Task<Result<T>> OnSuccessAsync<T>(this Task<Result<T>> resultTask, Func<T, Task> action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
         var result = await resultTask.ConfigureAwait(false);
-        if (result.IsSuccess) await action(result.Value).ConfigureAwait(false);
+        if (result.IsSuccess)
+            await action(result.Value).ConfigureAwait(false);
         return result;
     }
 
@@ -148,13 +154,12 @@ public static class ResultAsyncExtensions
     /// Awaits the <paramref name="resultTask"/> and invokes the asynchronous
     /// <paramref name="action"/> if failed. Returns the original result.
     /// </summary>
-    public static async Task<Result<T>> OnFailureAsync<T>(
-        this Task<Result<T>> resultTask,
-        Func<Error, Task> action)
+    public static async Task<Result<T>> OnFailureAsync<T>(this Task<Result<T>> resultTask, Func<Error, Task> action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
         var result = await resultTask.ConfigureAwait(false);
-        if (result.IsFailure) await action(result.Error).ConfigureAwait(false);
+        if (result.IsFailure)
+            await action(result.Error).ConfigureAwait(false);
         return result;
     }
 
@@ -168,11 +173,13 @@ public static class ResultAsyncExtensions
     public static async Task<Result<T>> EnsureAsync<T>(
         this Task<Result<T>> resultTask,
         Func<T, Task<bool>> predicate,
-        Error error)
+        Error error
+    )
     {
         ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
         var result = await resultTask.ConfigureAwait(false);
-        if (!result.IsSuccess) return result;
+        if (!result.IsSuccess)
+            return result;
         return await predicate(result.Value).ConfigureAwait(false) ? result : error;
     }
 }

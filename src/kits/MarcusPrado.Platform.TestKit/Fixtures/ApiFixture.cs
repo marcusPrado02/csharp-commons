@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.TestKit.Fixtures;
 
-public class ApiFixture
-{
-}
+public class ApiFixture { }

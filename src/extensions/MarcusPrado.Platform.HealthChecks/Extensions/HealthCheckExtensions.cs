@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.HealthChecks.Extensions;
 
-public class HealthCheckExtensions
-{
-}
+public class HealthCheckExtensions { }

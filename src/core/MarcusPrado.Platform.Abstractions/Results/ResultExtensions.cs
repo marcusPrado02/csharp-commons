@@ -24,9 +24,7 @@ public static class ResultExtensions
     /// <typeparam name="TOut">The projected value type.</typeparam>
     /// <param name="result">The source result.</param>
     /// <param name="mapper">Pure transformation applied to the success value.</param>
-    public static Result<TOut> Map<TIn, TOut>(
-        this Result<TIn> result,
-        Func<TIn, TOut> mapper)
+    public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> mapper)
     {
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         return result.IsSuccess ? mapper(result.Value) : result.Error;
@@ -36,9 +34,7 @@ public static class ResultExtensions
     /// Projects a non-generic <see cref="Result"/> to a <see cref="Result{TOut}"/>
     /// using <paramref name="mapper"/> on the success path.
     /// </summary>
-    public static Result<TOut> Map<TOut>(
-        this Result result,
-        Func<TOut> mapper)
+    public static Result<TOut> Map<TOut>(this Result result, Func<TOut> mapper)
     {
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         return result.IsSuccess ? mapper() : result.Error;
@@ -55,9 +51,7 @@ public static class ResultExtensions
     /// <typeparam name="TOut">The next operation's value type.</typeparam>
     /// <param name="result">The source result.</param>
     /// <param name="binder">The next operation, which itself may succeed or fail.</param>
-    public static Result<TOut> Bind<TIn, TOut>(
-        this Result<TIn> result,
-        Func<TIn, Result<TOut>> binder)
+    public static Result<TOut> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> binder)
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         return result.IsSuccess ? binder(result.Value) : result.Error;
@@ -66,9 +60,7 @@ public static class ResultExtensions
     /// <summary>
     /// Chains a subsequent fallible operation that discards the input value.
     /// </summary>
-    public static Result<TOut> Bind<TOut>(
-        this Result result,
-        Func<Result<TOut>> binder)
+    public static Result<TOut> Bind<TOut>(this Result result, Func<Result<TOut>> binder)
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         return result.IsSuccess ? binder() : result.Error;
@@ -78,9 +70,7 @@ public static class ResultExtensions
     /// Chains a subsequent non-generic fallible operation on a typed result,
     /// discarding the value on success.
     /// </summary>
-    public static Result Bind<TIn>(
-        this Result<TIn> result,
-        Func<TIn, Result> binder)
+    public static Result Bind<TIn>(this Result<TIn> result, Func<TIn, Result> binder)
     {
         ArgumentNullException.ThrowIfNull(binder, nameof(binder));
         return result.IsSuccess ? binder(result.Value) : result.Error;
@@ -99,10 +89,7 @@ public static class ResultExtensions
     /// <param name="onSuccess">Handler invoked with the value when successful.</param>
     /// <param name="onFailure">Handler invoked with the error when failed.</param>
     /// <returns>The output of whichever handler was invoked.</returns>
-    public static TOut Match<TIn, TOut>(
-        this Result<TIn> result,
-        Func<TIn, TOut> onSuccess,
-        Func<Error, TOut> onFailure)
+    public static TOut Match<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> onSuccess, Func<Error, TOut> onFailure)
     {
         ArgumentNullException.ThrowIfNull(onSuccess, nameof(onSuccess));
         ArgumentNullException.ThrowIfNull(onFailure, nameof(onFailure));
@@ -112,10 +99,7 @@ public static class ResultExtensions
     /// <summary>
     /// Non-generic overload of <see cref="Match{TIn,TOut}"/>.
     /// </summary>
-    public static TOut Match<TOut>(
-        this Result result,
-        Func<TOut> onSuccess,
-        Func<Error, TOut> onFailure)
+    public static TOut Match<TOut>(this Result result, Func<TOut> onSuccess, Func<Error, TOut> onFailure)
     {
         ArgumentNullException.ThrowIfNull(onSuccess, nameof(onSuccess));
         ArgumentNullException.ThrowIfNull(onFailure, nameof(onFailure));
@@ -131,7 +115,8 @@ public static class ResultExtensions
     public static Result<T> OnSuccess<T>(this Result<T> result, Action<T> action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        if (result.IsSuccess) action(result.Value);
+        if (result.IsSuccess)
+            action(result.Value);
         return result;
     }
 
@@ -142,7 +127,8 @@ public static class ResultExtensions
     public static Result<T> OnFailure<T>(this Result<T> result, Action<Error> action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        if (result.IsFailure) action(result.Error);
+        if (result.IsFailure)
+            action(result.Error);
         return result;
     }
 
@@ -150,7 +136,8 @@ public static class ResultExtensions
     public static Result OnSuccess(this Result result, Action action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        if (result.IsSuccess) action();
+        if (result.IsSuccess)
+            action();
         return result;
     }
 
@@ -158,7 +145,8 @@ public static class ResultExtensions
     public static Result OnFailure(this Result result, Action<Error> action)
     {
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        if (result.IsFailure) action(result.Error);
+        if (result.IsFailure)
+            action(result.Error);
         return result;
     }
 
@@ -170,13 +158,11 @@ public static class ResultExtensions
     /// the result is turned into a failure with <paramref name="error"/>.
     /// If the result is already a failure it is returned unchanged.
     /// </summary>
-    public static Result<T> Ensure<T>(
-        this Result<T> result,
-        Func<T, bool> predicate,
-        Error error)
+    public static Result<T> Ensure<T>(this Result<T> result, Func<T, bool> predicate, Error error)
     {
         ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
-        if (!result.IsSuccess) return result;
+        if (!result.IsSuccess)
+            return result;
         return predicate(result.Value) ? result : error;
     }
 
@@ -186,9 +172,7 @@ public static class ResultExtensions
     /// Transforms the error of a failed result through <paramref name="mapper"/>.
     /// If the result is successful it is returned unchanged.
     /// </summary>
-    public static Result<T> MapError<T>(
-        this Result<T> result,
-        Func<Error, Error> mapper)
+    public static Result<T> MapError<T>(this Result<T> result, Func<Error, Error> mapper)
     {
         ArgumentNullException.ThrowIfNull(mapper, nameof(mapper));
         return result.IsFailure ? mapper(result.Error) : result;
@@ -240,7 +224,8 @@ public static class ResultExtensions
         var list = new List<T>();
         foreach (var result in results)
         {
-            if (result.IsFailure) return result.Error;
+            if (result.IsFailure)
+                return result.Error;
             list.Add(result.Value);
         }
 
@@ -258,7 +243,8 @@ public static class ResultExtensions
     public static Result<IReadOnlyList<T>> CombineAll<T>(
         this IEnumerable<Result<T>> results,
         string aggregateCode = "VALIDATION.MULTIPLE_ERRORS",
-        string aggregateMessage = "One or more validation errors occurred.")
+        string aggregateMessage = "One or more validation errors occurred."
+    )
     {
         ArgumentNullException.ThrowIfNull(results, nameof(results));
 
@@ -267,16 +253,19 @@ public static class ResultExtensions
 
         foreach (var (idx, result) in results.Select((r, i) => (i, r)))
         {
-            if (result.IsSuccess) successes.Add(result.Value);
-            else failures.Add((idx, result.Error));
+            if (result.IsSuccess)
+                successes.Add(result.Value);
+            else
+                failures.Add((idx, result.Error));
         }
 
-        if (failures.Count == 0) return Result<IReadOnlyList<T>>.Success(successes.AsReadOnly());
+        if (failures.Count == 0)
+            return Result<IReadOnlyList<T>>.Success(successes.AsReadOnly());
 
         var metadataDict = new Dictionary<string, object>(failures.Count * 2);
         for (var i = 0; i < failures.Count; i++)
         {
-            metadataDict[$"errors[{i}].code"]    = failures[i].Error.Code;
+            metadataDict[$"errors[{i}].code"] = failures[i].Error.Code;
             metadataDict[$"errors[{i}].message"] = failures[i].Error.Message;
         }
 

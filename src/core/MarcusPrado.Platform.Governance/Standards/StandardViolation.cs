@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Governance.Standards;
 
-public class StandardViolation
-{
-}
+public class StandardViolation { }

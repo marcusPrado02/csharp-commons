@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Kafka.Producer;
 
-public class KafkaProducer
-{
-}
+public class KafkaProducer { }

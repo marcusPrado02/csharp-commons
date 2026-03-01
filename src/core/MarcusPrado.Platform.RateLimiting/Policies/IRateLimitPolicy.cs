@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.RateLimiting.Policies;
 
-public interface IRateLimitPolicy
-{
-}
+public interface IRateLimitPolicy { }

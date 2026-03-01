@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Context;
 
-public interface IUserContext
-{
-}
+public interface IUserContext { }

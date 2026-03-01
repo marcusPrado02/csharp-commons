@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Application.Errors;
 
-public class AppException: Exception
-{
-}
+public class AppException : Exception { }

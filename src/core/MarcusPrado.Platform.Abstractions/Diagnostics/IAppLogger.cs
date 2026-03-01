@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.Abstractions.Diagnostics;
 
-public interface IAppLogger
-{
-}
+public interface IAppLogger { }

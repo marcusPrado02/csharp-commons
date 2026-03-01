@@ -20,7 +20,8 @@ public abstract class AggregateRoot<TId> : Entity<TId>, IDomainEventRecorder
     public int Version { get; private set; }
 
     /// <summary>Initialises the aggregate root with its identifier at version 0.</summary>
-    protected AggregateRoot(TId id) : base(id) { }
+    protected AggregateRoot(TId id)
+        : base(id) { }
 
     // ── IDomainEventRecorder ─────────────────────────────────────────────────
 

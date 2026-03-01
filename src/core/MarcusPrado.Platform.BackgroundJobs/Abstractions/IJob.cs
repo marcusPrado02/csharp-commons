@@ -1,5 +1,3 @@
 namespace MarcusPrado.Platform.BackgroundJobs.Abstractions;
 
-public interface IJob
-{
-}
+public interface IJob { }

@@ -48,20 +48,17 @@ public abstract class Specification<T> : ISpecification<T>
 
 file sealed class AndSpecification<T>(ISpecification<T> Left, ISpecification<T> Right) : Specification<T>
 {
-    public override bool IsSatisfiedBy(T candidate)
-        => Left.IsSatisfiedBy(candidate) && Right.IsSatisfiedBy(candidate);
+    public override bool IsSatisfiedBy(T candidate) => Left.IsSatisfiedBy(candidate) && Right.IsSatisfiedBy(candidate);
 }
 
 file sealed class OrSpecification<T>(ISpecification<T> Left, ISpecification<T> Right) : Specification<T>
 {
-    public override bool IsSatisfiedBy(T candidate)
-        => Left.IsSatisfiedBy(candidate) || Right.IsSatisfiedBy(candidate);
+    public override bool IsSatisfiedBy(T candidate) => Left.IsSatisfiedBy(candidate) || Right.IsSatisfiedBy(candidate);
 }
 
 file sealed class NotSpecification<T>(ISpecification<T> Inner) : Specification<T>
 {
-    public override bool IsSatisfiedBy(T candidate)
-        => !Inner.IsSatisfiedBy(candidate);
+    public override bool IsSatisfiedBy(T candidate) => !Inner.IsSatisfiedBy(candidate);
 }
 
 file sealed class PredicateSpecification<T>(Func<T, bool> Predicate) : Specification<T>
