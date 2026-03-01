@@ -1,6 +1,6 @@
 ## -----------------------------------------------------------------------
 ## MarcusPrado Platform Commons — .gitignore
-## .NET 9 / C# / ASP.NET Core / EF Core / Rider / VS / VS Code
+## .NET 9/10 / C# / ASP.NET Core / EF Core / Rider / VS / VS Code
 ## -----------------------------------------------------------------------
 
 # ========================
@@ -181,3 +181,5 @@ reports/
 *.dtp
 *.dtpx
 *.dtt
+
+BACKLOG.md
