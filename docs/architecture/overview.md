@@ -1,7 +1,7 @@
 # Architecture Overview — MarcusPrado Platform Commons
 
-> **Version**: 1.0  
-> **Date**: 2026-03-01  
+> **Version**: 1.0
+> **Date**: 2026-03-01
 > **Status**: Active
 
 ## Purpose
