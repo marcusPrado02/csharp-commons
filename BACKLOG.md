@@ -4,8 +4,8 @@
 >
 > **Objetivo**: Fornecer uma biblioteca modular, testável e de alta qualidade para microsserviços ASP.NET Core com suporte para REST, eventos, gRPC, GraphQL e múltiplos stacks (Minimal API, Worker Services, Kafka, RabbitMQ, EF Core).
 >
-> **Solução**: `MarcusPrado.Platform.Commons.slnx`  
-> **Target framework**: `net9.0` (Analyzers: `netstandard2.0`)  
+> **Solução**: `MarcusPrado.Platform.Commons.slnx`
+> **Target framework**: `net9.0` (Analyzers: `netstandard2.0`)
 > **Build**: `dotnet build` | **Testes**: `dotnet test` | **Lint**: `dotnet csharpier` / `dotnet format`
 
 ---
@@ -146,9 +146,11 @@
 
 ---
 
-### 6. Documentação de arquitetura
+### 6. ✅ Documentação de arquitetura
 
-**Arquivos a criar**:
+**Status**: Concluído em 01/03/2026
+
+**Arquivos criados**:
 - `docs/architecture/overview.md` — Diagrama de camadas (Core → Extensions → Kits → Samples)
 - `docs/architecture/adr/ADR-001-result-type.md` — Decisão pelo padrão Result<T>
 - `docs/architecture/adr/ADR-002-no-mediatr.md` — CQRS sem MediatR (pipeline próprio)
