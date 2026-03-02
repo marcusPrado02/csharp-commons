@@ -1,3 +1,8 @@
 namespace MarcusPrado.Platform.Governance.Contracts;
 
-public class ContractRegistration { }
+/// <summary>Input used to register a new contract.</summary>
+public sealed record ContractRegistration(
+    string Name,
+    string Version,
+    string SchemaHash,
+    string? SchemaJson = null);

@@ -1,0 +1,9 @@
+global using FluentAssertions;
+global using MarcusPrado.Platform.Governance.ADR;
+global using MarcusPrado.Platform.Governance.Compatibility;
+global using MarcusPrado.Platform.Governance.Contracts;
+global using MarcusPrado.Platform.Governance.Deprecation;
+global using MarcusPrado.Platform.Governance.Extensions;
+global using MarcusPrado.Platform.Governance.Standards;
+global using Microsoft.Extensions.DependencyInjection;
+global using Xunit;

@@ -47,6 +47,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/MarcusPrado.Platform.Application.Tests/MarcusPrado.Platform.Application.Tests.csproj" />
+    <Project Path="tests/MarcusPrado.Platform.Governance.Tests/MarcusPrado.Platform.Governance.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/unit/">
     <Project Path="tests/unit/MarcusPrado.Platform.Abstractions.Tests/MarcusPrado.Platform.Abstractions.Tests.csproj" />

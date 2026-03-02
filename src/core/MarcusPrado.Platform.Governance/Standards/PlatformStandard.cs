@@ -1,3 +1,9 @@
 namespace MarcusPrado.Platform.Governance.Standards;
 
-public class PlatformStandard { }
+/// <summary>Describes a platform engineering standard that services must adhere to.</summary>
+public sealed record PlatformStandard(
+    string Code,
+    string Title,
+    string Description,
+    string Category,
+    bool IsMandatory = true);
