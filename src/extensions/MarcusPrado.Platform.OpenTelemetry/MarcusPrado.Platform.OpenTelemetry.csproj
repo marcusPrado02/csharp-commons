@@ -14,4 +14,8 @@
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Observability\MarcusPrado.Platform.Observability.csproj" />
+  </ItemGroup>
 </Project>

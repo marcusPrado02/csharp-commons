@@ -22,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="FluentAssertions" />
+    <Using Include="NSubstitute" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../../../src/extensions/MarcusPrado.Platform.HealthChecks/MarcusPrado.Platform.HealthChecks.csproj" />
   </ItemGroup>
 </Project>

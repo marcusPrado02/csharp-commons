@@ -44,44 +44,34 @@ public sealed class OtelBusinessMetrics : IBusinessMetrics
     /// <inheritdoc/>
     public void RecordOrderPlaced(string tenantId, decimal value, string currency)
     {
-        var tags = new TagList
-        {
-            { "tenant.id", tenantId },
-            { "currency", currency },
-        };
-
-        OrdersPlaced.Add(1, tags);
-        OrderValue.Add(value, tags);
+        var tagTenant = new KeyValuePair<string, object?>("tenant.id", tenantId);
+        var tagCurrency = new KeyValuePair<string, object?>("currency", currency);
+        OrdersPlaced.Add(1, tagTenant, tagCurrency);
+        OrderValue.Add(value, tagTenant, tagCurrency);
     }
 
     /// <inheritdoc/>
     public void RecordPaymentProcessed(string tenantId, string status, string gateway)
     {
-        PaymentsProcessed.Add(1, new TagList
-        {
-            { "tenant.id", tenantId },
-            { "payment.status", status },
-            { "payment.gateway", gateway },
-        });
+        PaymentsProcessed.Add(1,
+            new KeyValuePair<string, object?>("tenant.id", tenantId),
+            new KeyValuePair<string, object?>("payment.status", status),
+            new KeyValuePair<string, object?>("payment.gateway", gateway));
     }
 
     /// <inheritdoc/>
     public void RecordUserSignup(string tenantId, string plan)
     {
-        UserSignups.Add(1, new TagList
-        {
-            { "tenant.id", tenantId },
-            { "user.plan", plan },
-        });
+        UserSignups.Add(1,
+            new KeyValuePair<string, object?>("tenant.id", tenantId),
+            new KeyValuePair<string, object?>("user.plan", plan));
     }
 
     /// <inheritdoc/>
     public void RecordEventConsumed(string topic, string consumerGroup, long latencyMs)
     {
-        EventConsumedLatency.Record(latencyMs, new TagList
-        {
-            { "messaging.topic", topic },
-            { "messaging.consumer_group", consumerGroup },
-        });
+        EventConsumedLatency.Record(latencyMs,
+            new KeyValuePair<string, object?>("messaging.topic", topic),
+            new KeyValuePair<string, object?>("messaging.consumer_group", consumerGroup));
     }
 }

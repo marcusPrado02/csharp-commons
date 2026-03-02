@@ -80,7 +80,7 @@ public sealed class NamingConventionRules
             .GetExportedTypes()
             .Where(t =>
                 t.IsClass && !t.IsAbstract &&
-                typeof(ICommandHandler).IsAssignableFrom(t))
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>)))
             .Where(t => !t.Name.EndsWith("Handler", StringComparison.Ordinal))
             .Select(t => t.FullName!)
             .ToList();
@@ -96,7 +96,7 @@ public sealed class NamingConventionRules
             .GetExportedTypes()
             .Where(t =>
                 t.IsClass && !t.IsAbstract &&
-                typeof(IQueryHandler).IsAssignableFrom(t))
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQueryHandler<,>)))
             .Where(t => !t.Name.EndsWith("Handler", StringComparison.Ordinal))
             .Select(t => t.FullName!)
             .ToList();
@@ -128,7 +128,7 @@ public sealed class NamingConventionRules
             .GetExportedTypes()
             .Where(t =>
                 t.IsClass && !t.IsAbstract &&
-                typeof(IQuery).IsAssignableFrom(t) &&
+                t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQuery<>)) &&
                 !t.Name.EndsWith("Query", StringComparison.Ordinal))
             .Select(t => t.FullName!)
             .ToList();
