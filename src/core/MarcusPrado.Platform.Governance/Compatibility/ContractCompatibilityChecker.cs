@@ -48,8 +48,12 @@ public static class ContractCompatibilityChecker
                 continue;
             }
 
-            var prevType = prevField.Value.ValueKind.ToString();
-            var currType = currValue.ValueKind.ToString();
+            var prevType = prevField.Value.ValueKind == JsonValueKind.String
+                ? prevField.Value.GetString() ?? prevField.Value.ValueKind.ToString()
+                : prevField.Value.ValueKind.ToString();
+            var currType = currValue.ValueKind == JsonValueKind.String
+                ? currValue.GetString() ?? currValue.ValueKind.ToString()
+                : currValue.ValueKind.ToString();
 
             if (!string.Equals(prevType, currType, StringComparison.Ordinal))
             {
