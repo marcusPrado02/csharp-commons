@@ -1,0 +1,19 @@
+// Global usings for MarcusPrado.Platform.AspNetCore.Auth.Tests
+global using System.Net;
+global using System.Net.Http.Headers;
+global using System.Security.Claims;
+global using System.Text;
+global using MarcusPrado.Platform.AspNetCore.Auth.Extensions;
+global using MarcusPrado.Platform.AspNetCore.Auth.Options;
+global using MarcusPrado.Platform.AspNetCore.Auth.Requirements;
+global using MarcusPrado.Platform.AspNetCore.Auth.Tests.Helpers;
+global using MarcusPrado.Platform.Security.Authorization;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.TestHost;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.IdentityModel.JsonWebTokens;
+global using Microsoft.IdentityModel.Tokens;

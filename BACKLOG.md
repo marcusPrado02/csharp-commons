@@ -242,7 +242,7 @@
 
 ---
 
-### 10. Implementar `MarcusPrado.Platform.AspNetCore.Auth` completo
+### 10. ✅ Implementar `MarcusPrado.Platform.AspNetCore.Auth` completo
 
 **Dependências NuGet**: `Microsoft.AspNetCore.Authentication.JwtBearer`
 
