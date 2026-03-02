@@ -36,21 +36,21 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Registers all CQRS pipeline behaviours in execution order:
     /// <c>Validation → Authorization → Logging → Tracing → Metrics → Retry → Idempotency → Transaction</c>.
-    /// Each behaviour is registered as <see cref="IPipelineBehavior"/> so that a
+    /// Each behaviour is registered as <see cref="IPipelineBehavior{TRequest,TResponse}"/> so that a
     /// custom command bus can resolve them as an ordered list.
     /// </summary>
     /// <param name="services">The DI service collection to configure.</param>
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformCqrs(this IServiceCollection services)
     {
-        services.AddTransient<IPipelineBehavior, ValidationBehavior>();
-        services.AddTransient<IPipelineBehavior, AuthorizationBehavior>();
-        services.AddTransient<IPipelineBehavior, LoggingBehavior>();
-        services.AddTransient<IPipelineBehavior, TracingBehavior>();
-        services.AddTransient<IPipelineBehavior, MetricsBehavior>();
-        services.AddTransient<IPipelineBehavior, RetryBehavior>();
-        services.AddTransient<IPipelineBehavior, IdempotencyBehavior>();
-        services.AddTransient<IPipelineBehavior, TransactionBehavior>();
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TracingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MetricsBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RetryBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(IdempotencyBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
         return services;
     }
 }

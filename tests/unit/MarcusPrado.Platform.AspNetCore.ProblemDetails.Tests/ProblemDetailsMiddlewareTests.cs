@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using MarcusPrado.Platform.Abstractions.Errors;
 using MarcusPrado.Platform.Application.Errors;
 using MarcusPrado.Platform.AspNetCore.ProblemDetails.Extensions;
 using MarcusPrado.Platform.AspNetCore.ProblemDetails.Mappers;
@@ -39,13 +40,13 @@ public sealed class ProblemDetailsMiddlewareTests : IDisposable
         return new TestServer(builder).CreateClient();
     }
 
-    private readonly HttpClient _notFound    = BuildClient(new NotFoundException("Order not found."));
-    private readonly HttpClient _conflict    = BuildClient(new ConflictException("Resource already exists."));
-    private readonly HttpClient _unauth      = BuildClient(new UnauthorizedException("Not authenticated."));
-    private readonly HttpClient _forbidden   = BuildClient(new ForbiddenException("Access denied."));
+    private readonly HttpClient _notFound    = BuildClient(new NotFoundException("ORDER.NOT_FOUND", "Order not found."));
+    private readonly HttpClient _conflict    = BuildClient(new ConflictException("RESOURCE.CONFLICT", "Resource already exists."));
+    private readonly HttpClient _unauth      = BuildClient(new UnauthorizedException("AUTH.UNAUTHORIZED", "Not authenticated."));
+    private readonly HttpClient _forbidden   = BuildClient(new ForbiddenException("AUTH.FORBIDDEN", "Access denied."));
     private readonly HttpClient _validation  = BuildClient(new ValidationException(
-        new Dictionary<string, string[]> { ["Name"] = ["Required"] }));
-    private readonly HttpClient _appEx       = BuildClient(new AppException("Generic app error."));
+        new[] { Error.Validation("VALIDATION.NAME", "Required", "Name") }));
+    private readonly HttpClient _appEx       = BuildClient(new AppException(Error.Validation("APP.ERROR", "Generic app error.")));
     private readonly HttpClient _unexpected  = BuildClient(new InvalidOperationException("Boom."));
 
     // ── Status code mapping ───────────────────────────────────────────────────

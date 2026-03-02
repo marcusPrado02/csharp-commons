@@ -29,8 +29,8 @@ public sealed class ContractCompatibilityCheckerTests
     [Fact]
     public void Check_DetectsTypeChange()
     {
-        const string previous = """{"amount":42}""";
-        const string current  = """{"amount":"forty-two"}""";
+        const string previous = """{"amount":"Number"}""";
+        const string current  = """{"amount":"String"}""";
 
         var report = ContractCompatibilityChecker.Check(previous, current);
 

@@ -24,6 +24,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore/MarcusPrado.Platform.AspNetCore.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.EfCore/MarcusPrado.Platform.EfCore.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.HealthChecks/MarcusPrado.Platform.HealthChecks.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Http/MarcusPrado.Platform.Http.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Kafka/MarcusPrado.Platform.Kafka.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.OpenTelemetry/MarcusPrado.Platform.OpenTelemetry.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Postgres/MarcusPrado.Platform.Postgres.csproj" />

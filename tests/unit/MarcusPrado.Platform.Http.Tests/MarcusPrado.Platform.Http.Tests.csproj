@@ -7,14 +7,17 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.runner.visualstudio" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../../../src/extensions/MarcusPrado.Platform.OpenTelemetry/MarcusPrado.Platform.OpenTelemetry.csproj" />
-    <ProjectReference Include="../../../src/core/MarcusPrado.Platform.Observability/MarcusPrado.Platform.Observability.csproj" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/extensions/MarcusPrado.Platform.Http/MarcusPrado.Platform.Http.csproj" />
+    <ProjectReference Include="../../../src/core/MarcusPrado.Platform.Abstractions/MarcusPrado.Platform.Abstractions.csproj" />
   </ItemGroup>
 </Project>

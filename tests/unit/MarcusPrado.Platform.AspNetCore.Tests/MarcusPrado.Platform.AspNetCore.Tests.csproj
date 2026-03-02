@@ -23,20 +23,23 @@
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NSubstitute" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
     <Using Include="FluentAssertions" />
+    <Using Include="NSubstitute" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
-  <!-- Library under test -->
+  <!-- Libraries under test -->
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\extensions\MarcusPrado.Platform.AspNetCore\MarcusPrado.Platform.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\..\src\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
-    <ProjectReference Include="..\..\..\src\core\MarcusPrado.Platform.Domain\MarcusPrado.Platform.Domain.csproj" />
+    <ProjectReference Include="../../../src/extensions/MarcusPrado.Platform.AspNetCore/MarcusPrado.Platform.AspNetCore.csproj" />
+    <ProjectReference Include="../../../src/core/MarcusPrado.Platform.Application/MarcusPrado.Platform.Application.csproj" />
+    <ProjectReference Include="../../../src/core/MarcusPrado.Platform.Contracts/MarcusPrado.Platform.Contracts.csproj" />
+    <ProjectReference Include="../../../src/core/MarcusPrado.Platform.Domain/MarcusPrado.Platform.Domain.csproj" />
   </ItemGroup>
 
 </Project>

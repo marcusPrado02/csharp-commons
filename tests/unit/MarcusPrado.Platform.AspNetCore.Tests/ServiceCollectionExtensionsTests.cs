@@ -76,7 +76,7 @@ public sealed class ServiceCollectionExtensionsTests
         services.AddPlatformCqrs();
 
         var behaviors = services
-            .Where(d => d.ServiceType == typeof(IPipelineBehavior))
+            .Where(d => d.ServiceType == typeof(IPipelineBehavior<,>))
             .ToList();
 
         behaviors.Should().HaveCount(8,
@@ -91,13 +91,13 @@ public sealed class ServiceCollectionExtensionsTests
         services.AddPlatformCqrs();
 
         var behaviorTypes = services
-            .Where(d => d.ServiceType == typeof(IPipelineBehavior))
-            .Select(d => d.ImplementationType!.Name)
+            .Where(d => d.ServiceType == typeof(IPipelineBehavior<,>))
+            .Select(d => d.ImplementationType!.Name.Split('`')[0])
             .ToList();
 
-        behaviorTypes[0].Should().Be(nameof(ValidationBehavior));
-        behaviorTypes[1].Should().Be(nameof(AuthorizationBehavior));
-        behaviorTypes[^1].Should().Be(nameof(TransactionBehavior),
+        behaviorTypes[0].Should().Be("ValidationBehavior");
+        behaviorTypes[1].Should().Be("AuthorizationBehavior");
+        behaviorTypes[^1].Should().Be("TransactionBehavior",
             because: "TransactionBehavior must be the last (innermost) decorator in the pipeline");
     }
 

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Contracts\MarcusPrado.Platform.Contracts.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Domain\MarcusPrado.Platform.Domain.csproj" />
   </ItemGroup>
 

@@ -65,23 +65,22 @@ internal static class PlatformTestServer
                             break;
 
                         case "/error/notfound":
-                            throw new NotFoundException("Resource not found");
+                            throw new NotFoundException("RESOURCE.NOT_FOUND", "Resource not found");
 
                         case "/error/conflict":
-                            throw new ConflictException("Resource already exists");
+                            throw new ConflictException("RESOURCE.CONFLICT", "Resource already exists");
 
                         case "/error/unauth":
-                            throw new UnauthorizedException("Not authenticated");
+                            throw new UnauthorizedException("AUTH.UNAUTHORIZED", "Not authenticated");
 
                         case "/error/forbidden":
-                            throw new ForbiddenException("Access denied");
+                            throw new ForbiddenException("AUTH.FORBIDDEN", "Access denied");
 
                         case "/error/validation":
-                            var errors = new Dictionary<string, string[]>(
-                                StringComparer.OrdinalIgnoreCase)
+                            var errors = new List<Error>
                             {
-                                ["name"]  = ["Name is required"],
-                                ["email"] = ["Email is invalid"],
+                                Error.Validation("VALIDATION.NAME", "Name is required", "name"),
+                                Error.Validation("VALIDATION.EMAIL", "Email is invalid", "email"),
                             };
                             throw new ValidationException(errors);
 
