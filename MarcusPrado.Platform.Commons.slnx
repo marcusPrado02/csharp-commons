@@ -41,6 +41,9 @@
     <Project Path="src/samples/Sample.Service.MinimalApi/Sample.Service.MinimalApi.csproj" />
     <Project Path="src/samples/Sample.Service.Worker/Sample.Service.Worker.csproj" />
   </Folder>
+  <Folder Name="/src/testing/">
+    <Project Path="src/testing/MarcusPrado.Platform.TestKit/MarcusPrado.Platform.TestKit.csproj" />
+  </Folder>
   <Folder Name="/src/tooling/">
     <Project Path="src/tooling/MarcusPrado.Platform.Analyzers/MarcusPrado.Platform.Analyzers.csproj" />
     <Project Path="src/tooling/MarcusPrado.Platform.ArchTests/MarcusPrado.Platform.ArchTests.csproj" />
@@ -55,13 +58,16 @@
     <Project Path="tests/unit/MarcusPrado.Platform.AspNetCore.Tests/MarcusPrado.Platform.AspNetCore.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AspNetCore.Auth.Tests/MarcusPrado.Platform.AspNetCore.Auth.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AspNetCore.ProblemDetails.Tests/MarcusPrado.Platform.AspNetCore.ProblemDetails.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.EfCore.Tests/MarcusPrado.Platform.EfCore.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.FeatureFlags.Tests/MarcusPrado.Platform.FeatureFlags.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.HealthChecks.Tests/MarcusPrado.Platform.HealthChecks.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Runtime.Tests/MarcusPrado.Platform.Runtime.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.OpenTelemetry.Tests/MarcusPrado.Platform.OpenTelemetry.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.OutboxInbox.Tests/MarcusPrado.Platform.OutboxInbox.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Redis.Tests/MarcusPrado.Platform.Redis.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Resilience.Tests/MarcusPrado.Platform.Resilience.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Serilog.Tests/MarcusPrado.Platform.Serilog.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.TestKit.Tests/MarcusPrado.Platform.TestKit.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />

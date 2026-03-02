@@ -63,4 +63,43 @@
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
   </ItemGroup>
 
+  <!-- ── Redis ── -->
+  <ItemGroup Label="Redis">
+    <PackageVersion Include="StackExchange.Redis"                                 Version="2.8.24" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis"    Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- ── Entity Framework Core ── -->
+  <ItemGroup Label="EfCore">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore"                       Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory"              Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational"            Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- ── Postgres / Npgsql ── -->
+  <ItemGroup Label="Postgres">
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL"               Version="9.0.4" />
+    <PackageVersion Include="Dapper"                                               Version="2.1.35" />
+  </ItemGroup>
+
+  <!-- ── Kafka ── -->
+  <ItemGroup Label="Kafka">
+    <PackageVersion Include="Confluent.Kafka"                                     Version="2.8.0" />
+  </ItemGroup>
+
+  <!-- ── RabbitMQ ── -->
+  <ItemGroup Label="RabbitMQ">
+    <PackageVersion Include="RabbitMQ.Client"                                     Version="7.1.0" />
+  </ItemGroup>
+
+  <!-- ── TestKit (Testcontainers + Testing utilities) ── -->
+  <ItemGroup Label="TestKit">
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing"                    Version="9.0.0" />
+    <PackageVersion Include="Testcontainers"                                      Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql"                           Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.Redis"                                Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.Kafka"                                Version="3.10.0" />
+    <PackageVersion Include="Testcontainers.RabbitMq"                             Version="3.10.0" />
+  </ItemGroup>
+
 </Project>

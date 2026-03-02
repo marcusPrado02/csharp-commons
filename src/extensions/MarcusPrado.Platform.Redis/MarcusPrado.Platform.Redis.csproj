@@ -5,6 +5,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.OutboxInbox\MarcusPrado.Platform.OutboxInbox.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.RateLimiting\MarcusPrado.Platform.RateLimiting.csproj" />
+  </ItemGroup>
 </Project>
