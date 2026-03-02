@@ -1,37 +1,18 @@
+using MarcusPrado.Platform.Abstractions.Errors;
+
 namespace MarcusPrado.Platform.Application.Errors;
 
-/// <summary>
-/// Raised when one or more input validation rules are violated. Maps to HTTP 422.
-/// </summary>
-public class ValidationException : AppException
+/// <summary>Thrown when one or more validation rules are violated (maps to HTTP 422).</summary>
+public sealed class ValidationException : AppException
 {
-    /// <summary>Gets the individual validation errors keyed by field name.</summary>
-    public IReadOnlyDictionary<string, string[]> Errors { get; }
+    /// <summary>Gets all validation errors.</summary>
+    public IReadOnlyList<Error> Errors { get; }
 
-    /// <summary>
-    /// Initialises with a generic message and no field-level errors.
-    /// </summary>
-    public ValidationException(string message)
-        : base(message)
-    {
-        Errors = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
-    }
-
-    /// <summary>
-    /// Initialises with field-level validation errors. The message is set to
-    /// a summary derived from the number of errors.
-    /// </summary>
-    public ValidationException(IReadOnlyDictionary<string, string[]> errors)
-        : base($"Validation failed with {errors.Count} error(s).")
-    {
-        Errors = errors;
-    }
-
-    /// <summary>
-    /// Initialises with a custom message and field-level validation errors.
-    /// </summary>
-    public ValidationException(string message, IReadOnlyDictionary<string, string[]> errors)
-        : base(message)
+    /// <summary>Initializes a <see cref="ValidationException"/> with a list of errors.</summary>
+    public ValidationException(IReadOnlyList<Error> errors)
+        : base(errors.Count > 0
+            ? errors[0]
+            : Error.Validation("VALIDATION.FAILED", "One or more validation errors occurred."))
     {
         Errors = errors;
     }

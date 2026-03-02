@@ -1,3 +1,6 @@
 namespace MarcusPrado.Platform.Application.CQRS;
 
-public interface IQueryResult { }
+/// <summary>Marker interface for strongly-typed query result payloads.</summary>
+public interface IQueryResult
+{
+}

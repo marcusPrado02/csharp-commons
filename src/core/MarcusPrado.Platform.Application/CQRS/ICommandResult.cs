@@ -1,3 +1,6 @@
 namespace MarcusPrado.Platform.Application.CQRS;
 
-public interface ICommandResult { }
+/// <summary>Marker interface for strongly-typed command result payloads.</summary>
+public interface ICommandResult
+{
+}

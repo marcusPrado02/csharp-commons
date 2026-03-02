@@ -1,17 +1,29 @@
+using MarcusPrado.Platform.Abstractions.Errors;
+
 namespace MarcusPrado.Platform.Application.Errors;
 
 /// <summary>
-/// Base class for all application-layer exceptions. Prefer returning
-/// <see cref="MarcusPrado.Platform.Abstractions.Results.Result{T}"/> for expected
-/// failures; reserve exceptions for truly exceptional conditions.
+/// Base exception for all application-layer errors.
+/// Carry a structured <see cref="Abstractions.Errors.Error"/> alongside the message
+/// so the exception can be mapped deterministically to an HTTP status code or
+/// <c>Result.Failure</c>.
 /// </summary>
 public class AppException : Exception
 {
-    /// <inheritdoc cref="Exception(string)" />
-    public AppException(string message)
-        : base(message) { }
+    /// <summary>Gets the structured error descriptor.</summary>
+    public Error Error { get; }
 
-    /// <inheritdoc cref="Exception(string, Exception)" />
-    public AppException(string message, Exception innerException)
-        : base(message, innerException) { }
+    /// <summary>Initializes an <see cref="AppException"/> from a structured error.</summary>
+    public AppException(Error error)
+        : base(error.Message)
+    {
+        Error = error;
+    }
+
+    /// <summary>Initializes an <see cref="AppException"/> with an inner exception.</summary>
+    public AppException(Error error, Exception innerException)
+        : base(error.Message, innerException)
+    {
+        Error = error;
+    }
 }

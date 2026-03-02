@@ -1,13 +1,13 @@
+using MarcusPrado.Platform.Abstractions.Errors;
+
 namespace MarcusPrado.Platform.Application.Errors;
 
-/// <summary>Raised when the caller is not authenticated. Maps to HTTP 401.</summary>
-public class UnauthorizedException : AppException
+/// <summary>Thrown when the caller is not authenticated (HTTP 401).</summary>
+public sealed class UnauthorizedException : AppException
 {
-    /// <summary>Initialises with a message describing the authentication failure.</summary>
-    public UnauthorizedException(string message)
-        : base(message) { }
-
-    /// <inheritdoc cref="AppException(string, Exception)" />
-    public UnauthorizedException(string message, Exception innerException)
-        : base(message, innerException) { }
+    /// <summary>Initializes an <see cref="UnauthorizedException"/>.</summary>
+    public UnauthorizedException(string code, string message)
+        : base(Error.Unauthorized(code, message))
+    {
+    }
 }
