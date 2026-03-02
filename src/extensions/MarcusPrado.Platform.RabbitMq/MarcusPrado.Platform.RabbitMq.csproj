@@ -15,5 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Messaging\MarcusPrado.Platform.Messaging.csproj" />
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Observability\MarcusPrado.Platform.Observability.csproj" />
   </ItemGroup>
 </Project>

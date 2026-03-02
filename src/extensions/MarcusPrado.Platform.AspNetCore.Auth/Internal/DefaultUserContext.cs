@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Internal;
 internal sealed class DefaultUserContext : IUserContext
 {
     // Claim types used to extract permissions and scopes from the principal
-    private static readonly string[] PermissionClaimTypes =
+    private static readonly string[] _permissionClaimTypes =
         ["permission", "permissions", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
     private ClaimsPrincipal? _principal;
@@ -41,7 +41,7 @@ internal sealed class DefaultUserContext : IUserContext
                           ?? principal.FindFirstValue("sub");
 
         // Permissions: collected from multiple claim types
-        Permissions = PermissionClaimTypes
+        Permissions = _permissionClaimTypes
             .SelectMany(t => principal.FindAll(t))
             .Select(c => c.Value)
             .Distinct(StringComparer.OrdinalIgnoreCase)
