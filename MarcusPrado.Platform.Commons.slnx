@@ -54,6 +54,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.AspNetCore.ProblemDetails.Tests/MarcusPrado.Platform.AspNetCore.ProblemDetails.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.HealthChecks.Tests/MarcusPrado.Platform.HealthChecks.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Runtime.Tests/MarcusPrado.Platform.Runtime.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Resilience.Tests/MarcusPrado.Platform.Resilience.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
