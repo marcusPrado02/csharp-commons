@@ -8,11 +8,11 @@
 > **Target framework**: `net9.0` (Analyzers: `netstandard2.0`)
 > **Build**: `dotnet build` | **Testes**: `dotnet test` | **Lint**: `dotnet csharpier` / `dotnet format`
 >
-> **Progresso**: 52 itens concluídos (#1–50 · #65 · #85) · **579 testes passando** · 3 skipped · 0 falhas (03/03/2026)
+> **Progresso**: 36 itens totalmente concluídos · 9 com abstração pronta (adapter pendente) · 6 pendentes · **579 testes passando** · 0 falhas (03/03/2026)
 
 ---
 
-## ✅ Concluídos (itens #1–50 · #65 · #85)
+## ✅ Concluídos
 
 ### 1. ✅ Scaffolding inicial da solução
 **Status**: Concluído em 01/03/2026
@@ -542,7 +542,7 @@
 
 ## 🔐 Segurança e Secrets
 
-### 21. ✅ Implementar adapters de secrets
+### 21. Implementar adapters de secrets
 
 **`MarcusPrado.Platform.Security.AzureKeyVault`**:
 - Dependência: `Azure.Extensions.AspNetCore.Configuration.Secrets`, `Azure.Identity`
@@ -598,7 +598,7 @@
 
 ---
 
-### 23. ✅ Implementar `MarcusPrado.Platform.ContractTestKit` completo
+### 23. Implementar `MarcusPrado.Platform.ContractTestKit` completo
 
 **Dependências NuGet**: `PactNet` (≥ 4.x)
 
@@ -619,7 +619,7 @@
 
 ---
 
-### 24. ✅ Implementar `MarcusPrado.Platform.ChaosKit` completo
+### 24. Implementar `MarcusPrado.Platform.ChaosKit` completo
 
 **Dependências NuGet**: `Simmy` (Polly Chaos) ou implementação própria
 
@@ -655,7 +655,7 @@
 
 ## 🌐 Adaptadores HTTP
 
-### 26. ✅ Implementar adapter HTTP tipado
+### 26. Implementar adapter HTTP tipado
 
 **Projeto**: `MarcusPrado.Platform.Http` (novo projeto em `src/extensions/`)
 
@@ -787,8 +787,8 @@
 
 ## 📦 Adaptadores Adicionais (Backlog Futuro)
 
-### 31. ✅ Implementar adapter de Blockchain (Nethereum)
-**Status**: Concluído em 03/03/2026
+### 31. ⚠️ Implementar adapter de Blockchain (Nethereum)
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -801,8 +801,8 @@
 
 ---
 
-### 32. ✅ Implementar adapter de Pagamento (Stripe.net)
-**Status**: Concluído em 03/03/2026
+### 32. ⚠️ Implementar adapter de Pagamento (Stripe.net)
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -817,8 +817,8 @@
 
 ---
 
-### 33. ✅ Implementar adapter de Email
-**Status**: Concluído em 03/03/2026
+### 33. ⚠️ Implementar adapter de Email
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -832,8 +832,8 @@
 
 ---
 
-### 34. ✅ Implementar adapter de SMS
-**Status**: Concluído em 03/03/2026
+### 34. ⚠️ Implementar adapter de SMS
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -845,8 +845,8 @@
 
 ---
 
-### 35. ✅ Implementar adapter de Search
-**Status**: Concluído em 03/03/2026
+### 35. ⚠️ Implementar adapter de Search
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -872,8 +872,8 @@
 
 ---
 
-### 37. ✅ Implementar adapter GraphQL
-**Status**: Concluído em 03/03/2026
+### 37. ⚠️ Implementar adapter GraphQL
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projeto**: `MarcusPrado.Platform.HotChocolate`
@@ -886,8 +886,8 @@
 
 ---
 
-### 38. ✅ Implementar utilitários de documento
-**Status**: Concluído em 03/03/2026
+### 38. ⚠️ Implementar utilitários de documento
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **`MarcusPrado.Platform.Pdf`**:
@@ -1002,8 +1002,8 @@
 
 ---
 
-### 45. ✅ Implementar Service Discovery
-**Status**: Concluído em 03/03/2026
+### 45. ⚠️ Implementar Service Discovery
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -1016,9 +1016,7 @@
 
 ## 🔧 Tooling Avançado
 
-### 46. ✅ Completar Roslyn Analyzers
-**Status**: Concluído em 03/03/2026
-
+### 46. Completar Roslyn Analyzers
 
 **Regras a implementar** (projeto `MarcusPrado.Platform.Analyzers`):
 
@@ -1078,9 +1076,7 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ---
 
-### 48. ✅ Implementar templates `dotnet new`
-**Status**: Concluído em 03/03/2026
-
+### 48. Implementar templates `dotnet new`
 
 **Projeto**: `src/tooling/MarcusPrado.Platform.Templates`
 
@@ -1098,8 +1094,8 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ## 🗄️ Adaptadores de Banco de Dados Adicionais
 
-### 49. ✅ Implementar adapter MongoDB
-**Status**: Concluído em 03/03/2026
+### 49. ⚠️ Implementar adapter MongoDB
+**Status**: ⚠️ Abstração concluída em 03/03/2026 — adapter concreto pendente
 
 
 **Projetos**:
@@ -1927,7 +1923,7 @@ Centralizar versões de todos os NuGets utilizados na solução:
 | 25 | 22 | ✅ TestKit completo | Habilita integration tests |
 | 26 | 85 | ✅ Test Data Builders (Bogus) | Dados realistas em testes |
 | 27 | 86 | Approval Testing (Verify) | Snapshot regression tests |
-| 28 | 46 | ✅ Roslyn Analyzers | Enforcement automático |
+| 28 | 46 | Roslyn Analyzers | Enforcement automático |
 | 29 | 4 | Static analysis config | Qualidade de código |
 | 30 | 5 | CI/CD pipeline | Automação de build e deploy |
 | 31 | 90 | Release automation | NuGet + changelog automático |
@@ -1951,7 +1947,7 @@ Centralizar versões de todos os NuGets utilizados na solução:
 | 49 | 53 | Azure Service Bus | Mensageria cloud-native |
 | 50 | 54 | AWS SQS/SNS | Mensageria AWS |
 | 51 | 52 | NATS adapter | Mensageria de baixa latência |
-| 52 | 49 | ✅ MongoDB adapter | Document database |
+| 52 | 49 | ⚠️ MongoDB adapter | Document database |
 | 53 | 91 | API Changelog generator | Breaking changes detectados no CI |
 | 54 | 99 | Exception Enrichment | Dev experience: debugging |
 | 55 | 100 | Platform CLI | Developer experience |
