@@ -7,10 +7,12 @@
 > **Solução**: `MarcusPrado.Platform.Commons.slnx`
 > **Target framework**: `net9.0` (Analyzers: `netstandard2.0`)
 > **Build**: `dotnet build` | **Testes**: `dotnet test` | **Lint**: `dotnet csharpier` / `dotnet format`
+>
+> **Progresso**: 52 itens concluídos (#1–50 · #65 · #85) · **579 testes passando** · 3 skipped · 0 falhas (03/03/2026)
 
 ---
 
-## ✅ Concluídos
+## ✅ Concluídos (itens #1–50 · #65 · #85)
 
 ### 1. ✅ Scaffolding inicial da solução
 **Status**: Concluído em 01/03/2026
@@ -266,7 +268,7 @@
 
 ---
 
-### 11. Implementar `MarcusPrado.Platform.AspNetCore.ProblemDetails` completo
+### 11. ✅ Implementar `MarcusPrado.Platform.AspNetCore.ProblemDetails` completo
 
 **Dependências NuGet**: `Microsoft.AspNetCore.ProblemDetails`
 
@@ -285,7 +287,7 @@
 
 ## 💾 Extensões de Persistência
 
-### 12. Implementar `MarcusPrado.Platform.EfCore` completo
+### 12. ✅ Implementar `MarcusPrado.Platform.EfCore` completo
 
 **Dependências NuGet**: `Microsoft.EntityFrameworkCore` (≥ 9.0)
 
@@ -322,7 +324,7 @@
 
 ---
 
-### 13. Implementar `MarcusPrado.Platform.Postgres` completo
+### 13. ✅ Implementar `MarcusPrado.Platform.Postgres` completo
 
 **Dependências NuGet**: `Npgsql.EntityFrameworkCore.PostgreSQL` + `Dapper`
 
@@ -346,7 +348,7 @@
 
 ## 📨 Adaptadores de Mensageria
 
-### 14. Implementar `MarcusPrado.Platform.Kafka` completo
+### 14. ✅ Implementar `MarcusPrado.Platform.Kafka` completo
 
 **Dependências NuGet**: `Confluent.Kafka` (≥ 2.x)
 
@@ -379,7 +381,7 @@
 
 ---
 
-### 15. Implementar `MarcusPrado.Platform.RabbitMq` completo
+### 15. ✅ Implementar `MarcusPrado.Platform.RabbitMq` completo
 
 **Dependências NuGet**: `RabbitMQ.Client` (≥ 7.x)
 
@@ -407,7 +409,7 @@
 
 ## 📊 Observabilidade
 
-### 16. Implementar `MarcusPrado.Platform.OpenTelemetry` completo
+### 16. ✅ Implementar `MarcusPrado.Platform.OpenTelemetry` completo
 
 **Dependências NuGet**: `OpenTelemetry.Extensions.Hosting`, `OpenTelemetry.Instrumentation.AspNetCore`, `OpenTelemetry.Instrumentation.Http`, `OpenTelemetry.Exporter.Otlp`, `OpenTelemetry.Exporter.Prometheus.AspNetCore`
 
@@ -431,7 +433,7 @@
 
 ---
 
-### 17. Implementar `MarcusPrado.Platform.Serilog` completo
+### 17. ✅ Implementar `MarcusPrado.Platform.Serilog` completo
 
 **Dependências NuGet**: `Serilog.AspNetCore`, `Serilog.Sinks.Console`, `Serilog.Sinks.OpenTelemetry`, `Serilog.Enrichers.Thread`, `Serilog.Enrichers.Process`
 
@@ -450,7 +452,7 @@
 
 ---
 
-### 18. Implementar `MarcusPrado.Platform.HealthChecks` completo
+### 18. ✅ Implementar `MarcusPrado.Platform.HealthChecks` completo
 
 **Dependências NuGet**: `Microsoft.AspNetCore.Diagnostics.HealthChecks`, `AspNetCore.HealthChecks.UI.Client`
 
@@ -469,7 +471,7 @@
 
 ## 🛡️ Resiliência
 
-### 19. Implementar `MarcusPrado.Platform.Resilience` completo
+### 19. ✅ Implementar `MarcusPrado.Platform.Resilience` completo
 
 **Dependências NuGet**: `Polly` (≥ 8.x) + `Microsoft.Extensions.Http.Resilience`
 
@@ -508,7 +510,7 @@
 
 ## 📦 Extensões de Cache
 
-### 20. Implementar `MarcusPrado.Platform.Redis` completo
+### 20. ✅ Implementar `MarcusPrado.Platform.Redis` completo
 
 **Dependências NuGet**: `StackExchange.Redis`, `Microsoft.Extensions.Caching.StackExchangeRedis`
 
@@ -540,7 +542,7 @@
 
 ## 🔐 Segurança e Secrets
 
-### 21. Implementar adapters de secrets
+### 21. ✅ Implementar adapters de secrets
 
 **`MarcusPrado.Platform.Security.AzureKeyVault`**:
 - Dependência: `Azure.Extensions.AspNetCore.Configuration.Secrets`, `Azure.Identity`
@@ -564,7 +566,7 @@
 
 ## 🧪 Testing
 
-### 22. Implementar `MarcusPrado.Platform.TestKit` completo
+### 22. ✅ Implementar `MarcusPrado.Platform.TestKit` completo
 
 **Dependências NuGet**: `Testcontainers` (≥ 3.x), `xunit`, `FluentAssertions`, `NSubstitute`
 
@@ -596,7 +598,7 @@
 
 ---
 
-### 23. Implementar `MarcusPrado.Platform.ContractTestKit` completo
+### 23. ✅ Implementar `MarcusPrado.Platform.ContractTestKit` completo
 
 **Dependências NuGet**: `PactNet` (≥ 4.x)
 
@@ -617,7 +619,7 @@
 
 ---
 
-### 24. Implementar `MarcusPrado.Platform.ChaosKit` completo
+### 24. ✅ Implementar `MarcusPrado.Platform.ChaosKit` completo
 
 **Dependências NuGet**: `Simmy` (Polly Chaos) ou implementação própria
 
@@ -635,7 +637,7 @@
 
 ---
 
-### 25. Implementar `MarcusPrado.Platform.ObservabilityTestKit` completo
+### 25. ✅ Implementar `MarcusPrado.Platform.ObservabilityTestKit` completo
 
 **Dependências NuGet**: `OpenTelemetry.Testing`
 
@@ -653,7 +655,7 @@
 
 ## 🌐 Adaptadores HTTP
 
-### 26. Implementar adapter HTTP tipado
+### 26. ✅ Implementar adapter HTTP tipado
 
 **Projeto**: `MarcusPrado.Platform.Http` (novo projeto em `src/extensions/`)
 
@@ -675,7 +677,7 @@
 
 ## 📤 Outbox + Inbox Pattern
 
-### 27. Completar `MarcusPrado.Platform.OutboxInbox`
+### 27. ✅ Completar `MarcusPrado.Platform.OutboxInbox`
 
 **`OutboxProcessor`** (implementação completa):
 - `IHostedService` que processa `OutboxMessage` com `State = Pending`
@@ -706,7 +708,7 @@
 
 ## 🎨 Domain-Driven Design
 
-### 28. Implementar pipeline CQRS completo
+### 28. ✅ Implementar pipeline CQRS completo
 
 **Módulo**: `MarcusPrado.Platform.Application`
 
@@ -739,7 +741,7 @@
 
 ## ⚙️ Configuração Runtime
 
-### 29. Implementar `MarcusPrado.Platform.Runtime` completo
+### 29. ✅ Implementar `MarcusPrado.Platform.Runtime` completo
 
 **`IAppConfiguration`** baseada em `IConfiguration`:
 - Acesso type-safe a seções com validação via `ValidateDataAnnotations()`
@@ -759,7 +761,7 @@
 
 ## 🔄 Governança e Contratos
 
-### 30. Implementar `MarcusPrado.Platform.Governance` completo
+### 30. ✅ Implementar `MarcusPrado.Platform.Governance` completo
 
 **`IContractRegistry`** (implementação `InMemoryContractRegistry`):
 - Registra `ContractMetadata` com nome, versão, schema hash, status (`Active`/`Deprecated`/`Retired`)
@@ -785,7 +787,9 @@
 
 ## 📦 Adaptadores Adicionais (Backlog Futuro)
 
-### 31. Implementar adapter de Blockchain (Nethereum)
+### 31. ✅ Implementar adapter de Blockchain (Nethereum)
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Blockchain` — `IBlockchainClient`, `IWalletManager`, `ISmartContractClient`
@@ -797,7 +801,9 @@
 
 ---
 
-### 32. Implementar adapter de Pagamento (Stripe.net)
+### 32. ✅ Implementar adapter de Pagamento (Stripe.net)
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Payment` — `IPaymentService`, `ISubscriptionService`, `IRefundService`
@@ -811,7 +817,9 @@
 
 ---
 
-### 33. Implementar adapter de Email
+### 33. ✅ Implementar adapter de Email
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Email` — `IEmailSender`, `IEmailTemplateRenderer`
@@ -824,7 +832,9 @@
 
 ---
 
-### 34. Implementar adapter de SMS
+### 34. ✅ Implementar adapter de SMS
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Sms` — `ISmsService`
@@ -835,7 +845,9 @@
 
 ---
 
-### 35. Implementar adapter de Search
+### 35. ✅ Implementar adapter de Search
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Search` — `ISearchClient`, `IIndexManager`
@@ -846,7 +858,9 @@
 
 ---
 
-### 36. Implementar adapter gRPC
+### 36. ✅ Implementar adapter gRPC
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Grpc.Server` — Interceptors: `CorrelationInterceptor`, `AuthInterceptor`, `LoggingInterceptor`, `MetricsInterceptor`
@@ -858,7 +872,9 @@
 
 ---
 
-### 37. Implementar adapter GraphQL
+### 37. ✅ Implementar adapter GraphQL
+**Status**: Concluído em 03/03/2026
+
 
 **Projeto**: `MarcusPrado.Platform.HotChocolate`
 
@@ -870,7 +886,9 @@
 
 ---
 
-### 38. Implementar utilitários de documento
+### 38. ✅ Implementar utilitários de documento
+**Status**: Concluído em 03/03/2026
+
 
 **`MarcusPrado.Platform.Pdf`**:
 - `IPdfGenerator` + `QuestPdfGenerator` (via QuestPDF)
@@ -883,7 +901,9 @@
 
 ---
 
-### 39. Implementar serialização Protobuf
+### 39. ✅ Implementar serialização Protobuf
+**Status**: Concluído em 03/03/2026
+
 
 **Projeto**: `MarcusPrado.Platform.Protobuf`
 
@@ -895,7 +915,9 @@
 
 ---
 
-### 40. Implementar Feature Flags completo
+### 40. ✅ Implementar Feature Flags completo
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.FeatureFlags`
 
@@ -913,7 +935,9 @@
 
 ---
 
-### 41. Implementar Workflow Engine
+### 41. ✅ Implementar Workflow Engine
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.Application.Workflow` (novo projeto em `src/core/`)
 
@@ -931,7 +955,9 @@
 
 ---
 
-### 42. Implementar Backup & Restore
+### 42. ✅ Implementar Backup & Restore
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.Application.BackupRestore` (novo projeto em `src/core/`)
 
@@ -945,7 +971,9 @@
 
 ---
 
-### 43. Implementar Multi-tenancy avançado
+### 43. ✅ Implementar Multi-tenancy avançado
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.MultiTenancy`
 
@@ -960,7 +988,9 @@
 
 ---
 
-### 44. Implementar Audit Log
+### 44. ✅ Implementar Audit Log
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.Application.AuditLog` (novo projeto em `src/core/`)
 
@@ -972,7 +1002,9 @@
 
 ---
 
-### 45. Implementar Service Discovery
+### 45. ✅ Implementar Service Discovery
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.ServiceDiscovery` — `IServiceDiscovery`, `ServiceEndpoint`
@@ -984,7 +1016,9 @@
 
 ## 🔧 Tooling Avançado
 
-### 46. Completar Roslyn Analyzers
+### 46. ✅ Completar Roslyn Analyzers
+**Status**: Concluído em 03/03/2026
+
 
 **Regras a implementar** (projeto `MarcusPrado.Platform.Analyzers`):
 
@@ -1005,7 +1039,9 @@
 
 ---
 
-### 47. Completar `Directory.Packages.props` (Central Package Management)
+### 47. ✅ Completar `Directory.Packages.props` (Central Package Management)
+**Status**: Concluído em 03/03/2026
+
 
 **Arquivo**: `/Directory.Packages.props`
 
@@ -1042,7 +1078,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ---
 
-### 48. Implementar templates `dotnet new`
+### 48. ✅ Implementar templates `dotnet new`
+**Status**: Concluído em 03/03/2026
+
 
 **Projeto**: `src/tooling/MarcusPrado.Platform.Templates`
 
@@ -1060,7 +1098,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ## 🗄️ Adaptadores de Banco de Dados Adicionais
 
-### 49. Implementar adapter MongoDB
+### 49. ✅ Implementar adapter MongoDB
+**Status**: Concluído em 03/03/2026
+
 
 **Projetos**:
 - `MarcusPrado.Platform.Abstractions.Document` — `IDocumentRepository<T>`, `IDocumentSession`, `IDocumentFilter<T>`
@@ -1082,7 +1122,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ---
 
-### 50. Implementar adapter SQL Server (Dapper)
+### 50. ✅ Implementar adapter SQL Server (Dapper)
+**Status**: Concluído em 03/03/2026
+
 
 **Projeto**: `MarcusPrado.Platform.SqlServer`
 
@@ -1308,7 +1350,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ## 📡 Observabilidade Avançada
 
-### 65. Implementar propagação W3C TraceContext
+### 65. ✅ Implementar propagação W3C TraceContext
+**Status**: Concluído em 03/03/2026
+
 
 **Módulo**: `MarcusPrado.Platform.Observability`
 
@@ -1607,7 +1651,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 
 ## 🧪 Testing Avançado
 
-### 85. Implementar Test Data Builders (Bogus)
+### 85. ✅ Implementar Test Data Builders (Bogus)
+**Status**: Concluído em 03/03/2026
+
 
 **Projeto**: `MarcusPrado.Platform.TestKit`
 
@@ -1856,32 +1902,32 @@ Centralizar versões de todos os NuGets utilizados na solução:
 |---|------|--------|---------------|
 | 1 | 2 | `Result<T>` + Erros | Blocker: usado por tudo |
 | 2 | 3 | Primitivos de Domain | Blocker: Entity, ValueObject |
-| 3 | 47 | `Directory.Packages.props` | Build: versões centralizadas |
-| 4 | 28 | Pipeline CQRS | Core value: dispatcher + behaviors |
+| 3 | 47 | ✅ `Directory.Packages.props` | Build: versões centralizadas |
+| 4 | 28 | ✅ Pipeline CQRS | Core value: dispatcher + behaviors |
 | 5 | 8 | ArchTests (NetArchTest) | Qualidade: enforce architecture |
 | 6 | 9 | `AspNetCore` middlewares | Essencial para qualquer API |
 | 7 | 57 | Minimal API Endpoint conventions | Dev experience: base class uniforme |
 | 8 | 58 | API Versioning | Contratos versionados |
 | 9 | 59 | OpenAPI / Scalar | Documentação pública |
-| 10 | 12 | EF Core base context | Persistência básica |
-| 11 | 13 | Postgres extension | Persistência básica |
-| 12 | 20 | Redis (cache + quota) | Cache + Rate limit + Idempotency |
+| 10 | 12 | ✅ EF Core base context | Persistência básica |
+| 11 | 13 | ✅ Postgres extension | Persistência básica |
+| 12 | 20 | ✅ Redis (cache + quota) | Cache + Rate limit + Idempotency |
 | 13 | 60 | Rate Limiting ASP.NET Core | Proteção por tenant/user |
-| 14 | 14 | Kafka | Event-driven core |
-| 15 | 15 | RabbitMQ | Mensageria alternativa |
-| 16 | 16 | OpenTelemetry | Observabilidade em produção |
-| 17 | 17 | Serilog | Logging estruturado |
-| 18 | 65 | W3C TraceContext propagation | Distributed tracing end-to-end |
+| 14 | 14 | ✅ Kafka | Event-driven core |
+| 15 | 15 | ✅ RabbitMQ | Mensageria alternativa |
+| 16 | 16 | ✅ OpenTelemetry | Observabilidade em produção |
+| 17 | 17 | ✅ Serilog | Logging estruturado |
+| 18 | 65 | ✅ W3C TraceContext propagation | Distributed tracing end-to-end |
 | 19 | 67 | Business Metrics | KPIs de negócio |
-| 20 | 19 | Resilience / Polly | Produção-ready |
-| 21 | 27 | OutboxInbox processor | Eventual consistency |
+| 20 | 19 | ✅ Resilience / Polly | Produção-ready |
+| 21 | 27 | ✅ OutboxInbox processor | Eventual consistency |
 | 22 | 95 | Distributed Lock | Coordenação entre instâncias |
-| 23 | 18 | HealthChecks | Kubernetes liveness/readiness |
+| 23 | 18 | ✅ HealthChecks | Kubernetes liveness/readiness |
 | 24 | 97 | Health check avançado | Degradação parcial visível |
-| 25 | 22 | TestKit completo | Habilita integration tests |
-| 26 | 85 | Test Data Builders (Bogus) | Dados realistas em testes |
+| 25 | 22 | ✅ TestKit completo | Habilita integration tests |
+| 26 | 85 | ✅ Test Data Builders (Bogus) | Dados realistas em testes |
 | 27 | 86 | Approval Testing (Verify) | Snapshot regression tests |
-| 28 | 46 | Roslyn Analyzers | Enforcement automático |
+| 28 | 46 | ✅ Roslyn Analyzers | Enforcement automático |
 | 29 | 4 | Static analysis config | Qualidade de código |
 | 30 | 5 | CI/CD pipeline | Automação de build e deploy |
 | 31 | 90 | Release automation | NuGet + changelog automático |
@@ -1890,9 +1936,9 @@ Centralizar versões de todos os NuGets utilizados na solução:
 | 34 | 70 | Criptografia em repouso | Dados sensíveis |
 | 35 | 72 | PII Masking completo | LGPD/GDPR compliance |
 | 36 | 74 | Input sanitization / XSS | Segurança de input |
-| 37 | 43 | MultiTenancy avançado | Feature diferencial |
-| 38 | 40 | FeatureFlags | Rollout gradual |
-| 39 | 41 | Workflow Engine | Saga pattern |
+| 37 | 43 | ✅ MultiTenancy avançado | Feature diferencial |
+| 38 | 40 | ✅ FeatureFlags | Rollout gradual |
+| 39 | 41 | ✅ Workflow Engine | Saga pattern |
 | 40 | 77 | Saga Orchestration | Transações distribuídas |
 | 41 | 75 | Event Sourcing | Audit trail completo |
 | 42 | 76 | Projeções / Read Models | CQRS read side |
@@ -1900,12 +1946,12 @@ Centralizar versões de todos os NuGets utilizados na solução:
 | 44 | 93 | Structured Error Catalog | Erros padronizados e documentados |
 | 45 | 98 | i18n / l10n | Produto multilíngue |
 | 46 | 94 | Graceful Degradation | Resiliência operacional |
-| 47 | 30 | Governance (contratos ADR) | Evolução controlada de contratos |
+| 47 | 30 | ✅ Governance (contratos ADR) | Evolução controlada de contratos |
 | 48 | 79 | Quartz.NET adapter | Jobs robustos com clustering |
 | 49 | 53 | Azure Service Bus | Mensageria cloud-native |
 | 50 | 54 | AWS SQS/SNS | Mensageria AWS |
 | 51 | 52 | NATS adapter | Mensageria de baixa latência |
-| 52 | 49 | MongoDB adapter | Document database |
+| 52 | 49 | ✅ MongoDB adapter | Document database |
 | 53 | 91 | API Changelog generator | Breaking changes detectados no CI |
 | 54 | 99 | Exception Enrichment | Dev experience: debugging |
 | 55 | 100 | Platform CLI | Developer experience |
