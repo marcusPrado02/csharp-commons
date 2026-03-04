@@ -92,6 +92,13 @@
     <PackageVersion Include="RabbitMQ.Client"                                     Version="7.1.0" />
   </ItemGroup>
 
+
+  <!-- ── gRPC ── -->
+  <ItemGroup Label="gRPC">
+    <PackageVersion Include="Grpc.Core.Api"   Version="2.52.0" />
+    <PackageVersion Include="Grpc.Net.Client" Version="2.52.0" />
+  </ItemGroup>
+
   <!-- ── TestKit (Testcontainers + Testing utilities) ── -->
   <ItemGroup Label="TestKit">
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing"                    Version="9.0.0" />

@@ -17,6 +17,18 @@
     <Project Path="src/core/MarcusPrado.Platform.Resilience/MarcusPrado.Platform.Resilience.csproj" />
     <Project Path="src/core/MarcusPrado.Platform.Runtime/MarcusPrado.Platform.Runtime.csproj" />
     <Project Path="src/core/MarcusPrado.Platform.Security/MarcusPrado.Platform.Security.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Blockchain/MarcusPrado.Platform.Abstractions.Blockchain.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Documents/MarcusPrado.Platform.Abstractions.Documents.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Email/MarcusPrado.Platform.Abstractions.Email.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.GraphQL/MarcusPrado.Platform.Abstractions.GraphQL.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Payment/MarcusPrado.Platform.Abstractions.Payment.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Search/MarcusPrado.Platform.Abstractions.Search.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.ServiceDiscovery/MarcusPrado.Platform.Abstractions.ServiceDiscovery.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Sms/MarcusPrado.Platform.Abstractions.Sms.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Abstractions.Storage/MarcusPrado.Platform.Abstractions.Storage.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.AuditLog/MarcusPrado.Platform.AuditLog.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.BackupRestore/MarcusPrado.Platform.BackupRestore.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.Workflow/MarcusPrado.Platform.Workflow.csproj" />
   </Folder>
   <Folder Name="/src/extensions/">
     <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore.Auth/MarcusPrado.Platform.AspNetCore.Auth.csproj" />
@@ -31,6 +43,8 @@
     <Project Path="src/extensions/MarcusPrado.Platform.RabbitMq/MarcusPrado.Platform.RabbitMq.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Redis/MarcusPrado.Platform.Redis.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Serilog/MarcusPrado.Platform.Serilog.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Grpc/MarcusPrado.Platform.Grpc.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Protobuf/MarcusPrado.Platform.Protobuf.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
@@ -69,6 +83,12 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Resilience.Tests/MarcusPrado.Platform.Resilience.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Serilog.Tests/MarcusPrado.Platform.Serilog.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.TestKit.Tests/MarcusPrado.Platform.TestKit.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.AuditLog.Tests/MarcusPrado.Platform.AuditLog.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.BackupRestore.Tests/MarcusPrado.Platform.BackupRestore.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Grpc.Tests/MarcusPrado.Platform.Grpc.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.MultiTenancy.Tests/MarcusPrado.Platform.MultiTenancy.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Protobuf.Tests/MarcusPrado.Platform.Protobuf.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Workflow.Tests/MarcusPrado.Platform.Workflow.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
