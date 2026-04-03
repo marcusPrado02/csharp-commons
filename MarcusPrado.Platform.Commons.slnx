@@ -45,6 +45,16 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Serilog/MarcusPrado.Platform.Serilog.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Grpc/MarcusPrado.Platform.Grpc.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Protobuf/MarcusPrado.Platform.Protobuf.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.MailKit/MarcusPrado.Platform.MailKit.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Twilio/MarcusPrado.Platform.Twilio.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Stripe/MarcusPrado.Platform.Stripe.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Elasticsearch/MarcusPrado.Platform.Elasticsearch.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Consul/MarcusPrado.Platform.Consul.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.MongoDb/MarcusPrado.Platform.MongoDb.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.HotChocolate/MarcusPrado.Platform.HotChocolate.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Pdf/MarcusPrado.Platform.Pdf.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Excel/MarcusPrado.Platform.Excel.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Nethereum/MarcusPrado.Platform.Nethereum.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
@@ -89,6 +99,16 @@
     <Project Path="tests/unit/MarcusPrado.Platform.MultiTenancy.Tests/MarcusPrado.Platform.MultiTenancy.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Protobuf.Tests/MarcusPrado.Platform.Protobuf.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Workflow.Tests/MarcusPrado.Platform.Workflow.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.MailKit.Tests/MarcusPrado.Platform.MailKit.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Twilio.Tests/MarcusPrado.Platform.Twilio.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Stripe.Tests/MarcusPrado.Platform.Stripe.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Elasticsearch.Tests/MarcusPrado.Platform.Elasticsearch.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Consul.Tests/MarcusPrado.Platform.Consul.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.MongoDb.Tests/MarcusPrado.Platform.MongoDb.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.HotChocolate.Tests/MarcusPrado.Platform.HotChocolate.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Pdf.Tests/MarcusPrado.Platform.Pdf.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Excel.Tests/MarcusPrado.Platform.Excel.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Nethereum.Tests/MarcusPrado.Platform.Nethereum.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />

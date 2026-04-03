@@ -1,0 +1,9 @@
+global using MarcusPrado.Platform.Abstractions.Blockchain;
+global using MarcusPrado.Platform.Nethereum.Blockchain;
+global using MarcusPrado.Platform.Nethereum.Extensions;
+global using MarcusPrado.Platform.Nethereum.Options;
+global using Microsoft.Extensions.DependencyInjection;
+global using Nethereum.Web3;
+global using NSubstitute;
+global using Xunit;
+global using FluentAssertions;

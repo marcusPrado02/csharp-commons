@@ -1,0 +1,9 @@
+global using MarcusPrado.Platform.Abstractions.GraphQL;
+global using MarcusPrado.Platform.HotChocolate.Context;
+global using MarcusPrado.Platform.HotChocolate.Errors;
+global using MarcusPrado.Platform.HotChocolate.Extensions;
+global using Microsoft.AspNetCore.Http;
+global using NSubstitute;
+global using Xunit;
+global using FluentAssertions;
+global using HotChocolate;
