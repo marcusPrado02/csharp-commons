@@ -37,6 +37,12 @@
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.1" />
   </ItemGroup>
 
+  <!-- ── OpenAPI / Scalar ── -->
+  <ItemGroup Label="OpenApi">
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.4.1" />
+  </ItemGroup>
+
   <!-- ── Identity / Auth ── -->
   <ItemGroup Label="Auth">
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.9.0" />
