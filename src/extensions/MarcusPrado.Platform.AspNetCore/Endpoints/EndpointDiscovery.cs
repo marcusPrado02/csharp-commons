@@ -24,16 +24,20 @@ public static class EndpointDiscovery
 
         foreach (var assembly in targets)
         {
-            var types = assembly.GetExportedTypes()
+            var types = assembly.GetTypes()
                 .Where(t => t is { IsAbstract: false, IsInterface: false }
                              && typeof(IEndpoint).IsAssignableFrom(t));
 
             foreach (var type in types)
             {
-                if (Activator.CreateInstance(type) is IEndpoint endpoint)
+                // Try DI first; fall back to Activator for types with parameterless ctors.
+                var endpoint = (IEndpoint?)app.ServiceProvider.GetService(type);
+                if (endpoint is null && type.GetConstructor(Type.EmptyTypes) is not null)
                 {
-                    endpoint.MapEndpoints(app);
+                    endpoint = (IEndpoint?)Activator.CreateInstance(type);
                 }
+
+                endpoint?.MapEndpoints(app);
             }
         }
 
