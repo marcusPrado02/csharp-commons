@@ -35,6 +35,7 @@ internal static class PlatformTestServer
             {
                 services.AddRouting();
                 services.AddPlatformCore();
+                services.AddPlatformSecurityHeaders();
             })
             .Configure(app =>
             {
@@ -91,6 +92,35 @@ internal static class PlatformTestServer
                             ctx.Response.StatusCode = 404;
                             break;
                     }
+                });
+            });
+
+        return new TestServer(builder);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="TestServer"/> with custom <see cref="Security.SecurityHeadersOptions"/>
+    /// so individual header-toggle tests can be isolated.
+    /// </summary>
+    internal static TestServer CreateWithSecurityOptions(
+        Action<Security.SecurityHeadersOptions>? configure = null)
+    {
+        var builder = new WebHostBuilder()
+            .UseEnvironment("Test")
+            .ConfigureLogging(l => l.ClearProviders())
+            .ConfigureServices(services =>
+            {
+                services.AddRouting();
+                services.AddPlatformCore();
+                services.AddPlatformSecurityHeaders(configure);
+            })
+            .Configure(app =>
+            {
+                app.UsePlatformMiddlewares();
+                app.Run(async ctx =>
+                {
+                    ctx.Response.StatusCode = 200;
+                    await ctx.Response.WriteAsync("ok");
                 });
             });
 

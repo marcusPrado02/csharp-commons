@@ -9,6 +9,7 @@ global using Microsoft.Extensions.Logging;
 
 // Platform library
 global using MarcusPrado.Platform.AspNetCore.Extensions;
+global using MarcusPrado.Platform.AspNetCore.Security;
 global using MarcusPrado.Platform.Abstractions.Context;
 global using MarcusPrado.Platform.Abstractions.Errors;
 global using MarcusPrado.Platform.Abstractions.Primitives;
