@@ -32,6 +32,11 @@
     <PackageVersion Include="xunit.runner.visualstudio"           Version="3.1.4" />
   </ItemGroup>
 
+  <!-- ── API Versioning ── -->
+  <ItemGroup Label="ApiVersioning">
+    <PackageVersion Include="Asp.Versioning.Http" Version="8.1.1" />
+  </ItemGroup>
+
   <!-- ── Identity / Auth ── -->
   <ItemGroup Label="Auth">
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.9.0" />

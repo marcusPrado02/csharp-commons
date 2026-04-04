@@ -15,6 +15,11 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <!-- API Versioning -->
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" />
+  </ItemGroup>
+
   <!-- Platform core libraries -->
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
