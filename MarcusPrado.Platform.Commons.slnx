@@ -59,6 +59,8 @@
     <Project Path="src/extensions/MarcusPrado.Platform.SignalR/MarcusPrado.Platform.SignalR.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.DataAccess/MarcusPrado.Platform.DataAccess.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.MySql/MarcusPrado.Platform.MySql.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Observability/MarcusPrado.Platform.Observability.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.EventSourcing/MarcusPrado.Platform.EventSourcing.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
@@ -117,6 +119,8 @@
     <Project Path="tests/unit/MarcusPrado.Platform.SignalR.Tests/MarcusPrado.Platform.SignalR.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.DataAccess.Tests/MarcusPrado.Platform.DataAccess.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.MySql.Tests/MarcusPrado.Platform.MySql.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Observability.Tests/MarcusPrado.Platform.Observability.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.EventSourcing.Tests/MarcusPrado.Platform.EventSourcing.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
