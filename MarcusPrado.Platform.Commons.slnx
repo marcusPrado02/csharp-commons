@@ -42,6 +42,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Postgres/MarcusPrado.Platform.Postgres.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.RabbitMq/MarcusPrado.Platform.RabbitMq.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Redis/MarcusPrado.Platform.Redis.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Security/MarcusPrado.Platform.Security.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Serilog/MarcusPrado.Platform.Serilog.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Grpc/MarcusPrado.Platform.Grpc.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Protobuf/MarcusPrado.Platform.Protobuf.csproj" />
@@ -55,6 +56,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Pdf/MarcusPrado.Platform.Pdf.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Excel/MarcusPrado.Platform.Excel.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Nethereum/MarcusPrado.Platform.Nethereum.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.SignalR/MarcusPrado.Platform.SignalR.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
@@ -91,6 +93,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.OutboxInbox.Tests/MarcusPrado.Platform.OutboxInbox.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Redis.Tests/MarcusPrado.Platform.Redis.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Resilience.Tests/MarcusPrado.Platform.Resilience.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Security.Tests/MarcusPrado.Platform.Security.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Serilog.Tests/MarcusPrado.Platform.Serilog.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.TestKit.Tests/MarcusPrado.Platform.TestKit.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AuditLog.Tests/MarcusPrado.Platform.AuditLog.Tests.csproj" />
@@ -109,6 +112,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Pdf.Tests/MarcusPrado.Platform.Pdf.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Excel.Tests/MarcusPrado.Platform.Excel.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Nethereum.Tests/MarcusPrado.Platform.Nethereum.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.SignalR.Tests/MarcusPrado.Platform.SignalR.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
