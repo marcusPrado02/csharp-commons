@@ -9,69 +9,91 @@ namespace MarcusPrado.Platform.OpenTelemetry.Metrics;
 /// </summary>
 public sealed class OtelBusinessMetrics : IBusinessMetrics
 {
-    private static readonly Meter PlatformMeter = new("MarcusPrado.Platform.Business", "1.0.0");
+    private readonly Counter<long> _ordersPlaced;
+    private readonly Histogram<double> _ordersAmount;
+    private readonly Counter<long> _paymentsProcessed;
+    private readonly Histogram<double> _paymentsAmount;
+    private readonly Counter<long> _userSignups;
+    private readonly Counter<long> _eventsConsumed;
 
-    private static readonly Counter<long> OrdersPlaced =
-        PlatformMeter.CreateCounter<long>(
+    /// <summary>
+    /// Initialises a new instance of <see cref="OtelBusinessMetrics"/>
+    /// using the provided <see cref="Meter"/>.
+    /// </summary>
+    /// <param name="meter">The <see cref="Meter"/> to create instruments on.</param>
+    public OtelBusinessMetrics(Meter meter)
+    {
+        ArgumentNullException.ThrowIfNull(meter);
+
+        _ordersPlaced = meter.CreateCounter<long>(
             "business.orders.placed",
             unit: "orders",
             description: "Total number of orders placed.");
 
-    private static readonly Counter<decimal> OrderValue =
-        PlatformMeter.CreateCounter<decimal>(
-            "business.orders.value",
+        _ordersAmount = meter.CreateHistogram<double>(
+            "business.orders.amount",
             unit: "currency",
-            description: "Total monetary value of orders placed.");
+            description: "Monetary value of orders placed.");
 
-    private static readonly Counter<long> PaymentsProcessed =
-        PlatformMeter.CreateCounter<long>(
+        _paymentsProcessed = meter.CreateCounter<long>(
             "business.payments.processed",
             unit: "payments",
             description: "Total number of payments processed.");
 
-    private static readonly Counter<long> UserSignups =
-        PlatformMeter.CreateCounter<long>(
-            "business.users.signups",
+        _paymentsAmount = meter.CreateHistogram<double>(
+            "business.payments.amount",
+            unit: "currency",
+            description: "Monetary value of payments processed.");
+
+        _userSignups = meter.CreateCounter<long>(
+            "business.users.signup",
             unit: "users",
             description: "Total number of user signups.");
 
-    private static readonly Histogram<long> EventConsumedLatency =
-        PlatformMeter.CreateHistogram<long>(
-            "business.events.consumed.latency",
-            unit: "ms",
-            description: "Latency of consumed events in milliseconds.");
+        _eventsConsumed = meter.CreateCounter<long>(
+            "business.events.consumed",
+            unit: "events",
+            description: "Total number of domain events consumed.");
+    }
+
+    /// <summary>
+    /// Initialises a new instance of <see cref="OtelBusinessMetrics"/>
+    /// using a default platform <see cref="Meter"/>.
+    /// </summary>
+    public OtelBusinessMetrics()
+        : this(new Meter("MarcusPrado.Platform.Business", "1.0.0"))
+    {
+    }
 
     /// <inheritdoc/>
-    public void RecordOrderPlaced(string tenantId, decimal value, string currency)
+    public void RecordOrderPlaced(decimal amount, string currency)
     {
-        var tagTenant = new KeyValuePair<string, object?>("tenant.id", tenantId);
         var tagCurrency = new KeyValuePair<string, object?>("currency", currency);
-        OrdersPlaced.Add(1, tagTenant, tagCurrency);
-        OrderValue.Add(value, tagTenant, tagCurrency);
+        _ordersPlaced.Add(1, tagCurrency);
+        _ordersAmount.Record((double)amount, tagCurrency);
     }
 
     /// <inheritdoc/>
-    public void RecordPaymentProcessed(string tenantId, string status, string gateway)
+    public void RecordPaymentProcessed(decimal amount, string currency, bool success)
     {
-        PaymentsProcessed.Add(1,
-            new KeyValuePair<string, object?>("tenant.id", tenantId),
-            new KeyValuePair<string, object?>("payment.status", status),
-            new KeyValuePair<string, object?>("payment.gateway", gateway));
+        var tagCurrency = new KeyValuePair<string, object?>("currency", currency);
+        var tagSuccess = new KeyValuePair<string, object?>("success", success);
+        _paymentsProcessed.Add(1, tagCurrency, tagSuccess);
+        _paymentsAmount.Record((double)amount, tagCurrency, tagSuccess);
     }
 
     /// <inheritdoc/>
-    public void RecordUserSignup(string tenantId, string plan)
+    public void RecordUserSignup(string plan)
     {
-        UserSignups.Add(1,
-            new KeyValuePair<string, object?>("tenant.id", tenantId),
-            new KeyValuePair<string, object?>("user.plan", plan));
+        _userSignups.Add(1,
+            new KeyValuePair<string, object?>("plan", plan));
     }
 
     /// <inheritdoc/>
-    public void RecordEventConsumed(string topic, string consumerGroup, long latencyMs)
+    public void RecordEventConsumed(string eventType, string source)
     {
-        EventConsumedLatency.Record(latencyMs,
-            new KeyValuePair<string, object?>("messaging.topic", topic),
-            new KeyValuePair<string, object?>("messaging.consumer_group", consumerGroup));
+        _eventsConsumed.Add(1,
+            new KeyValuePair<string, object?>("event_type", eventType),
+            new KeyValuePair<string, object?>("source", source));
     }
 }
