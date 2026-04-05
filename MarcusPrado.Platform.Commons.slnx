@@ -61,6 +61,9 @@
     <Project Path="src/extensions/MarcusPrado.Platform.MySql/MarcusPrado.Platform.MySql.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Observability/MarcusPrado.Platform.Observability.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.EventSourcing/MarcusPrado.Platform.EventSourcing.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.EventRouting/MarcusPrado.Platform.EventRouting.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Quartz/MarcusPrado.Platform.Quartz.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Hangfire/MarcusPrado.Platform.Hangfire.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
@@ -121,6 +124,9 @@
     <Project Path="tests/unit/MarcusPrado.Platform.MySql.Tests/MarcusPrado.Platform.MySql.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Observability.Tests/MarcusPrado.Platform.Observability.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.EventSourcing.Tests/MarcusPrado.Platform.EventSourcing.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.EventRouting.Tests/MarcusPrado.Platform.EventRouting.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Quartz.Tests/MarcusPrado.Platform.Quartz.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Hangfire.Tests/MarcusPrado.Platform.Hangfire.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />

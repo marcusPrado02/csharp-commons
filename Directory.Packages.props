@@ -190,4 +190,18 @@
     <PackageVersion Include="Nethereum.Web3"                                      Version="4.26.0" />
   </ItemGroup>
 
+  <!-- ── Quartz.NET ── -->
+  <ItemGroup Label="Quartz">
+    <PackageVersion Include="Quartz"                                              Version="3.17.1" />
+    <PackageVersion Include="Quartz.Extensions.DependencyInjection"              Version="3.17.1" />
+    <PackageVersion Include="Quartz.Extensions.Hosting"                          Version="3.17.1" />
+  </ItemGroup>
+
+  <!-- ── Hangfire ── -->
+  <ItemGroup Label="Hangfire">
+    <PackageVersion Include="Hangfire.Core"       Version="1.8.23" />
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.23" />
+    <PackageVersion Include="Hangfire.InMemory"   Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
