@@ -20,6 +20,11 @@
     <PackageReference Include="Asp.Versioning.Http" />
   </ItemGroup>
 
+  <!-- HtmlSanitizer (XSS prevention) -->
+  <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" />
+  </ItemGroup>
+
   <!-- OpenAPI / Scalar -->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
