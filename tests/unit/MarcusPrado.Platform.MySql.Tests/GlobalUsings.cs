@@ -1,0 +1,9 @@
+global using System.Data;
+global using FluentAssertions;
+global using MarcusPrado.Platform.MySql;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
+global using Microsoft.Extensions.Options;
+global using NSubstitute;
+global using NSubstitute.ExceptionExtensions;
+global using Xunit;

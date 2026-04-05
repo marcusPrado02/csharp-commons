@@ -75,6 +75,11 @@
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
   </ItemGroup>
 
+  <!-- ── Caching ── -->
+  <ItemGroup Label="Caching">
+    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />
+  </ItemGroup>
+
   <!-- ── Redis ── -->
   <ItemGroup Label="Redis">
     <PackageVersion Include="StackExchange.Redis"                                 Version="2.8.24" />
@@ -86,12 +91,20 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore"                       Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory"              Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational"            Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Data.Sqlite"                               Version="9.0.4" />
   </ItemGroup>
 
   <!-- ── Postgres / Npgsql ── -->
   <ItemGroup Label="Postgres">
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL"               Version="9.0.4" />
     <PackageVersion Include="Dapper"                                               Version="2.1.35" />
+  </ItemGroup>
+
+  <!-- ── MySQL / Pomelo ── -->
+  <ItemGroup Label="MySQL">
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql"                    Version="9.0.0-preview.2.efcore.9.0.0" />
+    <PackageVersion Include="MySqlConnector"                                       Version="2.4.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks"       Version="9.0.4" />
   </ItemGroup>
 
   <!-- ── Kafka ── -->
