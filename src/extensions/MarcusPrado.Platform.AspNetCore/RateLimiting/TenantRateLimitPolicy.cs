@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -37,16 +36,10 @@ public sealed class TenantRateLimitPolicy : IRateLimiterPolicy<string>
     }
 
     /// <inheritdoc/>
-    public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected
-        => static (context, _) =>
-        {
-            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-            if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
-            {
-                context.HttpContext.Response.Headers.RetryAfter =
-                    ((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
-            }
-
-            return ValueTask.CompletedTask;
-        };
+    /// <remarks>
+    /// Returns <see langword="null"/> so that the global <c>OnRejected</c>
+    /// handler registered in <see cref="PlatformRateLimitingExtensions"/> is
+    /// used to write the 429 ProblemDetails response.
+    /// </remarks>
+    public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected => null;
 }

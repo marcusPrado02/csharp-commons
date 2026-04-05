@@ -17,4 +17,10 @@ public sealed class PlatformRateLimitingOptions
 
     /// <summary>Sliding window segment count for the per-user policy (default: 6).</summary>
     public int UserSegmentsPerWindow { get; set; } = 6;
+
+    /// <summary>Permits per window for the per-IP policy (default: 300).</summary>
+    public int IpPermitLimit { get; set; } = 300;
+
+    /// <summary>Window for the per-IP policy (default: 1 minute).</summary>
+    public TimeSpan IpWindow { get; set; } = TimeSpan.FromMinutes(1);
 }

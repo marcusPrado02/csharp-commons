@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 
 namespace MarcusPrado.Platform.AspNetCore.RateLimiting;
@@ -13,10 +15,15 @@ public static class PlatformRateLimitingExtensions
     /// <summary>Policy name for the per-user rate limit.</summary>
     public const string UserPolicy = "platform-user";
 
+    /// <summary>Policy name for the per-IP rate limit.</summary>
+    public const string IpPolicy = "platform-ip";
+
     /// <summary>
-    /// Adds the platform rate-limiting middleware with per-tenant and
-    /// per-user policies.  Call <c>app.UseRateLimiter()</c> in the
-    /// middleware pipeline to activate it.
+    /// Adds the platform rate-limiting middleware with per-tenant, per-user,
+    /// and per-IP policies.  The global <c>OnRejected</c> handler returns a
+    /// 429 response with a <c>application/problem+json</c> body and an
+    /// optional <c>Retry-After</c> header.
+    /// Call <c>app.UseRateLimiter()</c> in the middleware pipeline to activate it.
     /// </summary>
     public static IServiceCollection AddPlatformRateLimiting(
         this IServiceCollection services,
@@ -30,12 +37,32 @@ public static class PlatformRateLimitingExtensions
         services.AddSingleton(opts);
         services.AddSingleton<TenantRateLimitPolicy>();
         services.AddSingleton<UserRateLimitPolicy>();
+        services.AddSingleton<IpRateLimitPolicy>();
 
         services.AddRateLimiter(limiter =>
         {
             limiter.AddPolicy<string, TenantRateLimitPolicy>(TenantPolicy);
             limiter.AddPolicy<string, UserRateLimitPolicy>(UserPolicy);
-            limiter.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            limiter.AddPolicy<string, IpRateLimitPolicy>(IpPolicy);
+
+            limiter.OnRejected = async (ctx, token) =>
+            {
+                ctx.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+
+                if (ctx.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+                {
+                    ctx.HttpContext.Response.Headers.RetryAfter =
+                        ((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                }
+
+                const string body =
+                    "{\"status\":429,\"title\":\"Too Many Requests\"," +
+                    "\"detail\":\"Rate limit exceeded. Try again after the Retry-After period.\"," +
+                    "\"type\":\"https://tools.ietf.org/html/rfc6585#section-4\"}";
+
+                ctx.HttpContext.Response.ContentType = "application/problem+json";
+                await ctx.HttpContext.Response.WriteAsync(body, token);
+            };
         });
 
         return services;
