@@ -109,6 +109,7 @@ public sealed class CompressionExtensionsTests
 
     private static IServiceProvider BuildServiceProvider()
         => new ServiceCollection()
+            .AddLogging()
             .AddPlatformResponseCompression()
             .BuildServiceProvider();
 
