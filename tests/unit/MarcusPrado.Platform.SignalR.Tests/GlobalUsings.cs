@@ -1,0 +1,13 @@
+global using FluentAssertions;
+global using MarcusPrado.Platform.Domain.Events;
+global using MarcusPrado.Platform.SignalR.Events;
+global using MarcusPrado.Platform.SignalR.Hubs;
+global using MarcusPrado.Platform.SignalR.Publishers;
+global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.SignalR;
+global using Microsoft.AspNetCore.SignalR.Client;
+global using Microsoft.AspNetCore.TestHost;
+global using Microsoft.Extensions.DependencyInjection;
+global using NSubstitute;
+global using Xunit;
