@@ -1,6 +1,11 @@
+global using MarcusPrado.Platform.Abstractions.Context;
+global using MarcusPrado.Platform.Domain.Auditing;
+global using MarcusPrado.Platform.Domain.Events;
 global using MarcusPrado.Platform.EfCore.DbContext;
 global using MarcusPrado.Platform.EfCore.Outbox;
+global using MarcusPrado.Platform.EfCore.Uow;
 global using MarcusPrado.Platform.OutboxInbox.Outbox;
 global using MarcusPrado.Platform.OutboxInbox.Inbox;
+global using MarcusPrado.Platform.EfCore.Tests.Helpers;
 global using Microsoft.EntityFrameworkCore;
 global using Xunit;
