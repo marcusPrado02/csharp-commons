@@ -182,4 +182,5 @@ reports/
 *.dtpx
 *.dtt
 
-BACKLOG.md
+BACKLOG.md.claire/
+.claude/

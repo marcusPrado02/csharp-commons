@@ -1,0 +1,10 @@
+global using FluentAssertions;
+global using MarcusPrado.Platform.Kafka.Extensions;
+global using MarcusPrado.Platform.Kafka.Options;
+global using MarcusPrado.Platform.Kafka.Producer;
+global using MarcusPrado.Platform.Kafka.Serialization;
+global using MarcusPrado.Platform.Kafka.Tracing;
+global using MarcusPrado.Platform.Messaging.Envelope;
+global using MarcusPrado.Platform.Messaging.Serialization;
+global using Microsoft.Extensions.DependencyInjection;
+global using Xunit;
