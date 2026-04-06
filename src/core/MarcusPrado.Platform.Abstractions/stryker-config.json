@@ -1,0 +1,17 @@
+{
+  "stryker-config": {
+    "project-info": {
+      "name": "MarcusPrado.Platform.Abstractions",
+      "version": "main"
+    },
+    "reporters": ["html", "progress"],
+    "thresholds": {
+      "high": 80,
+      "low": 70,
+      "break": 60
+    },
+    "test-projects": [
+      "../../../tests/unit/MarcusPrado.Platform.Abstractions.Tests"
+    ]
+  }
+}

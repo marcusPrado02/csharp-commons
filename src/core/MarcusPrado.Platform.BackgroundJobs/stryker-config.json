@@ -1,0 +1,15 @@
+{
+  "stryker-config": {
+    "project-info": {
+      "name": "MarcusPrado.Platform.BackgroundJobs",
+      "version": "main"
+    },
+    "reporters": ["html", "progress"],
+    "thresholds": {
+      "high": 80,
+      "low": 70,
+      "break": 60
+    },
+    "test-projects": []
+  }
+}
