@@ -133,6 +133,8 @@
     <Project Path="tests/unit/MarcusPrado.Platform.DistributedLock.Tests/MarcusPrado.Platform.DistributedLock.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Configuration.Tests/MarcusPrado.Platform.Configuration.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Degradation.Tests/MarcusPrado.Platform.Degradation.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.ContractTestKit.Tests/MarcusPrado.Platform.ContractTestKit.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.ChaosKit.Tests/MarcusPrado.Platform.ChaosKit.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
