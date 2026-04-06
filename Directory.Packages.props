@@ -81,6 +81,11 @@
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
   </ItemGroup>
 
+  <!-- ── HTTP Resilience ── -->
+  <ItemGroup Label="HttpResilience">
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.3.0" />
+  </ItemGroup>
+
   <!-- ── Caching ── -->
   <ItemGroup Label="Caching">
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.4" />

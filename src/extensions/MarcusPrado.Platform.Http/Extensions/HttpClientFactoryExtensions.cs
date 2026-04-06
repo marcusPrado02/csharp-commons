@@ -1,6 +1,7 @@
 using System.Net.Http;
 using MarcusPrado.Platform.Http.Clients;
 using MarcusPrado.Platform.Http.Handlers;
+using Microsoft.AspNetCore.Http;
 
 namespace MarcusPrado.Platform.Http.Extensions;
 
@@ -10,8 +11,9 @@ namespace MarcusPrado.Platform.Http.Extensions;
 public static class HttpClientFactoryExtensions
 {
     /// <summary>
-    /// Registers typed client <typeparamref name="TClient"/> with correlation
-    /// and tenant header propagation applied via delegating handlers.
+    /// Registers typed client <typeparamref name="TClient"/> with correlation,
+    /// tenant, and auth-token header propagation applied via delegating handlers,
+    /// plus standard resilience (retry, circuit-breaker, timeout).
     /// </summary>
     /// <typeparam name="TClient">
     /// The typed client to register; must derive from <see cref="TypedHttpClient"/>.
@@ -26,8 +28,10 @@ public static class HttpClientFactoryExtensions
         var opts = new HttpClientOptions();
         configure?.Invoke(opts);
 
+        services.AddHttpContextAccessor();
         services.AddTransient<CorrelationHeaderHandler>();
         services.AddTransient<TenantHeaderHandler>();
+        services.AddTransient<AuthTokenHandler>();
 
         services
             .AddHttpClient<TClient>(client =>
@@ -40,7 +44,9 @@ public static class HttpClientFactoryExtensions
                 client.Timeout = opts.Timeout;
             })
             .AddHttpMessageHandler<CorrelationHeaderHandler>()
-            .AddHttpMessageHandler<TenantHeaderHandler>();
+            .AddHttpMessageHandler<TenantHeaderHandler>()
+            .AddHttpMessageHandler<AuthTokenHandler>()
+            .AddStandardResilienceHandler();
 
         return services;
     }
