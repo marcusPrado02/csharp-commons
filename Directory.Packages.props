@@ -4,6 +4,11 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
+  <!-- ── Versioning ── -->
+  <ItemGroup Label="Versioning">
+    <PackageVersion Include="MinVer" Version="6.0.0" />
+  </ItemGroup>
+
   <!-- ── Analyzers (dev-only, applied to all projects via Directory.Build.props) ── -->
   <ItemGroup Label="Analyzers">
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.103" />
