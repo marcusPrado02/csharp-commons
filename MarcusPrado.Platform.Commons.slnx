@@ -89,6 +89,7 @@
   <Folder Name="/src/tooling/">
     <Project Path="src/tooling/MarcusPrado.Platform.Analyzers/MarcusPrado.Platform.Analyzers.csproj" />
     <Project Path="src/tooling/MarcusPrado.Platform.ArchTests/MarcusPrado.Platform.ArchTests.csproj" />
+    <Project Path="src/tooling/MarcusPrado.Platform.Templates/MarcusPrado.Platform.Templates.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/MarcusPrado.Platform.Application.Tests/MarcusPrado.Platform.Application.Tests.csproj" />

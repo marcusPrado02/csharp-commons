@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Marcus Prado Silva",
+  "classifications": [ "Platform", "CQRS", "Command" ],
+  "identity": "MarcusPrado.Platform.Command",
+  "name": "MarcusPrado Platform Command Handler",
+  "shortName": "platform-command",
+  "sourceName": "MyDomain",
+  "tags": { "language": "C#", "type": "project" }
+}

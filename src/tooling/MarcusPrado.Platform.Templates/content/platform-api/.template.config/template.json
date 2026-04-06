@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Marcus Prado Silva",
+  "classifications": [ "Platform", "API", "Web" ],
+  "identity": "MarcusPrado.Platform.Api",
+  "name": "MarcusPrado Platform Minimal API Service",
+  "shortName": "platform-api",
+  "sourceName": "MyService",
+  "tags": { "language": "C#", "type": "project" },
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "Target framework",
+      "datatype": "choice",
+      "choices": [{ "choice": "net10.0" }],
+      "replaces": "net10.0",
+      "defaultValue": "net10.0"
+    }
+  }
+}

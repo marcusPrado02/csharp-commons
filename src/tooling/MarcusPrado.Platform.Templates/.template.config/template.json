@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Marcus Prado Silva",
+  "classifications": [ "Platform", "Service" ],
+  "identity": "MarcusPrado.Platform.Templates",
+  "name": "MarcusPrado Platform Templates",
+  "shortName": "platform",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  }
+}

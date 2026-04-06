@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Marcus Prado Silva",
+  "classifications": [ "Platform", "Domain" ],
+  "identity": "MarcusPrado.Platform.Domain",
+  "name": "MarcusPrado Platform Domain Library",
+  "shortName": "platform-domain",
+  "sourceName": "MyDomain",
+  "tags": { "language": "C#", "type": "project" }
+}
