@@ -1,0 +1,11 @@
+global using Azure.Messaging.ServiceBus;
+global using FluentAssertions;
+global using MarcusPrado.Platform.AzureServiceBus.Consumer;
+global using MarcusPrado.Platform.AzureServiceBus.Extensions;
+global using MarcusPrado.Platform.AzureServiceBus.Health;
+global using MarcusPrado.Platform.AzureServiceBus.Options;
+global using MarcusPrado.Platform.AzureServiceBus.Publisher;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using NSubstitute;
+global using Xunit;

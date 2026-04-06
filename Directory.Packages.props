@@ -133,6 +133,12 @@
     <PackageVersion Include="RabbitMQ.Client"                                     Version="7.1.0" />
   </ItemGroup>
 
+  <!-- ── Azure Service Bus ── -->
+  <ItemGroup Label="AzureServiceBus">
+    <PackageVersion Include="Azure.Messaging.ServiceBus"                          Version="7.18.4" />
+    <PackageVersion Include="Azure.Identity"                                       Version="1.13.2" />
+  </ItemGroup>
+
 
   <!-- ── gRPC ── -->
   <ItemGroup Label="gRPC">
