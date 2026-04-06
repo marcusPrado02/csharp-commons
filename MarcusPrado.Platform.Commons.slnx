@@ -69,6 +69,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Degradation/MarcusPrado.Platform.Degradation.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
+    <Project Path="src/kits/MarcusPrado.Platform.ApprovalTestKit/MarcusPrado.Platform.ApprovalTestKit.csproj" />
     <Project Path="src/kits/MarcusPrado.Platform.ChaosKit/MarcusPrado.Platform.ChaosKit.csproj" />
     <Project Path="src/kits/MarcusPrado.Platform.ContractTestKit/MarcusPrado.Platform.ContractTestKit.csproj" />
     <Project Path="src/kits/MarcusPrado.Platform.ObservabilityTestKit/MarcusPrado.Platform.ObservabilityTestKit.csproj" />
@@ -134,6 +135,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Configuration.Tests/MarcusPrado.Platform.Configuration.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Degradation.Tests/MarcusPrado.Platform.Degradation.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.ContractTestKit.Tests/MarcusPrado.Platform.ContractTestKit.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.ApprovalTestKit.Tests/MarcusPrado.Platform.ApprovalTestKit.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.ChaosKit.Tests/MarcusPrado.Platform.ChaosKit.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
