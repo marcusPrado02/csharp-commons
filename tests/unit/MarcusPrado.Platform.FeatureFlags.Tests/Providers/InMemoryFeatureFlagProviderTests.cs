@@ -116,4 +116,69 @@ public sealed class InMemoryFeatureFlagProviderTests
         var d = await _provider.EvaluateAsync("del", _ctx);
         Assert.Equal("flag-not-found", d.Reason);
     }
+
+    [Fact]
+    public async Task UserWhitelist_DisablesNonMatchingUser()
+    {
+        _provider.SetFlag(new FeatureFlag
+        {
+            Key = "uwl2",
+            Enabled = true,
+            Strategy = RolloutStrategy.UserWhitelist,
+            UserWhitelist = new HashSet<string> { "user-abc" },
+        });
+
+        var ctx = new FeatureFlagContext { UserId = "user-xyz" };
+        Assert.False(await _provider.IsEnabledAsync("uwl2", ctx));
+    }
+
+    [Fact]
+    public async Task CanaryStrategy_EnablesUserInBucket()
+    {
+        // "canary-flag":"user-0" => deterministic bucket 5, within 20%
+        _provider.SetFlag(new FeatureFlag
+        {
+            Key = "canary-flag",
+            Enabled = true,
+            Strategy = RolloutStrategy.Canary,
+            Percentage = 20,
+        });
+
+        var ctx = new FeatureFlagContext { UserId = "user-0" };
+        Assert.True(await _provider.IsEnabledAsync("canary-flag", ctx));
+    }
+
+    [Fact]
+    public async Task CanaryStrategy_DisablesUserOutsideBucket()
+    {
+        // "canary-flag":"user-10" => deterministic bucket 94, outside 20%
+        _provider.SetFlag(new FeatureFlag
+        {
+            Key = "canary-flag",
+            Enabled = true,
+            Strategy = RolloutStrategy.Canary,
+            Percentage = 20,
+        });
+
+        var ctx = new FeatureFlagContext { UserId = "user-10" };
+        Assert.False(await _provider.IsEnabledAsync("canary-flag", ctx));
+    }
+
+    [Fact]
+    public async Task MultipleFlags_EvaluatedIndependently()
+    {
+        _provider.SetFlag(new FeatureFlag { Key = "flag-a", Enabled = true });
+        _provider.SetFlag(new FeatureFlag { Key = "flag-b", Enabled = false });
+        _provider.SetFlag(new FeatureFlag
+        {
+            Key = "flag-c",
+            Enabled = true,
+            Strategy = RolloutStrategy.Percentage,
+            Percentage = 100,
+        });
+
+        Assert.True(await _provider.IsEnabledAsync("flag-a", _ctx));
+        Assert.False(await _provider.IsEnabledAsync("flag-b", _ctx));
+        Assert.True(await _provider.IsEnabledAsync("flag-c", _ctx));
+    }
 }

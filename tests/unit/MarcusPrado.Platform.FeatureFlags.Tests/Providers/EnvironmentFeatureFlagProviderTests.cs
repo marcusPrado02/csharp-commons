@@ -49,4 +49,20 @@ public sealed class EnvironmentFeatureFlagProviderTests : IDisposable
         var d = await _provider.EvaluateAsync("env-pct-flag", FeatureFlagContext.Anonymous);
         Assert.True(d.IsEnabled);
     }
+
+    [Fact]
+    public async Task Env0Pct_ReturnsDisabled()
+    {
+        SetEnv("FEATURE__ENV_ZERO_PCT_FLAG", "0");
+        var d = await _provider.EvaluateAsync("env-zero-pct-flag", FeatureFlagContext.Anonymous);
+        Assert.False(d.IsEnabled);
+    }
+
+    [Fact]
+    public async Task EnvInvalidValue_ReturnsDisabled()
+    {
+        SetEnv("FEATURE__ENV_INVALID_FLAG", "not-a-boolean");
+        var d = await _provider.EvaluateAsync("env-invalid-flag", FeatureFlagContext.Anonymous);
+        Assert.False(d.IsEnabled);
+    }
 }
