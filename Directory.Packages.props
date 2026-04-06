@@ -22,6 +22,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection"            Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Hosting"                          Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions"             Version="10.0.3" />
   </ItemGroup>
 
   <!-- ── Test infrastructure ── -->
@@ -74,6 +75,7 @@
 
   <!-- ── OpenTelemetry ── -->
   <ItemGroup Label="OpenTelemetry">
+    <PackageVersion Include="OpenTelemetry"                           Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting"        Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http"       Version="1.9.0" />

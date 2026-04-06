@@ -71,6 +71,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.DistributedLock/MarcusPrado.Platform.DistributedLock.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Configuration/MarcusPrado.Platform.Configuration.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Degradation/MarcusPrado.Platform.Degradation.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.DlqReprocessing/MarcusPrado.Platform.DlqReprocessing.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.ExceptionEnrichment/MarcusPrado.Platform.ExceptionEnrichment.csproj" />
   </Folder>
   <Folder Name="/src/kits/">
@@ -159,6 +160,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.RabbitMq.Tests/MarcusPrado.Platform.RabbitMq.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AzureServiceBus.Tests/MarcusPrado.Platform.AzureServiceBus.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AwsSqs.Tests/MarcusPrado.Platform.AwsSqs.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.DlqReprocessing.Tests/MarcusPrado.Platform.DlqReprocessing.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
