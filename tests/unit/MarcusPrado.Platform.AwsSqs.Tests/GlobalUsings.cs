@@ -1,0 +1,12 @@
+global using Amazon.SimpleNotificationService;
+global using Amazon.SQS;
+global using FluentAssertions;
+global using MarcusPrado.Platform.AwsSqs.Extensions;
+global using MarcusPrado.Platform.AwsSqs.Health;
+global using MarcusPrado.Platform.AwsSqs.Options;
+global using MarcusPrado.Platform.AwsSqs.Sns;
+global using MarcusPrado.Platform.AwsSqs.Sqs;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using NSubstitute;
+global using Xunit;

@@ -59,6 +59,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Nethereum/MarcusPrado.Platform.Nethereum.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Nats/MarcusPrado.Platform.Nats.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.AzureServiceBus/MarcusPrado.Platform.AzureServiceBus.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.AwsSqs/MarcusPrado.Platform.AwsSqs.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.SignalR/MarcusPrado.Platform.SignalR.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.DataAccess/MarcusPrado.Platform.DataAccess.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.MySql/MarcusPrado.Platform.MySql.csproj" />
@@ -157,6 +158,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Kafka.Tests/MarcusPrado.Platform.Kafka.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.RabbitMq.Tests/MarcusPrado.Platform.RabbitMq.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.AzureServiceBus.Tests/MarcusPrado.Platform.AzureServiceBus.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.AwsSqs.Tests/MarcusPrado.Platform.AwsSqs.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
