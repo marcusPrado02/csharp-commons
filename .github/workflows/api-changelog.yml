@@ -1,0 +1,80 @@
+# api-changelog.yml
+# Runs on every pull request, extracts the public API surface of changed
+# assemblies and posts a summary as a PR comment.
+#
+# NOTE: The actual API comparison is conceptual – the `dotnet run` step below
+# uses `echo` placeholders until a CLI entry-point is added to the
+# MarcusPrado.Platform.ApiChangelog tooling project.
+
+name: API Changelog
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  pull-requests: write   # required to post PR comments
+  contents: read
+
+jobs:
+  api-changelog:
+    name: Extract & Diff API Surface
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so we can compare with the base branch
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore NuGet packages
+        run: dotnet restore MarcusPrado.Platform.Commons.slnx
+
+      - name: Build solution
+        run: dotnet build MarcusPrado.Platform.Commons.slnx --no-restore --configuration Release
+
+      # ── Conceptual API surface extraction ──────────────────────────────────
+      # When a CLI wrapper exists, replace the steps below with:
+      #
+      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
+      #     extract --assembly <path-to-dll> --output baseline.json
+      #
+      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
+      #     extract --assembly <path-to-dll> --output current.json
+      #
+      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
+      #     diff --baseline baseline.json --current current.json \
+      #     --output diff.md
+      # ───────────────────────────────────────────────────────────────────────
+
+      - name: Extract baseline API surface (conceptual)
+        run: |
+          echo "Extracting baseline API surface from base branch"
+          echo '{"assemblyName":"MarcusPrado.Platform","version":"baseline","types":[]}' > baseline.json
+
+      - name: Extract current API surface (conceptual)
+        run: |
+          echo "Extracting current API surface from PR branch"
+          echo '{"assemblyName":"MarcusPrado.Platform","version":"current","types":[]}' > current.json
+
+      - name: Compute API diff and render changelog (conceptual)
+        run: |
+          echo "Computing diff between baseline and current"
+          printf '%s\n' \
+            '## API Changes in this PR' \
+            '' \
+            '_No CLI tool available yet – replace this step with `dotnet run` once_' \
+            '_`MarcusPrado.Platform.ApiChangelog` exposes a CLI entry-point._' \
+            > diff.md
+
+      - name: Post API diff as PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: api-changelog
+          path: diff.md

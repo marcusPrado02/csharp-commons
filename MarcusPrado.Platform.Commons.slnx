@@ -90,6 +90,7 @@
     <Project Path="src/tooling/MarcusPrado.Platform.Analyzers/MarcusPrado.Platform.Analyzers.csproj" />
     <Project Path="src/tooling/MarcusPrado.Platform.ArchTests/MarcusPrado.Platform.ArchTests.csproj" />
     <Project Path="src/tooling/MarcusPrado.Platform.Templates/MarcusPrado.Platform.Templates.csproj" />
+    <Project Path="src/tooling/MarcusPrado.Platform.ApiChangelog/MarcusPrado.Platform.ApiChangelog.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/MarcusPrado.Platform.Application.Tests/MarcusPrado.Platform.Application.Tests.csproj" />
@@ -147,6 +148,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.IntegrationTestEnvironment.Tests/MarcusPrado.Platform.IntegrationTestEnvironment.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.PerformanceTestKit.Tests/MarcusPrado.Platform.PerformanceTestKit.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Analyzers.Tests/MarcusPrado.Platform.Analyzers.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.ApiChangelog.Tests/MarcusPrado.Platform.ApiChangelog.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
