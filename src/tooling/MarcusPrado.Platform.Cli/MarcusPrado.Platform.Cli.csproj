@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>platform</ToolCommandName>
+    <PackageId>MarcusPrado.Platform.Cli</PackageId>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <!-- SA1516: top-level statements in Program.cs don't need blank-line separators -->
+    <NoWarn>$(NoWarn);SA1516</NoWarn>
+  </PropertyGroup>
+</Project>
