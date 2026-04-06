@@ -1,8 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <Nullable>enable</Nullable>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>SA1633;SA1200;CA1062;RS1038;RS2008</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="4.11.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" VersionOverride="3.11.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" VersionOverride="4.11.0" PrivateAssets="all" />
+  </ItemGroup>
 </Project>

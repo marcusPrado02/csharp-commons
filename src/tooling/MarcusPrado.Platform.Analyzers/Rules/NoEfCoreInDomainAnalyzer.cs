@@ -1,3 +1,2 @@
-namespace MarcusPrado.Platform.Analyzers.Rules;
-
-public class NoEfCoreInDomainAnalyzer { }
+// This file is kept for backward-compatibility. The implementation lives in
+// MarcusPrado.Platform.Analyzers.Analyzers.NoEfCoreInDomainAnalyzer.
