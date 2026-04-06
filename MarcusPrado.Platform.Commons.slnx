@@ -29,6 +29,7 @@
     <Project Path="src/core/MarcusPrado.Platform.AuditLog/MarcusPrado.Platform.AuditLog.csproj" />
     <Project Path="src/core/MarcusPrado.Platform.BackupRestore/MarcusPrado.Platform.BackupRestore.csproj" />
     <Project Path="src/core/MarcusPrado.Platform.Workflow/MarcusPrado.Platform.Workflow.csproj" />
+    <Project Path="src/core/MarcusPrado.Platform.ErrorCatalog/MarcusPrado.Platform.ErrorCatalog.csproj" />
   </Folder>
   <Folder Name="/src/extensions/">
     <Project Path="src/extensions/MarcusPrado.Platform.AspNetCore.Auth/MarcusPrado.Platform.AspNetCore.Auth.csproj" />
@@ -139,6 +140,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.ApprovalTestKit.Tests/MarcusPrado.Platform.ApprovalTestKit.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.ChaosKit.Tests/MarcusPrado.Platform.ChaosKit.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.ExceptionEnrichment.Tests/MarcusPrado.Platform.ExceptionEnrichment.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.ErrorCatalog.Tests/MarcusPrado.Platform.ErrorCatalog.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/benchmarks/">
     <Project Path="tests/benchmarks/MarcusPrado.Platform.Benchmarks/MarcusPrado.Platform.Benchmarks.csproj" />
