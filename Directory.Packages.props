@@ -118,6 +118,11 @@
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks"       Version="9.0.4" />
   </ItemGroup>
 
+  <!-- ── NATS ── -->
+  <ItemGroup Label="NATS">
+    <PackageVersion Include="NATS.Net"                                            Version="2.5.3" />
+  </ItemGroup>
+
   <!-- ── Kafka ── -->
   <ItemGroup Label="Kafka">
     <PackageVersion Include="Confluent.Kafka"                                     Version="2.8.0" />

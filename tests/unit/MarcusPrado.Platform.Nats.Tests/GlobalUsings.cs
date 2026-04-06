@@ -1,0 +1,11 @@
+global using FluentAssertions;
+global using MarcusPrado.Platform.Nats.Consumer;
+global using MarcusPrado.Platform.Nats.Extensions;
+global using MarcusPrado.Platform.Nats.Health;
+global using MarcusPrado.Platform.Nats.Options;
+global using MarcusPrado.Platform.Nats.Publisher;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
+global using NATS.Client.Core;
+global using NSubstitute;
+global using Xunit;

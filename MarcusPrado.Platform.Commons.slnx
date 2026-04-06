@@ -57,6 +57,7 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Pdf/MarcusPrado.Platform.Pdf.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Excel/MarcusPrado.Platform.Excel.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Nethereum/MarcusPrado.Platform.Nethereum.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.Nats/MarcusPrado.Platform.Nats.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.SignalR/MarcusPrado.Platform.SignalR.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.DataAccess/MarcusPrado.Platform.DataAccess.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.MySql/MarcusPrado.Platform.MySql.csproj" />
@@ -130,6 +131,7 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Pdf.Tests/MarcusPrado.Platform.Pdf.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Excel.Tests/MarcusPrado.Platform.Excel.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Nethereum.Tests/MarcusPrado.Platform.Nethereum.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.Nats.Tests/MarcusPrado.Platform.Nats.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.SignalR.Tests/MarcusPrado.Platform.SignalR.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.DataAccess.Tests/MarcusPrado.Platform.DataAccess.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.MySql.Tests/MarcusPrado.Platform.MySql.Tests.csproj" />

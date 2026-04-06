@@ -1,0 +1,9 @@
+global using System.Text.Json;
+global using MarcusPrado.Platform.Nats.Consumer;
+global using MarcusPrado.Platform.Nats.Options;
+global using MarcusPrado.Platform.Nats.Publisher;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
+global using NATS.Client.Core;
+global using NATS.Client.JetStream;
+global using NATS.Client.JetStream.Models;
