@@ -38,9 +38,11 @@ static int Extract(string[] args)
         return PrintError($"Assembly not found: {dllPath}");
     }
 
-    var assembly = Assembly.LoadFrom(dllPath);
+#pragma warning disable S3885 // Must load from path — Assembly.Load does not accept file paths
+    var assembly = Assembly.LoadFile(Path.GetFullPath(dllPath));
+#pragma warning restore S3885
     var surface  = ApiSurfaceExtractor.Extract(assembly);
-    var json     = JsonSerializer.Serialize(surface, new JsonSerializerOptions { WriteIndented = true });
+    var json     = JsonSerializer.Serialize(surface, ApiChangelogJsonOptions.Default);
 
     if (output is not null)
     {
@@ -123,3 +125,13 @@ static int PrintHelp()
     Console.WriteLine("  platform-api diff --baseline baseline.json --current current.json --version 1.3.0");
     return 0;
 }
+
+// ── Shared options ─────────────────────────────────────────────────────────────
+
+#pragma warning disable S3903 // Top-level program types cannot be placed in a named namespace
+internal static class ApiChangelogJsonOptions
+{
+    internal static readonly JsonSerializerOptions Default =
+        new() { WriteIndented = true };
+}
+#pragma warning restore S3903
