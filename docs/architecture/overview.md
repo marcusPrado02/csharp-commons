@@ -92,7 +92,7 @@ MarcusPrado.Platform.Commons.slnx
 
 ## Key Design Decisions
 
-See the Architecture Decision Records for detailed rationale:
+See the [ADR index](adr/README.md) for the full list. Key decisions:
 
 | ADR | Decision |
 |-----|----------|
@@ -100,6 +100,8 @@ See the Architecture Decision Records for detailed rationale:
 | [ADR-002](adr/ADR-002-no-mediatr.md) | Own CQRS pipeline instead of MediatR |
 | [ADR-003](adr/ADR-003-efcore-in-extension.md) | EF Core belongs in Extensions, never in Core |
 | [ADR-004](adr/ADR-004-otel-semantic-conventions.md) | OpenTelemetry Semantic Conventions for all telemetry |
+| [ADR-005](adr/ADR-005-versioning-strategy.md) | MinVer + Central Package Management for versioning |
+| [ADR-006](adr/ADR-006-testing-strategy.md) | Layered test pyramid: unit / integration / contract / architecture |
 
 ---
 

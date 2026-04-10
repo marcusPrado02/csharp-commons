@@ -1,10 +1,19 @@
 # api-changelog.yml
-# Runs on every pull request, extracts the public API surface of changed
-# assemblies and posts a summary as a PR comment.
+# Runs on every pull request targeting main.
 #
-# NOTE: The actual API comparison is conceptual – the `dotnet run` step below
-# uses `echo` placeholders until a CLI entry-point is added to the
-# MarcusPrado.Platform.ApiChangelog tooling project.
+# Workflow:
+#   1. Build the PR branch and extract the public API surface of all Core
+#      packages using platform-api (MarcusPrado.Platform.ApiChangelog CLI).
+#   2. Checkout the base branch into ./baseline-src and build it separately.
+#   3. Extract the baseline API surface from the base branch DLLs.
+#   4. Diff the two surfaces and render a markdown report.
+#   5. Post (or update) the report as a sticky PR comment.
+#
+# Exit code semantics of platform-api diff:
+#   0  → no changes
+#   2  → breaking changes detected (removes types or members)
+#   The step uses  || true  so breaking changes do NOT block the PR here —
+#   that gate lives in the semantic-versioning process and release workflow.
 
 name: API Changelog
 
@@ -14,64 +23,86 @@ on:
       - main
 
 permissions:
-  pull-requests: write   # required to post PR comments
+  pull-requests: write
   contents: read
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
 jobs:
   api-changelog:
-    name: Extract & Diff API Surface
+    name: API Surface Diff
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # ── PR branch ─────────────────────────────────────────────────────────────
+      - name: Checkout PR branch
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # full history so we can compare with the base branch
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Restore NuGet packages
-        run: dotnet restore MarcusPrado.Platform.Commons.slnx
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
 
-      - name: Build solution
-        run: dotnet build MarcusPrado.Platform.Commons.slnx --no-restore --configuration Release
+      - name: Restore
+        run: dotnet restore
 
-      # ── Conceptual API surface extraction ──────────────────────────────────
-      # When a CLI wrapper exists, replace the steps below with:
-      #
-      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
-      #     extract --assembly <path-to-dll> --output baseline.json
-      #
-      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
-      #     extract --assembly <path-to-dll> --output current.json
-      #
-      #   dotnet run --project src/tooling/MarcusPrado.Platform.ApiChangelog \
-      #     diff --baseline baseline.json --current current.json \
-      #     --output diff.md
-      # ───────────────────────────────────────────────────────────────────────
+      # Build the API changelog tool first so we have a binary to call later.
+      - name: Build platform-api tool
+        run: dotnet publish src/tooling/MarcusPrado.Platform.ApiChangelog -c Release --output ./tools
 
-      - name: Extract baseline API surface (conceptual)
+      # Build Core packages — these are the breaking-change-sensitive ones.
+      - name: Build core packages (PR branch)
+        run: dotnet build src/core -c Release --output ./artifacts/pr --no-restore
+
+      # ── Baseline branch ───────────────────────────────────────────────────────
+      # GITHUB_BASE_REF is the runner-provided env var (no context expression needed).
+      - name: Checkout base branch for baseline build
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          path: baseline-src
+
+      - name: Restore baseline
+        run: dotnet restore baseline-src/MarcusPrado.Platform.Commons.slnx
+
+      - name: Build core packages (base branch)
+        run: dotnet build baseline-src/src/core -c Release --output ./artifacts/baseline --no-restore
+
+      # ── Extract and diff ──────────────────────────────────────────────────────
+      - name: Generate API diff report
         run: |
-          echo "Extracting baseline API surface from base branch"
-          echo '{"assemblyName":"MarcusPrado.Platform","version":"baseline","types":[]}' > baseline.json
+          mkdir -p surfaces
+          printf '## API Changes in this PR\n\n' > diff.md
+          tool="./tools/MarcusPrado.Platform.ApiChangelog"
 
-      - name: Extract current API surface (conceptual)
-        run: |
-          echo "Extracting current API surface from PR branch"
-          echo '{"assemblyName":"MarcusPrado.Platform","version":"current","types":[]}' > current.json
+          for current_dll in ./artifacts/pr/MarcusPrado.Platform.*.dll; do
+            pkg=$(basename "$current_dll" .dll)
+            baseline_dll="./artifacts/baseline/${pkg}.dll"
 
-      - name: Compute API diff and render changelog (conceptual)
-        run: |
-          echo "Computing diff between baseline and current"
-          printf '%s\n' \
-            '## API Changes in this PR' \
-            '' \
-            '_No CLI tool available yet – replace this step with `dotnet run` once_' \
-            '_`MarcusPrado.Platform.ApiChangelog` exposes a CLI entry-point._' \
-            > diff.md
+            "$tool" extract "$current_dll" --output "surfaces/current-${pkg}.json"
+
+            if [ -f "$baseline_dll" ]; then
+              "$tool" extract "$baseline_dll" --output "surfaces/baseline-${pkg}.json"
+              "$tool" diff \
+                --baseline "surfaces/baseline-${pkg}.json" \
+                --current  "surfaces/current-${pkg}.json"  \
+                --version  "PR"                             \
+                --output   diff.md || true
+            else
+              printf '### %s\n\n_New package — no baseline to compare._\n\n' "$pkg" >> diff.md
+            fi
+          done
 
       - name: Post API diff as PR comment
         uses: marocchino/sticky-pull-request-comment@v2

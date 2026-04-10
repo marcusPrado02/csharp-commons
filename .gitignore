@@ -24,6 +24,7 @@ project.fragment.lock.json
 artifacts/
 packages/
 !**/packages/build/
+!docs/packages/
 *.nupkg
 *.snupkg
 # NuGet v3+ cache

@@ -5,8 +5,9 @@
 #   build    → restore + compile (gate for all downstream jobs)
 #   test     → unit tests + XPlat Code Coverage → Codecov
 #   analyze  → dotnet format --verify-no-changes + CSharpier check
-#   pack     → NuGet packages for core + extensions (main branch & v* tags)
-#   publish  → push packages to NuGet.org (v* tags only)
+#   pack     → NuGet packages for core + extensions + kits (main & v* tags)
+#   publish  → push packages to NuGet.org + GitHub Packages (v* tags only)
+#   release  → create GitHub Release with auto-generated changelog (v* tags only)
 # ──────────────────────────────────────────────────────────────────────────────
 
 name: CI
@@ -18,6 +19,7 @@ on:
   pull_request:
     branches: [main]
 
+# Minimal default permissions — each job that needs more declares its own.
 permissions:
   contents: read
 
@@ -27,13 +29,6 @@ env:
   DOTNET_NOLOGO: 1
   # Redirect NuGet cache so actions/cache can cache it between jobs
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Shared step templates (YAML anchors)
-# ──────────────────────────────────────────────────────────────────────────────
-# Note: GitHub Actions does not support top-level anchors; the setup steps are
-# repeated per job. The NuGet cache key is based on Directory.Packages.props so
-# any version bump invalidates the cache correctly.
 
 jobs:
 
@@ -167,12 +162,18 @@ jobs:
       - name: CSharpier — formatter check
         run: dotnet csharpier check .
 
+      # Audit NuGet dependencies for known CVEs (built-in .NET 8+ command).
+      # Non-blocking (--severity moderate exits non-zero for moderate+ CVEs).
+      # Set fail_on_vuln: true below once a clean baseline is established.
+      - name: NuGet security audit
+        run: dotnet nuget audit --severity moderate || true
+
   # ────────────────────────────────────────────────────────────────────────────
   # 4. PACK
-  #    Build NuGet packages for all core + extension libraries.
+  #    Build NuGet packages for all shippable libraries.
   #    Runs only on pushes (not PRs) and only when test + analyze both pass.
   #
-  #    Version strategy:
+  #    Version strategy (MinVer reads from git tags automatically):
   #      - On a v* tag  → strip the leading 'v'  (e.g. v1.2.3 → 1.2.3)
   #      - On main push → 0.0.0-preview.<run_number>  (pre-release for testing)
   # ────────────────────────────────────────────────────────────────────────────
@@ -189,7 +190,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Full history lets version-from-tag strategies work
+          # Full history lets MinVer and version-from-tag strategies work
           fetch-depth: 0
 
       - name: Setup .NET
@@ -212,25 +213,40 @@ jobs:
 
       - name: Determine package version
         id: version
+        env:
+          GIT_REF: ${{ github.ref }}
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+          if [[ "$GIT_REF" == refs/tags/v* ]]; then
             VERSION="${GITHUB_REF_NAME#v}"
           else
-            VERSION="0.0.0-preview.${{ github.run_number }}"
+            VERSION="0.0.0-preview.$RUN_NUMBER"
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "Packaging version: $VERSION"
 
       - name: Pack — core libraries
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
           dotnet pack src/core --no-build -c Release \
-            -p:PackageVersion=${{ steps.version.outputs.version }} \
+            -p:PackageVersion="$PACKAGE_VERSION" \
             --output ./nupkgs
 
       - name: Pack — extension libraries
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
           dotnet pack src/extensions --no-build -c Release \
-            -p:PackageVersion=${{ steps.version.outputs.version }} \
+            -p:PackageVersion="$PACKAGE_VERSION" \
+            --output ./nupkgs
+
+      - name: Pack — kit libraries
+        env:
+          PACKAGE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          dotnet pack src/kits --no-build -c Release \
+            -p:PackageVersion="$PACKAGE_VERSION" \
             --output ./nupkgs
 
       - name: List packages
@@ -245,13 +261,18 @@ jobs:
 
   # ────────────────────────────────────────────────────────────────────────────
   # 5. PUBLISH
-  #    Push all NuGet packages to NuGet.org.
+  #    Push all NuGet packages to NuGet.org AND GitHub Packages.
   #    Triggered only when the pipeline runs on a v* tag.
+  #
   #    Protected by the "nuget-production" GitHub Environment so that releases
   #    require manual approval before publishing.
+  #
+  #    GitHub Packages authentication uses actions/setup-dotnet source-url +
+  #    NUGET_AUTH_TOKEN — the officially recommended approach; avoids the
+  #    fragile `dotnet nuget add source` pattern.
   # ────────────────────────────────────────────────────────────────────────────
   publish:
-    name: Publish to NuGet.org
+    name: Publish
     runs-on: ubuntu-latest
     needs: pack
     if: startsWith(github.ref, 'refs/tags/v')
@@ -260,9 +281,13 @@ jobs:
       name: nuget-production
       url: https://www.nuget.org/profiles/MarcusPrado
 
+    # Override the workflow-level read-only permissions.
+    # packages: write  → required to push to GitHub Packages
+    # id-token: write  → OIDC (future: trusted signing / attestation)
     permissions:
       contents: read
-      id-token: write  # for OIDC (future: trusted signing / attestation)
+      packages: write
+      id-token: write
 
     steps:
       - name: Download NuGet packages
@@ -271,14 +296,75 @@ jobs:
           name: nupkgs-${{ needs.pack.outputs.version }}
           path: ./nupkgs
 
+      # Setup .NET and authenticate to GitHub Packages in one step.
+      # source-url + NUGET_AUTH_TOKEN is the canonical approach recommended by
+      # GitHub Actions documentation for NuGet package registry authentication.
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           dotnet nuget push ./nupkgs/*.nupkg \
-            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --api-key "$NUGET_API_KEY" \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
+
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+        run: |
+          dotnet nuget push ./nupkgs/*.nupkg \
+            --api-key "$GITHUB_TOKEN" \
+            --source "https://nuget.pkg.github.com/$REPO_OWNER/index.json" \
+            --skip-duplicate
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 6. RELEASE
+  #    Create a GitHub Release with auto-generated release notes (git-cliff)
+  #    and attach the NuGet packages as release assets.
+  #    Runs after publish so packages are already in the registries when the
+  #    release announcement goes live.
+  # ────────────────────────────────────────────────────────────────────────────
+  release:
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    needs: [pack, publish]
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write  # required to create GitHub Releases
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v4
+        with:
+          name: nupkgs-${{ needs.pack.outputs.version }}
+          path: ./nupkgs
+
+      - name: Install git-cliff
+        uses: kenji-miyake/setup-git-cliff@v2
+
+      - name: Generate release notes
+        id: cliff
+        run: |
+          git cliff --current --strip header -o RELEASE_NOTES.md
+          echo "notes_path=RELEASE_NOTES.md" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: ${{ steps.cliff.outputs.notes_path }}
+          files: ./nupkgs/*.nupkg

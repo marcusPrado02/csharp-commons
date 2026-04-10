@@ -11,12 +11,17 @@
 name: Mutation Testing
 
 on:
+  # Manual trigger — target a specific project.
   workflow_dispatch:
     inputs:
       project:
         description: 'Core project to test (subfolder of src/core/)'
         required: false
         default: 'MarcusPrado.Platform.Abstractions'
+
+  # Weekly automated run every Monday at 03:00 UTC on the default project.
+  schedule:
+    - cron: '0 3 * * 1'
 
 permissions:
   contents: read
