@@ -6,6 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <Deterministic>true</Deterministic>
+    <Description>Distributed tracing for data access: EfCoreTracingInterceptor (IDbCommandInterceptor with sanitized SQL) and DapperTracingWrapper (QueryWithTraceAsync / ExecuteWithTraceAsync) with OpenTelemetry semantic conventions.</Description>
+    <PackageTags>dotnet;platform;data-access;tracing;opentelemetry;efcore;dapper</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />

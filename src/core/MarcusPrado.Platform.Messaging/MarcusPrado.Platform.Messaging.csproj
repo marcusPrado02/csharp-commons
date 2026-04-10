@@ -5,5 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Broker-agnostic messaging contracts: IMessagePublisher, IMessageConsumer, MessageEnvelope&lt;T&gt;, Outbox/Inbox abstractions, IDeadLetterSink, DLQReprocessor.</Description>
+    <PackageTags>dotnet;platform;messaging;events;outbox;inbox;dead-letter;microservices</PackageTags>
   </PropertyGroup>
 </Project>

@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Backup and restore abstractions for database and object storage snapshots.</Description>
+    <PackageTags>dotnet;platform;backup;restore;abstractions</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />

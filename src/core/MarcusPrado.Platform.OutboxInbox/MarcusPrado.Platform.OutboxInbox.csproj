@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Transactional Outbox/Inbox pattern for at-least-once messaging guarantees. OutboxProcessor and InboxProcessor hosted services. In-memory and EF Core store implementations.</Description>
+    <PackageTags>dotnet;platform;outbox;inbox;messaging;at-least-once;transactional</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />

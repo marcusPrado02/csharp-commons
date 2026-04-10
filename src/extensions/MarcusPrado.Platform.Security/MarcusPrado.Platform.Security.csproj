@@ -6,6 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <Deterministic>true</Deterministic>
+    <Description>Security extensions: OidcClientService with proactive TokenCache renewal, AesGcmEncryption (AES-256-GCM), KeyRotationService, RSA/ECDSA digital signatures, PII masking, mTLS with CertificateTenantResolver, IInputSanitizer.</Description>
+    <PackageTags>dotnet;platform;security;oidc;encryption;aes-gcm;signatures;pii;mtls</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

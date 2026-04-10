@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Consumer-driven contract testing: PactVerifier via WebApplicationFactory + Pact Broker, PactPublisher with Git metadata, AsyncContractVerifier for messaging contracts.</Description>
+    <PackageTags>dotnet;platform;testing;pact;cdc;contract-testing</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

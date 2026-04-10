@@ -6,6 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <Deterministic>true</Deterministic>
+    <Description>MySQL adapter: MySqlConnectionFactory, MySqlHealthProbe, AddPlatformMySql() via Pomelo EF Core provider.</Description>
+    <PackageTags>dotnet;platform;mysql;pomelo;efcore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />

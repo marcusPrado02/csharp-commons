@@ -6,5 +6,7 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Object storage abstractions: IObjectStorage, IFileUploader.</Description>
+    <PackageTags>dotnet;platform;storage;abstractions</PackageTags>
   </PropertyGroup>
 </Project>

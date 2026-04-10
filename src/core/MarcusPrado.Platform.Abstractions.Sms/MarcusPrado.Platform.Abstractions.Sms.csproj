@@ -6,5 +6,7 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>SMS abstractions: ISmsService with delivery status callback support.</Description>
+    <PackageTags>dotnet;platform;sms;abstractions</PackageTags>
   </PropertyGroup>
 </Project>

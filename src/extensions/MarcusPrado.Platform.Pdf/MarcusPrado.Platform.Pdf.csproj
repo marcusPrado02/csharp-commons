@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>PDF generation adapter: QuestPdfGenerator via QuestPDF with header/footer, pagination, and watermark support.</Description>
+    <PackageTags>dotnet;platform;pdf;questpdf</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="QuestPDF" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Documents\MarcusPrado.Platform.Abstractions.Documents.csproj" />
   </ItemGroup>

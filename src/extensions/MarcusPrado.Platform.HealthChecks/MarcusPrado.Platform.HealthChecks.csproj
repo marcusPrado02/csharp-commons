@@ -6,10 +6,10 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Advanced health checks: liveness (/health/live) and readiness (/health/ready) endpoints, MemoryPressureHealthCheck, ThreadPoolStarvationHealthCheck, ExternalDependencyHealthCheck, health history, startup verification, DegradedHealthCheck.</Description>
+    <PackageTags>dotnet;platform;health-checks;liveness;readiness;aspnetcore</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-
 </Project>

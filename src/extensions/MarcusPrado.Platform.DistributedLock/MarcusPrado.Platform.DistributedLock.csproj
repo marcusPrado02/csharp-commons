@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Distributed locking: RedisDistributedLock (Redlock algorithm with fencing token) and PostgresAdvisoryLock (pg_try_advisory_xact_lock). Implements IDistributedLock.</Description>
+    <PackageTags>dotnet;platform;distributed-lock;redis;redlock;postgres</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" />

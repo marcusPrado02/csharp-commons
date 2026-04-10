@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>gRPC integration helpers and interceptors for ASP.NET Core services.</Description>
+    <PackageTags>dotnet;platform;grpc;aspnetcore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.Core.Api" />

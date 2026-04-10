@@ -6,5 +6,7 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Load testing: PlatformLoadTest via NBomber, CommandThroughputScenario, ApiEndpointScenario with P50/P95/P99 latency reporting and error rate thresholds.</Description>
+    <PackageTags>dotnet;platform;testing;load-testing;performance;nbomber</PackageTags>
   </PropertyGroup>
 </Project>

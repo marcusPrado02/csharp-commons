@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Core contracts: Result&lt;T&gt;, typed errors, CQRS bus interfaces (ICommandBus, IQueryBus, IDispatcher), context propagation (ITenantContext, ICorrelationContext, IUserContext). Zero infrastructure dependencies.</Description>
+    <PackageTags>dotnet;platform;result;cqrs;errors;abstractions;microservices</PackageTags>
   </PropertyGroup>
-
 </Project>

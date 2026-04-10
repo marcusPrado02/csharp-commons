@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Quartz.NET adapter for IJobScheduler with clustered AdoJobStore (PostgreSQL), PlatformJobFactory via DI, and fluent trigger builder.</Description>
+    <PackageTags>dotnet;platform;quartz;background-jobs;scheduler;clustering</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Quartz" />

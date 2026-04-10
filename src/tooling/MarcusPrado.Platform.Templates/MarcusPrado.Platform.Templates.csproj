@@ -8,12 +8,13 @@
     <PackageVersion>1.0.0</PackageVersion>
     <Title>MarcusPrado Platform Templates</Title>
     <Authors>Marcus Prado Silva</Authors>
-    <Description>Project templates for MarcusPrado Platform services</Description>
     <IsPackable>true</IsPackable>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <Description>dotnet new templates: platform-api, platform-worker, platform-domain, platform-command. Install via: dotnet new install MarcusPrado.Platform.Templates</Description>
+    <PackageTags>dotnet;platform;templates;dotnet-new;scaffold</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="content\**\*" Exclude="**\bin\**;**\obj\**" />

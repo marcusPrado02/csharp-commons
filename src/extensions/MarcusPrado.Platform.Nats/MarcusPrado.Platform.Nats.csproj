@@ -6,14 +6,14 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>NATS JetStream messaging adapter: NatsPublisher implementing IMessagePublisher and NatsConsumer&lt;T&gt; BackgroundService base with at-least-once delivery.</Description>
+    <PackageTags>dotnet;platform;nats;jetstream;messaging;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="NATS.Net" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Messaging\MarcusPrado.Platform.Messaging.csproj" />

@@ -6,15 +6,14 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>RFC 9457 ProblemDetails factory and exception-to-ProblemDetails mapper for ASP.NET Core.</Description>
+    <PackageTags>dotnet;platform;aspnetcore;problem-details;rfc9457;errors</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Application\MarcusPrado.Platform.Application.csproj" />
   </ItemGroup>
-
 </Project>

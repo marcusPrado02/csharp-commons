@@ -10,7 +10,8 @@
     <PackageId>MarcusPrado.Platform.Cli</PackageId>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
-    <!-- SA1516: top-level statements in Program.cs don't need blank-line separators -->
     <NoWarn>$(NoWarn);SA1516</NoWarn>
+    <Description>Platform dotnet tool: scaffold api/worker/domain/command, config encrypt, catalog errors, arch validate, dlq inspect, health &lt;url&gt; commands.</Description>
+    <PackageTags>dotnet;platform;cli;tooling;scaffold</PackageTags>
   </PropertyGroup>
 </Project>

@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Payment processing abstractions: IPaymentService, ISubscriptionService, IRefundService.</Description>
+    <PackageTags>dotnet;platform;payment;stripe;abstractions</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />

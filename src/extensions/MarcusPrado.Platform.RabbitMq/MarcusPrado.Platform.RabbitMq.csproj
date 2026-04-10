@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>RabbitMQ messaging adapter: RabbitProducer implementing IMessagePublisher, RabbitConsumer&lt;T&gt; BackgroundService base with publisher confirms and auto-reconnect.</Description>
+    <PackageTags>dotnet;platform;rabbitmq;messaging;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="RabbitMQ.Client" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Messaging\MarcusPrado.Platform.Messaging.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Observability\MarcusPrado.Platform.Observability.csproj" />

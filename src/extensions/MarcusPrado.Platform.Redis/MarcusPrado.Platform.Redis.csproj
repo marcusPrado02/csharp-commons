@@ -6,14 +6,14 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Redis adapter: ICache implementation, RedisDistributedLock (Redlock), IQuotaStore for rate limiting, IIdempotencyStore, StampedeProtectedCache (XFetch algorithm).</Description>
+    <PackageTags>dotnet;platform;redis;cache;distributed-lock;rate-limiting;idempotency</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.OutboxInbox\MarcusPrado.Platform.OutboxInbox.csproj" />

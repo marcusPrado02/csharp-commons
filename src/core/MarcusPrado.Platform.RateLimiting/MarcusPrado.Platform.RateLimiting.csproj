@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Rate limiting abstractions: IRateLimitPolicy, IQuotaStore with fixed-window, sliding-window, and token-bucket policy implementations.</Description>
+    <PackageTags>dotnet;platform;rate-limiting;quota</PackageTags>
   </PropertyGroup>
-
 </Project>

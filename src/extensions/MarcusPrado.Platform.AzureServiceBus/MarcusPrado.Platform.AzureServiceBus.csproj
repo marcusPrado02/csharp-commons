@@ -6,8 +6,9 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Azure Service Bus messaging adapter: ServiceBusPublisher, ServiceBusConsumer with automatic lock renewal, ServiceBusDeadLetterSink. Supports DefaultAzureCredential.</Description>
+    <PackageTags>dotnet;platform;azure;service-bus;messaging;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Azure.Messaging.ServiceBus" />
     <PackageReference Include="Azure.Identity" />

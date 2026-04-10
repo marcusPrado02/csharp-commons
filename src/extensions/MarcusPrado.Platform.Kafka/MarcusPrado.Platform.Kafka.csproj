@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Apache Kafka messaging adapter: KafkaProducer implementing IMessagePublisher, KafkaConsumer&lt;T&gt; BackgroundService base, OTel W3C TraceContext propagation.</Description>
+    <PackageTags>dotnet;platform;kafka;messaging;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Messaging\MarcusPrado.Platform.Messaging.csproj" />
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Observability\MarcusPrado.Platform.Observability.csproj" />

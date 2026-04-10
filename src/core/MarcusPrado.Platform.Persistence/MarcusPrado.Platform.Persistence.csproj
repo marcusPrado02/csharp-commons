@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Persistence abstractions: IRepository, IReadRepository, IWriteRepository, IUnitOfWork with transaction support, IAuditWriter, IConcurrencyToken.</Description>
+    <PackageTags>dotnet;platform;persistence;repository;unit-of-work;ddd</PackageTags>
   </PropertyGroup>
-
 </Project>

@@ -6,12 +6,12 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>CQRS pipeline with ICommandBus, IQueryBus, and eight built-in behaviors: validation, tracing, metrics, logging, authorization, idempotency, transaction, retry.</Description>
+    <PackageTags>dotnet;platform;cqrs;pipeline;commands;queries;behaviors;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="../MarcusPrado.Platform.Abstractions/MarcusPrado.Platform.Abstractions.csproj" />
   </ItemGroup>

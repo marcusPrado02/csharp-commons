@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>HotChocolate GraphQL integration: PlatformTypeInterceptor (injects auth, tenant, correlation) and PlatformErrorFilter (converts Result&lt;T&gt; failures to typed GraphQL errors).</Description>
+    <PackageTags>dotnet;platform;graphql;hotchocolate</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="HotChocolate.AspNetCore" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.GraphQL\MarcusPrado.Platform.Abstractions.GraphQL.csproj" />
   </ItemGroup>

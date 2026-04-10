@@ -6,6 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <Deterministic>true</Deterministic>
+    <Description>OpenTelemetry + Serilog one-call setup: AddPlatformTelemetry(), OtelBusinessMetrics, SLO/error budget OTel gauges, circuit breaker registry with management endpoints, correlation enrichment, log sanitization.</Description>
+    <PackageTags>dotnet;platform;observability;opentelemetry;serilog;metrics;slo;circuit-breaker</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" />

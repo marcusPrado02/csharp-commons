@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>GraphQL abstractions: IGraphQLClient and schema convention contracts.</Description>
+    <PackageTags>dotnet;platform;graphql;abstractions</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />

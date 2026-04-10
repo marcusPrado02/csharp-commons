@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Integration test infrastructure: PlatformTestEnvironment starts all containers (Postgres, Redis, Kafka, RabbitMQ, NATS, MongoDB) in parallel. TestNetworkBuilder, SnapshotRestorer, TestEnvironmentHealthCheck.</Description>
+    <PackageTags>dotnet;platform;testing;testcontainers;integration-tests</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Testcontainers" />

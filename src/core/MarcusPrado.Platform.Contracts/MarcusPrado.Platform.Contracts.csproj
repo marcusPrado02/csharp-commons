@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>API envelope types (ApiEnvelope&lt;T&gt;), ProblemDetails model (RFC 9457), event contract interfaces, versioning policies, and compatibility rules.</Description>
+    <PackageTags>dotnet;platform;contracts;api;problem-details;versioning</PackageTags>
   </PropertyGroup>
-
 </Project>

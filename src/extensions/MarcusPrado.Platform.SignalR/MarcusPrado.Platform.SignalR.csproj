@@ -6,6 +6,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <Deterministic>true</Deterministic>
+    <Description>SignalR integration: PlatformHub&lt;T&gt; with JWT auth, tenant isolation, and correlation propagation. IRealtimePublisher, SignalRDomainEventSink.</Description>
+    <PackageTags>dotnet;platform;signalr;realtime;websockets</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

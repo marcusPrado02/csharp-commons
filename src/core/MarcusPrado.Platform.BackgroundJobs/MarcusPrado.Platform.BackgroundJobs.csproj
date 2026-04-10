@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Background job abstractions: IJob, IJobHandler, IJobScheduler for Quartz.NET and Hangfire adapters.</Description>
+    <PackageTags>dotnet;platform;background-jobs;scheduler;abstractions</PackageTags>
   </PropertyGroup>
-
 </Project>

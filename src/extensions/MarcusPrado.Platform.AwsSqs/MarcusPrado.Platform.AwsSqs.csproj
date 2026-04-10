@@ -6,8 +6,9 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>AWS SQS/SNS messaging adapter: SqsPublisher, SqsConsumer with long-polling and automatic DLQ, SnsPublisher for fan-out. Implements IMessagePublisher / IMessageConsumer.</Description>
+    <PackageTags>dotnet;platform;aws;sqs;sns;messaging;microservices</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="AWSSDK.SQS" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" />

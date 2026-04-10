@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Email adapter for IEmailSender via MailKit with HTML templates (Scriban/Fluid), file attachments, and SMTP retry with exponential backoff.</Description>
+    <PackageTags>dotnet;platform;email;mailkit;smtp</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="MailKit" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Email\MarcusPrado.Platform.Abstractions.Email.csproj" />
   </ItemGroup>

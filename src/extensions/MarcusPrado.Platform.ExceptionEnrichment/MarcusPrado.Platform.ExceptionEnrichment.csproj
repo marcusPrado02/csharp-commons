@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Exception enrichment for ASP.NET Core: ExceptionFingerprinter (deterministic hash), ExceptionGrouper, DeveloperExceptionPageEnricher with full context in Development.</Description>
+    <PackageTags>dotnet;platform;exceptions;enrichment;aspnetcore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

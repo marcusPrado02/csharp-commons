@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Blockchain adapter: NethereumBlockchainClient, NethereumWalletManager, NethereumSmartContractClient via Nethereum 4.x.</Description>
+    <PackageTags>dotnet;platform;blockchain;nethereum;ethereum;web3</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Nethereum.Web3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Blockchain\MarcusPrado.Platform.Abstractions.Blockchain.csproj" />
   </ItemGroup>

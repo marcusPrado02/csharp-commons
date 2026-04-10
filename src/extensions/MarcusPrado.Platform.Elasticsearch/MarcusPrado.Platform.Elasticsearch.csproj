@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Elasticsearch adapter for ISearchClient and IIndexManager via Elastic.Clients.Elasticsearch 8.x with cursor-based pagination.</Description>
+    <PackageTags>dotnet;platform;elasticsearch;search</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Elastic.Clients.Elasticsearch" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Search\MarcusPrado.Platform.Abstractions.Search.csproj" />
   </ItemGroup>

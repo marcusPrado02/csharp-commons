@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Dead-letter queue management: Minimal API endpoints (list / reprocess / discard), IDlqStore, DlqReprocessingJob, OTel depth/reprocessed/discarded metrics.</Description>
+    <PackageTags>dotnet;platform;dlq;dead-letter;messaging;reprocessing</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

@@ -7,6 +7,8 @@
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>SA1633;SA1200;CA1062;RS1038;RS2008</NoWarn>
+    <Description>Custom Roslyn analyzers: PLATFORM001 (NoEfCoreInDomain), PLATFORM002 (NoAspNetInDomain), PLATFORM003 (DomainNoInfraReference), PLATFORM004 (EnforceResultType), PLATFORM005 (EnforceIdempotencyKey). AddResultWrapperCodeFix included.</Description>
+    <PackageTags>dotnet;platform;roslyn;analyzers;architecture;ddd</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="4.11.0" PrivateAssets="all" />

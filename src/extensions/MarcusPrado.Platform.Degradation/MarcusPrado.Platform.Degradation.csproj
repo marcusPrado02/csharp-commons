@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Graceful degradation: four named operating modes (None / PartiallyDegraded / ReadOnly / Maintenance), DegradationMiddleware, IDegradationController, management endpoints, OTel metrics.</Description>
+    <PackageTags>dotnet;platform;degradation;resilience;maintenance;aspnetcore</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

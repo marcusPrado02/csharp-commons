@@ -55,6 +55,37 @@
   </PropertyGroup>
 
   <!-- ══════════════════════════════════════════════════════════════
+       NuGet package metadata — shared across all publishable packages.
+       Per-package Description and PackageTags live in each .csproj.
+  ══════════════════════════════════════════════════════════════════ -->
+  <PropertyGroup Label="PackageMetadata"
+    Condition="$(MSBuildProjectDirectory.Contains('/src/core/'))      Or
+               $(MSBuildProjectDirectory.Contains('/src/extensions/')) Or
+               $(MSBuildProjectDirectory.Contains('/src/kits/'))       Or
+               $(MSBuildProjectDirectory.Contains('/src/tooling/'))">
+    <Authors>Marcus Prado Silva</Authors>
+    <Company>MarcusPrado</Company>
+    <Copyright>Copyright © 2026 Marcus Prado Silva</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/marcusprado02/csharp-commons</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/marcusprado02/csharp-commons</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- IsPackable defaults to true for src projects; tests/samples override to false -->
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <!-- Embed the repo README and icon into every NuGet package -->
+  <ItemGroup Label="PackageFiles"
+    Condition="$(MSBuildProjectDirectory.Contains('/src/core/'))      Or
+               $(MSBuildProjectDirectory.Contains('/src/extensions/')) Or
+               $(MSBuildProjectDirectory.Contains('/src/kits/'))       Or
+               $(MSBuildProjectDirectory.Contains('/src/tooling/'))">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+  <!-- ══════════════════════════════════════════════════════════════
        Versioning — MinVer derives the package version from git tags.
        Only applied to shippable source projects (core / extensions /
        kits / tooling); excluded from tests, samples, and benchmarks.

@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>Twilio SMS adapter: TwilioSmsService implementing ISmsService with status callbacks.</Description>
+    <PackageTags>dotnet;platform;twilio;sms</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Twilio" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Sms\MarcusPrado.Platform.Abstractions.Sms.csproj" />
   </ItemGroup>

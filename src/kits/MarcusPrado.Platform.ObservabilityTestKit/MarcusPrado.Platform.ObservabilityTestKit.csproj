@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Observability testing: InMemoryMetricCollector, InMemorySpanCollector, MetricAssertions, TraceAssertions for unit testing OTel instrumentation.</Description>
+    <PackageTags>dotnet;platform;testing;opentelemetry;metrics;tracing</PackageTags>
   </PropertyGroup>
-
 </Project>

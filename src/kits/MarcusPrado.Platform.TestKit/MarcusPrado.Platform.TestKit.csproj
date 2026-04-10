@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Integration test base: IntegrationFixture, ApiFixture (WebApplicationFactory), FakeClock, FakeTenantContext, SnapshotRestorer, Eventually utility, Postgres/Redis/Kafka/RabbitMQ container fixtures.</Description>
+    <PackageTags>dotnet;platform;testing;integration-tests;testcontainers;fakes</PackageTags>
   </PropertyGroup>
-
 </Project>

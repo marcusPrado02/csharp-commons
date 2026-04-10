@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Security extensions: OidcClientService with proactive TokenCache renewal, AesGcmEncryption (AES-256-GCM), KeyRotationService, RSA/ECDSA digital signatures, PII masking, mTLS with CertificateTenantResolver, IInputSanitizer.</Description>
+    <PackageTags>dotnet;platform;security;oidc;encryption;aes-gcm;signatures;pii;mtls</PackageTags>
   </PropertyGroup>
-
 </Project>

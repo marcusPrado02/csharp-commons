@@ -5,10 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Domain-model primitives: Entity&lt;TId&gt;, AggregateRoot&lt;TId&gt; with optimistic concurrency, ValueObject, DomainEvent, Specification&lt;T&gt; with composition, IBusinessRule.</Description>
+    <PackageTags>dotnet;platform;domain;ddd;aggregate;entity;value-object;specification</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="../MarcusPrado.Platform.Abstractions/MarcusPrado.Platform.Abstractions.csproj" />
   </ItemGroup>
-
 </Project>

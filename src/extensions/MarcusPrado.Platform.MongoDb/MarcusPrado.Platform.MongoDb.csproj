@@ -6,13 +6,13 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <Description>MongoDB adapter: MongoDocumentRepository&lt;T&gt;, MongoSession for multi-document transactions, MongoPaginatedQuery&lt;T&gt;, multi-tenant filter, MongoHealthProbe.</Description>
+    <PackageTags>dotnet;platform;mongodb;nosql;repository</PackageTags>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Storage\MarcusPrado.Platform.Abstractions.Storage.csproj" />
   </ItemGroup>

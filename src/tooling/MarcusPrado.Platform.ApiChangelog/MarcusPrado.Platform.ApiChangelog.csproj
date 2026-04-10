@@ -6,9 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <!-- Published as a dotnet tool via NuGet -->
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>platform-api</ToolCommandName>
+    <Description>API changelog CLI: ApiSurfaceExtractor (Reflection), ApiDiffEngine (breaking changes / additions), ChangelogRenderer (Markdown). CI integration exits with code 2 on breaking changes.</Description>
+    <PackageTags>dotnet;platform;tooling;api-changelog;breaking-changes</PackageTags>
   </PropertyGroup>
 </Project>
