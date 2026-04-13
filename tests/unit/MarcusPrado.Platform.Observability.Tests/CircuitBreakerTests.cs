@@ -110,9 +110,12 @@ public sealed class CircuitBreakerMetricsTests
     [Fact]
     public void Constructor_DoesNotThrow()
     {
-        var registry = new CircuitBreakerRegistry();
-        using var metrics = new CircuitBreakerMetrics(registry);
-        // No exception expected
+        var act = () =>
+        {
+            var registry = new CircuitBreakerRegistry();
+            using var metrics = new CircuitBreakerMetrics(registry);
+        };
+        act.Should().NotThrow();
     }
 
     [Fact]

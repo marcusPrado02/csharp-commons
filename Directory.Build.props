@@ -41,7 +41,16 @@
   <PropertyGroup Label="TestProjects"
     Condition="$(MSBuildProjectDirectory.Contains('/tests/'))">
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- CS1591: missing XML doc (no doc generated for tests)
+         CS8602: deref of possibly-null (nullable assertions common in tests)
+         CA1707: underscore naming (xUnit Method_Condition_Result convention)
+         CA1001,CA1816,CA1031: disposable/exception patterns fine in test infra
+         CA1806,CA1822,CA1852,CA1859,CA1861,CA1865,CA1866: perf/design hints not enforced in tests
+         CA2012,CA2201: ValueTask / exception type issues expected in test scaffolding
+         SA*/ASPDEPR*/S*: style/deprecation rules not enforced in test projects
+         AD0001: StyleCop SA1201 bug with record declarations in C# 9+
+         NU1510: pinned-package NuGet advisory, handled at Directory.Packages.props level -->
+    <NoWarn>$(NoWarn);CS1591;CS8602;CA1001;CA1031;CA1707;CA1806;CA1816;CA1822;CA1852;CA1859;CA1861;CA1865;CA1866;CA2012;CA2201;SA1011;SA1107;SA1117;SA1122;SA1134;SA1201;SA1208;SA1210;SA1501;SA1516;S125;S927;S1144;S1172;S1481;S1905;S2971;S3241;S3878;S3881;S6610;ASPDEPR004;ASPDEPR008;NU1510;AD0001</NoWarn>
   </PropertyGroup>
 
   <!-- ══════════════════════════════════════════════════════════════

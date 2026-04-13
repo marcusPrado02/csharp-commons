@@ -57,9 +57,9 @@ public sealed class DbTracingTests
     public async Task DapperTracingWrapper_QueryWithTraceAsync_ReturnsResults()
     {
         using var conn = new SqliteConnection("Data Source=:memory:");
-        conn.Open();
-        conn.Execute("CREATE TABLE items (id INTEGER, name TEXT)");
-        conn.Execute("INSERT INTO items VALUES (1, 'test')");
+        await conn.OpenAsync();
+        await conn.ExecuteAsync("CREATE TABLE items (id INTEGER, name TEXT)");
+        await conn.ExecuteAsync("INSERT INTO items VALUES (1, 'test')");
 
         var results = await conn.QueryWithTraceAsync<(long id, string name)>(
             "SELECT id, name FROM items");
@@ -72,8 +72,8 @@ public sealed class DbTracingTests
     public async Task DapperTracingWrapper_ExecuteWithTraceAsync_ReturnsAffectedRows()
     {
         using var conn = new SqliteConnection("Data Source=:memory:");
-        conn.Open();
-        conn.Execute("CREATE TABLE items (id INTEGER, name TEXT)");
+        await conn.OpenAsync();
+        await conn.ExecuteAsync("CREATE TABLE items (id INTEGER, name TEXT)");
 
         var affected = await conn.ExecuteWithTraceAsync(
             "INSERT INTO items VALUES (1, 'hello')");

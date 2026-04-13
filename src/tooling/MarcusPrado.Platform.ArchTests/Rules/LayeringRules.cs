@@ -158,14 +158,14 @@ public sealed class LayeringRules
 
     // ── Helpers ────────────────────────────────────────────────────────
 
-    private static IReadOnlyList<string> GetPlatformReferences(Assembly assembly) =>
+    private static List<string> GetPlatformReferences(Assembly assembly) =>
         assembly.GetReferencedAssemblies()
             .Select(r => r.Name!)
             .Where(n => n.StartsWith("MarcusPrado.Platform.", StringComparison.Ordinal))
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToList();
 
-    private static IReadOnlyList<string> GetAllReferences(Assembly assembly) =>
+    private static List<string> GetAllReferences(Assembly assembly) =>
         assembly.GetReferencedAssemblies()
             .Select(r => r.Name!)
             .OrderBy(n => n, StringComparer.Ordinal)

@@ -85,7 +85,7 @@ public sealed class AppDbContextTests : IDisposable
     {
         var publisher = new FakeDomainEventPublisher();
         await using var ctx = TestDbContext.CreateInMemory(Guid.NewGuid().ToString(), publisher);
-        ctx.Database.EnsureCreated();
+        await ctx.Database.EnsureCreatedAsync();
 
         var entity = new DomainEventTestEntity { Name = "EventSource" };
         entity.RaiseOrderCreated();
@@ -101,7 +101,7 @@ public sealed class AppDbContextTests : IDisposable
     {
         var publisher = new FakeDomainEventPublisher();
         await using var ctx = TestDbContext.CreateInMemory(Guid.NewGuid().ToString(), publisher);
-        ctx.Database.EnsureCreated();
+        await ctx.Database.EnsureCreatedAsync();
 
         var entity = new DomainEventTestEntity { Name = "EventSource2" };
         entity.RaiseOrderCreated();

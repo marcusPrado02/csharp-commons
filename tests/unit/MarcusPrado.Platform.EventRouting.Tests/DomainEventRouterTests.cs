@@ -294,7 +294,7 @@ public sealed class DomainEventDispatcherTests
         var dispatcher = new DomainEventDispatcher(router, NullLogger<DomainEventDispatcher>.Instance);
 
         using var cts = new CancellationTokenSource();
-        cts.Cancel();
+        await cts.CancelAsync();
 
         var events = new IDomainEvent[] { new OrderPlacedEvent(Guid.NewGuid()) };
 

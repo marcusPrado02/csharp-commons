@@ -9,7 +9,7 @@
     <!-- Benchmarks intentionally disable most warning-as-error rules -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <!-- Suppress SA/RCS/S* in benchmarks — style is irrelevant for perf code -->
-    <NoWarn>SA1101;SA1200;SA1600;SA1601;SA1633;CS1591</NoWarn>
+    <NoWarn>$(NoWarn);SA1101;SA1200;SA1600;SA1601;SA1633;CS1591</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
   </PropertyGroup>

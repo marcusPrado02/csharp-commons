@@ -5,7 +5,8 @@ public sealed class EventuallyTests
     [Fact]
     public async Task BecomesTrue_Sync_PassesImmediately()
     {
-        await Eventually.BecomesTrue(() => true);
+        var act = async () => await Eventually.BecomesTrue(() => true);
+        await act.Should().NotThrowAsync();
     }
 
     [Fact]
@@ -21,8 +22,8 @@ public sealed class EventuallyTests
     [Fact]
     public async Task BecomesTrue_Async_PassesWhenTrue()
     {
-        await Eventually.BecomesTrue(
-            () => Task.FromResult(true));
+        var act = async () => await Eventually.BecomesTrue(() => Task.FromResult(true));
+        await act.Should().NotThrowAsync();
     }
 
     [Fact]

@@ -99,7 +99,7 @@ public sealed class ErrorTests
     {
         var error = Error.Technical("SVC.ERROR", "msg").WithMetadata("key", "original").WithMetadata("key", "updated");
 
-        error.Metadata["key"].Should().Be("updated");
+        error.Metadata["key"]!.Should().Be("updated");
     }
 
     [Fact]

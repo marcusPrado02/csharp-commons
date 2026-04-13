@@ -62,7 +62,7 @@ public sealed class SimpleTemplateRendererTests
     {
         var dir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         Directory.CreateDirectory(dir);
-        File.WriteAllText(Path.Combine(dir, "welcome.html"), "Hello {{Name}}, your code is {{Code}}.");
+        await File.WriteAllTextAsync(Path.Combine(dir, "welcome.html"), "Hello {{Name}}, your code is {{Code}}.");
 
         var opts = new MailKitOptions { TemplateDirectory = dir };
         var renderer = new SimpleTemplateRenderer(opts);

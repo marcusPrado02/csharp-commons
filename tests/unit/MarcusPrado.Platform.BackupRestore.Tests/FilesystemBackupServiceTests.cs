@@ -50,7 +50,7 @@ public sealed class FilesystemBackupServiceTests : IDisposable
     {
         var backup = await _svc.CreateFullBackupAsync(_source, _backups);
         // Corrupt the archive
-        File.WriteAllText(backup.Value.ArchivePath, "corrupted");
+        await File.WriteAllTextAsync(backup.Value.ArchivePath, "corrupted");
         var verify = await _svc.VerifyBackupAsync(backup.Value);
         verify.Value.Should().BeFalse();
     }

@@ -25,7 +25,7 @@ public sealed class NamingConventionRules
     {
         var violations = KnownAssemblies.AllCore
             .SelectMany(a => a.GetExportedTypes())
-            .Where(t => t.IsInterface && !t.Name.StartsWith("I", StringComparison.Ordinal))
+            .Where(t => t.IsInterface && !t.Name.StartsWith('I'))
             .Select(t => $"{t.Assembly.GetName().Name} → {t.FullName}")
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToList();
