@@ -99,3 +99,21 @@ public sealed class MailKitExtensionsTests
             .Should().BeOfType<SimpleTemplateRenderer>();
     }
 }
+
+public sealed class MailKitEmailSenderConstructorTests
+{
+    [Fact]
+    public void Constructor_WithNullOptions_ThrowsArgumentNullException()
+    {
+        Action act = () => new MailKitEmailSender(null!, Substitute.For<ISmtpClient>());
+        act.Should().Throw<ArgumentNullException>().WithParameterName("options");
+    }
+
+    [Fact]
+    public void Constructor_WithNullSmtp_ThrowsArgumentNullException()
+    {
+        var opts = new MailKitOptions { SmtpHost = "localhost" };
+        Action act = () => new MailKitEmailSender(opts, null!);
+        act.Should().Throw<ArgumentNullException>().WithParameterName("smtp");
+    }
+}

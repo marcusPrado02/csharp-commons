@@ -42,6 +42,16 @@ public sealed class ConsulExtensionsTests
     }
 }
 
+public sealed class ConsulServiceDiscoveryConstructorTests
+{
+    [Fact]
+    public void Constructor_WithNullClient_ThrowsArgumentNullException()
+    {
+        Action act = () => new ConsulServiceDiscovery(null!, new ConsulOptions());
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
+    }
+}
+
 public sealed class ConsulServiceDiscoveryTests
 {
     private static ConsulServiceDiscovery BuildService(

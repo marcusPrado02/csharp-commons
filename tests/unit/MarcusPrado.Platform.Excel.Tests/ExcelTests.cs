@@ -87,3 +87,34 @@ public sealed class ExcelExtensionsTests
         sp.GetRequiredService<IExcelReader>().Should().BeOfType<ClosedXmlExcelReader>();
     }
 }
+
+public sealed class ClosedXmlExcelWriterAdditionalTests
+{
+    [Fact]
+    public async Task WriteAsync_MultipleRows_PreservesRowCount()
+    {
+        var writer = new ClosedXmlExcelWriter();
+        var reader = new ClosedXmlExcelReader();
+        var rows = Enumerable.Range(1, 5)
+            .Select(i => new[] { $"Row{i}", i.ToString() })
+            .ToList();
+        var doc = new ExcelDocument("Sheet", ["Col1", "Col2"], rows);
+
+        var bytes = await writer.WriteAsync(doc);
+        var read  = await reader.ReadAsync(bytes);
+
+        // 1 header row + 5 data rows
+        read.Should().HaveCount(6);
+    }
+
+    [Fact]
+    public async Task WriteAsync_SingleColumn_WorksCorrectly()
+    {
+        var writer = new ClosedXmlExcelWriter();
+        var doc    = new ExcelDocument("Sheet", ["Only"], [["Value1"], ["Value2"]]);
+
+        var bytes = await writer.WriteAsync(doc);
+
+        bytes.Should().NotBeEmpty();
+    }
+}

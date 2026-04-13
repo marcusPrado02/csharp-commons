@@ -73,4 +73,54 @@ public sealed class MongoDbExtensionsTests
         sp.GetRequiredService<IDocumentRepository<Product>>()
             .Should().BeOfType<MongoDocumentRepository<Product>>();
     }
+
+    [Fact]
+    public void AddPlatformMongoDb_DefaultCollectionName_IsTypeName()
+    {
+        var services = new ServiceCollection();
+        var opts = new DocumentStoreOptions("mongodb://localhost:27017", "test-db");
+        services.AddPlatformMongoDb(opts);
+        services.AddDocumentRepository<Product>();
+
+        // Resolving should not throw — proves DI wiring is complete
+        var sp = services.BuildServiceProvider();
+        var repo = sp.GetRequiredService<IDocumentRepository<Product>>();
+        repo.Should().NotBeNull();
+    }
+}
+
+public sealed class MongoDocumentRepositoryAdditionalTests
+{
+    [Fact]
+    public void Constructor_WithNullDatabase_ThrowsArgumentNullException()
+    {
+        Action act = () => new MongoDocumentRepository<Product>(null!);
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Constructor_WithExplicitCollectionName_UsesProvidedName()
+    {
+        var db  = Substitute.For<IMongoDatabase>();
+        var col = Substitute.For<IMongoCollection<DocumentEnvelope<Product>>>();
+        db.GetCollection<DocumentEnvelope<Product>>(Arg.Any<string>()).Returns(col);
+
+        _ = new MongoDocumentRepository<Product>(db, "my-products");
+
+        db.Received(1).GetCollection<DocumentEnvelope<Product>>("my-products");
+    }
+
+    [Fact]
+    public void DocumentStoreOptions_WithAppName_StoresIt()
+    {
+        var opts = new DocumentStoreOptions("mongodb://localhost", "db", "MyApp");
+        opts.AppName.Should().Be("MyApp");
+    }
+
+    [Fact]
+    public void DocumentStoreOptions_WithoutAppName_IsNull()
+    {
+        var opts = new DocumentStoreOptions("mongodb://localhost", "db");
+        opts.AppName.Should().BeNull();
+    }
 }

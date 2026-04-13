@@ -71,6 +71,20 @@ public sealed class QuestPdfGeneratorTests
     }
 }
 
+public sealed class QuestPdfTemplateRegistryTests
+{
+    [Fact]
+    public void TryGetComposer_UnregisteredTemplate_ReturnsFalse()
+    {
+        var registry = new QuestPdfTemplateRegistry();
+
+        var found = registry.TryGetComposer("nonexistent", out var composer);
+
+        found.Should().BeFalse();
+        composer.Should().BeNull();
+    }
+}
+
 public sealed class PdfExtensionsTests
 {
     [Fact]

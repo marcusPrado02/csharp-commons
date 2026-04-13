@@ -54,6 +54,26 @@ public sealed class SearchQueryTests
     }
 }
 
+public sealed class ElasticsearchSearchClientTests
+{
+    [Fact]
+    public void Constructor_WithNullClient_ThrowsArgumentNullException()
+    {
+        Action act = () => new ElasticsearchSearchClient(null!);
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task SearchAsync_WithNullQuery_ThrowsArgumentNullException()
+    {
+        var settings = new ElasticsearchClientSettings(new Uri("http://localhost:9200"));
+        var client = new ElasticsearchSearchClient(new ElasticsearchClient(settings));
+
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            () => client.SearchAsync<object>(null!));
+    }
+}
+
 public sealed class ElasticsearchExtensionsTests
 {
     [Fact]

@@ -79,4 +79,14 @@ public sealed class TwilioSmsServiceTests
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNullOrWhiteSpace();
     }
+
+    [Fact]
+    public async Task SendAsync_WithNullMessage_ThrowsArgumentNullException()
+    {
+        var client = Substitute.For<ITwilioRestClient>();
+        var opts   = new TwilioOptions { DefaultFrom = "+15550000000" };
+        var svc    = new TwilioSmsService(opts, client);
+
+        await Assert.ThrowsAsync<ArgumentNullException>(() => svc.SendAsync(null!));
+    }
 }

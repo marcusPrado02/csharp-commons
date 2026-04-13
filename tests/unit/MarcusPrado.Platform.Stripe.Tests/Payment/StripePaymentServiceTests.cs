@@ -75,4 +75,32 @@ public sealed class StripePaymentServiceTests
         var act = () => new StripePaymentService(client);
         act.Should().NotThrow();
     }
+
+    [Fact]
+    public async Task ChargeAsync_WithNullRequest_ThrowsArgumentNullException()
+    {
+        var client = Substitute.For<IStripeClient>();
+        var svc = new StripePaymentService(client);
+
+        await Assert.ThrowsAsync<ArgumentNullException>(
+            () => svc.ChargeAsync(null!));
+    }
+}
+
+public sealed class StripeSubscriptionServiceTests
+{
+    [Fact]
+    public void Constructor_WithNullClient_ThrowsArgumentNullException()
+    {
+        Action act = () => new StripeSubscriptionService(null!);
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Constructor_WithValidClient_Succeeds()
+    {
+        var client = Substitute.For<IStripeClient>();
+        var act = () => new StripeSubscriptionService(client);
+        act.Should().NotThrow();
+    }
 }
