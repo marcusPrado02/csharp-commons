@@ -33,11 +33,12 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         var archiveName = $"{id:N}_full.zip";
         var archivePath = Path.Combine(backupDirectory, archiveName);
 
-        ZipFile.CreateFromDirectory(
+        await ZipFile.CreateFromDirectoryAsync(
             sourcePath,
             archivePath,
             CompressionLevel.Optimal,
-            includeBaseDirectory: false);
+            includeBaseDirectory: false,
+            cancellationToken: ct).ConfigureAwait(false);
 
         var checksum = await ComputeChecksumAsync(archivePath, ct).ConfigureAwait(false);
         var info = new FileInfo(archivePath);
@@ -77,12 +78,12 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         var archiveName = $"{id:N}_incr.zip";
         var archivePath = Path.Combine(backupDirectory, archiveName);
 
-        using (var archive = ZipFile.Open(archivePath, ZipArchiveMode.Create))
+        await using (var archive = await ZipFile.OpenAsync(archivePath, ZipArchiveMode.Create, ct).ConfigureAwait(false))
         {
             foreach (var file in files)
             {
                 var relative = Path.GetRelativePath(sourcePath, file);
-                archive.CreateEntryFromFile(file, relative, CompressionLevel.Optimal);
+                await archive.CreateEntryFromFileAsync(file, relative, CompressionLevel.Optimal, ct).ConfigureAwait(false);
             }
         }
 
@@ -170,18 +171,16 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
     // ── IRestoreService ───────────────────────────────────────────────────────
 
     /// <inheritdoc />
-    public Task<Result> RestoreAsync(BackupEntry entry, string targetPath, CancellationToken ct = default)
+    public async Task<Result> RestoreAsync(BackupEntry entry, string targetPath, CancellationToken ct = default)
     {
         if (!File.Exists(entry.ArchivePath))
         {
-            return Task.FromResult(
-                Result.Failure(
-                    Error.NotFound("BACKUP.ARCHIVE_MISSING", $"Archive '{entry.ArchivePath}' not found.")));
+            return Error.NotFound("BACKUP.ARCHIVE_MISSING", $"Archive '{entry.ArchivePath}' not found.");
         }
 
         Directory.CreateDirectory(targetPath);
-        ZipFile.ExtractToDirectory(entry.ArchivePath, targetPath, overwriteFiles: true);
-        return Task.FromResult(Result.Success());
+        await ZipFile.ExtractToDirectoryAsync(entry.ArchivePath, targetPath, overwriteFiles: true, ct).ConfigureAwait(false);
+        return Result.Success();
     }
 
     /// <inheritdoc />
@@ -223,7 +222,7 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
             return new RestoreValidationResult(false, 0, "Checksum mismatch — archive may be corrupted.");
         }
 
-        using var archive = ZipFile.OpenRead(entry.ArchivePath);
+        await using var archive = await ZipFile.OpenReadAsync(entry.ArchivePath, ct).ConfigureAwait(false);
         return new RestoreValidationResult(true, archive.Entries.Count, null);
     }
 

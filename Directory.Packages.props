@@ -167,7 +167,9 @@
 
   <!-- ── MailKit (email) ── -->
   <ItemGroup Label="MailKit">
-    <PackageVersion Include="MailKit"                                             Version="4.8.0" />
+    <PackageVersion Include="MailKit"                                             Version="4.15.1" />
+    <!-- Explicit pin: MimeKit ≥4.9.0 fixes GHSA-g7hc-96xr-gvvx (moderate severity) -->
+    <PackageVersion Include="MimeKit"                                             Version="4.15.1" />
   </ItemGroup>
 
   <!-- ── Twilio (SMS) ── -->
@@ -223,6 +225,8 @@
   <!-- ── ClosedXML (Excel) ── -->
   <ItemGroup Label="ClosedXML">
     <PackageVersion Include="ClosedXML"                                           Version="0.102.3" />
+    <!-- Explicit pin: System.IO.Packaging ≥8.0.0 fixes GHSA-f32c-w444-8ppv / GHSA-qj66-m88j-hmgj -->
+    <PackageVersion Include="System.IO.Packaging"                                 Version="10.0.5" />
   </ItemGroup>
 
   <!-- ── Nethereum (blockchain) ── -->
