@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <Description>SendGrid email adapter: SendGridEmailSender implementing IEmailSender with dynamic template support and Result&lt;T&gt; failure mapping.</Description>
+    <PackageTags>dotnet;platform;sendgrid;email</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SendGrid" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Email\MarcusPrado.Platform.Abstractions.Email.csproj" />
+  </ItemGroup>
+</Project>

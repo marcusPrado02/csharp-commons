@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <Description>AWS SNS SMS adapter: SnsSmsService implementing ISmsService via AWSSDK.SimpleNotificationService.</Description>
+    <PackageTags>dotnet;platform;aws;sns;sms</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SimpleNotificationService" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\MarcusPrado.Platform.Abstractions.Sms\MarcusPrado.Platform.Abstractions.Sms.csproj" />
+  </ItemGroup>
+</Project>

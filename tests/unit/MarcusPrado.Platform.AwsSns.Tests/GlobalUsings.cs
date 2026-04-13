@@ -1,0 +1,10 @@
+global using Amazon.SimpleNotificationService;
+global using Amazon.SimpleNotificationService.Model;
+global using MarcusPrado.Platform.Abstractions.Sms;
+global using MarcusPrado.Platform.AwsSns.Extensions;
+global using MarcusPrado.Platform.AwsSns.Options;
+global using MarcusPrado.Platform.AwsSns.Sms;
+global using Microsoft.Extensions.DependencyInjection;
+global using NSubstitute;
+global using Xunit;
+global using FluentAssertions;

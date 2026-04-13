@@ -48,9 +48,12 @@
     <Project Path="src/extensions/MarcusPrado.Platform.Grpc/MarcusPrado.Platform.Grpc.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Protobuf/MarcusPrado.Platform.Protobuf.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.MailKit/MarcusPrado.Platform.MailKit.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.SendGrid/MarcusPrado.Platform.SendGrid.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Twilio/MarcusPrado.Platform.Twilio.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.AwsSns/MarcusPrado.Platform.AwsSns.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Stripe/MarcusPrado.Platform.Stripe.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Elasticsearch/MarcusPrado.Platform.Elasticsearch.csproj" />
+    <Project Path="src/extensions/MarcusPrado.Platform.OpenSearch/MarcusPrado.Platform.OpenSearch.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.Consul/MarcusPrado.Platform.Consul.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.MongoDb/MarcusPrado.Platform.MongoDb.csproj" />
     <Project Path="src/extensions/MarcusPrado.Platform.HotChocolate/MarcusPrado.Platform.HotChocolate.csproj" />
@@ -128,6 +131,9 @@
     <Project Path="tests/unit/MarcusPrado.Platform.Twilio.Tests/MarcusPrado.Platform.Twilio.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Stripe.Tests/MarcusPrado.Platform.Stripe.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Elasticsearch.Tests/MarcusPrado.Platform.Elasticsearch.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.SendGrid.Tests/MarcusPrado.Platform.SendGrid.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.AwsSns.Tests/MarcusPrado.Platform.AwsSns.Tests.csproj" />
+    <Project Path="tests/unit/MarcusPrado.Platform.OpenSearch.Tests/MarcusPrado.Platform.OpenSearch.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.Consul.Tests/MarcusPrado.Platform.Consul.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.MongoDb.Tests/MarcusPrado.Platform.MongoDb.Tests.csproj" />
     <Project Path="tests/unit/MarcusPrado.Platform.HotChocolate.Tests/MarcusPrado.Platform.HotChocolate.Tests.csproj" />
