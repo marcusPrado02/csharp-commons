@@ -10,6 +10,6 @@
     <PackageTags>dotnet;platform;blockchain;abstractions</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
+    <ProjectReference Include="..\MarcusPrado.Platform.Abstractions\MarcusPrado.Platform.Abstractions.csproj" />
   </ItemGroup>
 </Project>

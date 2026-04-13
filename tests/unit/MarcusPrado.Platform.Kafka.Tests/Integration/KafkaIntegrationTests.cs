@@ -368,8 +368,8 @@ public sealed class KafkaIntegrationTests : IAsyncLifetime
         var result = consumer.Consume(TimeSpan.FromSeconds(15));
         result.Should().NotBeNull();
         // The JsonMessageSerializer wraps in MessageEnvelope<T> — envelope JSON
-        // contains a "Metadata" and "Payload" section at minimum.
-        result!.Message.Value.Should().ContainAll("Metadata", "Payload");
+        // is serialized with camelCase, so contains "metadata" and "payload".
+        result!.Message.Value.Should().ContainAll("metadata", "payload");
     }
 
     // ─── test 18: producer reuse — multiple publishes on same instance ───────
