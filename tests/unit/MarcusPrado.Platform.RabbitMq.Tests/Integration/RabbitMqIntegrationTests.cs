@@ -131,8 +131,16 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         await channel.BasicConsumeAsync(mainQueue, autoAck: false, mainConsumer);
         await nackedTcs.Task.WaitAsync(TimeSpan.FromSeconds(15));
 
-        // verify DLQ received the message
-        var dlqResult = await channel.BasicGetAsync(dlqQueue, autoAck: true);
+        // verify DLQ received the message — poll briefly; dead-letter routing is async on the broker side
+        BasicGetResult? dlqResult = null;
+        var dlqDeadline = DateTimeOffset.UtcNow.AddSeconds(10);
+        while (dlqResult is null && DateTimeOffset.UtcNow < dlqDeadline)
+        {
+            dlqResult = await channel.BasicGetAsync(dlqQueue, autoAck: true);
+            if (dlqResult is null)
+                await Task.Delay(100);
+        }
+
         dlqResult.Should().NotBeNull();
         Encoding.UTF8.GetString(dlqResult!.Body.Span).Should().Contain("test-dlq");
     }
@@ -266,6 +274,129 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         };
 
         await act.Should().NotThrowAsync();
+    }
+
+    // ─── test 11: queue length — correct number of messages queued ───────────
+
+    [Fact]
+    public async Task Queue_MessageCount_MatchesPublished()
+    {
+        DockerAvailabilityCheck.SkipIfDockerNotAvailable();
+
+        var opts = BuildOptions();
+        var factory = new ConnectionFactory { Uri = new Uri(_connectionString) };
+        await using var connection = await factory.CreateConnectionAsync();
+        var channel = await connection.CreateChannelAsync();
+
+        var routingKey = UniqueRoutingKey();
+        var queueName = UniqueQueueName();
+
+        await channel.ExchangeDeclareAsync(opts.Exchange, opts.ExchangeType, durable: true, autoDelete: false);
+        await channel.QueueDeclareAsync(queueName, durable: false, exclusive: false, autoDelete: false);
+        await channel.QueueBindAsync(queueName, opts.Exchange, routingKey);
+
+        const int count = 5;
+        var serializer = new JsonMessageSerializer();
+        await using var producer = await RabbitProducer.CreateAsync(opts, serializer);
+        for (var i = 0; i < count; i++)
+        {
+            await producer.PublishAsync(routingKey, new OrderEvent($"ORD-{i:D3}"));
+        }
+
+        // give broker time to enqueue
+        await Task.Delay(200);
+
+        var queueInfo = await channel.QueueDeclarePassiveAsync(queueName);
+        ((int)queueInfo.MessageCount).Should().Be(count);
+    }
+
+    // ─── test 12: exclusive queue — second binding attempt is blocked ────────
+
+    [Fact]
+    public async Task ExclusiveQueue_SecondConnection_IsRefused()
+    {
+        DockerAvailabilityCheck.SkipIfDockerNotAvailable();
+
+        var factory = new ConnectionFactory { Uri = new Uri(_connectionString) };
+        await using var conn1 = await factory.CreateConnectionAsync();
+        var ch1 = await conn1.CreateChannelAsync();
+
+        var queueName = UniqueQueueName();
+        await ch1.QueueDeclareAsync(queueName, durable: false, exclusive: true, autoDelete: true);
+
+        await using var conn2 = await factory.CreateConnectionAsync();
+        var ch2 = await conn2.CreateChannelAsync();
+
+        var act = async () => await ch2.QueueDeclarePassiveAsync(queueName);
+        await act.Should().ThrowAsync<Exception>("exclusive queue is owned by conn1");
+    }
+
+    // ─── test 13: message headers survive round-trip ─────────────────────────
+
+    [Fact]
+    public async Task MessageHeaders_ArePropagatedToConsumer()
+    {
+        DockerAvailabilityCheck.SkipIfDockerNotAvailable();
+
+        var factory = new ConnectionFactory { Uri = new Uri(_connectionString) };
+        await using var connection = await factory.CreateConnectionAsync();
+        var channel = await connection.CreateChannelAsync();
+
+        var exchange = $"hdr-ex-{Guid.NewGuid():N}";
+        var queue = $"hdr-q-{Guid.NewGuid():N}";
+        const string rk = "rk-headers";
+
+        await channel.ExchangeDeclareAsync(exchange, "direct", durable: false, autoDelete: true);
+        await channel.QueueDeclareAsync(queue, durable: false, exclusive: false, autoDelete: true);
+        await channel.QueueBindAsync(queue, exchange, rk);
+
+        var props = new BasicProperties
+        {
+            Headers = new Dictionary<string, object?> { ["x-correlation-id"] = "corr-xyz" },
+        };
+        await channel.BasicPublishAsync(exchange, rk, mandatory: false, basicProperties: props,
+            body: Encoding.UTF8.GetBytes("header-test"));
+
+        await Task.Delay(100);
+
+        var result = await channel.BasicGetAsync(queue, autoAck: true);
+        result.Should().NotBeNull();
+        result!.BasicProperties.Headers.Should().ContainKey("x-correlation-id");
+    }
+
+    // ─── test 14: alternate exchange — unroutable messages redirected ─────────
+
+    [Fact]
+    public async Task UnroutableMessage_RedirectedToAlternateExchange()
+    {
+        DockerAvailabilityCheck.SkipIfDockerNotAvailable();
+
+        var factory = new ConnectionFactory { Uri = new Uri(_connectionString) };
+        await using var connection = await factory.CreateConnectionAsync();
+        var channel = await connection.CreateChannelAsync();
+
+        var altExchange = $"alt-ex-{Guid.NewGuid():N}";
+        var altQueue = $"alt-q-{Guid.NewGuid():N}";
+        var mainExchange = $"main-ex-{Guid.NewGuid():N}";
+
+        // declare alternate exchange and its fanout queue
+        await channel.ExchangeDeclareAsync(altExchange, "fanout", durable: false, autoDelete: true);
+        await channel.QueueDeclareAsync(altQueue, durable: false, exclusive: false, autoDelete: true);
+        await channel.QueueBindAsync(altQueue, altExchange, "");
+
+        // declare main exchange with alternate-exchange pointing to altExchange
+        var args = new Dictionary<string, object?> { ["alternate-exchange"] = altExchange };
+        await channel.ExchangeDeclareAsync(mainExchange, "direct", durable: false, autoDelete: true, arguments: args);
+
+        // publish to main exchange with a routing key that has no binding → should go to alt
+        await channel.BasicPublishAsync(mainExchange, "no-binding", mandatory: false,
+            body: Encoding.UTF8.GetBytes("unroutable"));
+
+        await Task.Delay(200);
+
+        var result = await channel.BasicGetAsync(altQueue, autoAck: true);
+        result.Should().NotBeNull("unroutable message should arrive on alternate exchange queue");
+        Encoding.UTF8.GetString(result!.Body.Span).Should().Be("unroutable");
     }
 
     private sealed record OrderEvent(string OrderId);
