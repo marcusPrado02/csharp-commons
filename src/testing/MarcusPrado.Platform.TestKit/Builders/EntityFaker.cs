@@ -8,8 +8,6 @@ namespace MarcusPrado.Platform.TestKit.Builders;
 public abstract class EntityFaker<T>
     where T : class
 {
-    private static readonly Random Rng = Random.Shared;
-
     // ── Helper generators ─────────────────────────────────────────────────────
 
     /// <summary>Returns a new deterministic <see cref="Guid"/> for use as an ID.</summary>
@@ -20,7 +18,7 @@ public abstract class EntityFaker<T>
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         return new string(Enumerable.Range(0, length)
-            .Select(_ => chars[Rng.Next(chars.Length)])
+            .Select(_ => chars[Random.Shared.Next(chars.Length)])
             .ToArray());
     }
 
@@ -30,22 +28,22 @@ public abstract class EntityFaker<T>
 
     /// <summary>Returns a random decimal value between 0.01 and 9999.99.</summary>
     protected static decimal RandomDecimal(decimal min = 0.01m, decimal max = 9_999.99m)
-        => Math.Round((decimal)(Rng.NextDouble() * (double)(max - min)) + min, 2);
+        => Math.Round((decimal)(Random.Shared.NextDouble() * (double)(max - min)) + min, 2);
 
     /// <summary>Returns a random positive integer.</summary>
-    protected static int RandomInt(int min = 1, int max = 1000) => Rng.Next(min, max + 1);
+    protected static int RandomInt(int min = 1, int max = 1000) => Random.Shared.Next(min, max + 1);
 
     /// <summary>Returns a random past <see cref="DateTimeOffset"/> within the last year.</summary>
     protected static DateTimeOffset RandomPastDate()
-        => DateTimeOffset.UtcNow.AddDays(-Rng.Next(1, 365));
+        => DateTimeOffset.UtcNow.AddDays(-Random.Shared.Next(1, 365));
 
     /// <summary>Returns a random future <see cref="DateTimeOffset"/> within the next year.</summary>
     protected static DateTimeOffset RandomFutureDate()
-        => DateTimeOffset.UtcNow.AddDays(Rng.Next(1, 365));
+        => DateTimeOffset.UtcNow.AddDays(Random.Shared.Next(1, 365));
 
     /// <summary>Picks a random element from a list of values.</summary>
     protected static TValue PickRandom<TValue>(params TValue[] values)
-        => values[Rng.Next(values.Length)];
+        => values[Random.Shared.Next(values.Length)];
 
     // ── Build ─────────────────────────────────────────────────────────────────
 

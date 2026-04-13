@@ -3,5 +3,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- SA1516 fires on top-level statements; suppress for sample entry-point files -->
+    <NoWarn>SA1516</NoWarn>
   </PropertyGroup>
 </Project>

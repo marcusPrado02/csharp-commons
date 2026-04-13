@@ -1,4 +1,4 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 app.MapGet("/", () => "Sample Platform Service");
-app.Run();
+await app.RunAsync();
