@@ -184,4 +184,5 @@ reports/
 *.dtt
 
 BACKLOG.md.claire/
+.claire/
 .claude/
