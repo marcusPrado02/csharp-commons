@@ -6,7 +6,7 @@
 #   test     → unit tests + XPlat Code Coverage → Codecov
 #   analyze  → dotnet format --verify-no-changes + CSharpier check
 #   pack     → NuGet packages for core + extensions + kits (main & v* tags)
-#   publish  → push packages to NuGet.org + GitHub Packages (v* tags only)
+#   publish  → push packages to GitHub Packages (v* tags only)
 #   release  → create GitHub Release with auto-generated changelog (v* tags only)
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -267,14 +267,11 @@ jobs:
 
   # ────────────────────────────────────────────────────────────────────────────
   # 5. PUBLISH
-  #    Push all NuGet packages to NuGet.org AND GitHub Packages.
+  #    Push all NuGet packages to GitHub Packages.
   #    Triggered only when the pipeline runs on a v* tag.
   #
-  #    Protected by the "nuget-production" GitHub Environment so that releases
-  #    require manual approval before publishing.
-  #
-  #    GitHub Packages authentication uses actions/setup-dotnet source-url +
-  #    NUGET_AUTH_TOKEN — the officially recommended approach; avoids the
+  #    Authentication uses actions/setup-dotnet source-url + NUGET_AUTH_TOKEN
+  #    (GITHUB_TOKEN) — the officially recommended approach; avoids the
   #    fragile `dotnet nuget add source` pattern.
   # ────────────────────────────────────────────────────────────────────────────
   publish:
@@ -285,7 +282,7 @@ jobs:
 
     environment:
       name: nuget-production
-      url: https://www.nuget.org/profiles/MarcusPrado
+      url: https://github.com/${{ github.repository_owner }}?tab=packages
 
     # Override the workflow-level read-only permissions.
     # packages: write  → required to push to GitHub Packages
@@ -312,15 +309,6 @@ jobs:
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to NuGet.org
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        run: |
-          dotnet nuget push ./nupkgs/*.nupkg \
-            --api-key "$NUGET_API_KEY" \
-            --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate
 
       - name: Publish to GitHub Packages
         env:
