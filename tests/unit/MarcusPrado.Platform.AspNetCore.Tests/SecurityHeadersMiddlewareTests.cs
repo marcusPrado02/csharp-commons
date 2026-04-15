@@ -57,8 +57,7 @@ public sealed class SecurityHeadersMiddlewareTests
     [Fact]
     public async Task Response_NoCsp_WhenCspDisabled()
     {
-        using var server = PlatformTestServer.CreateWithSecurityOptions(
-            o => o.EnableContentSecurityPolicy = false);
+        using var server = PlatformTestServer.CreateWithSecurityOptions(o => o.EnableContentSecurityPolicy = false);
         var response = await server.CreateClient().GetAsync("/ping");
 
         response.Headers.TryGetValues("Content-Security-Policy", out _).Should().BeFalse();
@@ -67,8 +66,9 @@ public sealed class SecurityHeadersMiddlewareTests
     [Fact]
     public async Task Response_UsesCustomReferrerPolicy()
     {
-        using var server = PlatformTestServer.CreateWithSecurityOptions(
-            o => o.ReferrerPolicy = "strict-origin-when-cross-origin");
+        using var server = PlatformTestServer.CreateWithSecurityOptions(o =>
+            o.ReferrerPolicy = "strict-origin-when-cross-origin"
+        );
         var response = await server.CreateClient().GetAsync("/ping");
 
         response.Headers.TryGetValues("Referrer-Policy", out var values);
@@ -78,8 +78,7 @@ public sealed class SecurityHeadersMiddlewareTests
     [Fact]
     public async Task Response_NoXFrameOptions_WhenDisabled()
     {
-        using var server = PlatformTestServer.CreateWithSecurityOptions(
-            o => o.EnableXFrameOptions = false);
+        using var server = PlatformTestServer.CreateWithSecurityOptions(o => o.EnableXFrameOptions = false);
         var response = await server.CreateClient().GetAsync("/ping");
 
         response.Headers.TryGetValues("X-Frame-Options", out _).Should().BeFalse();

@@ -37,8 +37,7 @@ public sealed class SecurityHeadersMiddleware
             if (_options.EnableReferrerPolicy)
                 h["Referrer-Policy"] = _options.ReferrerPolicy;
 
-            if (_options.EnableContentSecurityPolicy
-                && !h.ContainsKey("Content-Security-Policy"))
+            if (_options.EnableContentSecurityPolicy && !h.ContainsKey("Content-Security-Policy"))
             {
                 h["Content-Security-Policy"] = _options.ContentSecurityPolicy;
             }

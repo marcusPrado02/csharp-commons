@@ -17,7 +17,8 @@ public static class SecurityHeadersExtensions
     /// </summary>
     public static IServiceCollection AddPlatformSecurityHeaders(
         this IServiceCollection services,
-        Action<Security.SecurityHeadersOptions>? configure = null)
+        Action<Security.SecurityHeadersOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -43,9 +44,7 @@ public static class SecurityHeadersExtensions
     /// environment is not Development and <see cref="Security.SecurityHeadersOptions.EnableHsts"/>
     /// is <c>true</c>.
     /// </summary>
-    public static IApplicationBuilder UsePlatformHsts(
-        this IApplicationBuilder app,
-        IWebHostEnvironment env)
+    public static IApplicationBuilder UsePlatformHsts(this IApplicationBuilder app, IWebHostEnvironment env)
     {
         ArgumentNullException.ThrowIfNull(app);
         ArgumentNullException.ThrowIfNull(env);

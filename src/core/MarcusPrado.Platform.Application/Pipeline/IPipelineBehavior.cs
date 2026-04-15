@@ -4,8 +4,7 @@ namespace MarcusPrado.Platform.Application.Pipeline;
 /// Delegate that calls the next step (or handler) in the pipeline.
 /// </summary>
 /// <typeparam name="TResponse">The response type.</typeparam>
-public delegate Task<TResponse> RequestHandlerDelegate<TResponse>(
-    CancellationToken cancellationToken = default);
+public delegate Task<TResponse> RequestHandlerDelegate<TResponse>(CancellationToken cancellationToken = default);
 
 /// <summary>
 /// A single cross-cutting concern that wraps command or query handling.
@@ -20,5 +19,6 @@ public interface IPipelineBehavior<in TRequest, TResponse>
     Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 }

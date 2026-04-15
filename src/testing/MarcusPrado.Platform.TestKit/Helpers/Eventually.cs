@@ -14,7 +14,8 @@ public static class Eventually
         Func<bool> condition,
         TimeSpan? timeout = null,
         TimeSpan? interval = null,
-        string? message = null)
+        string? message = null
+    )
     {
         var deadline = DateTimeOffset.UtcNow.Add(timeout ?? DefaultTimeout);
         var poll = interval ?? DefaultInterval;
@@ -29,8 +30,7 @@ public static class Eventually
             await Task.Delay(poll);
         }
 
-        throw new TimeoutException(
-            message ?? $"Condition did not become true within {timeout ?? DefaultTimeout}.");
+        throw new TimeoutException(message ?? $"Condition did not become true within {timeout ?? DefaultTimeout}.");
     }
 
     /// <summary>
@@ -41,7 +41,8 @@ public static class Eventually
         Func<Task<bool>> condition,
         TimeSpan? timeout = null,
         TimeSpan? interval = null,
-        string? message = null)
+        string? message = null
+    )
     {
         var deadline = DateTimeOffset.UtcNow.Add(timeout ?? DefaultTimeout);
         var poll = interval ?? DefaultInterval;
@@ -56,7 +57,6 @@ public static class Eventually
             await Task.Delay(poll);
         }
 
-        throw new TimeoutException(
-            message ?? $"Condition did not become true within {timeout ?? DefaultTimeout}.");
+        throw new TimeoutException(message ?? $"Condition did not become true within {timeout ?? DefaultTimeout}.");
     }
 }

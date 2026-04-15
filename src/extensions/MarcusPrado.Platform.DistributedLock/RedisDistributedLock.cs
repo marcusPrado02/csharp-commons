@@ -27,17 +27,15 @@ public sealed class RedisDistributedLock : IDistributedLock
     }
 
     /// <inheritdoc/>
-    public async Task<IAsyncDisposable?> AcquireAsync(
-        string key,
-        TimeSpan expiry,
-        CancellationToken ct = default)
+    public async Task<IAsyncDisposable?> AcquireAsync(string key, TimeSpan expiry, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
         ct.ThrowIfCancellationRequested();
 
         var token = Interlocked.Increment(ref _fencingCounter).ToString();
-        var acquired = await _db.StringSetAsync(key, token, expiry, keepTtl: false, When.NotExists).ConfigureAwait(false);
+        var acquired = await _db.StringSetAsync(key, token, expiry, keepTtl: false, When.NotExists)
+            .ConfigureAwait(false);
 
         return acquired ? new RedisReleaseLock(_db, key, token) : null;
     }

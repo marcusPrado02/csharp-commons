@@ -11,12 +11,10 @@ public class ApiEnvelope
 
     /// <summary>Creates a successful generic envelope wrapping <paramref name="data"/>.</summary>
     public static ApiEnvelope<T> Ok<T>(T data)
-        where T : class
-        => new() { Success = true, Data = data };
+        where T : class => new() { Success = true, Data = data };
 
     /// <summary>Creates a failure envelope with an error message.</summary>
-    public static ApiEnvelope<object?> Fail(string error)
-        => new() { Success = false, ErrorMessage = error };
+    public static ApiEnvelope<object?> Fail(string error) => new() { Success = false, ErrorMessage = error };
 }
 
 /// <summary>Generic wrapper for API responses.</summary>

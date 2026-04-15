@@ -11,8 +11,7 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
     private readonly string _defaultFromAddress;
 
     /// <summary>Initializes a new instance of <see cref="NethereumSmartContractClient"/>.</summary>
-    public NethereumSmartContractClient(
-        IWeb3 web3, ContractRegistry registry, string defaultFromAddress = "")
+    public NethereumSmartContractClient(IWeb3 web3, ContractRegistry registry, string defaultFromAddress = "")
     {
         ArgumentNullException.ThrowIfNull(web3);
         ArgumentNullException.ThrowIfNull(registry);
@@ -26,7 +25,8 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
         string contractAddress,
         string function,
         object?[] args,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(contractAddress);
         ArgumentException.ThrowIfNullOrWhiteSpace(function);
@@ -44,7 +44,8 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
         string contractAddress,
         string function,
         object?[] args,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(contractAddress);
         ArgumentException.ThrowIfNullOrWhiteSpace(function);
@@ -59,10 +60,12 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
 
     private string GetRequiredAbi(string contractAddress)
     {
-        var abi = _registry.GetAbi(contractAddress)
+        var abi =
+            _registry.GetAbi(contractAddress)
             ?? throw new InvalidOperationException(
-                $"No ABI registered for contract '{contractAddress}'. " +
-                "Register the ABI via ContractRegistry.Register() before calling smart contract methods.");
+                $"No ABI registered for contract '{contractAddress}'. "
+                    + "Register the ABI via ContractRegistry.Register() before calling smart contract methods."
+            );
         return abi;
     }
 }

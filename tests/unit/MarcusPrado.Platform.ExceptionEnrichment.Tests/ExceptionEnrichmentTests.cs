@@ -40,12 +40,22 @@ public sealed class ExceptionEnrichmentTests
         Exception ex2;
 
         try
-        { throw new InvalidOperationException("message A"); }
-        catch (InvalidOperationException e) { ex1 = e; }
+        {
+            throw new InvalidOperationException("message A");
+        }
+        catch (InvalidOperationException e)
+        {
+            ex1 = e;
+        }
 
         try
-        { throw new InvalidOperationException("message B"); }
-        catch (InvalidOperationException e) { ex2 = e; }
+        {
+            throw new InvalidOperationException("message B");
+        }
+        catch (InvalidOperationException e)
+        {
+            ex2 = e;
+        }
 
         var fp1 = ExceptionFingerprinter.GetFingerprint(ex1);
         var fp2 = ExceptionFingerprinter.GetFingerprint(ex2);

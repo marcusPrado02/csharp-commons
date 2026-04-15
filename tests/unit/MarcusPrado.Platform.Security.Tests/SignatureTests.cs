@@ -75,7 +75,8 @@ public sealed class SignatureTests
             Payload: "payload",
             Signature: "sig",
             Nonce: "nonce",
-            Timestamp: DateTimeOffset.UtcNow.AddSeconds(-10));
+            Timestamp: DateTimeOffset.UtcNow.AddSeconds(-10)
+        );
 
         var result = envelope.IsWithinWindow(TimeSpan.FromMinutes(5));
 
@@ -89,7 +90,8 @@ public sealed class SignatureTests
             Payload: "payload",
             Signature: "sig",
             Nonce: "nonce",
-            Timestamp: DateTimeOffset.UtcNow.AddMinutes(-10));
+            Timestamp: DateTimeOffset.UtcNow.AddMinutes(-10)
+        );
 
         var result = envelope.IsWithinWindow(TimeSpan.FromMinutes(5));
 
@@ -124,8 +126,7 @@ public sealed class SignatureTests
     {
         var payload = $"{unixTs}.{body}";
         using var hmac = new HMACSHA256(secret);
-        return Convert.ToHexString(
-            hmac.ComputeHash(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
+        return Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(payload))).ToLowerInvariant();
     }
 
     [Fact]

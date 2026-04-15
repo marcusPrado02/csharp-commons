@@ -22,8 +22,8 @@ public sealed class InMemoryOutboxStore : IOutboxStore
     /// <inheritdoc/>
     public Task<IReadOnlyList<OutboxMessage>> GetPendingAsync(int batchSize, CancellationToken ct = default)
     {
-        var pending = _messages.Values
-            .Where(m => m.State == OutboxState.Pending && m.ScheduledAt <= DateTimeOffset.UtcNow)
+        var pending = _messages
+            .Values.Where(m => m.State == OutboxState.Pending && m.ScheduledAt <= DateTimeOffset.UtcNow)
             .OrderBy(m => m.ScheduledAt)
             .Take(batchSize)
             .ToList();

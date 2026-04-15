@@ -54,8 +54,7 @@ public sealed class TransactionBehaviorTests
         var logger = NullLogger<TransactionBehavior<TransactionalCommand, Result<int>>>.Instance;
         var behavior = new TransactionBehavior<TransactionalCommand, Result<int>>(logger, uow);
 
-        RequestHandlerDelegate<Result<int>> next = _ =>
-            Task.FromResult(Result.Success<int>(42));
+        RequestHandlerDelegate<Result<int>> next = _ => Task.FromResult(Result.Success<int>(42));
 
         var result = await behavior.HandleAsync(new TransactionalCommand(), next);
 
@@ -75,11 +74,11 @@ public sealed class TransactionBehaviorTests
         var logger = NullLogger<TransactionBehavior<TransactionalCommand, Result<int>>>.Instance;
         var behavior = new TransactionBehavior<TransactionalCommand, Result<int>>(logger, uow);
 
-        RequestHandlerDelegate<Result<int>> next = _ =>
-            throw new InvalidOperationException("handler failed");
+        RequestHandlerDelegate<Result<int>> next = _ => throw new InvalidOperationException("handler failed");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => behavior.HandleAsync(new TransactionalCommand(), next));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            behavior.HandleAsync(new TransactionalCommand(), next)
+        );
 
         await uow.Received(1).BeginTransactionAsync(Arg.Any<CancellationToken>());
         await uow.DidNotReceive().CommitAsync(Arg.Any<CancellationToken>());

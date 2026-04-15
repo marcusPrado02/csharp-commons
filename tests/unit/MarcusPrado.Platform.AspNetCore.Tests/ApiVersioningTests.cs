@@ -29,15 +29,22 @@ public sealed class ApiVersioningTests
                 app.UseRouting();
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapGet("/v{version:apiVersion}/test", (HttpContext ctx) =>
-                    {
-                        ctx.Response.StatusCode = 200;
-                        return ctx.Response.WriteAsync("ok");
-                    }).WithApiVersionSet(
-                        endpoints.NewApiVersionSet()
-                            .HasApiVersion(new ApiVersion(1, 0))
-                            .HasApiVersion(new ApiVersion(2, 0))
-                            .Build());
+                    endpoints
+                        .MapGet(
+                            "/v{version:apiVersion}/test",
+                            (HttpContext ctx) =>
+                            {
+                                ctx.Response.StatusCode = 200;
+                                return ctx.Response.WriteAsync("ok");
+                            }
+                        )
+                        .WithApiVersionSet(
+                            endpoints
+                                .NewApiVersionSet()
+                                .HasApiVersion(new ApiVersion(1, 0))
+                                .HasApiVersion(new ApiVersion(2, 0))
+                                .Build()
+                        );
                 });
             });
 
@@ -86,16 +93,23 @@ public sealed class ApiVersioningTests
                 app.UseDeprecationHeaders();
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapGet("/v{version:apiVersion}/test", (HttpContext ctx) =>
-                    {
-                        ctx.Response.StatusCode = 200;
-                        return ctx.Response.WriteAsync("ok");
-                    }).WithApiVersionSet(
-                        endpoints.NewApiVersionSet()
-                            .HasApiVersion(new ApiVersion(1, 0))
-                            .HasApiVersion(new ApiVersion(2, 0))
-                            .ReportApiVersions()
-                            .Build());
+                    endpoints
+                        .MapGet(
+                            "/v{version:apiVersion}/test",
+                            (HttpContext ctx) =>
+                            {
+                                ctx.Response.StatusCode = 200;
+                                return ctx.Response.WriteAsync("ok");
+                            }
+                        )
+                        .WithApiVersionSet(
+                            endpoints
+                                .NewApiVersionSet()
+                                .HasApiVersion(new ApiVersion(1, 0))
+                                .HasApiVersion(new ApiVersion(2, 0))
+                                .ReportApiVersions()
+                                .Build()
+                        );
                 });
             });
 
@@ -118,8 +132,9 @@ public sealed class ApiVersioningTests
 
         // Assert — the api-supported-versions header must be present
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.Should().ContainKey("api-supported-versions",
-            because: "AddPlatformApiVersioning sets ReportApiVersions = true");
+        response
+            .Headers.Should()
+            .ContainKey("api-supported-versions", because: "AddPlatformApiVersioning sets ReportApiVersions = true");
     }
 
     [Fact]
@@ -140,17 +155,23 @@ public sealed class ApiVersioningTests
                 app.UseRouting();
                 app.UseEndpoints(endpoints =>
                 {
-                    var versionSet = endpoints.NewApiVersionSet()
+                    var versionSet = endpoints
+                        .NewApiVersionSet()
                         .HasApiVersion(new ApiVersion(1, 0))
                         .ReportApiVersions()
                         .Build();
 
                     // Header-versioned route — no version in URL, so default must apply.
-                    endpoints.MapGet("/ping", (HttpContext ctx) =>
-                    {
-                        ctx.Response.StatusCode = 200;
-                        return ctx.Response.WriteAsync("pong");
-                    }).WithApiVersionSet(versionSet);
+                    endpoints
+                        .MapGet(
+                            "/ping",
+                            (HttpContext ctx) =>
+                            {
+                                ctx.Response.StatusCode = 200;
+                                return ctx.Response.WriteAsync("pong");
+                            }
+                        )
+                        .WithApiVersionSet(versionSet);
                 });
             });
 
@@ -161,8 +182,12 @@ public sealed class ApiVersioningTests
         var response = await client.GetAsync("/ping");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "AssumeDefaultVersionWhenUnspecified = true allows requests without a version");
+        response
+            .StatusCode.Should()
+            .Be(
+                HttpStatusCode.OK,
+                because: "AssumeDefaultVersionWhenUnspecified = true allows requests without a version"
+            );
     }
 
     // ── Tests: DeprecationHeaderMiddleware ────────────────────────────────────
@@ -182,10 +207,8 @@ public sealed class ApiVersioningTests
         var response = await client.GetAsync("/v1.0/test");
 
         // Assert
-        response.Headers.Should().ContainKey("Deprecation",
-            because: "version 1.0 is registered as deprecated");
-        response.Headers.GetValues("Deprecation").First()
-            .Should().Be(deprecationDate.ToString("R"));
+        response.Headers.Should().ContainKey("Deprecation", because: "version 1.0 is registered as deprecated");
+        response.Headers.GetValues("Deprecation").First().Should().Be(deprecationDate.ToString("R"));
     }
 
     [Fact]
@@ -203,8 +226,7 @@ public sealed class ApiVersioningTests
         var response = await client.GetAsync("/v2.0/test");
 
         // Assert
-        response.Headers.Should().NotContainKey("Deprecation",
-            because: "version 2.0 is not deprecated");
+        response.Headers.Should().NotContainKey("Deprecation", because: "version 2.0 is not deprecated");
     }
 
     [Fact]
@@ -224,10 +246,8 @@ public sealed class ApiVersioningTests
 
         // Assert
         response.Headers.Should().ContainKey("Deprecation");
-        response.Headers.Should().ContainKey("Sunset",
-            because: "a sunset date was configured for version 1.0");
-        response.Headers.GetValues("Sunset").First()
-            .Should().Be(sunsetDate.ToString("R"));
+        response.Headers.Should().ContainKey("Sunset", because: "a sunset date was configured for version 1.0");
+        response.Headers.GetValues("Sunset").First().Should().Be(sunsetDate.ToString("R"));
     }
 
     [Fact]
@@ -245,10 +265,12 @@ public sealed class ApiVersioningTests
         var response = await client.GetAsync("/");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "the middleware must not throw when IApiVersioningFeature is absent");
-        response.Headers.Should().NotContainKey("Deprecation",
-            because: "no version feature → no version can be matched");
+        response
+            .StatusCode.Should()
+            .Be(HttpStatusCode.OK, because: "the middleware must not throw when IApiVersioningFeature is absent");
+        response
+            .Headers.Should()
+            .NotContainKey("Deprecation", because: "no version feature → no version can be matched");
     }
 
     // ── Tests: ApiVersionDiscoveryEndpoint ────────────────────────────────────
@@ -289,12 +311,16 @@ public sealed class ApiVersioningTests
         var body = await response.Content.ReadAsStringAsync();
         var doc = JsonDocument.Parse(body);
 
-        doc.RootElement.GetProperty("versions").EnumerateArray()
+        doc.RootElement.GetProperty("versions")
+            .EnumerateArray()
             .Select(e => e.GetString())
-            .Should().BeEquivalentTo(["1.0", "2.0"]);
+            .Should()
+            .BeEquivalentTo(["1.0", "2.0"]);
 
-        doc.RootElement.GetProperty("deprecated").EnumerateArray()
+        doc.RootElement.GetProperty("deprecated")
+            .EnumerateArray()
             .Select(e => e.GetString())
-            .Should().BeEquivalentTo(["1.0"]);
+            .Should()
+            .BeEquivalentTo(["1.0"]);
     }
 }

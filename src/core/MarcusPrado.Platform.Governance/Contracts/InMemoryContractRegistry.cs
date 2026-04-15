@@ -9,16 +9,13 @@ namespace MarcusPrado.Platform.Governance.Contracts;
 /// </summary>
 public sealed class InMemoryContractRegistry : IContractRegistry
 {
-    private readonly ConcurrentDictionary<string, ContractMetadata> _contracts = new(
-        StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, ContractMetadata> _contracts = new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc/>
-    public IReadOnlyList<ContractMetadata> GetAll() =>
-        _contracts.Values.ToList().AsReadOnly();
+    public IReadOnlyList<ContractMetadata> GetAll() => _contracts.Values.ToList().AsReadOnly();
 
     /// <inheritdoc/>
-    public ContractMetadata? GetByName(string name) =>
-        _contracts.GetValueOrDefault(name);
+    public ContractMetadata? GetByName(string name) => _contracts.GetValueOrDefault(name);
 
     /// <inheritdoc/>
     public void Register(ContractRegistration registration)

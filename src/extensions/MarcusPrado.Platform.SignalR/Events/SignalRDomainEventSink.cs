@@ -11,8 +11,7 @@ public sealed class SignalRDomainEventSink : IDomainEventSink
     private readonly IRealtimePublisher _publisher;
 
     /// <summary>Initializes a new instance of <see cref="SignalRDomainEventSink"/>.</summary>
-    public SignalRDomainEventSink(IRealtimePublisher publisher)
-        => _publisher = publisher;
+    public SignalRDomainEventSink(IRealtimePublisher publisher) => _publisher = publisher;
 
     /// <inheritdoc />
     public Task HandleAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default)
@@ -24,7 +23,11 @@ public sealed class SignalRDomainEventSink : IDomainEventSink
     public static string ToSnakeCase(string name)
     {
         // "OrderPlaced" → "order_placed"
-        return string.Concat(name.Select((c, i) =>
-            i > 0 && char.IsUpper(c) ? $"_{char.ToLowerInvariant(c)}" : char.ToLowerInvariant(c).ToString()));
+        return string.Concat(
+            name.Select(
+                (c, i) =>
+                    i > 0 && char.IsUpper(c) ? $"_{char.ToLowerInvariant(c)}" : char.ToLowerInvariant(c).ToString()
+            )
+        );
     }
 }

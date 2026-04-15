@@ -33,10 +33,6 @@ public sealed class TenantAwareCorsPolicy : ICorsPolicyProvider
         if (tenantId is null || !_options.TenantOrigins.TryGetValue(tenantId, out var origins))
             return new CorsPolicyBuilder().Build(); // deny all
 
-        return new CorsPolicyBuilder()
-            .WithOrigins(origins)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .Build();
+        return new CorsPolicyBuilder().WithOrigins(origins).AllowAnyMethod().AllowAnyHeader().Build();
     }
 }

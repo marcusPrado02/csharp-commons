@@ -12,4 +12,5 @@ public sealed record AdrRecord(
     IReadOnlyList<string> DecisionMakers,
     string Context,
     string Decision,
-    string Consequences);
+    string Consequences
+);

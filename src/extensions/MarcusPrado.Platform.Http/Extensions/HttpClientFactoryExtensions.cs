@@ -20,7 +20,8 @@ public static class HttpClientFactoryExtensions
     /// </typeparam>
     public static IServiceCollection AddPlatformHttpClient<TClient>(
         this IServiceCollection services,
-        Action<HttpClientOptions>? configure = null)
+        Action<HttpClientOptions>? configure = null
+    )
         where TClient : TypedHttpClient
     {
         ArgumentNullException.ThrowIfNull(services);

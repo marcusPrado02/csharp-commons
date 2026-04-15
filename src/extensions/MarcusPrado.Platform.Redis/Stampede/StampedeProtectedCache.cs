@@ -37,7 +37,8 @@ public sealed class StampedeProtectedCache : IAsyncDisposable
         string key,
         Func<CancellationToken, Task<T>> factory,
         TimeSpan expiry,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where T : class
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
@@ -66,10 +67,7 @@ public sealed class StampedeProtectedCache : IAsyncDisposable
             if (value is not null)
             {
                 var entryBytes = JsonSerializer.SerializeToUtf8Bytes(value);
-                var options = new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = expiry
-                };
+                var options = new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = expiry };
                 await _inner.SetAsync(key, entryBytes, options, ct).ConfigureAwait(false);
             }
 
@@ -84,8 +82,7 @@ public sealed class StampedeProtectedCache : IAsyncDisposable
     /// <summary>Removes the cache entry for <paramref name="key"/>.</summary>
     /// <param name="key">The cache key to remove.</param>
     /// <param name="ct">Cancellation token.</param>
-    public Task RemoveAsync(string key, CancellationToken ct = default)
-        => _inner.RemoveAsync(key, ct);
+    public Task RemoveAsync(string key, CancellationToken ct = default) => _inner.RemoveAsync(key, ct);
 
     /// <inheritdoc/>
     public ValueTask DisposeAsync()

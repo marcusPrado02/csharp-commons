@@ -30,6 +30,6 @@ public sealed class InMemoryReadModelStore<T> : IReadModelStore<T>
     }
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default)
-        => Task.FromResult<IReadOnlyList<T>>(_store.Values.ToList());
+    public Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<T>>(_store.Values.ToList());
 }

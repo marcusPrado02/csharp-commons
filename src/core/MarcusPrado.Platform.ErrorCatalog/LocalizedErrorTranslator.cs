@@ -21,8 +21,9 @@ namespace MarcusPrado.Platform.ErrorCatalog;
 public sealed class LocalizedErrorTranslator : IErrorTranslator
 {
     // Key: (code, normalizedCulture)
-    private readonly Dictionary<(string Code, string Culture), string> _translations =
-        new(EqualityComparer<(string, string)>.Default);
+    private readonly Dictionary<(string Code, string Culture), string> _translations = new(
+        EqualityComparer<(string, string)>.Default
+    );
 
     /// <summary>
     /// Registers a translation for the given error <paramref name="code"/> and

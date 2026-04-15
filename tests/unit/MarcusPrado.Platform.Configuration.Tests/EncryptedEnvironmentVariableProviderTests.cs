@@ -19,8 +19,7 @@ public sealed class EncryptedEnvironmentVariableProviderTests
 
         try
         {
-            var provider = new EncryptedEnvironmentVariableProvider(
-                value => ConfigCipherTool.Decrypt(value, Key));
+            var provider = new EncryptedEnvironmentVariableProvider(value => ConfigCipherTool.Decrypt(value, Key));
             provider.Load();
 
             var found = provider.TryGet(varName, out var result);
@@ -41,8 +40,7 @@ public sealed class EncryptedEnvironmentVariableProviderTests
 
         try
         {
-            var provider = new EncryptedEnvironmentVariableProvider(
-                value => ConfigCipherTool.Decrypt(value, Key));
+            var provider = new EncryptedEnvironmentVariableProvider(value => ConfigCipherTool.Decrypt(value, Key));
             provider.Load();
 
             var found = provider.TryGet(varName, out var result);

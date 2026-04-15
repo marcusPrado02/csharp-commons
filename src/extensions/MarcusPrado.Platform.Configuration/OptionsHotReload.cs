@@ -35,12 +35,12 @@ public sealed class OptionsHotReload<T> : IOptionsHotReload<T>
         T? previousValue = null;
 
         return _monitor.OnChange(newValue =>
-        {
-            var old = previousValue ?? newValue;
-            _changeLogger.LogChange(old, newValue);
-            previousValue = newValue;
-            listener(newValue);
-        }) ?? new NullDisposable();
+            {
+                var old = previousValue ?? newValue;
+                _changeLogger.LogChange(old, newValue);
+                previousValue = newValue;
+                listener(newValue);
+            }) ?? new NullDisposable();
     }
 
     private sealed class NullDisposable : IDisposable

@@ -14,10 +14,7 @@ public sealed class RedisTestContainer : IAsyncDisposable
     /// <summary>Initialises the container with default Redis latest image.</summary>
     public RedisTestContainer()
     {
-        _container = new RedisBuilder()
-            .WithImage("redis:7-alpine")
-            .WithCleanUp(true)
-            .Build();
+        _container = new RedisBuilder().WithImage("redis:7-alpine").WithCleanUp(true).Build();
     }
 
     /// <summary>Gets the connection string once the container is started.</summary>

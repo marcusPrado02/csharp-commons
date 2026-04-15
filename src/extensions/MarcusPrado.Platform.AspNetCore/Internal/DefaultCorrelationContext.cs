@@ -18,10 +18,10 @@ internal sealed class DefaultCorrelationContext : ICorrelationContext
     public string RequestId => _requestId;
 
     /// <inheritdoc />
-    public void SetCorrelationId(string correlationId)
-        => _correlationId = correlationId ?? throw new ArgumentNullException(nameof(correlationId));
+    public void SetCorrelationId(string correlationId) =>
+        _correlationId = correlationId ?? throw new ArgumentNullException(nameof(correlationId));
 
     /// <inheritdoc />
-    public void SetRequestId(string requestId)
-        => _requestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
+    public void SetRequestId(string requestId) =>
+        _requestId = requestId ?? throw new ArgumentNullException(nameof(requestId));
 }

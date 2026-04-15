@@ -76,7 +76,8 @@ public sealed class PerformanceTestKitTests
                 Interlocked.Increment(ref counter);
                 return Task.CompletedTask;
             },
-            config);
+            config
+        );
 
         // Act
         var result = await scenario.RunAsync();
@@ -102,7 +103,8 @@ public sealed class PerformanceTestKitTests
                 Interlocked.Increment(ref publishCount);
                 return Task.CompletedTask;
             },
-            config);
+            config
+        );
 
         // Act
         var result = await scenario.RunAsync();
@@ -151,7 +153,8 @@ public sealed class PerformanceTestKitTests
         // Act
         var result = await LoadTestRunner.RunAsync(
             config,
-            _ => throw new InvalidOperationException("deliberate failure"));
+            _ => throw new InvalidOperationException("deliberate failure")
+        );
 
         // Assert
         result.ErrorCount.Should().BeGreaterThan(0);

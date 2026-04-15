@@ -37,11 +37,13 @@ public sealed class SloMetricsCollector : IDisposable
                 var snapshot = snapshotProvider();
                 var result = ErrorBudgetCalculator.Calculate(
                     snapshot,
-                    new ServiceLevelObjective(sloName, target, slo.Window));
+                    new ServiceLevelObjective(sloName, target, slo.Window)
+                );
                 return result.AvailabilityRate;
             },
             unit: "ratio",
-            description: $"Availability rate for SLO '{sloName}'.");
+            description: $"Availability rate for SLO '{sloName}'."
+        );
 
         _meter.CreateObservableGauge(
             name: "slo.error_budget_remaining",
@@ -50,11 +52,13 @@ public sealed class SloMetricsCollector : IDisposable
                 var snapshot = snapshotProvider();
                 var result = ErrorBudgetCalculator.Calculate(
                     snapshot,
-                    new ServiceLevelObjective(sloName, target, slo.Window));
+                    new ServiceLevelObjective(sloName, target, slo.Window)
+                );
                 return result.ErrorBudgetRemaining;
             },
             unit: "ratio",
-            description: $"Remaining error budget for SLO '{sloName}'.");
+            description: $"Remaining error budget for SLO '{sloName}'."
+        );
     }
 
     /// <inheritdoc/>

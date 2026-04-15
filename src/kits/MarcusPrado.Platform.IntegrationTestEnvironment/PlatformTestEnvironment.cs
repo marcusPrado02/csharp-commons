@@ -26,11 +26,7 @@ public sealed class PlatformTestEnvironment : IAsyncDisposable
 
     private bool _started;
 
-    internal PlatformTestEnvironment(
-        bool usePostgres,
-        bool useRedis,
-        bool useKafka,
-        bool useRabbitMq)
+    internal PlatformTestEnvironment(bool usePostgres, bool useRedis, bool useKafka, bool useRabbitMq)
     {
         _usePostgres = usePostgres;
         _useRedis = useRedis;
@@ -50,8 +46,7 @@ public sealed class PlatformTestEnvironment : IAsyncDisposable
     /// </summary>
     public string PostgresConnectionString =>
         _postgres?.GetConnectionString()
-        ?? throw new InvalidOperationException(
-            "Postgres container is not configured or has not been started.");
+        ?? throw new InvalidOperationException("Postgres container is not configured or has not been started.");
 
     /// <summary>
     /// Gets the Redis connection string. Only available after <see cref="StartAsync"/> completes
@@ -59,8 +54,7 @@ public sealed class PlatformTestEnvironment : IAsyncDisposable
     /// </summary>
     public string RedisConnectionString =>
         _redis?.GetConnectionString()
-        ?? throw new InvalidOperationException(
-            "Redis container is not configured or has not been started.");
+        ?? throw new InvalidOperationException("Redis container is not configured or has not been started.");
 
     /// <summary>
     /// Gets the Kafka bootstrap servers address. Only available after <see cref="StartAsync"/> completes
@@ -68,8 +62,7 @@ public sealed class PlatformTestEnvironment : IAsyncDisposable
     /// </summary>
     public string KafkaBootstrapServers =>
         _kafka?.GetBootstrapAddress()
-        ?? throw new InvalidOperationException(
-            "Kafka container is not configured or has not been started.");
+        ?? throw new InvalidOperationException("Kafka container is not configured or has not been started.");
 
     /// <summary>
     /// Gets the RabbitMQ AMQP connection string. Only available after <see cref="StartAsync"/> completes
@@ -77,8 +70,7 @@ public sealed class PlatformTestEnvironment : IAsyncDisposable
     /// </summary>
     public string RabbitMqConnectionString =>
         _rabbitMq?.GetConnectionString()
-        ?? throw new InvalidOperationException(
-            "RabbitMQ container is not configured or has not been started.");
+        ?? throw new InvalidOperationException("RabbitMQ container is not configured or has not been started.");
 
     /// <summary>
     /// Starts all configured containers in parallel.

@@ -16,19 +16,11 @@ public sealed class IdempotentCommand : ICommand<string>, IHaveIdempotencyKey
 }
 
 [Transactional]
-public sealed class TransactionalCommand : ICommand<int>
-{
-}
+public sealed class TransactionalCommand : ICommand<int> { }
 
-public sealed class SimpleCommand : ICommand<string>
-{
-}
+public sealed class SimpleCommand : ICommand<string> { }
 
-public sealed class SimpleQuery : IQuery<string>
-{
-}
+public sealed class SimpleQuery : IQuery<string> { }
 
 /// <summary>Void command (no generic result).</summary>
-public sealed class VoidCommand : ICommand
-{
-}
+public sealed class VoidCommand : ICommand { }

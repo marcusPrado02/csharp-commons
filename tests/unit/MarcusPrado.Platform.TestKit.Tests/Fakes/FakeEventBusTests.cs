@@ -3,6 +3,7 @@ namespace MarcusPrado.Platform.TestKit.Tests.Fakes;
 public sealed class FakeEventBusTests
 {
     private sealed record OrderPlaced(Guid OrderId);
+
     private sealed record PaymentReceived(decimal Amount);
 
     [Fact]
@@ -41,7 +42,6 @@ public sealed class FakeEventBusTests
     public async Task PublishAsync_NullEvent_Throws()
     {
         var bus = new FakeEventBus();
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            () => bus.PublishAsync<OrderPlaced>(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => bus.PublishAsync<OrderPlaced>(null!));
     }
 }

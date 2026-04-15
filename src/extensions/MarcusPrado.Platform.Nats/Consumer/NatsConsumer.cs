@@ -6,8 +6,7 @@ namespace MarcusPrado.Platform.Nats.Consumer;
 /// </summary>
 public sealed class NatsConsumer : INatsConsumer
 {
-    private static readonly JsonSerializerOptions _serializerOptions =
-        new(JsonSerializerDefaults.Web);
+    private static readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     private readonly INatsConnection _connection;
     private readonly NatsOptions _options;
@@ -33,7 +32,8 @@ public sealed class NatsConsumer : INatsConsumer
     public async Task SubscribeAsync<T>(
         string subject,
         Func<T, CancellationToken, Task> handler,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where T : class
     {
         ArgumentNullException.ThrowIfNull(handler);
@@ -52,7 +52,8 @@ public sealed class NatsConsumer : INatsConsumer
     private async Task SubscribeCoreAsync<T>(
         string subject,
         Func<T, CancellationToken, Task> handler,
-        CancellationToken ct)
+        CancellationToken ct
+    )
         where T : class
     {
 #pragma warning disable S3267 // Async enumerables cannot use LINQ Select — null guards are intentional
@@ -75,7 +76,8 @@ public sealed class NatsConsumer : INatsConsumer
     private async Task SubscribeJetStreamAsync<T>(
         string subject,
         Func<T, CancellationToken, Task> handler,
-        CancellationToken ct)
+        CancellationToken ct
+    )
         where T : class
     {
         var js = new NatsJSContext(_connection);
@@ -90,15 +92,11 @@ public sealed class NatsConsumer : INatsConsumer
         }
         catch (NatsJSException)
         {
-            await js.CreateStreamAsync(
-                new StreamConfig(streamName, [subject]),
-                ct).ConfigureAwait(false);
+            await js.CreateStreamAsync(new StreamConfig(streamName, [subject]), ct).ConfigureAwait(false);
         }
 
-        var consumer = await js.CreateOrUpdateConsumerAsync(
-            streamName,
-            new ConsumerConfig(consumerName),
-            ct).ConfigureAwait(false);
+        var consumer = await js.CreateOrUpdateConsumerAsync(streamName, new ConsumerConfig(consumerName), ct)
+            .ConfigureAwait(false);
 
         await foreach (var msg in consumer.ConsumeAsync<string>(cancellationToken: ct))
         {

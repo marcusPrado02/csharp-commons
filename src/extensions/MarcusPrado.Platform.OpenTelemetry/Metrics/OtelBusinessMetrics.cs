@@ -28,32 +28,38 @@ public sealed class OtelBusinessMetrics : IBusinessMetrics
         _ordersPlaced = meter.CreateCounter<long>(
             "business.orders.placed",
             unit: "orders",
-            description: "Total number of orders placed.");
+            description: "Total number of orders placed."
+        );
 
         _ordersAmount = meter.CreateHistogram<double>(
             "business.orders.amount",
             unit: "currency",
-            description: "Monetary value of orders placed.");
+            description: "Monetary value of orders placed."
+        );
 
         _paymentsProcessed = meter.CreateCounter<long>(
             "business.payments.processed",
             unit: "payments",
-            description: "Total number of payments processed.");
+            description: "Total number of payments processed."
+        );
 
         _paymentsAmount = meter.CreateHistogram<double>(
             "business.payments.amount",
             unit: "currency",
-            description: "Monetary value of payments processed.");
+            description: "Monetary value of payments processed."
+        );
 
         _userSignups = meter.CreateCounter<long>(
             "business.users.signup",
             unit: "users",
-            description: "Total number of user signups.");
+            description: "Total number of user signups."
+        );
 
         _eventsConsumed = meter.CreateCounter<long>(
             "business.events.consumed",
             unit: "events",
-            description: "Total number of domain events consumed.");
+            description: "Total number of domain events consumed."
+        );
     }
 
     /// <summary>
@@ -61,9 +67,7 @@ public sealed class OtelBusinessMetrics : IBusinessMetrics
     /// using a default platform <see cref="Meter"/>.
     /// </summary>
     public OtelBusinessMetrics()
-        : this(new Meter("MarcusPrado.Platform.Business", "1.0.0"))
-    {
-    }
+        : this(new Meter("MarcusPrado.Platform.Business", "1.0.0")) { }
 
     /// <inheritdoc/>
     public void RecordOrderPlaced(decimal amount, string currency)
@@ -85,15 +89,16 @@ public sealed class OtelBusinessMetrics : IBusinessMetrics
     /// <inheritdoc/>
     public void RecordUserSignup(string plan)
     {
-        _userSignups.Add(1,
-            new KeyValuePair<string, object?>("plan", plan));
+        _userSignups.Add(1, new KeyValuePair<string, object?>("plan", plan));
     }
 
     /// <inheritdoc/>
     public void RecordEventConsumed(string eventType, string source)
     {
-        _eventsConsumed.Add(1,
+        _eventsConsumed.Add(
+            1,
             new KeyValuePair<string, object?>("event_type", eventType),
-            new KeyValuePair<string, object?>("source", source));
+            new KeyValuePair<string, object?>("source", source)
+        );
     }
 }

@@ -8,7 +8,8 @@ public static class SignalRExtensions
     /// <summary>Registers SignalR services + <see cref="HubRealtimePublisher{THub}"/> for the specified hub type.</summary>
     public static IServiceCollection AddPlatformSignalR<THub>(
         this IServiceCollection services,
-        Action<HubOptions>? configure = null)
+        Action<HubOptions>? configure = null
+    )
         where THub : Hub
     {
         var builder = services.AddSignalR();

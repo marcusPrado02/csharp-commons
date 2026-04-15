@@ -23,7 +23,7 @@ public sealed class RequestSizeLimitMiddleware
 
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 
     /// <summary>Initialises the middleware.</summary>
@@ -52,10 +52,7 @@ public sealed class RequestSizeLimitMiddleware
         await _next(context);
     }
 
-    private static async Task WritePayloadTooLargeAsync(
-        HttpContext context,
-        RequestSizeTier tier,
-        long limit)
+    private static async Task WritePayloadTooLargeAsync(HttpContext context, RequestSizeTier tier, long limit)
     {
         context.Response.StatusCode = StatusCodes.Status413RequestEntityTooLarge;
         context.Response.ContentType = "application/problem+json";
@@ -64,7 +61,7 @@ public sealed class RequestSizeLimitMiddleware
         {
             status = 413,
             title = "Payload Too Large",
-            detail = $"Request body exceeds the {limit} byte limit for tier {tier}."
+            detail = $"Request body exceeds the {limit} byte limit for tier {tier}.",
         };
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(problem, _jsonOptions));

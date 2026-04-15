@@ -13,8 +13,7 @@ public sealed class SagaCompensationHandler
     /// Registers a compensation action to be run during rollback.
     /// </summary>
     /// <param name="compensate">The compensation delegate.</param>
-    public void Register(Func<CancellationToken, Task> compensate)
-        => _compensations.Add(compensate);
+    public void Register(Func<CancellationToken, Task> compensate) => _compensations.Add(compensate);
 
     /// <summary>
     /// Executes all registered compensations in reverse order.

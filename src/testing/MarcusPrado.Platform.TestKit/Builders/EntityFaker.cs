@@ -17,33 +17,28 @@ public abstract class EntityFaker<T>
     protected static string RandomString(int length = 10)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        return new string(Enumerable.Range(0, length)
-            .Select(_ => chars[Random.Shared.Next(chars.Length)])
-            .ToArray());
+        return new string(Enumerable.Range(0, length).Select(_ => chars[Random.Shared.Next(chars.Length)]).ToArray());
     }
 
     /// <summary>Returns a random email address.</summary>
-    protected static string RandomEmail()
-        => $"{RandomString(8).ToLowerInvariant()}@{RandomString(6).ToLowerInvariant()}.test";
+    protected static string RandomEmail() =>
+        $"{RandomString(8).ToLowerInvariant()}@{RandomString(6).ToLowerInvariant()}.test";
 
     /// <summary>Returns a random decimal value between 0.01 and 9999.99.</summary>
-    protected static decimal RandomDecimal(decimal min = 0.01m, decimal max = 9_999.99m)
-        => Math.Round((decimal)(Random.Shared.NextDouble() * (double)(max - min)) + min, 2);
+    protected static decimal RandomDecimal(decimal min = 0.01m, decimal max = 9_999.99m) =>
+        Math.Round((decimal)(Random.Shared.NextDouble() * (double)(max - min)) + min, 2);
 
     /// <summary>Returns a random positive integer.</summary>
     protected static int RandomInt(int min = 1, int max = 1000) => Random.Shared.Next(min, max + 1);
 
     /// <summary>Returns a random past <see cref="DateTimeOffset"/> within the last year.</summary>
-    protected static DateTimeOffset RandomPastDate()
-        => DateTimeOffset.UtcNow.AddDays(-Random.Shared.Next(1, 365));
+    protected static DateTimeOffset RandomPastDate() => DateTimeOffset.UtcNow.AddDays(-Random.Shared.Next(1, 365));
 
     /// <summary>Returns a random future <see cref="DateTimeOffset"/> within the next year.</summary>
-    protected static DateTimeOffset RandomFutureDate()
-        => DateTimeOffset.UtcNow.AddDays(Random.Shared.Next(1, 365));
+    protected static DateTimeOffset RandomFutureDate() => DateTimeOffset.UtcNow.AddDays(Random.Shared.Next(1, 365));
 
     /// <summary>Picks a random element from a list of values.</summary>
-    protected static TValue PickRandom<TValue>(params TValue[] values)
-        => values[Random.Shared.Next(values.Length)];
+    protected static TValue PickRandom<TValue>(params TValue[] values) => values[Random.Shared.Next(values.Length)];
 
     // ── Build ─────────────────────────────────────────────────────────────────
 
@@ -51,6 +46,5 @@ public abstract class EntityFaker<T>
     public abstract T Build();
 
     /// <summary>Builds a list of <paramref name="count"/> instances.</summary>
-    public List<T> BuildMany(int count = 3)
-        => Enumerable.Range(0, count).Select(_ => Build()).ToList();
+    public List<T> BuildMany(int count = 3) => Enumerable.Range(0, count).Select(_ => Build()).ToList();
 }

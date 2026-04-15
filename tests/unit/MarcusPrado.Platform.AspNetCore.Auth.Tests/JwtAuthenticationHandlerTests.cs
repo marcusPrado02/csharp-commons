@@ -27,7 +27,8 @@ public sealed class JwtAuthenticationHandlerTests : IDisposable
     public async Task ValidToken_ShouldPopulate_Permissions_InUserContext()
     {
         var token = JwtTokenFactory.CreateValidToken(
-            extraClaims: [new Claim("permission", "read:users"), new Claim("permission", "write:users")]);
+            extraClaims: [new Claim("permission", "read:users"), new Claim("permission", "write:users")]
+        );
 
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.JwtInfoRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

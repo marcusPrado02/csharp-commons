@@ -18,16 +18,10 @@ public sealed class EnforceResultTypeAnalyzer : DiagnosticAnalyzer
     /// <summary>The <see cref="DiagnosticDescriptor"/> for PLATFORM004.</summary>
     public static readonly DiagnosticDescriptor Descriptor = PlatformDiagnosticDescriptors.EnforceResultType;
 
-    private static readonly string[] _applicationLayerKeywords = new[]
-    {
-        "Application",
-        "Commands",
-        "Handlers",
-    };
+    private static readonly string[] _applicationLayerKeywords = new[] { "Application", "Commands", "Handlers" };
 
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Descriptor);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -64,11 +58,14 @@ public sealed class EnforceResultTypeAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(
-            Descriptor,
-            methodDecl.Identifier.GetLocation(),
-            methodDecl.Identifier.Text,
-            returnTypeName));
+        context.ReportDiagnostic(
+            Diagnostic.Create(
+                Descriptor,
+                methodDecl.Identifier.GetLocation(),
+                methodDecl.Identifier.Text,
+                returnTypeName
+            )
+        );
     }
 
     private static bool IsInsideApplicationContext(SyntaxNode node)

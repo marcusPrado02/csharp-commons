@@ -25,7 +25,8 @@ public sealed class InMemoryAuditSink : IAuditLogger
         string? resourceId = null,
         DateTimeOffset? from = null,
         DateTimeOffset? to = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         var q = _log.Where(e => e.Resource == resource);
 

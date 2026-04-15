@@ -20,8 +20,8 @@ public sealed class EnvConfiguration : IAppConfiguration
     public T? Get<T>(ConfigurationKey<T> key)
     {
         // Env var lookup (overrides file-based config)
-        var envName = key.Name
-            .Replace(":", "__", StringComparison.Ordinal)
+        var envName = key
+            .Name.Replace(":", "__", StringComparison.Ordinal)
             .Replace("-", "_", StringComparison.Ordinal)
             .ToUpperInvariant();
 
@@ -41,6 +41,7 @@ public sealed class EnvConfiguration : IAppConfiguration
         var section = _config.GetRequiredSection(sectionKey);
         return section.Get<TSection>()
             ?? throw new InvalidOperationException(
-                $"Configuration section '{sectionKey}' could not be bound to type '{typeof(TSection).Name}'.");
+                $"Configuration section '{sectionKey}' could not be bound to type '{typeof(TSection).Name}'."
+            );
     }
 }

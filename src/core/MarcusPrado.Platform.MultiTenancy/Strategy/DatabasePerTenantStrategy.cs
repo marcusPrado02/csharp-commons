@@ -9,8 +9,7 @@ public sealed class DatabasePerTenantStrategy : ITenantIsolationStrategy
     private readonly Dictionary<string, string> _connections;
 
     /// <summary>Initialises the strategy, optionally pre-seeding it with a map of tenant IDs to connection strings.</summary>
-    public DatabasePerTenantStrategy(
-        IReadOnlyDictionary<string, string>? connectionStrings = null)
+    public DatabasePerTenantStrategy(IReadOnlyDictionary<string, string>? connectionStrings = null)
     {
         _connections = connectionStrings is not null
             ? new Dictionary<string, string>(connectionStrings, StringComparer.OrdinalIgnoreCase)
@@ -28,6 +27,5 @@ public sealed class DatabasePerTenantStrategy : ITenantIsolationStrategy
     }
 
     /// <summary>Resolves the connection string for a tenant.</summary>
-    public string? GetConnectionString(string tenantId)
-        => _connections.TryGetValue(tenantId, out var cs) ? cs : null;
+    public string? GetConnectionString(string tenantId) => _connections.TryGetValue(tenantId, out var cs) ? cs : null;
 }

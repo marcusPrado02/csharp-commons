@@ -12,20 +12,27 @@ public sealed class InboxProcessorTests
     private InboxProcessor BuildProcessor()
     {
         _handler.EventType.Returns("OrderCreated");
-        var opts = Options.Create(new InboxProcessorOptions
-        {
-            PollingInterval = TimeSpan.FromMilliseconds(50),
-            BatchSize = 10,
-            MaxRetries = 2,
-        });
-        return new InboxProcessor(_store, _idempotencyStore, new[] { _handler }, opts, NullLogger<InboxProcessor>.Instance);
+        var opts = Options.Create(
+            new InboxProcessorOptions
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(50),
+                BatchSize = 10,
+                MaxRetries = 2,
+            }
+        );
+        return new InboxProcessor(
+            _store,
+            _idempotencyStore,
+            new[] { _handler },
+            opts,
+            NullLogger<InboxProcessor>.Instance
+        );
     }
 
     [Fact]
     public async Task HandlerCalled_MessageMarkedProcessed()
     {
-        _handler.HandleAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
-            .Returns(Task.CompletedTask);
+        _handler.HandleAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
 
         var msg = new InboxMessage { MessageId = "msg-1", EventType = "OrderCreated" };
         await _store.SaveAsync(msg);
@@ -42,8 +49,7 @@ public sealed class InboxProcessorTests
     [Fact]
     public async Task DuplicateMessage_MarkedDuplicate()
     {
-        _handler.HandleAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
-            .Returns(Task.CompletedTask);
+        _handler.HandleAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
 
         // Store idempotency record before processing to simulate duplicate
         var key = IdempotencyKey.FromMessageId("dup-msg");

@@ -19,9 +19,7 @@ public sealed class QuartzJobAdapter<TJob> : global::Quartz.IJob
     /// <summary>
     /// Initializes a new instance of <see cref="QuartzJobAdapter{TJob}"/>.
     /// </summary>
-    public QuartzJobAdapter()
-    {
-    }
+    public QuartzJobAdapter() { }
 
     /// <inheritdoc />
     public Task Execute(IJobExecutionContext context) => Task.CompletedTask;

@@ -7,11 +7,7 @@ namespace MarcusPrado.Platform.AspNetCore.Extensions;
 /// </summary>
 public static class CompressionExtensions
 {
-    private static readonly string[] _additionalMimeTypes =
-    [
-        "application/json",
-        "application/x-protobuf",
-    ];
+    private static readonly string[] _additionalMimeTypes = ["application/json", "application/x-protobuf"];
 
     /// <summary>
     /// Configures Brotli (primary) + Gzip (fallback) response compression.
@@ -22,7 +18,8 @@ public static class CompressionExtensions
     /// </summary>
     public static IServiceCollection AddPlatformResponseCompression(
         this IServiceCollection services,
-        Action<ResponseCompressionOptions>? configure = null)
+        Action<ResponseCompressionOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -36,9 +33,11 @@ public static class CompressionExtensions
         });
 
         services.Configure<BrotliCompressionProviderOptions>(o =>
-            o.Level = System.IO.Compression.CompressionLevel.Fastest);
+            o.Level = System.IO.Compression.CompressionLevel.Fastest
+        );
         services.Configure<GzipCompressionProviderOptions>(o =>
-            o.Level = System.IO.Compression.CompressionLevel.Fastest);
+            o.Level = System.IO.Compression.CompressionLevel.Fastest
+        );
 
         return services;
     }

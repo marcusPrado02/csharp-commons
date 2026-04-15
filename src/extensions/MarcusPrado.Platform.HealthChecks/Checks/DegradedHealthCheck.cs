@@ -24,6 +24,6 @@ public sealed class DegradedHealthCheck : IHealthCheck
     /// <inheritdoc/>
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
-        => Task.FromResult(HealthCheckResult.Degraded(_reason));
+        CancellationToken cancellationToken = default
+    ) => Task.FromResult(HealthCheckResult.Degraded(_reason));
 }

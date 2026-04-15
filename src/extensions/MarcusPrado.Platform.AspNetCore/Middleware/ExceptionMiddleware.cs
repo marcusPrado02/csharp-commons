@@ -39,7 +39,8 @@ public sealed class ExceptionMiddleware
                 ex,
                 "Unhandled exception for {Method} {Path}",
                 context.Request.Method,
-                context.Request.Path);
+                context.Request.Path
+            );
 
             await WriteProbleDetailsAsync(context, ex);
         }
@@ -67,9 +68,6 @@ public sealed class ExceptionMiddleware
         context.Response.StatusCode = statusCode;
 
         // Pass content-type directly to WriteAsJsonAsync so it is not overridden
-        await context.Response.WriteAsJsonAsync(
-            body,
-            options: null,
-            contentType: "application/problem+json");
+        await context.Response.WriteAsJsonAsync(body, options: null, contentType: "application/problem+json");
     }
 }

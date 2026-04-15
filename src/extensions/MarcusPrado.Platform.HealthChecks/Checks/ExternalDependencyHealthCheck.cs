@@ -21,10 +21,7 @@ public sealed class ExternalDependencyHealthCheck : IHealthCheck
     /// <param name="http">HTTP client to use.</param>
     /// <param name="url">The URL to probe.</param>
     /// <param name="timeout">Probe timeout (default: 1 second).</param>
-    public ExternalDependencyHealthCheck(
-        HttpClient http,
-        string url,
-        TimeSpan? timeout = null)
+    public ExternalDependencyHealthCheck(HttpClient http, string url, TimeSpan? timeout = null)
     {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentException.ThrowIfNullOrWhiteSpace(url);
@@ -36,7 +33,8 @@ public sealed class ExternalDependencyHealthCheck : IHealthCheck
     /// <inheritdoc/>
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         cts.CancelAfter(_timeout);
@@ -46,19 +44,17 @@ public sealed class ExternalDependencyHealthCheck : IHealthCheck
             using var response = await _http.GetAsync(_url, cts.Token);
             return response.IsSuccessStatusCode
                 ? HealthCheckResult.Healthy($"External dependency '{_url}' is reachable.")
-                : HealthCheckResult.Degraded(
-                    $"External dependency '{_url}' returned HTTP {(int)response.StatusCode}.");
+                : HealthCheckResult.Degraded($"External dependency '{_url}' returned HTTP {(int)response.StatusCode}.");
         }
         catch (OperationCanceledException)
         {
             return HealthCheckResult.Degraded(
-                $"External dependency '{_url}' timed out after {_timeout.TotalSeconds:F1}s.");
+                $"External dependency '{_url}' timed out after {_timeout.TotalSeconds:F1}s."
+            );
         }
         catch (HttpRequestException ex)
         {
-            return HealthCheckResult.Unhealthy(
-                $"External dependency '{_url}' is unreachable.",
-                ex);
+            return HealthCheckResult.Unhealthy($"External dependency '{_url}' is unreachable.", ex);
         }
     }
 }

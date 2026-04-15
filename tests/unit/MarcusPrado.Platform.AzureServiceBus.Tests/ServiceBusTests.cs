@@ -20,7 +20,8 @@ public sealed class ServiceBusOptionsTests
     {
         var opts = new ServiceBusOptions
         {
-            ConnectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123",
+            ConnectionString =
+                "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123",
             FullyQualifiedNamespace = "test.servicebus.windows.net",
             MaxConcurrentCalls = 5,
             MaxAutoLockRenewalDuration = TimeSpan.FromMinutes(2),
@@ -40,8 +41,7 @@ public sealed class ServiceBusPublisherTests
     {
         var act = () => new ServiceBusPublisher(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 
     [Fact]
@@ -63,13 +63,9 @@ public sealed class ServiceBusConsumerTests
     [Fact]
     public void ServiceBusConsumer_NullClient_Throws()
     {
-        var act = () => new ServiceBusConsumer(
-            null!,
-            DefaultOptions(),
-            NullLogger<ServiceBusConsumer>.Instance);
+        var act = () => new ServiceBusConsumer(null!, DefaultOptions(), NullLogger<ServiceBusConsumer>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 
     [Fact]
@@ -77,13 +73,9 @@ public sealed class ServiceBusConsumerTests
     {
         var client = Substitute.For<ServiceBusClient>();
 
-        var act = () => new ServiceBusConsumer(
-            client,
-            null!,
-            NullLogger<ServiceBusConsumer>.Instance);
+        var act = () => new ServiceBusConsumer(client, null!, NullLogger<ServiceBusConsumer>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("options");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("options");
     }
 
     [Fact]
@@ -91,13 +83,9 @@ public sealed class ServiceBusConsumerTests
     {
         var client = Substitute.For<ServiceBusClient>();
 
-        var act = () => new ServiceBusConsumer(
-            client,
-            DefaultOptions(),
-            null!);
+        var act = () => new ServiceBusConsumer(client, DefaultOptions(), null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("logger");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("logger");
     }
 }
 
@@ -108,8 +96,7 @@ public sealed class ServiceBusHealthProbeTests
     {
         var act = () => new ServiceBusHealthProbe(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 }
 
@@ -121,7 +108,9 @@ public sealed class ServiceBusExtensionsTests
         var services = new ServiceCollection();
 
         services.AddPlatformAzureServiceBus(opts =>
-            opts.ConnectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123=");
+            opts.ConnectionString =
+                "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123="
+        );
 
         var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IServiceBusPublisher));
         descriptor.Should().NotBeNull();
@@ -134,7 +123,9 @@ public sealed class ServiceBusExtensionsTests
         var services = new ServiceCollection();
 
         services.AddPlatformAzureServiceBus(opts =>
-            opts.ConnectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123=");
+            opts.ConnectionString =
+                "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123="
+        );
 
         var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IServiceBusConsumer));
         descriptor.Should().NotBeNull();
@@ -147,7 +138,9 @@ public sealed class ServiceBusExtensionsTests
         var services = new ServiceCollection();
 
         services.AddPlatformAzureServiceBus(opts =>
-            opts.ConnectionString = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123=");
+            opts.ConnectionString =
+                "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=abc123="
+        );
 
         var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(ServiceBusClient));
         descriptor.Should().NotBeNull();
@@ -161,7 +154,6 @@ public sealed class ServiceBusExtensionsTests
 
         var act = () => services.AddPlatformAzureServiceBus(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("configure");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("configure");
     }
 }

@@ -66,9 +66,7 @@ public sealed class HotReloadExtensionsTests
         services.AddPlatformOptionsHotReload<MyOptions>();
         services.AddPlatformOptionsHotReload<MyOptions>();
 
-        var registrations = services
-            .Where(sd => sd.ServiceType == typeof(IOptionsHotReload<MyOptions>))
-            .Count();
+        var registrations = services.Where(sd => sd.ServiceType == typeof(IOptionsHotReload<MyOptions>)).Count();
 
         registrations.Should().Be(1);
     }

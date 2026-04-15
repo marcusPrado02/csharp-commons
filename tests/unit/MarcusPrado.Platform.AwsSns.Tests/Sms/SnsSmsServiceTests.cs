@@ -41,8 +41,7 @@ public sealed class AwsSnsOptionsTests
 
 public sealed class SnsSmsServiceTests
 {
-    private static SnsSmsService BuildService(
-        IAmazonSimpleNotificationService? sns = null, AwsSnsOptions? opts = null)
+    private static SnsSmsService BuildService(IAmazonSimpleNotificationService? sns = null, AwsSnsOptions? opts = null)
     {
         sns ??= Substitute.For<IAmazonSimpleNotificationService>();
         opts ??= new AwsSnsOptions();
@@ -109,7 +108,6 @@ public sealed class AwsSnsExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<ISmsService>()
-            .Should().BeOfType<SnsSmsService>();
+        sp.GetRequiredService<ISmsService>().Should().BeOfType<SnsSmsService>();
     }
 }

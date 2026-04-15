@@ -11,12 +11,10 @@ public sealed class GracefulShutdown
 
     /// <summary>Creates a new instance with an optional drain timeout.</summary>
     /// <param name="timeout">Maximum wait time; defaults to 30 seconds.</param>
-    public GracefulShutdown(TimeSpan? timeout = null)
-        => _timeout = timeout ?? TimeSpan.FromSeconds(30);
+    public GracefulShutdown(TimeSpan? timeout = null) => _timeout = timeout ?? TimeSpan.FromSeconds(30);
 
     /// <summary>Registers an asynchronous drain handler.</summary>
-    public void Register(Func<CancellationToken, Task> handler)
-        => _handlers.Add(handler);
+    public void Register(Func<CancellationToken, Task> handler) => _handlers.Add(handler);
 
     /// <summary>
     /// Runs all registered handlers concurrently, bounded by <see cref="_timeout"/>.

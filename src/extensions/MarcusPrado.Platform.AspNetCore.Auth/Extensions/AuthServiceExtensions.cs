@@ -26,7 +26,8 @@ public static class AuthServiceExtensions
     public static IServiceCollection AddPlatformAuth(
         this IServiceCollection services,
         Action<JwtAuthenticationOptions>? configureJwt = null,
-        Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
+        Action<ApiKeyAuthenticationOptions>? configureApiKey = null
+    )
     {
         services.AddScoped<IUserContext, DefaultUserContext>();
 
@@ -34,10 +35,12 @@ public static class AuthServiceExtensions
             .AddAuthentication(PlatformAuthSchemes.Jwt)
             .AddScheme<JwtAuthenticationOptions, JwtAuthenticationHandler>(
                 PlatformAuthSchemes.Jwt,
-                opts => configureJwt?.Invoke(opts))
+                opts => configureJwt?.Invoke(opts)
+            )
             .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(
                 PlatformAuthSchemes.ApiKey,
-                opts => configureApiKey?.Invoke(opts));
+                opts => configureApiKey?.Invoke(opts)
+            );
 
         return services;
     }
@@ -47,8 +50,7 @@ public static class AuthServiceExtensions
     /// <see cref="PermissionAuthorizationHandler"/> and
     /// <see cref="ScopeAuthorizationHandler"/>.
     /// </summary>
-    public static IServiceCollection AddPlatformAuthorization(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformAuthorization(this IServiceCollection services)
     {
         services.AddAuthorization();
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();

@@ -24,12 +24,10 @@ public sealed class EfInboxStore : IInboxStore
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<InboxMessage>> GetPendingAsync(
-        int batchSize,
-        CancellationToken ct = default)
+    public async Task<IReadOnlyList<InboxMessage>> GetPendingAsync(int batchSize, CancellationToken ct = default)
     {
-        return await _context.InboxMessages
-            .Where(m => m.State == InboxState.Pending)
+        return await _context
+            .InboxMessages.Where(m => m.State == InboxState.Pending)
             .OrderBy(m => m.ReceivedAt)
             .Take(batchSize)
             .ToListAsync(ct);
@@ -38,45 +36,40 @@ public sealed class EfInboxStore : IInboxStore
     /// <inheritdoc/>
     public async Task MarkProcessedAsync(Guid id, CancellationToken ct = default)
     {
-        await _context.InboxMessages
-            .Where(m => m.Id == id)
+        await _context
+            .InboxMessages.Where(m => m.Id == id)
             .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.State, InboxState.Processed)
-                       .SetProperty(m => m.ProcessedAt, DateTimeOffset.UtcNow),
-                ct);
+                s =>
+                    s.SetProperty(m => m.State, InboxState.Processed)
+                        .SetProperty(m => m.ProcessedAt, DateTimeOffset.UtcNow),
+                ct
+            );
     }
 
     /// <inheritdoc/>
     public async Task MarkFailedAsync(Guid id, string error, CancellationToken ct = default)
     {
-        await _context.InboxMessages
-            .Where(m => m.Id == id)
+        await _context
+            .InboxMessages.Where(m => m.Id == id)
             .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.State, InboxState.Failed)
-                       .SetProperty(m => m.LastError, error),
-                ct);
+                s => s.SetProperty(m => m.State, InboxState.Failed).SetProperty(m => m.LastError, error),
+                ct
+            );
     }
 
     /// <inheritdoc/>
     public async Task MarkDuplicateAsync(Guid id, CancellationToken ct = default)
     {
-        await _context.InboxMessages
-            .Where(m => m.Id == id)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.State, InboxState.Duplicate),
-                ct);
+        await _context
+            .InboxMessages.Where(m => m.Id == id)
+            .ExecuteUpdateAsync(s => s.SetProperty(m => m.State, InboxState.Duplicate), ct);
     }
 
     /// <inheritdoc/>
-    public async Task IncrementRetryAsync(
-        Guid id,
-        DateTimeOffset nextAttempt,
-        CancellationToken ct = default)
+    public async Task IncrementRetryAsync(Guid id, DateTimeOffset nextAttempt, CancellationToken ct = default)
     {
-        await _context.InboxMessages
-            .Where(m => m.Id == id)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.RetryCount, m => m.RetryCount + 1),
-                ct);
+        await _context
+            .InboxMessages.Where(m => m.Id == id)
+            .ExecuteUpdateAsync(s => s.SetProperty(m => m.RetryCount, m => m.RetryCount + 1), ct);
     }
 }

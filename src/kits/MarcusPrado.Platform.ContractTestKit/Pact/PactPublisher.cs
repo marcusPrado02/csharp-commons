@@ -43,7 +43,8 @@ public sealed class PactPublisher
         string version,
         string branch,
         string commitSha,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(pactFilePath);
         ArgumentException.ThrowIfNullOrWhiteSpace(consumerName);
@@ -65,20 +66,15 @@ public sealed class PactPublisher
             version,
             buildUrl = (string?)null,
             tags = Array.Empty<string>(),
-            consumerVersionMetadata = new Dictionary<string, string>
-            {
-                ["commitSha"] = commitSha,
-                ["branch"] = branch,
-            }
+            consumerVersionMetadata = new Dictionary<string, string> { ["commitSha"] = commitSha, ["branch"] = branch },
         };
 
-        var url = $"{_brokerBaseUrl}/pacts/provider/unknown/consumer/{Uri.EscapeDataString(consumerName)}/version/{Uri.EscapeDataString(version)}";
+        var url =
+            $"{_brokerBaseUrl}/pacts/provider/unknown/consumer/{Uri.EscapeDataString(consumerName)}/version/{Uri.EscapeDataString(version)}";
         var json = JsonSerializer.Serialize(payload);
         using var requestContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-        using var response = await _httpClient
-            .PutAsync(url, requestContent, cancellationToken)
-            .ConfigureAwait(false);
+        using var response = await _httpClient.PutAsync(url, requestContent, cancellationToken).ConfigureAwait(false);
 
         return response.IsSuccessStatusCode;
     }

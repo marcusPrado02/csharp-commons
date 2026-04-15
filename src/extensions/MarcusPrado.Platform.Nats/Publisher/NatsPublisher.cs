@@ -3,8 +3,7 @@ namespace MarcusPrado.Platform.Nats.Publisher;
 /// <summary>NATS-backed <see cref="INatsPublisher"/> that serializes payloads as JSON.</summary>
 public sealed class NatsPublisher : INatsPublisher
 {
-    private static readonly JsonSerializerOptions _serializerOptions =
-        new(JsonSerializerDefaults.Web);
+    private static readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     private readonly INatsConnection _connection;
 

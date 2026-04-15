@@ -10,19 +10,18 @@ public sealed class BulkheadPolicy : IDisposable
     private bool _disposed;
 
     /// <summary>Creates a bulkhead with the given max parallelism.</summary>
-    public BulkheadPolicy(int maxParallelism) =>
-        _semaphore = new SemaphoreSlim(maxParallelism, maxParallelism);
+    public BulkheadPolicy(int maxParallelism) => _semaphore = new SemaphoreSlim(maxParallelism, maxParallelism);
 
     /// <summary>Executes <paramref name="action"/> within the bulkhead.</summary>
     /// <exception cref="BulkheadRejectedException">Thrown when the bulkhead is full.</exception>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (!await _semaphore.WaitAsync(0, cancellationToken).ConfigureAwait(false))
         {
-            throw new BulkheadRejectedException(
-                "Bulkhead limit reached; request rejected.");
+            throw new BulkheadRejectedException("Bulkhead limit reached; request rejected.");
         }
 
         try
@@ -49,5 +48,6 @@ public sealed class BulkheadPolicy : IDisposable
 public sealed class BulkheadRejectedException : Exception
 {
     /// <inheritdoc />
-    public BulkheadRejectedException(string message) : base(message) { }
+    public BulkheadRejectedException(string message)
+        : base(message) { }
 }

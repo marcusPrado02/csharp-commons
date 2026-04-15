@@ -11,7 +11,8 @@ public static class IpFilterExtensions
     /// </summary>
     public static IServiceCollection AddPlatformIpFilter(
         this IServiceCollection services,
-        Action<IpFilterOptions>? configure = null)
+        Action<IpFilterOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

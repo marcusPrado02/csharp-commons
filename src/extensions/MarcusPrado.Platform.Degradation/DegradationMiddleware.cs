@@ -16,8 +16,13 @@ namespace MarcusPrado.Platform.Degradation;
 /// </summary>
 public sealed class DegradationMiddleware
 {
-    private static readonly HashSet<string> _writeMethods =
-        new(StringComparer.OrdinalIgnoreCase) { "POST", "PUT", "DELETE", "PATCH" };
+    private static readonly HashSet<string> _writeMethods = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+    };
 
     private readonly RequestDelegate _next;
     private readonly IDegradationController _controller;
@@ -48,7 +53,8 @@ public sealed class DegradationMiddleware
                     context,
                     (int)HttpStatusCode.ServiceUnavailable,
                     "Service Unavailable",
-                    "The service is currently in maintenance mode. Please try again later.");
+                    "The service is currently in maintenance mode. Please try again later."
+                );
                 return;
 
             case DegradationMode.ReadOnly when _writeMethods.Contains(context.Request.Method):
@@ -56,7 +62,8 @@ public sealed class DegradationMiddleware
                     context,
                     (int)HttpStatusCode.MethodNotAllowed,
                     "Method Not Allowed",
-                    "The service is operating in read-only mode. Write operations are not permitted.");
+                    "The service is operating in read-only mode. Write operations are not permitted."
+                );
                 return;
 
             case DegradationMode.PartiallyDegraded:
@@ -69,11 +76,7 @@ public sealed class DegradationMiddleware
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
-    private static async Task WriteProblemAsync(
-        HttpContext context,
-        int statusCode,
-        string title,
-        string detail)
+    private static async Task WriteProblemAsync(HttpContext context, int statusCode, string title, string detail)
     {
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = MediaTypeNames.Application.Json;

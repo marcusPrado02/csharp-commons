@@ -19,8 +19,7 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
     }
 
     /// <inheritdoc />
-    public async Task<AbsPayment.Payment> ChargeAsync(
-        PaymentRequest request, CancellationToken ct = default)
+    public async Task<AbsPayment.Payment> ChargeAsync(PaymentRequest request, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -38,27 +37,27 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
             },
         };
 
-        var intent = await _intents.CreateAsync(options, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var intent = await _intents.CreateAsync(options, cancellationToken: ct).ConfigureAwait(false);
 
         return MapIntent(intent);
     }
 
     /// <inheritdoc />
-    public async Task<AbsPayment.Payment> GetPaymentAsync(
-        string paymentId, CancellationToken ct = default)
+    public async Task<AbsPayment.Payment> GetPaymentAsync(string paymentId, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(paymentId);
 
-        var intent = await _intents.GetAsync(paymentId, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var intent = await _intents.GetAsync(paymentId, cancellationToken: ct).ConfigureAwait(false);
 
         return MapIntent(intent);
     }
 
     /// <inheritdoc />
     public async Task<AbsPayment.Refund> RefundAsync(
-        string paymentId, decimal? amount = null, CancellationToken ct = default)
+        string paymentId,
+        decimal? amount = null,
+        CancellationToken ct = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(paymentId);
 
@@ -68,15 +67,15 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
             Amount = amount.HasValue ? ToStripeAmount(amount.Value) : null,
         };
 
-        var refund = await _refunds.CreateAsync(options, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var refund = await _refunds.CreateAsync(options, cancellationToken: ct).ConfigureAwait(false);
 
         return new AbsPayment.Refund(
             refund.Id,
             refund.PaymentIntentId,
             FromStripeAmount(refund.Amount),
             refund.Currency.ToUpperInvariant(),
-            refund.Created);
+            refund.Created
+        );
     }
 
     private static AbsPayment.Payment MapIntent(PaymentIntent intent) =>
@@ -86,18 +85,20 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
             FromStripeAmount(intent.Amount),
             intent.Currency.ToUpperInvariant(),
             MapStatus(intent.Status),
-            intent.Created);
+            intent.Created
+        );
 
-    private static PaymentStatus MapStatus(string status) => status switch
-    {
-        "succeeded" => PaymentStatus.Succeeded,
-        "canceled" => PaymentStatus.Cancelled,
-        "requires_payment_method" => PaymentStatus.Pending,
-        "requires_confirmation" => PaymentStatus.Pending,
-        "requires_action" => PaymentStatus.Pending,
-        "processing" => PaymentStatus.Pending,
-        _ => PaymentStatus.Failed,
-    };
+    private static PaymentStatus MapStatus(string status) =>
+        status switch
+        {
+            "succeeded" => PaymentStatus.Succeeded,
+            "canceled" => PaymentStatus.Cancelled,
+            "requires_payment_method" => PaymentStatus.Pending,
+            "requires_confirmation" => PaymentStatus.Pending,
+            "requires_action" => PaymentStatus.Pending,
+            "processing" => PaymentStatus.Pending,
+            _ => PaymentStatus.Failed,
+        };
 
     private static long ToStripeAmount(decimal amount) => (long)(amount * 100);
 

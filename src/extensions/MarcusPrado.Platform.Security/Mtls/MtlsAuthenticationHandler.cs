@@ -18,7 +18,8 @@ public sealed class MtlsAuthenticationHandler : AuthenticationHandler<MtlsAuthen
         ILoggerFactory logger,
         UrlEncoder encoder,
         CertificateTenantResolver tenantResolver,
-        CertificateRevocationChecker revocationChecker)
+        CertificateRevocationChecker revocationChecker
+    )
         : base(options, logger, encoder)
     {
         _tenantResolver = tenantResolver;

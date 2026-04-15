@@ -14,23 +14,23 @@ namespace MarcusPrado.Platform.Redis.Stampede;
 /// </summary>
 public sealed class CacheWarmupService : IHostedService
 {
-    private static readonly Action<ILogger, int, Exception?> _logStarting =
-        LoggerMessage.Define<int>(
-            LogLevel.Information,
-            new EventId(1, "WarmupStarting"),
-            "Cache warmup starting. {Count} action(s) registered.");
+    private static readonly Action<ILogger, int, Exception?> _logStarting = LoggerMessage.Define<int>(
+        LogLevel.Information,
+        new EventId(1, "WarmupStarting"),
+        "Cache warmup starting. {Count} action(s) registered."
+    );
 
-    private static readonly Action<ILogger, Exception?> _logCompleted =
-        LoggerMessage.Define(
-            LogLevel.Information,
-            new EventId(2, "WarmupCompleted"),
-            "Cache warmup completed.");
+    private static readonly Action<ILogger, Exception?> _logCompleted = LoggerMessage.Define(
+        LogLevel.Information,
+        new EventId(2, "WarmupCompleted"),
+        "Cache warmup completed."
+    );
 
-    private static readonly Action<ILogger, int, Exception?> _logActionFailed =
-        LoggerMessage.Define<int>(
-            LogLevel.Error,
-            new EventId(3, "WarmupActionFailed"),
-            "Cache warmup action {Index} threw an exception and was skipped.");
+    private static readonly Action<ILogger, int, Exception?> _logActionFailed = LoggerMessage.Define<int>(
+        LogLevel.Error,
+        new EventId(3, "WarmupActionFailed"),
+        "Cache warmup action {Index} threw an exception and was skipped."
+    );
 
     private readonly IDistributedCache _cache;
     private readonly ReadOnlyCollection<Func<IDistributedCache, CancellationToken, Task>> _warmupActions;
@@ -45,7 +45,8 @@ public sealed class CacheWarmupService : IHostedService
     public CacheWarmupService(
         IDistributedCache cache,
         IEnumerable<Func<IDistributedCache, CancellationToken, Task>> warmupActions,
-        ILogger<CacheWarmupService> logger)
+        ILogger<CacheWarmupService> logger
+    )
     {
         ArgumentNullException.ThrowIfNull(cache);
         ArgumentNullException.ThrowIfNull(warmupActions);

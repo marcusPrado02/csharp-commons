@@ -38,33 +38,27 @@ public sealed class OpenSearchSearchClientTests
     public async Task SearchAsync_WithNullQuery_ThrowsArgumentNullException()
     {
         var settings = new ConnectionSettings(new Uri("http://localhost:9200"));
-        var client = new OpenSearchSearchClient(
-            new global::OpenSearch.Client.OpenSearchClient(settings));
+        var client = new OpenSearchSearchClient(new global::OpenSearch.Client.OpenSearchClient(settings));
 
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            () => client.SearchAsync<object>(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => client.SearchAsync<object>(null!));
     }
 
     [Fact]
     public async Task GetByIdAsync_WithEmptyIndexName_ThrowsArgumentException()
     {
         var settings = new ConnectionSettings(new Uri("http://localhost:9200"));
-        var client = new OpenSearchSearchClient(
-            new global::OpenSearch.Client.OpenSearchClient(settings));
+        var client = new OpenSearchSearchClient(new global::OpenSearch.Client.OpenSearchClient(settings));
 
-        await Assert.ThrowsAsync<ArgumentException>(
-            () => client.GetByIdAsync<object>("", "id-1"));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.GetByIdAsync<object>("", "id-1"));
     }
 
     [Fact]
     public async Task DeleteDocumentAsync_WithEmptyId_ThrowsArgumentException()
     {
         var settings = new ConnectionSettings(new Uri("http://localhost:9200"));
-        var client = new OpenSearchSearchClient(
-            new global::OpenSearch.Client.OpenSearchClient(settings));
+        var client = new OpenSearchSearchClient(new global::OpenSearch.Client.OpenSearchClient(settings));
 
-        await Assert.ThrowsAsync<ArgumentException>(
-            () => client.DeleteDocumentAsync("my-index", ""));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.DeleteDocumentAsync("my-index", ""));
     }
 }
 
@@ -78,10 +72,8 @@ public sealed class OpenSearchExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<ISearchClient>()
-            .Should().BeOfType<OpenSearchSearchClient>();
-        sp.GetRequiredService<IIndexManager>()
-            .Should().BeOfType<OpenSearchSearchClient>();
+        sp.GetRequiredService<ISearchClient>().Should().BeOfType<OpenSearchSearchClient>();
+        sp.GetRequiredService<IIndexManager>().Should().BeOfType<OpenSearchSearchClient>();
     }
 
     [Fact]

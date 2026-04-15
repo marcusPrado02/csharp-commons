@@ -38,6 +38,6 @@ public sealed class DefaultSaga<TState> : ISaga<TState>
     /// <typeparam name="TCommand">The command type for the step.</typeparam>
     /// <param name="step">The step definition.</param>
     /// <param name="command">The command instance bound to the step.</param>
-    public void AddStep<TCommand>(SagaStep<TCommand> step, TCommand command)
-        => _steps.Add(new BoundSagaStep<TCommand>(step, command));
+    public void AddStep<TCommand>(SagaStep<TCommand> step, TCommand command) =>
+        _steps.Add(new BoundSagaStep<TCommand>(step, command));
 }

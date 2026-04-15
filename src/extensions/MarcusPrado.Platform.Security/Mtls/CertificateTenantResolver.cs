@@ -6,8 +6,7 @@ public sealed class CertificateTenantResolver
 {
     private readonly MtlsOptions _options;
 
-    public CertificateTenantResolver(MtlsOptions options)
-        => _options = options;
+    public CertificateTenantResolver(MtlsOptions options) => _options = options;
 
     /// <summary>
     /// Attempts to extract a tenant ID from the certificate.

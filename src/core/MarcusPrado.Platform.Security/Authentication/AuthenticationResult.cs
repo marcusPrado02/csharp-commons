@@ -12,17 +12,21 @@ public sealed class AuthenticationResult
     public string? UserId { get; private init; }
 
     /// <summary>Gets the claims extracted from the token as a flat dictionary (type → first value).</summary>
-    public IReadOnlyDictionary<string, string> Claims { get; private init; }
-        = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    public IReadOnlyDictionary<string, string> Claims { get; private init; } =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>Gets the failure reason when <see cref="IsAuthenticated"/> is <c>false</c>.</summary>
     public string? FailureReason { get; private init; }
 
     /// <summary>Creates a successful authentication result.</summary>
-    public static AuthenticationResult Success(string? userId, IReadOnlyDictionary<string, string> claims)
-        => new() { IsAuthenticated = true, UserId = userId, Claims = claims };
+    public static AuthenticationResult Success(string? userId, IReadOnlyDictionary<string, string> claims) =>
+        new()
+        {
+            IsAuthenticated = true,
+            UserId = userId,
+            Claims = claims,
+        };
 
     /// <summary>Creates a failed authentication result with a reason.</summary>
-    public static AuthenticationResult Fail(string reason)
-        => new() { IsAuthenticated = false, FailureReason = reason };
+    public static AuthenticationResult Fail(string reason) => new() { IsAuthenticated = false, FailureReason = reason };
 }

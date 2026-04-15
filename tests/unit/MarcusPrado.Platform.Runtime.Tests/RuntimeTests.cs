@@ -92,8 +92,8 @@ public sealed class DeploymentEnvironmentTests
 
 public sealed class EnvConfigurationTests
 {
-    private static IConfiguration BuildConfig(Dictionary<string, string?> values)
-        => new ConfigurationBuilder().AddInMemoryCollection(values).Build();
+    private static IConfiguration BuildConfig(Dictionary<string, string?> values) =>
+        new ConfigurationBuilder().AddInMemoryCollection(values).Build();
 
     [Fact]
     public void Get_ReadsFromConfiguration()
@@ -135,11 +135,7 @@ public sealed class EnvConfigurationTests
     [Fact]
     public void GetSection_BindsSection()
     {
-        var config = BuildConfig(new()
-        {
-            ["Service:Name"] = "TestApp",
-            ["Service:Version"] = "2.0.0",
-        });
+        var config = BuildConfig(new() { ["Service:Name"] = "TestApp", ["Service:Version"] = "2.0.0" });
         var envCfg = new EnvConfiguration(config);
 
         var section = envCfg.GetSection<ServiceSettings>("Service");
@@ -172,8 +168,16 @@ public sealed class GracefulShutdownTests
     {
         var executed = 0;
         var shutdown = new GracefulShutdown();
-        shutdown.Register(_ => { executed++; return Task.CompletedTask; });
-        shutdown.Register(_ => { executed++; return Task.CompletedTask; });
+        shutdown.Register(_ =>
+        {
+            executed++;
+            return Task.CompletedTask;
+        });
+        shutdown.Register(_ =>
+        {
+            executed++;
+            return Task.CompletedTask;
+        });
 
         await shutdown.RunAsync();
 

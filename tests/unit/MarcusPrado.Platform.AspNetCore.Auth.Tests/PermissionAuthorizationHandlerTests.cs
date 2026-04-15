@@ -11,7 +11,8 @@ public sealed class PermissionAuthorizationHandlerTests : IDisposable
     public async Task HasRequiredPermission_ShouldReturn_200()
     {
         var token = JwtTokenFactory.CreateValidToken(
-            extraClaims: [new Claim("permission", AuthTestServer.TestPermission)]);
+            extraClaims: [new Claim("permission", AuthTestServer.TestPermission)]
+        );
 
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.PermissionRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -25,8 +26,7 @@ public sealed class PermissionAuthorizationHandlerTests : IDisposable
     public async Task MissingPermission_ShouldReturn_403()
     {
         // Token has a different, unrelated permission
-        var token = JwtTokenFactory.CreateValidToken(
-            extraClaims: [new Claim("permission", "write:only")]);
+        var token = JwtTokenFactory.CreateValidToken(extraClaims: [new Claim("permission", "write:only")]);
 
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.PermissionRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

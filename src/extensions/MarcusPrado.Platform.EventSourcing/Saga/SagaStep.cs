@@ -30,7 +30,8 @@ public sealed class SagaStep<TCommand>
         string name,
         Func<TCommand, CancellationToken, Task> execute,
         Func<TCommand, CancellationToken, Task>? compensate = null,
-        TimeSpan? timeout = null)
+        TimeSpan? timeout = null
+    )
     {
         Name = name;
         Execute = execute;

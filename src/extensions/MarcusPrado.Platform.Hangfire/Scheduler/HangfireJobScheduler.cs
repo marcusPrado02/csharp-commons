@@ -24,7 +24,8 @@ public sealed partial class HangfireJobScheduler : IJobScheduler
     public HangfireJobScheduler(
         IBackgroundJobClient jobClient,
         IRecurringJobManager recurringJobManager,
-        ILogger<HangfireJobScheduler> logger)
+        ILogger<HangfireJobScheduler> logger
+    )
     {
         _jobClient = jobClient ?? throw new ArgumentNullException(nameof(jobClient));
         _recurringJobManager = recurringJobManager ?? throw new ArgumentNullException(nameof(recurringJobManager));
@@ -63,10 +64,7 @@ public sealed partial class HangfireJobScheduler : IJobScheduler
     /// <param name="recurringJobId">Unique identifier for the recurring job.</param>
     /// <param name="cronExpression">A valid cron expression.</param>
     /// <param name="queue">The queue to use. Defaults to <c>"default"</c>.</param>
-    public void AddOrUpdateRecurring<TJob>(
-        string recurringJobId,
-        string cronExpression,
-        string queue = "default")
+    public void AddOrUpdateRecurring<TJob>(string recurringJobId, string cronExpression, string queue = "default")
         where TJob : IHangfireJob
     {
         LogAddOrUpdate(recurringJobId, typeof(TJob).Name, cronExpression);
@@ -74,7 +72,8 @@ public sealed partial class HangfireJobScheduler : IJobScheduler
         _recurringJobManager.AddOrUpdate<TJob>(
             recurringJobId,
             job => job.ExecuteAsync(CancellationToken.None),
-            cronExpression);
+            cronExpression
+        );
     }
 
     /// <summary>
@@ -141,7 +140,8 @@ public sealed partial class HangfireJobScheduler : IJobScheduler
 
     [LoggerMessage(
         Level = LogLevel.Debug,
-        Message = "Adding/updating recurring job {JobId} ({JobType}) with cron {Cron}")]
+        Message = "Adding/updating recurring job {JobId} ({JobType}) with cron {Cron}"
+    )]
     private partial void LogAddOrUpdate(string jobId, string jobType, string cron);
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "Scheduling job {JobKey} of type {JobType} via IJobScheduler")]

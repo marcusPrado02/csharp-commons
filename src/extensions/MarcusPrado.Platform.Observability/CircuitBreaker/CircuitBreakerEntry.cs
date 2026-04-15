@@ -9,4 +9,5 @@ public sealed record CircuitBreakerEntry(
     string Name,
     CircuitBreakerState State,
     int FailuresTotal,
-    DateTimeOffset? LastStateChange);
+    DateTimeOffset? LastStateChange
+);

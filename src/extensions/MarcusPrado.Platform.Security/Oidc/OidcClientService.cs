@@ -52,12 +52,15 @@ public sealed class OidcClientService : IOidcClientService, IDisposable
         using var response = await _http.PostAsync(tokenEndpoint, new FormUrlEncodedContent(form), cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        var json = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>(cancellationToken: cancellationToken);
+        var json = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>(
+            cancellationToken: cancellationToken
+        );
         return new TokenResponse(
             AccessToken: json.GetProperty("access_token").GetString()!,
             TokenType: json.GetProperty("token_type").GetString()!,
             ExpiresIn: json.GetProperty("expires_in").GetInt32(),
-            IssuedAt: DateTimeOffset.UtcNow);
+            IssuedAt: DateTimeOffset.UtcNow
+        );
     }
 
     public void Dispose() => _lock.Dispose();

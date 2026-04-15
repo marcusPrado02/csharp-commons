@@ -11,10 +11,12 @@ public static class GdprComplianceReport
     {
         return assemblies
             .SelectMany(a => a.GetTypes())
-            .SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Select(p => (Type: t, Prop: p, Attr: p.GetCustomAttribute<PiiDataAttribute>()))
-                .Where(x => x.Attr is not null)
-                .Select(x => new PiiPropertyInfo(x.Type.FullName ?? x.Type.Name, x.Prop.Name, x.Attr!.Type)))
+            .SelectMany(t =>
+                t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                    .Select(p => (Type: t, Prop: p, Attr: p.GetCustomAttribute<PiiDataAttribute>()))
+                    .Where(x => x.Attr is not null)
+                    .Select(x => new PiiPropertyInfo(x.Type.FullName ?? x.Type.Name, x.Prop.Name, x.Attr!.Type))
+            )
             .ToList();
     }
 }

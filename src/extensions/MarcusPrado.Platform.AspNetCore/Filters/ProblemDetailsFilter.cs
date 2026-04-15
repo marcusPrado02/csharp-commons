@@ -17,8 +17,7 @@ public sealed class ProblemDetailsFilter : IExceptionFilter
     private readonly ILogger<ProblemDetailsFilter> _logger;
 
     /// <summary>Initialises the filter.</summary>
-    public ProblemDetailsFilter(ILogger<ProblemDetailsFilter> logger)
-        => _logger = logger;
+    public ProblemDetailsFilter(ILogger<ProblemDetailsFilter> logger) => _logger = logger;
 
     /// <inheritdoc />
     public void OnException(ExceptionContext context)

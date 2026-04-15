@@ -47,11 +47,12 @@ public static partial class PiiRedactor
             : value[..2] + new string('*', Math.Min(value.Length - 2, 6));
     }
 
-    public static string Redact(string? value, PiiType type) => type switch
-    {
-        PiiType.Email => MaskEmail(value),
-        PiiType.Phone => MaskPhone(value),
-        PiiType.TaxId => MaskCpf(value),
-        _ => Mask(value),
-    };
+    public static string Redact(string? value, PiiType type) =>
+        type switch
+        {
+            PiiType.Email => MaskEmail(value),
+            PiiType.Phone => MaskPhone(value),
+            PiiType.TaxId => MaskCpf(value),
+            _ => Mask(value),
+        };
 }

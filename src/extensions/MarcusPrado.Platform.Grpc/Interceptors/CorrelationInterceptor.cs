@@ -17,8 +17,7 @@ public sealed partial class CorrelationInterceptor : Interceptor
     private readonly ILogger<CorrelationInterceptor> _logger;
 
     /// <summary>Initialises the interceptor with the given logger.</summary>
-    public CorrelationInterceptor(ILogger<CorrelationInterceptor> logger)
-        => _logger = logger;
+    public CorrelationInterceptor(ILogger<CorrelationInterceptor> logger) => _logger = logger;
 
     [LoggerMessage(Level = LogLevel.Debug, Message = "gRPC {Method} correlationId={CorrelationId} tenantId={TenantId}")]
     private static partial void LogCorrelation(ILogger logger, string method, string correlationId, string? tenantId);
@@ -27,7 +26,8 @@ public sealed partial class CorrelationInterceptor : Interceptor
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
         ServerCallContext context,
-        UnaryServerMethod<TRequest, TResponse> continuation)
+        UnaryServerMethod<TRequest, TResponse> continuation
+    )
     {
         var correlationId = context.RequestHeaders.GetValue(CorrelationIdKey) ?? Guid.NewGuid().ToString();
         var tenantId = context.RequestHeaders.GetValue(TenantIdKey);
@@ -47,7 +47,8 @@ public sealed partial class CorrelationInterceptor : Interceptor
     public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(
         TRequest request,
         ClientInterceptorContext<TRequest, TResponse> context,
-        AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
+        AsyncUnaryCallContinuation<TRequest, TResponse> continuation
+    )
     {
         var headers = context.Options.Headers ?? new Metadata();
         if (headers.Get(CorrelationIdKey) is null)
@@ -56,10 +57,7 @@ public sealed partial class CorrelationInterceptor : Interceptor
         }
 
         var options = context.Options.WithHeaders(headers);
-        var updated = new ClientInterceptorContext<TRequest, TResponse>(
-            context.Method,
-            context.Host,
-            options);
+        var updated = new ClientInterceptorContext<TRequest, TResponse>(context.Method, context.Host, options);
         return continuation(request, updated);
     }
 }

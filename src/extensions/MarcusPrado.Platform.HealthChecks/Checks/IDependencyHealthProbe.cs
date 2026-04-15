@@ -13,6 +13,5 @@ public interface IDependencyHealthProbe
     /// Checks whether the dependency is available.
     /// </summary>
     /// <returns>A tuple of (healthy, message) where message describes the result.</returns>
-    Task<(bool Healthy, string Message)> CheckAsync(
-        CancellationToken cancellationToken = default);
+    Task<(bool Healthy, string Message)> CheckAsync(CancellationToken cancellationToken = default);
 }

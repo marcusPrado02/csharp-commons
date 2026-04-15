@@ -30,8 +30,10 @@ public static class ContractCompatibilityChecker
 
         var violations = new List<CompatibilityViolation>();
 
-        if (previous.RootElement.ValueKind != JsonValueKind.Object
-            || current.RootElement.ValueKind != JsonValueKind.Object)
+        if (
+            previous.RootElement.ValueKind != JsonValueKind.Object
+            || current.RootElement.ValueKind != JsonValueKind.Object
+        )
         {
             return CompatibilityReport.Compatible();
         }
@@ -40,27 +42,35 @@ public static class ContractCompatibilityChecker
         {
             if (!current.RootElement.TryGetProperty(prevField.Name, out var currValue))
             {
-                violations.Add(new CompatibilityViolation(
-                    ViolationType.FieldRemoved,
-                    prevField.Name,
-                    $"Field '{prevField.Name}' was removed in the new schema."));
+                violations.Add(
+                    new CompatibilityViolation(
+                        ViolationType.FieldRemoved,
+                        prevField.Name,
+                        $"Field '{prevField.Name}' was removed in the new schema."
+                    )
+                );
 
                 continue;
             }
 
-            var prevType = prevField.Value.ValueKind == JsonValueKind.String
-                ? prevField.Value.GetString() ?? prevField.Value.ValueKind.ToString()
-                : prevField.Value.ValueKind.ToString();
-            var currType = currValue.ValueKind == JsonValueKind.String
-                ? currValue.GetString() ?? currValue.ValueKind.ToString()
-                : currValue.ValueKind.ToString();
+            var prevType =
+                prevField.Value.ValueKind == JsonValueKind.String
+                    ? prevField.Value.GetString() ?? prevField.Value.ValueKind.ToString()
+                    : prevField.Value.ValueKind.ToString();
+            var currType =
+                currValue.ValueKind == JsonValueKind.String
+                    ? currValue.GetString() ?? currValue.ValueKind.ToString()
+                    : currValue.ValueKind.ToString();
 
             if (!string.Equals(prevType, currType, StringComparison.Ordinal))
             {
-                violations.Add(new CompatibilityViolation(
-                    ViolationType.TypeChanged,
-                    prevField.Name,
-                    $"Field '{prevField.Name}' type changed from '{prevType}' to '{currType}'."));
+                violations.Add(
+                    new CompatibilityViolation(
+                        ViolationType.TypeChanged,
+                        prevField.Name,
+                        $"Field '{prevField.Name}' type changed from '{prevType}' to '{currType}'."
+                    )
+                );
             }
         }
 

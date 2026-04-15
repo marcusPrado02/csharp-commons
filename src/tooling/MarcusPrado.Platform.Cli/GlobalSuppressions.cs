@@ -6,4 +6,10 @@
 // are not applicable in the same way as in normal C# files.
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1516:Elements should be separated by blank line", Justification = "Top-level statements in Program.cs", Scope = "namespaceanddescendants", Target = "~N:")]
+[assembly: SuppressMessage(
+    "StyleCop.CSharp.LayoutRules",
+    "SA1516:Elements should be separated by blank line",
+    Justification = "Top-level statements in Program.cs",
+    Scope = "namespaceanddescendants",
+    Target = "~N:"
+)]

@@ -10,10 +10,7 @@ public sealed class RabbitMqTestContainer : IAsyncDisposable
     /// <summary>Initialises the container with RabbitMQ management image.</summary>
     public RabbitMqTestContainer()
     {
-        _container = new RabbitMqBuilder()
-            .WithImage("rabbitmq:3-management-alpine")
-            .WithCleanUp(true)
-            .Build();
+        _container = new RabbitMqBuilder().WithImage("rabbitmq:3-management-alpine").WithCleanUp(true).Build();
     }
 
     /// <summary>Gets the AMQP connection string once the container is started.</summary>

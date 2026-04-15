@@ -14,7 +14,8 @@ public static class SerilogConfigurator
     /// </summary>
     public static IHostApplicationBuilder AddPlatformSerilog(
         this IHostApplicationBuilder builder,
-        Action<SerilogOptions>? configure = null)
+        Action<SerilogOptions>? configure = null
+    )
     {
         var opts = new SerilogOptions();
         configure?.Invoke(opts);
@@ -39,7 +40,8 @@ public static class SerilogConfigurator
         else
         {
             loggerConfig.WriteTo.Console(
-                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+            );
         }
 
         global::Serilog.Log.Logger = loggerConfig.CreateLogger();

@@ -10,9 +10,7 @@ public sealed class KafkaTestContainer : IAsyncDisposable
     /// <summary>Initialises the container with Confluent Kafka image.</summary>
     public KafkaTestContainer()
     {
-        _container = new KafkaBuilder()
-            .WithCleanUp(true)
-            .Build();
+        _container = new KafkaBuilder().WithCleanUp(true).Build();
     }
 
     /// <summary>Gets the bootstrap server address once the container is started.</summary>

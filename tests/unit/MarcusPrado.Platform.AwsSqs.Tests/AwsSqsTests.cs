@@ -61,8 +61,7 @@ public sealed class SqsPublisherTests
     {
         var act = () => new SqsPublisher(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 
     [Fact]
@@ -84,13 +83,9 @@ public sealed class SqsConsumerTests
     [Fact]
     public void SqsConsumer_NullClient_Throws()
     {
-        var act = () => new SqsConsumer(
-            null!,
-            DefaultOptions(),
-            NullLogger<SqsConsumer>.Instance);
+        var act = () => new SqsConsumer(null!, DefaultOptions(), NullLogger<SqsConsumer>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 
     [Fact]
@@ -98,13 +93,9 @@ public sealed class SqsConsumerTests
     {
         var client = Substitute.For<IAmazonSQS>();
 
-        var act = () => new SqsConsumer(
-            client,
-            null!,
-            NullLogger<SqsConsumer>.Instance);
+        var act = () => new SqsConsumer(client, null!, NullLogger<SqsConsumer>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("options");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("options");
     }
 
     [Fact]
@@ -112,13 +103,9 @@ public sealed class SqsConsumerTests
     {
         var client = Substitute.For<IAmazonSQS>();
 
-        var act = () => new SqsConsumer(
-            client,
-            DefaultOptions(),
-            null!);
+        var act = () => new SqsConsumer(client, DefaultOptions(), null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("logger");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("logger");
     }
 }
 
@@ -129,8 +116,7 @@ public sealed class SnsPublisherTests
     {
         var act = () => new SnsPublisher(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 
     [Fact]
@@ -151,8 +137,7 @@ public sealed class SqsHealthProbeTests
     {
         var act = () => new SqsHealthProbe(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("client");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("client");
     }
 }
 

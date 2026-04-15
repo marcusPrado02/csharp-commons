@@ -20,8 +20,8 @@ public sealed class ServiceBusPublisher : IServiceBusPublisher
     }
 
     /// <inheritdoc/>
-    public Task SendAsync<T>(string queueOrTopic, T message, CancellationToken ct = default)
-        => SendAsync(queueOrTopic, message, sessionId: null, ct);
+    public Task SendAsync<T>(string queueOrTopic, T message, CancellationToken ct = default) =>
+        SendAsync(queueOrTopic, message, sessionId: null, ct);
 
     /// <inheritdoc/>
     public async Task SendAsync<T>(string queueOrTopic, T message, string? sessionId, CancellationToken ct = default)
@@ -30,10 +30,7 @@ public sealed class ServiceBusPublisher : IServiceBusPublisher
         ArgumentNullException.ThrowIfNull(message);
 
         var json = JsonSerializer.Serialize(message);
-        var sbMessage = new ServiceBusMessage(json)
-        {
-            ContentType = "application/json",
-        };
+        var sbMessage = new ServiceBusMessage(json) { ContentType = "application/json" };
 
         if (sessionId is not null)
         {

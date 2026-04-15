@@ -10,11 +10,11 @@ internal sealed class RedisLockHandle : ILockHandle
 {
     // Lua: DEL only when GET matches token (atomic compare-and-delete)
     private const string ReleaseLua =
-        "if redis.call(\"GET\", KEYS[1]) == ARGV[1] then\n" +
-        "    return redis.call(\"DEL\", KEYS[1])\n" +
-        "else\n" +
-        "    return 0\n" +
-        "end";
+        "if redis.call(\"GET\", KEYS[1]) == ARGV[1] then\n"
+        + "    return redis.call(\"DEL\", KEYS[1])\n"
+        + "else\n"
+        + "    return 0\n"
+        + "end";
 
     private readonly IDatabase _db;
     private int _released;

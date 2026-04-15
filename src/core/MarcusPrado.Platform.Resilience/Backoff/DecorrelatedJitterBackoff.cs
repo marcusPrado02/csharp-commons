@@ -10,20 +10,15 @@ public static class DecorrelatedJitterBackoff
     /// Returns a random delay between <paramref name="baseDelay"/> and three
     /// times the previous delay, bounded by <paramref name="maxDelay"/>.
     /// </summary>
-    public static TimeSpan Calculate(
-        TimeSpan previousDelay,
-        TimeSpan baseDelay,
-        TimeSpan? maxDelay = null)
+    public static TimeSpan Calculate(TimeSpan previousDelay, TimeSpan baseDelay, TimeSpan? maxDelay = null)
     {
         var cap = maxDelay ?? TimeSpan.FromSeconds(30);
         var minMs = baseDelay.TotalMilliseconds;
         var maxMs = Math.Min(
             cap.TotalMilliseconds,
-            previousDelay == TimeSpan.Zero
-                ? (baseDelay.TotalMilliseconds * 3)
-                : (previousDelay.TotalMilliseconds * 3));
+            previousDelay == TimeSpan.Zero ? (baseDelay.TotalMilliseconds * 3) : (previousDelay.TotalMilliseconds * 3)
+        );
 
-        return TimeSpan.FromMilliseconds(
-            (Random.Shared.NextDouble() * (maxMs - minMs)) + minMs);
+        return TimeSpan.FromMilliseconds((Random.Shared.NextDouble() * (maxMs - minMs)) + minMs);
     }
 }

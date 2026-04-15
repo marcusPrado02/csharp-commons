@@ -28,8 +28,9 @@ public sealed class LocalizationTests
 
         await client.SendAsync(request);
 
-        cultureHolder.Value.Should().Be("pt-BR",
-            because: "middleware should resolve pt-BR from the Accept-Language header");
+        cultureHolder
+            .Value.Should()
+            .Be("pt-BR", because: "middleware should resolve pt-BR from the Accept-Language header");
     }
 
     [Fact]
@@ -40,8 +41,9 @@ public sealed class LocalizationTests
 
         await client.GetAsync("/culture");
 
-        cultureHolder.Value.Should().Be("en-US",
-            because: "middleware should fall back to the configured default culture");
+        cultureHolder
+            .Value.Should()
+            .Be("en-US", because: "middleware should fall back to the configured default culture");
     }
 
     [Fact]
@@ -55,8 +57,9 @@ public sealed class LocalizationTests
 
         await client.SendAsync(request);
 
-        cultureHolder.Value.Should().Be("en-US",
-            because: "middleware should fall back to default when no supported locale matches");
+        cultureHolder
+            .Value.Should()
+            .Be("en-US", because: "middleware should fall back to default when no supported locale matches");
     }
 
     [Fact]
@@ -70,8 +73,9 @@ public sealed class LocalizationTests
 
         var response = await client.SendAsync(request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "malformed Accept-Language header must not cause a 500 error");
+        response
+            .StatusCode.Should()
+            .Be(HttpStatusCode.OK, because: "malformed Accept-Language header must not cause a 500 error");
     }
 
     [Fact]
@@ -86,8 +90,9 @@ public sealed class LocalizationTests
 
         await client.SendAsync(request);
 
-        cultureHolder.Value.Should().Be("pt-BR",
-            because: "middleware should choose the supported locale with the highest q-value");
+        cultureHolder
+            .Value.Should()
+            .Be("pt-BR", because: "middleware should choose the supported locale with the highest q-value");
     }
 
     [Fact]
@@ -102,8 +107,9 @@ public sealed class LocalizationTests
 
         await client.SendAsync(request);
 
-        cultureHolder.Value.Should().Be("es-ES",
-            because: "middleware should match 'es' to the supported 'es-ES' culture");
+        cultureHolder
+            .Value.Should()
+            .Be("es-ES", because: "middleware should match 'es' to the supported 'es-ES' culture");
     }
 
     // ── LocalizedErrorTranslator ──────────────────────────────────────────────
@@ -116,8 +122,12 @@ public sealed class LocalizationTests
 
         var message = LocalizedErrorTranslator.Translate(error, enUs);
 
-        message.Should().Be("The requested resource was not found.",
-            because: "en-US resource should contain the English not-found message");
+        message
+            .Should()
+            .Be(
+                "The requested resource was not found.",
+                because: "en-US resource should contain the English not-found message"
+            );
     }
 
     [Fact]
@@ -128,8 +138,12 @@ public sealed class LocalizationTests
 
         var message = LocalizedErrorTranslator.Translate(error, ptBr);
 
-        message.Should().Be("O recurso solicitado não foi encontrado.",
-            because: "pt-BR resource should contain the Portuguese not-found message");
+        message
+            .Should()
+            .Be(
+                "O recurso solicitado não foi encontrado.",
+                because: "pt-BR resource should contain the Portuguese not-found message"
+            );
     }
 
     [Fact]
@@ -140,8 +154,12 @@ public sealed class LocalizationTests
 
         var message = LocalizedErrorTranslator.Translate(error, esEs);
 
-        message.Should().Be("No está autorizado para realizar esta acción.",
-            because: "es-ES resource should contain the Spanish unauthorized message");
+        message
+            .Should()
+            .Be(
+                "No está autorizado para realizar esta acción.",
+                because: "es-ES resource should contain the Spanish unauthorized message"
+            );
     }
 
     [Fact]
@@ -152,8 +170,12 @@ public sealed class LocalizationTests
 
         var message = LocalizedErrorTranslator.Translate(error, ptBr);
 
-        message.Should().Be("Um ou mais erros de validação ocorreram.",
-            because: "pt-BR resource should contain the Portuguese validation message");
+        message
+            .Should()
+            .Be(
+                "Um ou mais erros de validação ocorreram.",
+                because: "pt-BR resource should contain the Portuguese validation message"
+            );
     }
 
     // ── PlatformLocalizationOptions ───────────────────────────────────────────
@@ -163,11 +185,13 @@ public sealed class LocalizationTests
     {
         var options = new PlatformLocalizationOptions();
 
-        options.DefaultCulture.Should().Be("en-US",
-            because: "default culture should be en-US");
-        options.SupportedCultures.Should().BeEquivalentTo(
-            ["en-US", "pt-BR", "es-ES"],
-            because: "default supported cultures should include en-US, pt-BR, and es-ES");
+        options.DefaultCulture.Should().Be("en-US", because: "default culture should be en-US");
+        options
+            .SupportedCultures.Should()
+            .BeEquivalentTo(
+                ["en-US", "pt-BR", "es-ES"],
+                because: "default supported cultures should include en-US, pt-BR, and es-ES"
+            );
     }
 
     // ── AddPlatformLocalization registration ──────────────────────────────────
@@ -182,8 +206,7 @@ public sealed class LocalizationTests
         var provider = services.BuildServiceProvider();
 
         var localizer = provider.GetService<ValidationMessageLocalizer>();
-        localizer.Should().NotBeNull(
-            because: "AddPlatformLocalization should register ValidationMessageLocalizer");
+        localizer.Should().NotBeNull(because: "AddPlatformLocalization should register ValidationMessageLocalizer");
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

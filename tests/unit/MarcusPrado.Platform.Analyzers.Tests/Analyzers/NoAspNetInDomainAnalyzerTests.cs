@@ -32,8 +32,7 @@ public sealed class NoAspNetInDomainAnalyzerTests
     [Fact]
     public void Analyzer_HasDiagnosticAnalyzerAttribute()
     {
-        var attrs = typeof(NoAspNetInDomainAnalyzer)
-            .GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
+        var attrs = typeof(NoAspNetInDomainAnalyzer).GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
 
         attrs.Should().NotBeEmpty();
     }

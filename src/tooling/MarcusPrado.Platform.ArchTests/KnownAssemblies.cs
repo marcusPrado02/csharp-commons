@@ -17,45 +17,36 @@ internal static class KnownAssemblies
     /// <c>MarcusPrado.Platform.Abstractions</c> — pure BCL; no platform
     /// dependencies allowed.
     /// </summary>
-    public static readonly Assembly Abstractions =
-        typeof(Error).Assembly;
+    public static readonly Assembly Abstractions = typeof(Error).Assembly;
 
     /// <summary>
     /// <c>MarcusPrado.Platform.Domain</c> — may only depend on Abstractions.
     /// </summary>
-    public static readonly Assembly Domain =
-        typeof(DomainException).Assembly;
+    public static readonly Assembly Domain = typeof(DomainException).Assembly;
 
     /// <summary>
     /// <c>MarcusPrado.Platform.Application</c> — may depend on Domain +
     /// Abstractions; must not depend on Extensions.
     /// </summary>
-    public static readonly Assembly Application =
-        typeof(ICommand).Assembly;
+    public static readonly Assembly Application = typeof(ICommand).Assembly;
 
     /// <summary>
     /// <c>MarcusPrado.Platform.Contracts</c> — public API/event contracts.
     /// </summary>
-    public static readonly Assembly Contracts =
-        typeof(IEventContract).Assembly;
+    public static readonly Assembly Contracts = typeof(IEventContract).Assembly;
 
     /// <summary>
     /// All core assemblies combined (for cross-cutting naming checks).
     /// </summary>
-    public static readonly IReadOnlyList<Assembly> AllCore =
-    [
-        Abstractions,
-        Domain,
-        Application,
-        Contracts,
-    ];
+    public static readonly IReadOnlyList<Assembly> AllCore = [Abstractions, Domain, Application, Contracts];
 
     /// <summary>
     /// Names of all platform assemblies, used to filter out BCL references
     /// when asserting on inter-platform dependencies.
     /// </summary>
-    public static readonly IReadOnlySet<string> PlatformAssemblyNames =
-        AllCore.Select(a => a.GetName().Name!).ToHashSet(StringComparer.Ordinal);
+    public static readonly IReadOnlySet<string> PlatformAssemblyNames = AllCore
+        .Select(a => a.GetName().Name!)
+        .ToHashSet(StringComparer.Ordinal);
 
     /// <summary>
     /// Returns the NuGet package / assembly names that represent known

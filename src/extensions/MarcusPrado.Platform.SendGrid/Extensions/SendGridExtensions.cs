@@ -14,7 +14,8 @@ public static class SendGridExtensions
     /// </summary>
     public static IServiceCollection AddPlatformSendGrid(
         this IServiceCollection services,
-        Action<SendGridOptions>? configure = null)
+        Action<SendGridOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

@@ -10,11 +10,7 @@ namespace MarcusPrado.Platform.HealthChecks.Checks;
 /// <param name="Status">The <see cref="HealthStatus"/> reported by the check.</param>
 /// <param name="CheckedAt">The UTC timestamp when the check was executed.</param>
 /// <param name="Description">An optional human-readable description of the result.</param>
-public sealed record HealthCheckRecord(
-    string Name,
-    HealthStatus Status,
-    DateTimeOffset CheckedAt,
-    string? Description);
+public sealed record HealthCheckRecord(string Name, HealthStatus Status, DateTimeOffset CheckedAt, string? Description);
 
 /// <summary>
 /// Stores the last <em>N</em> <see cref="HealthCheckRecord"/> results per check name,

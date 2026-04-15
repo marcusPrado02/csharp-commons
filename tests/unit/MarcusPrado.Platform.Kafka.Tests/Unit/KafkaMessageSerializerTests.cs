@@ -7,10 +7,7 @@ public sealed class KafkaMessageSerializerTests
     [Fact]
     public void Serialize_Deserialize_RoundTrip_ReturnsOriginalPayload()
     {
-        var envelope = new MessageEnvelope<SampleMessage>
-        {
-            Payload = new SampleMessage { Text = "hello kafka" },
-        };
+        var envelope = new MessageEnvelope<SampleMessage> { Payload = new SampleMessage { Text = "hello kafka" } };
 
         var json = _serializer.Serialize(envelope);
         var result = _serializer.Deserialize<MessageEnvelope<SampleMessage>>(json);
@@ -38,10 +35,7 @@ public sealed class KafkaMessageSerializerTests
     [Fact]
     public void Serialize_ProducesValidJson()
     {
-        var envelope = new MessageEnvelope<SampleMessage>
-        {
-            Payload = new SampleMessage { Text = "json-check" },
-        };
+        var envelope = new MessageEnvelope<SampleMessage> { Payload = new SampleMessage { Text = "json-check" } };
 
         var json = _serializer.Serialize(envelope);
 

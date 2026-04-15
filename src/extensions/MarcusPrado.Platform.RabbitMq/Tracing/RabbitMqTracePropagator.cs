@@ -18,10 +18,14 @@ public static class RabbitMqTracePropagator
     {
         ArgumentNullException.ThrowIfNull(headers);
 
-        W3CTraceContextPropagator.Inject(activity, headers, static (h, key, value) =>
-        {
-            h[key] = Encoding.UTF8.GetBytes(value);
-        });
+        W3CTraceContextPropagator.Inject(
+            activity,
+            headers,
+            static (h, key, value) =>
+            {
+                h[key] = Encoding.UTF8.GetBytes(value);
+            }
+        );
     }
 
     /// <summary>
@@ -34,19 +38,22 @@ public static class RabbitMqTracePropagator
             return default;
         }
 
-        return W3CTraceContextPropagator.Extract(headers, static (h, key) =>
-        {
-            if (!h.TryGetValue(key, out var raw))
+        return W3CTraceContextPropagator.Extract(
+            headers,
+            static (h, key) =>
             {
-                return null;
-            }
+                if (!h.TryGetValue(key, out var raw))
+                {
+                    return null;
+                }
 
-            return raw switch
-            {
-                byte[] bytes => Encoding.UTF8.GetString(bytes),
-                string s => s,
-                _ => null,
-            };
-        });
+                return raw switch
+                {
+                    byte[] bytes => Encoding.UTF8.GetString(bytes),
+                    string s => s,
+                    _ => null,
+                };
+            }
+        );
     }
 }

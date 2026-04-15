@@ -12,5 +12,5 @@ public enum RequestSizeTier
     Pro,
 
     /// <summary>Enterprise tier — 100 MB limit.</summary>
-    Enterprise
+    Enterprise,
 }

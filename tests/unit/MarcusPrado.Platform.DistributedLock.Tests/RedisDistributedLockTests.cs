@@ -13,7 +13,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<TimeSpan?>(),
                 Arg.Any<bool>(),
                 Arg.Any<When>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(Task.FromResult(returns));
     }
 
@@ -56,7 +57,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<TimeSpan?>(),
                 Arg.Any<bool>(),
                 Arg.Any<When>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(ci =>
             {
                 var val = ci.ArgAt<RedisValue>(1);
@@ -92,7 +94,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<TimeSpan?>(),
                 Arg.Any<bool>(),
                 Arg.Any<When>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(ci =>
             {
                 capturedKey = ci.ArgAt<RedisKey>(0);
@@ -120,7 +123,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<TimeSpan?>(),
                 Arg.Any<bool>(),
                 Arg.Any<When>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(ci =>
             {
                 capturedWhen = ci.ArgAt<When>(4);
@@ -143,7 +147,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<string>(),
                 Arg.Any<RedisKey[]?>(),
                 Arg.Any<RedisValue[]?>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(Task.FromResult(RedisResult.Create(1)));
 
         var sut = new RedisDistributedLock(db);
@@ -152,11 +157,13 @@ public sealed class RedisDistributedLockTests
         handle.Should().NotBeNull();
         await handle!.DisposeAsync();
 
-        await db.Received(1).ScriptEvaluateAsync(
-            Arg.Any<string>(),
-            Arg.Any<RedisKey[]?>(),
-            Arg.Any<RedisValue[]?>(),
-            Arg.Any<CommandFlags>());
+        await db.Received(1)
+            .ScriptEvaluateAsync(
+                Arg.Any<string>(),
+                Arg.Any<RedisKey[]?>(),
+                Arg.Any<RedisValue[]?>(),
+                Arg.Any<CommandFlags>()
+            );
     }
 
     [Fact]
@@ -169,7 +176,8 @@ public sealed class RedisDistributedLockTests
                 Arg.Any<string>(),
                 Arg.Any<RedisKey[]?>(),
                 Arg.Any<RedisValue[]?>(),
-                Arg.Any<CommandFlags>())
+                Arg.Any<CommandFlags>()
+            )
             .Returns(Task.FromResult(RedisResult.Create(1)));
 
         var sut = new RedisDistributedLock(db);
@@ -179,10 +187,12 @@ public sealed class RedisDistributedLockTests
         await handle!.DisposeAsync();
         await handle.DisposeAsync(); // second call should be no-op
 
-        await db.Received(1).ScriptEvaluateAsync(
-            Arg.Any<string>(),
-            Arg.Any<RedisKey[]?>(),
-            Arg.Any<RedisValue[]?>(),
-            Arg.Any<CommandFlags>());
+        await db.Received(1)
+            .ScriptEvaluateAsync(
+                Arg.Any<string>(),
+                Arg.Any<RedisKey[]?>(),
+                Arg.Any<RedisValue[]?>(),
+                Arg.Any<CommandFlags>()
+            );
     }
 }

@@ -1,11 +1,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using FluentAssertions;
+using MarcusPrado.Platform.Abstractions.Context;
 using MarcusPrado.Platform.Http.Clients;
 using MarcusPrado.Platform.Http.Extensions;
 using MarcusPrado.Platform.Http.Handlers;
-using MarcusPrado.Platform.Abstractions.Context;
-using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -174,7 +174,7 @@ public sealed class HttpClientFactoryExtensionsTests
         where TClient : TypedHttpClient
     {
         var correlation = Substitute.For<ICorrelationContext>();
-        var tenant      = Substitute.For<ITenantContext>();
+        var tenant = Substitute.For<ITenantContext>();
 
         return new ServiceCollection()
             .AddLogging()
@@ -208,7 +208,8 @@ internal sealed class FakeMessageHandler : HttpMessageHandler
 
     protected override Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         LastRequest = request;
         return Task.FromResult(new HttpResponseMessage(_statusCode));

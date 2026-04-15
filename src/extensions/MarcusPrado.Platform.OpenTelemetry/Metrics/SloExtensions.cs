@@ -19,7 +19,8 @@ public static class SloExtensions
     public static IServiceCollection AddPlatformSlo(
         this IServiceCollection services,
         ServiceLevelObjective slo,
-        Func<SloSnapshot> snapshotProvider)
+        Func<SloSnapshot> snapshotProvider
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(slo);

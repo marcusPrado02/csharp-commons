@@ -18,8 +18,9 @@ public sealed class RetryBehaviorTests
             throw new InvalidOperationException("not transient");
         };
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => behavior.HandleAsync(new SimpleCommand(), next, CancellationToken.None));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            behavior.HandleAsync(new SimpleCommand(), next, CancellationToken.None)
+        );
 
         Assert.Equal(1, calls);
     }

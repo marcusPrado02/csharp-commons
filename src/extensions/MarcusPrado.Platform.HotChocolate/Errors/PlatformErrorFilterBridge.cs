@@ -29,8 +29,6 @@ public sealed class PlatformErrorFilterBridge : HC.IErrorFilter
         var wrapped = new HotChocolateErrorWrapper(error);
         var result = _platformFilter.OnError(wrapped, error.Exception);
 
-        return error
-            .WithMessage(result.Message)
-            .WithCode(result.Code);
+        return error.WithMessage(result.Message).WithCode(result.Code);
     }
 }

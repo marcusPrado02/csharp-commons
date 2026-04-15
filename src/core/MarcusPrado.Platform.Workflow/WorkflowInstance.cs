@@ -13,4 +13,5 @@ public sealed record WorkflowInstance(
     DateTimeOffset StartedAt,
     DateTimeOffset? CompletedAt,
     string? CancellationReason,
-    string? FailureReason);
+    string? FailureReason
+);

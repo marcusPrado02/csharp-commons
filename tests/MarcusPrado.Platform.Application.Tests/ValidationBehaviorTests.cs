@@ -28,12 +28,11 @@ public sealed class ValidationBehaviorTests
     public async Task ValidValidator_CallsNext()
     {
         var validator = Substitute.For<IValidator<SimpleCommand>>();
-        validator.ValidateAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
+        validator
+            .ValidateAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IValidationResult>(new TestValidationResult(true)));
 
-        var sp = new ServiceCollection()
-            .AddSingleton(validator)
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddSingleton(validator).BuildServiceProvider();
 
         var behavior = new ValidationBehavior<SimpleCommand, Result<string>>(sp);
         var called = false;
@@ -55,13 +54,11 @@ public sealed class ValidationBehaviorTests
     {
         var validationError = Error.Validation("CMD.INVALID", "Bad data");
         var validator = Substitute.For<IValidator<SimpleCommand>>();
-        validator.ValidateAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult<IValidationResult>(
-                new TestValidationResult(false, [validationError])));
+        validator
+            .ValidateAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IValidationResult>(new TestValidationResult(false, [validationError])));
 
-        var sp = new ServiceCollection()
-            .AddSingleton(validator)
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddSingleton(validator).BuildServiceProvider();
 
         var behavior = new ValidationBehavior<SimpleCommand, Result<string>>(sp);
         var called = false;
@@ -93,10 +90,7 @@ public sealed class ValidationBehaviorTests
         v2.ValidateAsync(Arg.Any<SimpleCommand>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IValidationResult>(new TestValidationResult(false, [err2])));
 
-        var sp = new ServiceCollection()
-            .AddSingleton(v1)
-            .AddSingleton(v2)
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddSingleton(v1).AddSingleton(v2).BuildServiceProvider();
 
         var behavior = new ValidationBehavior<SimpleCommand, Result<string>>(sp);
         var result = await behavior.HandleAsync(new SimpleCommand(), _ => Task.FromResult(Result.Success<string>("x")));

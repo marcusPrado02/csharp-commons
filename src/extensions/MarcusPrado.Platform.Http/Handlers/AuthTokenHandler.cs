@@ -22,15 +22,14 @@ public sealed class AuthTokenHandler : DelegatingHandler
     /// <inheritdoc/>
     protected override Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         ArgumentNullException.ThrowIfNull(request);
 
         if (!request.Headers.Contains("Authorization"))
         {
-            var authHeader = _httpContextAccessor.HttpContext?
-                .Request.Headers.Authorization
-                .FirstOrDefault();
+            var authHeader = _httpContextAccessor.HttpContext?.Request.Headers.Authorization.FirstOrDefault();
 
             if (!string.IsNullOrEmpty(authHeader))
             {

@@ -21,12 +21,14 @@ public static class CircuitBreakerExtensions
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformCircuitBreakerRegistry(
         this IServiceCollection services,
-        int failureThreshold = CircuitBreakerRegistry.DefaultFailureThreshold)
+        int failureThreshold = CircuitBreakerRegistry.DefaultFailureThreshold
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton(new CircuitBreakerRegistry(failureThreshold));
-        services.AddSingleton<CircuitBreakerMetrics>(sp =>
-            new CircuitBreakerMetrics(sp.GetRequiredService<CircuitBreakerRegistry>()));
+        services.AddSingleton<CircuitBreakerMetrics>(sp => new CircuitBreakerMetrics(
+            sp.GetRequiredService<CircuitBreakerRegistry>()
+        ));
         return services;
     }
 
@@ -36,8 +38,7 @@ public static class CircuitBreakerExtensions
     /// </summary>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to register routes on.</param>
     /// <returns>The same <paramref name="endpoints"/> for chaining.</returns>
-    public static IEndpointRouteBuilder MapCircuitBreakerEndpoints(
-        this IEndpointRouteBuilder endpoints)
+    public static IEndpointRouteBuilder MapCircuitBreakerEndpoints(this IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         var registry = endpoints.ServiceProvider.GetRequiredService<CircuitBreakerRegistry>();

@@ -22,14 +22,12 @@ public sealed class EndpointDiscoveryTests
 
     internal sealed class PingEndpoint : IEndpoint
     {
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapGet("/ping", () => "pong");
+        public void MapEndpoints(IEndpointRouteBuilder routes) => routes.MapGet("/ping", () => "pong");
     }
 
     internal sealed class HealthEndpoint : IEndpoint
     {
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapGet("/health", () => "ok");
+        public void MapEndpoints(IEndpointRouteBuilder routes) => routes.MapGet("/health", () => "ok");
     }
 
     internal sealed class ItemsGroupEndpoint : EndpointGroupBase
@@ -45,27 +43,24 @@ public sealed class EndpointDiscoveryTests
 
     internal sealed class EnvelopedEndpoint : IEndpoint
     {
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapGet("/enveloped", () => "hello")
-                     .AddEndpointFilter<ApiEnvelopeFilter>();
+        public void MapEndpoints(IEndpointRouteBuilder routes) =>
+            routes.MapGet("/enveloped", () => "hello").AddEndpointFilter<ApiEnvelopeFilter>();
     }
 
     internal sealed class IResultEndpoint : IEndpoint
     {
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapGet("/iresult", () => Results.Ok("direct"))
-                     .AddEndpointFilter<ApiEnvelopeFilter>();
+        public void MapEndpoints(IEndpointRouteBuilder routes) =>
+            routes.MapGet("/iresult", () => Results.Ok("direct")).AddEndpointFilter<ApiEnvelopeFilter>();
     }
 
     internal sealed class DependencyEndpoint : IEndpoint
     {
         private readonly IGreetingService _greetingService;
 
-        public DependencyEndpoint(IGreetingService greetingService)
-            => _greetingService = greetingService;
+        public DependencyEndpoint(IGreetingService greetingService) => _greetingService = greetingService;
 
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapGet("/greet", () => _greetingService.Greet());
+        public void MapEndpoints(IEndpointRouteBuilder routes) =>
+            routes.MapGet("/greet", () => _greetingService.Greet());
     }
 
     internal interface IGreetingService
@@ -80,9 +75,10 @@ public sealed class EndpointDiscoveryTests
 
     internal sealed class ValidatedEndpoint : IEndpoint
     {
-        public void MapEndpoints(IEndpointRouteBuilder routes)
-            => routes.MapPost("/validated", (SampleRequest request) => Results.Ok(request.Name))
-                     .AddEndpointFilter<ValidationFilter<SampleRequest>>();
+        public void MapEndpoints(IEndpointRouteBuilder routes) =>
+            routes
+                .MapPost("/validated", (SampleRequest request) => Results.Ok(request.Name))
+                .AddEndpointFilter<ValidationFilter<SampleRequest>>();
     }
 
     internal sealed class SampleRequest
@@ -95,7 +91,10 @@ public sealed class EndpointDiscoveryTests
     // A custom IValidator<SampleRequest> for the ValidationFilter test
     internal sealed class SampleRequestValidator : IValidator<SampleRequest>
     {
-        public Task<IValidationResult> ValidateAsync(SampleRequest request, CancellationToken cancellationToken = default)
+        public Task<IValidationResult> ValidateAsync(
+            SampleRequest request,
+            CancellationToken cancellationToken = default
+        )
         {
             var errors = new List<Error>();
             if (string.IsNullOrWhiteSpace(request.Name))
@@ -103,9 +102,7 @@ public sealed class EndpointDiscoveryTests
             else if (request.Name.Length < 2)
                 errors.Add(Error.Validation("SAMPLE.NAME_TOO_SHORT", "Name must be at least 2 characters", "name"));
 
-            IValidationResult result = errors.Count == 0
-                ? ValidationResult.Valid
-                : ValidationResult.Invalid(errors);
+            IValidationResult result = errors.Count == 0 ? ValidationResult.Valid : ValidationResult.Invalid(errors);
             return Task.FromResult(result);
         }
     }
@@ -117,8 +114,8 @@ public sealed class EndpointDiscoveryTests
 
         public static readonly IValidationResult Valid = new ValidationResult { IsValid = true };
 
-        public static IValidationResult Invalid(IReadOnlyList<Error> errors)
-            => new ValidationResult { IsValid = false, Errors = errors };
+        public static IValidationResult Invalid(IReadOnlyList<Error> errors) =>
+            new ValidationResult { IsValid = false, Errors = errors };
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────
@@ -126,7 +123,8 @@ public sealed class EndpointDiscoveryTests
     private static TestServer CreateServer(
         Action<IServiceCollection>? configureServices = null,
         Action<IEndpointRouteBuilder>? configureRoutes = null,
-        Assembly[]? assemblies = null)
+        Assembly[]? assemblies = null
+    )
     {
         var builder = new WebHostBuilder()
             .UseEnvironment("Test")
@@ -239,7 +237,8 @@ public sealed class EndpointDiscoveryTests
             {
                 services.AddSingleton<IValidator<SampleRequest>, SampleRequestValidator>();
             },
-            assemblies: [typeof(ValidatedEndpoint).Assembly]);
+            assemblies: [typeof(ValidatedEndpoint).Assembly]
+        );
         var client = server.CreateClient();
 
         var response = await client.PostAsJsonAsync("/validated", new SampleRequest { Name = "Alice" });
@@ -258,7 +257,8 @@ public sealed class EndpointDiscoveryTests
             {
                 services.AddSingleton<IValidator<SampleRequest>, SampleRequestValidator>();
             },
-            assemblies: [typeof(ValidatedEndpoint).Assembly]);
+            assemblies: [typeof(ValidatedEndpoint).Assembly]
+        );
         var client = server.CreateClient();
 
         var response = await client.PostAsJsonAsync("/validated", new SampleRequest { Name = "" });
@@ -279,7 +279,8 @@ public sealed class EndpointDiscoveryTests
                 services.AddSingleton<IGreetingService, GreetingService>();
                 services.AddSingleton<DependencyEndpoint>();
             },
-            assemblies: [typeof(DependencyEndpoint).Assembly]);
+            assemblies: [typeof(DependencyEndpoint).Assembly]
+        );
         var client = server.CreateClient();
 
         var response = await client.GetAsync("/greet");

@@ -6,8 +6,9 @@ namespace MarcusPrado.Platform.DlqReprocessing.Store;
 /// </summary>
 public sealed class InMemoryDlqStore : IDlqStore
 {
-    private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, DlqMessage>> _store =
-        new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, DlqMessage>> _store = new(
+        StringComparer.Ordinal
+    );
 
     /// <inheritdoc />
     public Task<IReadOnlyList<DlqMessage>> GetAsync(string topic, CancellationToken ct = default)
@@ -77,7 +78,10 @@ public sealed class InMemoryDlqStore : IDlqStore
         ArgumentNullException.ThrowIfNull(message);
         ct.ThrowIfCancellationRequested();
 
-        var bucket = _store.GetOrAdd(message.Topic, _ => new ConcurrentDictionary<string, DlqMessage>(StringComparer.Ordinal));
+        var bucket = _store.GetOrAdd(
+            message.Topic,
+            _ => new ConcurrentDictionary<string, DlqMessage>(StringComparer.Ordinal)
+        );
         bucket[message.Id] = message;
 
         return Task.CompletedTask;

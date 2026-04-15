@@ -19,7 +19,8 @@ public static class QuartzExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddPlatformQuartz(
         this IServiceCollection services,
-        Action<QuartzOptions>? configure = null)
+        Action<QuartzOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

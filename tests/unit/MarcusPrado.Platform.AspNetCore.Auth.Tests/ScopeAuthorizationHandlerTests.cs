@@ -12,7 +12,8 @@ public sealed class ScopeAuthorizationHandlerTests : IDisposable
     {
         // scope claim is a single space-separated value per RFC 8693
         var token = JwtTokenFactory.CreateValidToken(
-            extraClaims: [new Claim("scope", $"{AuthTestServer.TestScope} other:scope")]);
+            extraClaims: [new Claim("scope", $"{AuthTestServer.TestScope} other:scope")]
+        );
 
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.ScopeRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -25,8 +26,7 @@ public sealed class ScopeAuthorizationHandlerTests : IDisposable
     [Fact]
     public async Task MissingScope_ShouldReturn_403()
     {
-        var token = JwtTokenFactory.CreateValidToken(
-            extraClaims: [new Claim("scope", "other:scope only:this")]);
+        var token = JwtTokenFactory.CreateValidToken(extraClaims: [new Claim("scope", "other:scope only:this")]);
 
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.ScopeRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

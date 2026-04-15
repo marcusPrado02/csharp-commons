@@ -18,7 +18,8 @@ public sealed class TracingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var operationName = typeof(TRequest).Name;
 

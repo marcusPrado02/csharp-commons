@@ -15,7 +15,12 @@ public sealed class EfUnitOfWorkTests : IDisposable
     [Fact]
     public async Task SaveChangesAsync_PersistsTrackedEntities()
     {
-        var msg = new OutboxMessage { EventType = "uow.test", Payload = "{}", Topic = "t" };
+        var msg = new OutboxMessage
+        {
+            EventType = "uow.test",
+            Payload = "{}",
+            Topic = "t",
+        };
         _ctx.OutboxMessages.Add(msg);
 
         await _uow.SaveChangesAsync();
@@ -27,7 +32,12 @@ public sealed class EfUnitOfWorkTests : IDisposable
     [Fact]
     public async Task CommitAsync_PersistsTrackedEntities()
     {
-        var msg = new OutboxMessage { EventType = "uow.commit", Payload = "{}", Topic = "t" };
+        var msg = new OutboxMessage
+        {
+            EventType = "uow.commit",
+            Payload = "{}",
+            Topic = "t",
+        };
         _ctx.OutboxMessages.Add(msg);
 
         // InMemory provider does not support real transactions, but CommitAsync still

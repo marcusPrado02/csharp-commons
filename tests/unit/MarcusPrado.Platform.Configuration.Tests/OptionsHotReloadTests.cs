@@ -15,8 +15,8 @@ public sealed class HotReloadOptionsModel
 
 public sealed class OptionsHotReloadTests
 {
-    private static ConfigurationChangeLogger CreateChangeLogger()
-        => new(NullLogger<ConfigurationChangeLogger>.Instance);
+    private static ConfigurationChangeLogger CreateChangeLogger() =>
+        new(NullLogger<ConfigurationChangeLogger>.Instance);
 
     [Fact]
     public void CurrentValue_ShouldReturnMonitorCurrentValue()
@@ -39,8 +39,9 @@ public sealed class OptionsHotReloadTests
         monitor.CurrentValue.Returns(options);
 
         Action<HotReloadOptionsModel, string?>? capturedMonitorCallback = null;
-        monitor.OnChange(Arg.Do<Action<HotReloadOptionsModel, string?>>(cb => capturedMonitorCallback = cb))
-               .Returns(Substitute.For<IDisposable>());
+        monitor
+            .OnChange(Arg.Do<Action<HotReloadOptionsModel, string?>>(cb => capturedMonitorCallback = cb))
+            .Returns(Substitute.For<IDisposable>());
 
         var hotReload = new OptionsHotReload<HotReloadOptionsModel>(monitor, CreateChangeLogger());
 

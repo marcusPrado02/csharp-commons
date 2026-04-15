@@ -17,10 +17,7 @@ public sealed class EventSourcedRepository<TState>
     /// <param name="eventStore">The event store used to persist and load domain events.</param>
     /// <param name="snapshotStore">The snapshot store used to persist and load state snapshots.</param>
     /// <param name="snapshotEvery">Number of events between automatic snapshots; defaults to 50.</param>
-    public EventSourcedRepository(
-        IEventStore eventStore,
-        ISnapshotStore<TState> snapshotStore,
-        int snapshotEvery = 50)
+    public EventSourcedRepository(IEventStore eventStore, ISnapshotStore<TState> snapshotStore, int snapshotEvery = 50)
     {
         _eventStore = eventStore;
         _snapshotStore = snapshotStore;
@@ -53,7 +50,12 @@ public sealed class EventSourcedRepository<TState>
     /// <param name="newEvents">The new domain events to append.</param>
     /// <param name="expectedVersion">The version the stream is expected to be at for optimistic concurrency.</param>
     /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
-    public async Task SaveAsync(string id, IEnumerable<IDomainEvent> newEvents, long expectedVersion, CancellationToken cancellationToken = default)
+    public async Task SaveAsync(
+        string id,
+        IEnumerable<IDomainEvent> newEvents,
+        long expectedVersion,
+        CancellationToken cancellationToken = default
+    )
     {
         await _eventStore.AppendAsync(id, newEvents, expectedVersion, cancellationToken);
         var version = await _eventStore.GetVersionAsync(id, cancellationToken);
@@ -61,7 +63,10 @@ public sealed class EventSourcedRepository<TState>
         if ((version + 1) % _snapshotEvery == 0)
         {
             var (state, _) = await LoadAsync(id, cancellationToken);
-            await _snapshotStore.SaveAsync(new EventSnapshot<TState>(id, version, state, DateTimeOffset.UtcNow), cancellationToken);
+            await _snapshotStore.SaveAsync(
+                new EventSnapshot<TState>(id, version, state, DateTimeOffset.UtcNow),
+                cancellationToken
+            );
         }
     }
 }

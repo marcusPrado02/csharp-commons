@@ -6,7 +6,8 @@ public static class MtlsExtensions
 
     public static IServiceCollection AddPlatformMtls(
         this IServiceCollection services,
-        Action<MtlsOptions>? configure = null)
+        Action<MtlsOptions>? configure = null
+    )
     {
         var opts = new MtlsOptions();
         configure?.Invoke(opts);
@@ -14,8 +15,9 @@ public static class MtlsExtensions
         services.AddSingleton<CertificateTenantResolver>();
         services.AddSingleton<CertificateRevocationChecker>();
 
-        services.AddAuthentication(SchemeName)
-                .AddScheme<MtlsAuthenticationOptions, MtlsAuthenticationHandler>(SchemeName, _ => { });
+        services
+            .AddAuthentication(SchemeName)
+            .AddScheme<MtlsAuthenticationOptions, MtlsAuthenticationHandler>(SchemeName, _ => { });
 
         return services;
     }

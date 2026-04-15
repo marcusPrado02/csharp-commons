@@ -13,22 +13,22 @@ public sealed class PlatformVerifySettings
     private static readonly Regex _guidPattern = new(
         @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
         RegexOptions.Compiled,
-        TimeSpan.FromSeconds(1));
+        TimeSpan.FromSeconds(1)
+    );
 
     // ISO 8601 DateTimeOffset: 2024-01-15T12:34:56.789+00:00 or 2024-01-15T12:34:56Z
     private static readonly Regex _dateTimeOffsetPattern = new(
         @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})",
         RegexOptions.Compiled,
-        TimeSpan.FromSeconds(1));
+        TimeSpan.FromSeconds(1)
+    );
 
     private readonly List<Func<string, string>> _scrubbers = [];
 
     /// <summary>
     /// Initialises a new <see cref="PlatformVerifySettings"/> instance with no scrubbers registered.
     /// </summary>
-    public PlatformVerifySettings()
-    {
-    }
+    public PlatformVerifySettings() { }
 
     /// <summary>
     /// Gets the read-only list of scrubber delegates registered on this instance.
@@ -71,11 +71,15 @@ public sealed class PlatformVerifySettings
         var correlationPattern = new Regex(
             @"(?i)(?:x-correlation-(?:id|ID)|correlationid|correlation[-_]id)["":\s=]+([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})",
             RegexOptions.Compiled,
-            TimeSpan.FromSeconds(1));
+            TimeSpan.FromSeconds(1)
+        );
 
-        _scrubbers.Add(input => correlationPattern.Replace(
-            input,
-            m => m.Value.Replace(m.Groups[1].Value, "«CorrelationId»", StringComparison.Ordinal)));
+        _scrubbers.Add(input =>
+            correlationPattern.Replace(
+                input,
+                m => m.Value.Replace(m.Groups[1].Value, "«CorrelationId»", StringComparison.Ordinal)
+            )
+        );
 
         return this;
     }
@@ -111,9 +115,6 @@ public sealed class PlatformVerifySettings
     /// <returns>A pre-configured <see cref="PlatformVerifySettings"/> instance.</returns>
     public static PlatformVerifySettings CreateDefault()
     {
-        return new PlatformVerifySettings()
-            .AddCorrelationIdScrubber()
-            .AddGuidScrubber()
-            .AddDateTimeOffsetScrubber();
+        return new PlatformVerifySettings().AddCorrelationIdScrubber().AddGuidScrubber().AddDateTimeOffsetScrubber();
     }
 }

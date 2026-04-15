@@ -7,7 +7,5 @@ public sealed class ConflictException : AppException
 {
     /// <summary>Initializes a <see cref="ConflictException"/>.</summary>
     public ConflictException(string code, string message)
-        : base(Error.Conflict(code, message))
-    {
-    }
+        : base(Error.Conflict(code, message)) { }
 }

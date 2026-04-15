@@ -14,8 +14,7 @@ public sealed class FakeEventBus : IEventBus
 
     /// <summary>Returns all published events of type <typeparamref name="TEvent"/>.</summary>
     public IEnumerable<TEvent> EventsOf<TEvent>()
-        where TEvent : class
-        => _events.OfType<TEvent>();
+        where TEvent : class => _events.OfType<TEvent>();
 
     /// <summary>Returns the number of published events.</summary>
     public int Count => _events.Count;

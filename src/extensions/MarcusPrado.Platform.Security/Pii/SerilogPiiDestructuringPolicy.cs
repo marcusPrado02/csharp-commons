@@ -5,7 +5,11 @@ namespace MarcusPrado.Platform.Security.Pii;
 
 public sealed class SerilogPiiDestructuringPolicy : IDestructuringPolicy
 {
-    public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory, out LogEventPropertyValue result)
+    public bool TryDestructure(
+        object value,
+        ILogEventPropertyValueFactory propertyValueFactory,
+        out LogEventPropertyValue result
+    )
     {
         var type = value.GetType();
         var piiProps = PiiClassifier.GetPiiProperties(type);
@@ -17,8 +21,10 @@ public sealed class SerilogPiiDestructuringPolicy : IDestructuringPolicy
         }
 
         var redacted = PiiClassifier.Redact(value);
-        var properties = redacted.Select(kv =>
-            new LogEventProperty(kv.Key, propertyValueFactory.CreatePropertyValue(kv.Value)));
+        var properties = redacted.Select(kv => new LogEventProperty(
+            kv.Key,
+            propertyValueFactory.CreatePropertyValue(kv.Value)
+        ));
 
         result = new StructureValue(properties);
         return true;

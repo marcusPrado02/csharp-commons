@@ -38,13 +38,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task TenantWhitelist_EnablesMatchingTenant()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "twl",
-            Enabled = true,
-            Strategy = RolloutStrategy.TenantWhitelist,
-            TenantWhitelist = new HashSet<string> { "tenant-1" },
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "twl",
+                Enabled = true,
+                Strategy = RolloutStrategy.TenantWhitelist,
+                TenantWhitelist = new HashSet<string> { "tenant-1" },
+            }
+        );
 
         var ctx = new FeatureFlagContext { TenantId = "tenant-1" };
         Assert.True(await _provider.IsEnabledAsync("twl", ctx));
@@ -53,13 +55,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task TenantWhitelist_DisablesNonMatchingTenant()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "twl2",
-            Enabled = true,
-            Strategy = RolloutStrategy.TenantWhitelist,
-            TenantWhitelist = new HashSet<string> { "tenant-1" },
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "twl2",
+                Enabled = true,
+                Strategy = RolloutStrategy.TenantWhitelist,
+                TenantWhitelist = new HashSet<string> { "tenant-1" },
+            }
+        );
 
         var ctx = new FeatureFlagContext { TenantId = "tenant-99" };
         Assert.False(await _provider.IsEnabledAsync("twl2", ctx));
@@ -68,13 +72,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task UserWhitelist_EnablesMatchingUser()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "uwl",
-            Enabled = true,
-            Strategy = RolloutStrategy.UserWhitelist,
-            UserWhitelist = new HashSet<string> { "user-abc" },
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "uwl",
+                Enabled = true,
+                Strategy = RolloutStrategy.UserWhitelist,
+                UserWhitelist = new HashSet<string> { "user-abc" },
+            }
+        );
 
         var ctx = new FeatureFlagContext { UserId = "user-abc" };
         Assert.True(await _provider.IsEnabledAsync("uwl", ctx));
@@ -83,13 +89,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task PercentageZero_AlwaysDisabled()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "pct0",
-            Enabled = true,
-            Strategy = RolloutStrategy.Percentage,
-            Percentage = 0,
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "pct0",
+                Enabled = true,
+                Strategy = RolloutStrategy.Percentage,
+                Percentage = 0,
+            }
+        );
 
         Assert.False(await _provider.IsEnabledAsync("pct0", _ctx));
     }
@@ -97,13 +105,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task PercentageFull_AlwaysEnabled()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "pct100",
-            Enabled = true,
-            Strategy = RolloutStrategy.Percentage,
-            Percentage = 100,
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "pct100",
+                Enabled = true,
+                Strategy = RolloutStrategy.Percentage,
+                Percentage = 100,
+            }
+        );
 
         Assert.True(await _provider.IsEnabledAsync("pct100", _ctx));
     }
@@ -120,13 +130,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     [Fact]
     public async Task UserWhitelist_DisablesNonMatchingUser()
     {
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "uwl2",
-            Enabled = true,
-            Strategy = RolloutStrategy.UserWhitelist,
-            UserWhitelist = new HashSet<string> { "user-abc" },
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "uwl2",
+                Enabled = true,
+                Strategy = RolloutStrategy.UserWhitelist,
+                UserWhitelist = new HashSet<string> { "user-abc" },
+            }
+        );
 
         var ctx = new FeatureFlagContext { UserId = "user-xyz" };
         Assert.False(await _provider.IsEnabledAsync("uwl2", ctx));
@@ -136,13 +148,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     public async Task CanaryStrategy_EnablesUserInBucket()
     {
         // "canary-flag":"user-0" => deterministic bucket 5, within 20%
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "canary-flag",
-            Enabled = true,
-            Strategy = RolloutStrategy.Canary,
-            Percentage = 20,
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "canary-flag",
+                Enabled = true,
+                Strategy = RolloutStrategy.Canary,
+                Percentage = 20,
+            }
+        );
 
         var ctx = new FeatureFlagContext { UserId = "user-0" };
         Assert.True(await _provider.IsEnabledAsync("canary-flag", ctx));
@@ -152,13 +166,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     public async Task CanaryStrategy_DisablesUserOutsideBucket()
     {
         // "canary-flag":"user-10" => deterministic bucket 94, outside 20%
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "canary-flag",
-            Enabled = true,
-            Strategy = RolloutStrategy.Canary,
-            Percentage = 20,
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "canary-flag",
+                Enabled = true,
+                Strategy = RolloutStrategy.Canary,
+                Percentage = 20,
+            }
+        );
 
         var ctx = new FeatureFlagContext { UserId = "user-10" };
         Assert.False(await _provider.IsEnabledAsync("canary-flag", ctx));
@@ -169,13 +185,15 @@ public sealed class InMemoryFeatureFlagProviderTests
     {
         _provider.SetFlag(new FeatureFlag { Key = "flag-a", Enabled = true });
         _provider.SetFlag(new FeatureFlag { Key = "flag-b", Enabled = false });
-        _provider.SetFlag(new FeatureFlag
-        {
-            Key = "flag-c",
-            Enabled = true,
-            Strategy = RolloutStrategy.Percentage,
-            Percentage = 100,
-        });
+        _provider.SetFlag(
+            new FeatureFlag
+            {
+                Key = "flag-c",
+                Enabled = true,
+                Strategy = RolloutStrategy.Percentage,
+                Percentage = 100,
+            }
+        );
 
         Assert.True(await _provider.IsEnabledAsync("flag-a", _ctx));
         Assert.False(await _provider.IsEnabledAsync("flag-b", _ctx));

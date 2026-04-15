@@ -21,13 +21,15 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
     public async Task<Result<WorkflowInstance>> StartWorkflowAsync(
         string definitionId,
         object? initialContext = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         if (!_definitions.TryGetValue(definitionId, out var def))
         {
             return Error.NotFound(
                 "WORKFLOW.DEFINITION_NOT_FOUND",
-                $"Workflow definition '{definitionId}' was not found.");
+                $"Workflow definition '{definitionId}' was not found."
+            );
         }
 
         var instance = new WorkflowInstance(
@@ -39,7 +41,8 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
             StartedAt: DateTimeOffset.UtcNow,
             CompletedAt: null,
             CancellationReason: null,
-            FailureReason: null);
+            FailureReason: null
+        );
 
         var completedSteps = new List<string>();
         var ctx = initialContext;
@@ -69,11 +72,7 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
 #pragma warning restore CA1031
         }
 
-        instance = instance with
-        {
-            Status = WorkflowStatus.Completed,
-            CompletedAt = DateTimeOffset.UtcNow,
-        };
+        instance = instance with { Status = WorkflowStatus.Completed, CompletedAt = DateTimeOffset.UtcNow };
         _instances[instance.Id] = instance;
         return instance;
     }
@@ -83,35 +82,27 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
         Guid workflowId,
         string eventName,
         object? eventData = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         if (!_instances.TryGetValue(workflowId, out var instance))
         {
             return Task.FromResult<Result<WorkflowInstance>>(
-                Error.NotFound(
-                    "WORKFLOW.INSTANCE_NOT_FOUND",
-                    $"Workflow instance '{workflowId}' was not found."));
+                Error.NotFound("WORKFLOW.INSTANCE_NOT_FOUND", $"Workflow instance '{workflowId}' was not found.")
+            );
         }
 
-        var updated = instance with
-        {
-            Status = WorkflowStatus.Running,
-            Context = eventData ?? instance.Context,
-        };
+        var updated = instance with { Status = WorkflowStatus.Running, Context = eventData ?? instance.Context };
         _instances[workflowId] = updated;
         return Task.FromResult<Result<WorkflowInstance>>(updated);
     }
 
     /// <inheritdoc />
-    public async Task<Result<WorkflowInstance>> CompensateAsync(
-        Guid workflowId,
-        CancellationToken ct = default)
+    public async Task<Result<WorkflowInstance>> CompensateAsync(Guid workflowId, CancellationToken ct = default)
     {
         if (!_instances.TryGetValue(workflowId, out var instance))
         {
-            return Error.NotFound(
-                "WORKFLOW.INSTANCE_NOT_FOUND",
-                $"Workflow instance '{workflowId}' was not found.");
+            return Error.NotFound("WORKFLOW.INSTANCE_NOT_FOUND", $"Workflow instance '{workflowId}' was not found.");
         }
 
         if (!_definitions.TryGetValue(instance.DefinitionId, out var def))
@@ -140,11 +131,7 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
             }
         }
 
-        instance = instance with
-        {
-            Status = WorkflowStatus.Compensated,
-            CompletedAt = DateTimeOffset.UtcNow,
-        };
+        instance = instance with { Status = WorkflowStatus.Compensated, CompletedAt = DateTimeOffset.UtcNow };
         _instances[workflowId] = instance;
         return instance;
     }
@@ -153,14 +140,14 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
     public Task<Result<WorkflowInstance>> CancelAsync(
         Guid workflowId,
         string reason = "",
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         if (!_instances.TryGetValue(workflowId, out var instance))
         {
             return Task.FromResult<Result<WorkflowInstance>>(
-                Error.NotFound(
-                    "WORKFLOW.INSTANCE_NOT_FOUND",
-                    $"Workflow instance '{workflowId}' was not found."));
+                Error.NotFound("WORKFLOW.INSTANCE_NOT_FOUND", $"Workflow instance '{workflowId}' was not found.")
+            );
         }
 
         var cancelled = instance with
@@ -174,6 +161,6 @@ public sealed class DefaultWorkflowEngine : IWorkflowEngine
     }
 
     /// <inheritdoc />
-    public Task<WorkflowInstance?> GetInstanceAsync(Guid workflowId, CancellationToken ct = default)
-        => Task.FromResult(_instances.TryGetValue(workflowId, out var i) ? i : null);
+    public Task<WorkflowInstance?> GetInstanceAsync(Guid workflowId, CancellationToken ct = default) =>
+        Task.FromResult(_instances.TryGetValue(workflowId, out var i) ? i : null);
 }

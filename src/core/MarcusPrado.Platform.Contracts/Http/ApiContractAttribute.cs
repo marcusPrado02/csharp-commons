@@ -17,5 +17,6 @@ namespace MarcusPrado.Platform.Contracts.Http;
 [AttributeUsage(
     AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct,
     Inherited = true,
-    AllowMultiple = false)]
+    AllowMultiple = false
+)]
 public sealed class ApiContractAttribute : Attribute { }

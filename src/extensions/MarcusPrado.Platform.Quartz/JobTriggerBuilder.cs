@@ -70,6 +70,5 @@ public sealed class JobTriggerBuilder
     /// Builds and returns the configured <see cref="JobTrigger"/>.
     /// </summary>
     /// <returns>A new <see cref="JobTrigger"/> based on the current builder state.</returns>
-    public JobTrigger Build() =>
-        new(_cronExpression, _repeatInterval, _startAt, _repeatCount);
+    public JobTrigger Build() => new(_cronExpression, _repeatInterval, _startAt, _repeatCount);
 }

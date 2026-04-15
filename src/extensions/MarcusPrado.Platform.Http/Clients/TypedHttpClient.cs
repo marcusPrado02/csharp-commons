@@ -16,8 +16,7 @@ public abstract class TypedHttpClient
 
     private readonly ILogger _logger;
 
-    private static readonly JsonSerializerOptions _jsonOpts =
-        new(JsonSerializerDefaults.Web);
+    private static readonly JsonSerializerOptions _jsonOpts = new(JsonSerializerDefaults.Web);
 
     /// <summary>Initialises with the factory-provided client and a logger.</summary>
     protected TypedHttpClient(HttpClient http, ILogger logger)
@@ -32,9 +31,7 @@ public abstract class TypedHttpClient
     /// Sends a GET request and deserialises the JSON response body.
     /// Throws on non-success status codes.
     /// </summary>
-    protected async Task<T?> GetAsync<T>(
-        string requestUri,
-        CancellationToken ct = default)
+    protected async Task<T?> GetAsync<T>(string requestUri, CancellationToken ct = default)
     {
         TypedHttpClientLog.OutgoingRequest(_logger, "GET", requestUri);
         using var response = await Http.GetAsync(requestUri, ct);
@@ -49,7 +46,8 @@ public abstract class TypedHttpClient
     protected async Task<TResponse?> PostAsync<TRequest, TResponse>(
         string requestUri,
         TRequest body,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         TypedHttpClientLog.OutgoingRequest(_logger, "POST", requestUri);
         using var response = await Http.PostAsJsonAsync(requestUri, body, _jsonOpts, ct);

@@ -26,11 +26,7 @@ public sealed class RetryPolicyTests
     public async Task ExecuteAsync_SuccessAfterTwoFailures_ReturnsResult()
     {
         var attempts = 0;
-        var policy = new RetryPolicy(new RetryOptions
-        {
-            MaxRetries = 3,
-            BaseDelay = TimeSpan.FromMilliseconds(1),
-        });
+        var policy = new RetryPolicy(new RetryOptions { MaxRetries = 3, BaseDelay = TimeSpan.FromMilliseconds(1) });
 
         var result = await policy.ExecuteAsync(_ =>
         {
@@ -47,14 +43,9 @@ public sealed class RetryPolicyTests
     [Fact]
     public async Task ExecuteAsync_ExceedsMaxRetries_ThrowsAggregateException()
     {
-        var policy = new RetryPolicy(new RetryOptions
-        {
-            MaxRetries = 2,
-            BaseDelay = TimeSpan.FromMilliseconds(1),
-        });
+        var policy = new RetryPolicy(new RetryOptions { MaxRetries = 2, BaseDelay = TimeSpan.FromMilliseconds(1) });
 
-        var act = async () => await policy.ExecuteAsync<int>(
-            _ => throw new InvalidOperationException("fail"));
+        var act = async () => await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException("fail"));
 
         await act.Should().ThrowAsync<AggregateException>();
     }
@@ -63,19 +54,22 @@ public sealed class RetryPolicyTests
     public async Task ExecuteAsync_ShouldRetryReturnsFalse_DoesNotRetry()
     {
         var attempts = 0;
-        var policy = new RetryPolicy(new RetryOptions
-        {
-            MaxRetries = 5,
-            BaseDelay = TimeSpan.FromMilliseconds(1),
-            ShouldRetry = _ => false,
-        });
+        var policy = new RetryPolicy(
+            new RetryOptions
+            {
+                MaxRetries = 5,
+                BaseDelay = TimeSpan.FromMilliseconds(1),
+                ShouldRetry = _ => false,
+            }
+        );
 
         await Assert.ThrowsAsync<AggregateException>(async () =>
             await policy.ExecuteAsync<int>(_ =>
             {
                 attempts++;
                 throw new InvalidOperationException("fail");
-            }));
+            })
+        );
 
         attempts.Should().Be(1);
     }
@@ -87,8 +81,7 @@ public sealed class RetryPolicyTests
         using var cts = new CancellationTokenSource();
         await cts.CancelAsync();
 
-        var act = async () => await policy.ExecuteAsync<int>(
-            ct => Task.FromCanceled<int>(ct), cts.Token);
+        var act = async () => await policy.ExecuteAsync<int>(ct => Task.FromCanceled<int>(ct), cts.Token);
 
         await act.Should().ThrowAsync<OperationCanceledException>();
     }
@@ -106,17 +99,18 @@ public sealed class CircuitBreakerPolicyTests
     [Fact]
     public async Task ExecuteAsync_AfterFailureThreshold_OpensCircuit()
     {
-        var policy = new CircuitBreakerPolicy(new CircuitBreakerOptions
-        {
-            FailureThreshold = 3,
-        });
+        var policy = new CircuitBreakerPolicy(new CircuitBreakerOptions { FailureThreshold = 3 });
 
         for (var i = 0; i < 3; i++)
         {
 #pragma warning disable CA1031
             try
-            { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
-            catch { /* swallow */ }
+            {
+                await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException());
+            }
+            catch
+            { /* swallow */
+            }
 #pragma warning restore CA1031
         }
 
@@ -126,16 +120,18 @@ public sealed class CircuitBreakerPolicyTests
     [Fact]
     public async Task ExecuteAsync_WhenOpen_ThrowsCircuitBreakerOpenException()
     {
-        var policy = new CircuitBreakerPolicy(new CircuitBreakerOptions
-        {
-            FailureThreshold = 1,
-            BreakDuration = TimeSpan.FromHours(1),
-        });
+        var policy = new CircuitBreakerPolicy(
+            new CircuitBreakerOptions { FailureThreshold = 1, BreakDuration = TimeSpan.FromHours(1) }
+        );
 
 #pragma warning disable CA1031
         try
-        { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
-        catch { /* trip the breaker */ }
+        {
+            await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException());
+        }
+        catch
+        { /* trip the breaker */
+        }
 #pragma warning restore CA1031
 
         var act = async () => await policy.ExecuteAsync(_ => Task.FromResult(1));
@@ -148,10 +144,7 @@ public sealed class HedgingPolicyTests
     [Fact]
     public async Task ExecuteAsync_FastPrimary_ReturnsPrimaryResult()
     {
-        var policy = new HedgingPolicy(new HedgingOptions
-        {
-            HedgingDelay = TimeSpan.FromSeconds(10),
-        });
+        var policy = new HedgingPolicy(new HedgingOptions { HedgingDelay = TimeSpan.FromSeconds(10) });
 
         var result = await policy.ExecuteAsync(_ => Task.FromResult(7));
 
@@ -161,17 +154,14 @@ public sealed class HedgingPolicyTests
     [Fact]
     public async Task ExecuteAsync_SlowPrimary_ReturnsHedgedResult()
     {
-        var policy = new HedgingPolicy(new HedgingOptions
-        {
-            HedgingDelay = TimeSpan.FromMilliseconds(10),
-        });
+        var policy = new HedgingPolicy(new HedgingOptions { HedgingDelay = TimeSpan.FromMilliseconds(10) });
 
         var callCount = 0;
         var result = await policy.ExecuteAsync(async ct =>
         {
             var n = Interlocked.Increment(ref callCount);
             if (n == 1)
-                await Task.Delay(500, ct);   // primary is slow
+                await Task.Delay(500, ct); // primary is slow
             return n;
         });
 
@@ -196,8 +186,12 @@ public sealed class TimeoutPolicyTests
     {
         var policy = new TimeoutPolicy(TimeSpan.FromMilliseconds(50));
 
-        var act = async () => await policy.ExecuteAsync(
-            async ct => { await Task.Delay(5000, ct); return 0; });
+        var act = async () =>
+            await policy.ExecuteAsync(async ct =>
+            {
+                await Task.Delay(5000, ct);
+                return 0;
+            });
 
         await act.Should().ThrowAsync<TimeoutException>();
     }
@@ -280,12 +274,9 @@ public sealed class ResilientExecutorTests
     public async Task ExecuteAsync_WithRetry_RetriesOnFailure()
     {
         var attempts = 0;
-        using var executor = new ResilientExecutor()
-            .WithRetry(new RetryOptions
-            {
-                MaxRetries = 2,
-                BaseDelay = TimeSpan.FromMilliseconds(1),
-            });
+        using var executor = new ResilientExecutor().WithRetry(
+            new RetryOptions { MaxRetries = 2, BaseDelay = TimeSpan.FromMilliseconds(1) }
+        );
 
         var result = await executor.ExecuteAsync(_ =>
         {
@@ -301,11 +292,14 @@ public sealed class ResilientExecutorTests
     [Fact]
     public async Task ExecuteAsync_WithTimeout_RespectsTimeout()
     {
-        using var executor = new ResilientExecutor()
-            .WithTimeout(TimeSpan.FromMilliseconds(50));
+        using var executor = new ResilientExecutor().WithTimeout(TimeSpan.FromMilliseconds(50));
 
-        var act = async () => await executor.ExecuteAsync(
-            async ct => { await Task.Delay(5000, ct); return 0; });
+        var act = async () =>
+            await executor.ExecuteAsync(async ct =>
+            {
+                await Task.Delay(5000, ct);
+                return 0;
+            });
 
         await act.Should().ThrowAsync<TimeoutException>();
     }
@@ -333,8 +327,7 @@ public sealed class BackoffTests
 
         for (var i = 0; i < 50; i++)
         {
-            var delay = DecorrelatedJitterBackoff.Calculate(
-                TimeSpan.Zero, baseDelay, maxDelay);
+            var delay = DecorrelatedJitterBackoff.Calculate(TimeSpan.Zero, baseDelay, maxDelay);
 
             delay.Should().BeGreaterOrEqualTo(baseDelay);
             delay.Should().BeLessOrEqualTo(maxDelay);

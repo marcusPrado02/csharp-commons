@@ -11,10 +11,10 @@ public static class DapperExtensions
     /// </summary>
     public static IServiceCollection AddDapperRepository(
         this IServiceCollection services,
-        Func<IServiceProvider, System.Data.IDbConnection> connectionFactory)
+        Func<IServiceProvider, System.Data.IDbConnection> connectionFactory
+    )
     {
-        services.AddScoped<IDapperRepository>(sp =>
-            new DapperRepository(() => connectionFactory(sp)));
+        services.AddScoped<IDapperRepository>(sp => new DapperRepository(() => connectionFactory(sp)));
         return services;
     }
 }

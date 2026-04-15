@@ -7,7 +7,12 @@ public interface IRestoreService
     Task<Result> RestoreAsync(BackupEntry entry, string targetPath, CancellationToken ct = default);
 
     /// <summary>Restores the most recent backup taken at or before <paramref name="pointInTime"/>.</summary>
-    Task<Result> RestorePointInTimeAsync(string backupDirectory, DateTimeOffset pointInTime, string targetPath, CancellationToken ct = default);
+    Task<Result> RestorePointInTimeAsync(
+        string backupDirectory,
+        DateTimeOffset pointInTime,
+        string targetPath,
+        CancellationToken ct = default
+    );
 
     /// <summary>Validates that a backup can be restored (checksum + entry count).</summary>
     Task<Result<RestoreValidationResult>> ValidateRestoreAsync(BackupEntry entry, CancellationToken ct = default);

@@ -25,14 +25,10 @@ public class PipelineBenchmark
 
     private interface IPipelineBehavior<TRequest, TResponse>
     {
-        Task<TResponse> HandleAsync(
-            TRequest request,
-            RequestHandlerDelegate<TResponse> next,
-            CancellationToken ct);
+        Task<TResponse> HandleAsync(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken ct);
     }
 
-    private sealed class NoOpBehavior<TRequest, TResponse>
-        : IPipelineBehavior<TRequest, TResponse>
+    private sealed class NoOpBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly string _name;
 
@@ -41,8 +37,8 @@ public class PipelineBenchmark
         public Task<TResponse> HandleAsync(
             TRequest request,
             RequestHandlerDelegate<TResponse> next,
-            CancellationToken ct) =>
-            next(); // pure pass-through, no alloc beyond the delegate call
+            CancellationToken ct
+        ) => next(); // pure pass-through, no alloc beyond the delegate call
     }
 
     // ── Pipeline builder ─────────────────────────────────────────────────────
@@ -52,7 +48,8 @@ public class PipelineBenchmark
     private static Task<int> BuildAndRunPipeline(
         SampleCommand command,
         int behaviorCount,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         // Terminal handler
         RequestHandlerDelegate<int> handler = () => Task.FromResult(command.Value * 2);

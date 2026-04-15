@@ -20,13 +20,14 @@ public sealed class SqsHealthProbe : IHealthCheck
     /// <inheritdoc/>
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         try
         {
-            await _client.ListQueuesAsync(
-                new ListQueuesRequest { MaxResults = 1 },
-                cancellationToken).ConfigureAwait(false);
+            await _client
+                .ListQueuesAsync(new ListQueuesRequest { MaxResults = 1 }, cancellationToken)
+                .ConfigureAwait(false);
 
             return HealthCheckResult.Healthy("AWS SQS is reachable.");
         }

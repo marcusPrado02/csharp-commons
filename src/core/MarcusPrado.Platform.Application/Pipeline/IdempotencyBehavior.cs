@@ -29,7 +29,8 @@ public sealed class IdempotencyBehavior<TRequest, TResponse> : IPipelineBehavior
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (_store is null)
         {
@@ -46,9 +47,7 @@ public sealed class IdempotencyBehavior<TRequest, TResponse> : IPipelineBehavior
             return await next(cancellationToken);
         }
 
-        var key = request is IHaveIdempotencyKey keyed
-            ? keyed.IdempotencyKey
-            : BuildHashKey(request);
+        var key = request is IHaveIdempotencyKey keyed ? keyed.IdempotencyKey : BuildHashKey(request);
 
         var (found, serialized) = await _store.TryGetAsync(key, cancellationToken);
 
@@ -133,7 +132,8 @@ public sealed class IdempotencyBehavior<TRequest, TResponse> : IPipelineBehavior
                     m.Name == "Failure"
                     && m.IsGenericMethod
                     && m.GetParameters() is { Length: 1 } ps
-                    && ps[0].ParameterType == typeof(Error))
+                    && ps[0].ParameterType == typeof(Error)
+                )
                 .MakeGenericMethod(valueType);
             return (TResponse)failureMethod.Invoke(null, new object[] { error })!;
         }
@@ -142,8 +142,7 @@ public sealed class IdempotencyBehavior<TRequest, TResponse> : IPipelineBehavior
     private static string BuildHashKey(TRequest request)
     {
         var json = JsonSerializer.Serialize(request);
-        var hash = System.Security.Cryptography.SHA256.HashData(
-            System.Text.Encoding.UTF8.GetBytes(json));
+        var hash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(json));
         return $"{typeof(TRequest).FullName}:{Convert.ToHexString(hash)}";
     }
 }

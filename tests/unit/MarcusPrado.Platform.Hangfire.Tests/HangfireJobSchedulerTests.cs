@@ -20,46 +20,32 @@ public sealed class HangfireJobSchedulerTests
     {
         _jobClient = Substitute.For<IBackgroundJobClient>();
         _recurringJobManager = Substitute.For<IRecurringJobManager>();
-        _sut = new HangfireJobScheduler(
-            _jobClient,
-            _recurringJobManager,
-            NullLogger<HangfireJobScheduler>.Instance);
+        _sut = new HangfireJobScheduler(_jobClient, _recurringJobManager, NullLogger<HangfireJobScheduler>.Instance);
     }
 
     [Fact]
     public void Constructor_NullJobClient_ThrowsArgumentNullException()
     {
-        var act = () => new HangfireJobScheduler(
-            null!,
-            _recurringJobManager,
-            NullLogger<HangfireJobScheduler>.Instance);
+        var act = () =>
+            new HangfireJobScheduler(null!, _recurringJobManager, NullLogger<HangfireJobScheduler>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("jobClient");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("jobClient");
     }
 
     [Fact]
     public void Constructor_NullRecurringJobManager_ThrowsArgumentNullException()
     {
-        var act = () => new HangfireJobScheduler(
-            _jobClient,
-            null!,
-            NullLogger<HangfireJobScheduler>.Instance);
+        var act = () => new HangfireJobScheduler(_jobClient, null!, NullLogger<HangfireJobScheduler>.Instance);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("recurringJobManager");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("recurringJobManager");
     }
 
     [Fact]
     public void Constructor_NullLogger_ThrowsArgumentNullException()
     {
-        var act = () => new HangfireJobScheduler(
-            _jobClient,
-            _recurringJobManager,
-            null!);
+        var act = () => new HangfireJobScheduler(_jobClient, _recurringJobManager, null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("logger");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("logger");
     }
 
     [Fact]
@@ -67,30 +53,26 @@ public sealed class HangfireJobSchedulerTests
     {
         // IBackgroundJobClient.Enqueue<T> is an extension method that calls .Create(job, state).
         // We verify the underlying Create() is called with a job for SampleJob.
-        _jobClient.Create(Arg.Any<Job>(), Arg.Any<IState>())
-            .Returns("job-123");
+        _jobClient.Create(Arg.Any<Job>(), Arg.Any<IState>()).Returns("job-123");
 
         var result = _sut.Enqueue<SampleJob>();
 
         result.Should().Be("job-123");
-        _jobClient.Received(1).Create(
-            Arg.Is<Job>(j => j.Type == typeof(SampleJob)),
-            Arg.Any<IState>());
+        _jobClient.Received(1).Create(Arg.Is<Job>(j => j.Type == typeof(SampleJob)), Arg.Any<IState>());
     }
 
     [Fact]
     public void Schedule_CallsBackgroundJobClientCreate()
     {
         var delay = TimeSpan.FromMinutes(5);
-        _jobClient.Create(Arg.Any<Job>(), Arg.Any<IState>())
-            .Returns("job-delayed");
+        _jobClient.Create(Arg.Any<Job>(), Arg.Any<IState>()).Returns("job-delayed");
 
         var result = _sut.Schedule<SampleJob>(delay);
 
         result.Should().Be("job-delayed");
-        _jobClient.Received(1).Create(
-            Arg.Is<Job>(j => j.Type == typeof(SampleJob)),
-            Arg.Is<IState>(s => s is ScheduledState));
+        _jobClient
+            .Received(1)
+            .Create(Arg.Is<Job>(j => j.Type == typeof(SampleJob)), Arg.Is<IState>(s => s is ScheduledState));
     }
 
     [Fact]
@@ -99,11 +81,14 @@ public sealed class HangfireJobSchedulerTests
         // RecurringJobManagerExtensions.AddOrUpdate<T> delegates to IRecurringJobManager.AddOrUpdate(id, job, cron, opts)
         _sut.AddOrUpdateRecurring<SampleJob>("my-job", "*/5 * * * *");
 
-        _recurringJobManager.Received(1).AddOrUpdate(
-            "my-job",
-            Arg.Is<Job>(j => j.Type == typeof(SampleJob)),
-            "*/5 * * * *",
-            Arg.Any<RecurringJobOptions>());
+        _recurringJobManager
+            .Received(1)
+            .AddOrUpdate(
+                "my-job",
+                Arg.Is<Job>(j => j.Type == typeof(SampleJob)),
+                "*/5 * * * *",
+                Arg.Any<RecurringJobOptions>()
+            );
     }
 
     [Fact]

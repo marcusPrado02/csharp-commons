@@ -26,7 +26,8 @@ public sealed class DomainEventRouter
     public DomainEventRouter(
         IServiceProvider serviceProvider,
         EventHandlerPipeline pipeline,
-        ILogger<DomainEventRouter> logger)
+        ILogger<DomainEventRouter> logger
+    )
     {
         ArgumentNullException.ThrowIfNull(serviceProvider);
         ArgumentNullException.ThrowIfNull(pipeline);
@@ -59,7 +60,8 @@ public sealed class DomainEventRouter
                     LogLevel.Debug,
                     "No handlers registered for domain event {EventType} ({EventId})",
                     eventType.Name,
-                    domainEvent.EventId);
+                    domainEvent.EventId
+                );
             }
 
             return;
@@ -72,7 +74,8 @@ public sealed class DomainEventRouter
                 "Routing domain event {EventType} ({EventId}) to {HandlerCount} handler(s)",
                 eventType.Name,
                 domainEvent.EventId,
-                handlers.Count);
+                handlers.Count
+            );
         }
 
         var handleMethod = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))!;
@@ -82,10 +85,13 @@ public sealed class DomainEventRouter
             var localHandler = handler;
             var localCt = cancellationToken;
 
-            await _pipeline.ExecuteAsync(
-                domainEvent,
-                () => (Task)handleMethod.Invoke(localHandler, [domainEvent, localCt])!,
-                cancellationToken).ConfigureAwait(false);
+            await _pipeline
+                .ExecuteAsync(
+                    domainEvent,
+                    () => (Task)handleMethod.Invoke(localHandler, [domainEvent, localCt])!,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
         }
     }
 }

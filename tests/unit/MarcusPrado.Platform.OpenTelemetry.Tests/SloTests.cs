@@ -7,8 +7,7 @@ namespace MarcusPrado.Platform.OpenTelemetry.Tests;
 /// <summary>Unit tests for SLO / Error Budget tracking.</summary>
 public sealed class SloTests
 {
-    private static readonly ServiceLevelObjective ThreeNinesSlo =
-        new("api-availability", 0.999, TimeSpan.FromDays(30));
+    private static readonly ServiceLevelObjective ThreeNinesSlo = new("api-availability", 0.999, TimeSpan.FromDays(30));
 
     // ── ErrorBudgetCalculator ─────────────────────────────────────────────────
 
@@ -121,9 +120,7 @@ public sealed class SloTests
     public void AddPlatformSlo_RegistersSloMetricsCollector()
     {
         var snapshot = new SloSnapshot(TotalRequests: 1000, FailedRequests: 1);
-        var sp = new ServiceCollection()
-            .AddPlatformSlo(ThreeNinesSlo, () => snapshot)
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddPlatformSlo(ThreeNinesSlo, () => snapshot).BuildServiceProvider();
 
         using var collector = sp.GetService<SloMetricsCollector>();
 

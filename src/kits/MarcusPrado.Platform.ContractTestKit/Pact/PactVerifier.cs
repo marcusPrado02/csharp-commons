@@ -54,7 +54,8 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
     /// <exception cref="InvalidOperationException">Thrown when the Pact JSON does not contain an <c>interactions</c> array.</exception>
     public async Task<IReadOnlyList<ContractVerificationResult>> VerifyAsync(
         string pactFilePath,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(pactFilePath);
 
@@ -65,11 +66,12 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
         using var document = JsonDocument.Parse(json);
         var root = document.RootElement;
 
-        if (!root.TryGetProperty("interactions", out var interactionsElement) ||
-            interactionsElement.ValueKind != JsonValueKind.Array)
+        if (
+            !root.TryGetProperty("interactions", out var interactionsElement)
+            || interactionsElement.ValueKind != JsonValueKind.Array
+        )
         {
-            throw new InvalidOperationException(
-                "The Pact file does not contain a valid 'interactions' array.");
+            throw new InvalidOperationException("The Pact file does not contain a valid 'interactions' array.");
         }
 
         var results = new List<ContractVerificationResult>();
@@ -106,7 +108,8 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
     private async Task<ContractVerificationResult> VerifyInteractionAsync(
         JsonElement interaction,
         string description,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         if (!interaction.TryGetProperty("request", out var request))
             return new ContractVerificationResult(description, false, "Interaction has no 'request' element.");
@@ -121,10 +124,7 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
             content = new StringContent(bodyJson, System.Text.Encoding.UTF8, "application/json");
         }
 
-        var httpRequest = new HttpRequestMessage(new HttpMethod(method), path)
-        {
-            Content = content
-        };
+        var httpRequest = new HttpRequestMessage(new HttpMethod(method), path) { Content = content };
 
         // Forward headers defined in the pact
         if (request.TryGetProperty("headers", out var headersElement))
@@ -151,7 +151,8 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
                 return new ContractVerificationResult(
                     description,
                     false,
-                    $"Expected status {expectedStatus} but got {(int)response.StatusCode}.");
+                    $"Expected status {expectedStatus} but got {(int)response.StatusCode}."
+                );
             }
         }
 
@@ -171,7 +172,8 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
                     return new ContractVerificationResult(
                         description,
                         false,
-                        $"Response body mismatch. Expected: {expectedBodyJson}. Actual: {actualBodyJson}.");
+                        $"Response body mismatch. Expected: {expectedBodyJson}. Actual: {actualBodyJson}."
+                    );
                 }
             }
             catch (JsonException ex)
@@ -196,7 +198,7 @@ public sealed class PactVerifier<TEntryPoint> : IDisposable
             JsonValueKind.Number => a.GetRawText() == b.GetRawText(),
             JsonValueKind.True or JsonValueKind.False => a.GetBoolean() == b.GetBoolean(),
             JsonValueKind.Null => true,
-            _ => a.GetRawText() == b.GetRawText()
+            _ => a.GetRawText() == b.GetRawText(),
         };
     }
 

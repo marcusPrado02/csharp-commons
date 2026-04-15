@@ -210,19 +210,23 @@ public sealed class AdvancedHealthChecksTests
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private static MemoryPressureHealthCheck MakeMemoryCheck(long degraded, long unhealthy)
-        => new(Options.Create(new MemoryPressureOptions
-        {
-            DegradedThresholdBytes = degraded,
-            UnhealthyThresholdBytes = unhealthy,
-        }));
+    private static MemoryPressureHealthCheck MakeMemoryCheck(long degraded, long unhealthy) =>
+        new(
+            Options.Create(
+                new MemoryPressureOptions { DegradedThresholdBytes = degraded, UnhealthyThresholdBytes = unhealthy }
+            )
+        );
 
-    private static ThreadPoolStarvationHealthCheck MakeThreadPoolCheck(int degraded, int unhealthy)
-        => new(Options.Create(new ThreadPoolStarvationOptions
-        {
-            DegradedMinAvailableWorkers = degraded,
-            UnhealthyMinAvailableWorkers = unhealthy,
-        }));
+    private static ThreadPoolStarvationHealthCheck MakeThreadPoolCheck(int degraded, int unhealthy) =>
+        new(
+            Options.Create(
+                new ThreadPoolStarvationOptions
+                {
+                    DegradedMinAvailableWorkers = degraded,
+                    UnhealthyMinAvailableWorkers = unhealthy,
+                }
+            )
+        );
 
     private static TestServer BuildTestHostWithHistory()
     {

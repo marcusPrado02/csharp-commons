@@ -16,7 +16,8 @@ public static class CorsExtensions
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformCors(
         this IServiceCollection services,
-        Action<PlatformCorsOptions>? configure = null)
+        Action<PlatformCorsOptions>? configure = null
+    )
     {
         var opts = new PlatformCorsOptions();
         configure?.Invoke(opts);
@@ -24,28 +25,33 @@ public static class CorsExtensions
 
         services.AddCors(cors =>
         {
-            cors.AddPolicy(CorsConstants.DefaultPolicy, builder =>
-            {
-                switch (opts.Profile)
+            cors.AddPolicy(
+                CorsConstants.DefaultPolicy,
+                builder =>
                 {
-                    case PlatformCorsProfile.DevPermissive:
-                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-                        break;
+                    switch (opts.Profile)
+                    {
+                        case PlatformCorsProfile.DevPermissive:
+                            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                            break;
 
-                    case PlatformCorsProfile.StagingRestricted:
-                        builder.WithOrigins(opts.AllowedOrigins)
-                               .AllowAnyMethod()
-                               .WithHeaders("Content-Type", "Authorization", "api-version", "x-correlation-id");
-                        break;
+                        case PlatformCorsProfile.StagingRestricted:
+                            builder
+                                .WithOrigins(opts.AllowedOrigins)
+                                .AllowAnyMethod()
+                                .WithHeaders("Content-Type", "Authorization", "api-version", "x-correlation-id");
+                            break;
 
-                    case PlatformCorsProfile.ProductionLocked:
-                        builder.WithOrigins(opts.AllowedOrigins)
-                               .WithMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                               .WithHeaders("Content-Type", "Authorization", "api-version", "x-correlation-id")
-                               .SetPreflightMaxAge(TimeSpan.FromHours(1));
-                        break;
+                        case PlatformCorsProfile.ProductionLocked:
+                            builder
+                                .WithOrigins(opts.AllowedOrigins)
+                                .WithMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                                .WithHeaders("Content-Type", "Authorization", "api-version", "x-correlation-id")
+                                .SetPreflightMaxAge(TimeSpan.FromHours(1));
+                            break;
+                    }
                 }
-            });
+            );
 
             if (opts.EnableTenantAwarePolicy)
             {
@@ -55,10 +61,10 @@ public static class CorsExtensions
 
         if (opts.EnableTenantAwarePolicy)
         {
-            services.AddSingleton<ICorsPolicyProvider>(sp =>
-                new TenantAwareCorsPolicy(
-                    new DefaultCorsPolicyProvider(sp.GetRequiredService<IOptions<CorsOptions>>()),
-                    opts));
+            services.AddSingleton<ICorsPolicyProvider>(sp => new TenantAwareCorsPolicy(
+                new DefaultCorsPolicyProvider(sp.GetRequiredService<IOptions<CorsOptions>>()),
+                opts
+            ));
         }
 
         return services;

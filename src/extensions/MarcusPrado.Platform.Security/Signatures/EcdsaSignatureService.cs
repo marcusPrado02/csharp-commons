@@ -8,8 +8,7 @@ public sealed class EcdsaSignatureService : ISignatureService, IDisposable
 
     public EcdsaSignatureService(ECDsa ecdsa) => _ecdsa = ecdsa;
 
-    public static EcdsaSignatureService CreateEphemeral() =>
-        new(ECDsa.Create(ECCurve.NamedCurves.nistP256));
+    public static EcdsaSignatureService CreateEphemeral() => new(ECDsa.Create(ECCurve.NamedCurves.nistP256));
 
     public string Sign(byte[] data)
     {

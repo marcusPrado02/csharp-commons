@@ -21,7 +21,8 @@ public sealed class OutboxProcessor : BackgroundService
         IOutboxStore store,
         IOutboxPublisher publisher,
         IOptions<OutboxProcessorOptions> options,
-        ILogger<OutboxProcessor> logger)
+        ILogger<OutboxProcessor> logger
+    )
     {
         _store = store;
         _publisher = publisher;
@@ -80,7 +81,12 @@ public sealed class OutboxProcessor : BackgroundService
         catch (Exception ex)
 #pragma warning restore CA1031
         {
-            _logger.LogWarning(ex, "Failed to publish outbox message {Id} (attempt {Attempt})", msg.Id, msg.RetryCount + 1);
+            _logger.LogWarning(
+                ex,
+                "Failed to publish outbox message {Id} (attempt {Attempt})",
+                msg.Id,
+                msg.RetryCount + 1
+            );
 
             if (msg.RetryCount >= _options.MaxRetries)
             {
@@ -88,8 +94,7 @@ public sealed class OutboxProcessor : BackgroundService
             }
             else
             {
-                var delay = TimeSpan.FromSeconds(
-                    Math.Pow(2, msg.RetryCount) * _options.RetryBaseDelay.TotalSeconds);
+                var delay = TimeSpan.FromSeconds(Math.Pow(2, msg.RetryCount) * _options.RetryBaseDelay.TotalSeconds);
                 var nextAttempt = DateTimeOffset.UtcNow.Add(delay);
                 await _store.IncrementRetryAsync(msg.Id, nextAttempt, ct).ConfigureAwait(false);
             }

@@ -38,7 +38,7 @@ public sealed class MySqlOptionsTests
             ConnectionString = "Server=db;Database=mydb;User=sa;Password=pass;",
             ServerVersion = "9.0.0",
             MaxRetryCount = 5,
-            MaxRetryDelay = TimeSpan.FromSeconds(10)
+            MaxRetryDelay = TimeSpan.FromSeconds(10),
         };
 
         opts.ConnectionString.Should().Contain("db");

@@ -14,10 +14,16 @@ public sealed class FeatureFlagService
     }
 
     /// <summary>Returns true if the flag is enabled for the given context.</summary>
-    public Task<bool> IsEnabledAsync(string flagKey, FeatureFlagContext? context = null, CancellationToken ct = default) =>
-        _provider.IsEnabledAsync(flagKey, context ?? FeatureFlagContext.Anonymous, ct);
+    public Task<bool> IsEnabledAsync(
+        string flagKey,
+        FeatureFlagContext? context = null,
+        CancellationToken ct = default
+    ) => _provider.IsEnabledAsync(flagKey, context ?? FeatureFlagContext.Anonymous, ct);
 
     /// <summary>Returns the full evaluation decision for the flag.</summary>
-    public Task<FeatureDecision> EvaluateAsync(string flagKey, FeatureFlagContext? context = null, CancellationToken ct = default) =>
-        _provider.EvaluateAsync(flagKey, context ?? FeatureFlagContext.Anonymous, ct);
+    public Task<FeatureDecision> EvaluateAsync(
+        string flagKey,
+        FeatureFlagContext? context = null,
+        CancellationToken ct = default
+    ) => _provider.EvaluateAsync(flagKey, context ?? FeatureFlagContext.Anonymous, ct);
 }

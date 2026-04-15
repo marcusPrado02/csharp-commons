@@ -6,4 +6,5 @@ public sealed record PlatformStandard(
     string Title,
     string Description,
     string Category,
-    bool IsMandatory = true);
+    bool IsMandatory = true
+);

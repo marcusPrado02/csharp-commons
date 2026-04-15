@@ -25,7 +25,8 @@ public sealed class InboxProcessor : BackgroundService
         IIdempotencyStore idempotencyStore,
         IEnumerable<IInboxMessageHandler> handlers,
         IOptions<InboxProcessorOptions> options,
-        ILogger<InboxProcessor> logger)
+        ILogger<InboxProcessor> logger
+    )
     {
         _store = store;
         _idempotencyStore = idempotencyStore;
@@ -92,9 +93,16 @@ public sealed class InboxProcessor : BackgroundService
             await handler.HandleAsync(msg.Payload, ct).ConfigureAwait(false);
 
             await _store.MarkProcessedAsync(msg.Id, ct).ConfigureAwait(false);
-            await _idempotencyStore.SetAsync(
-                new IdempotencyRecord { Key = key.Value, ExpiresAt = DateTimeOffset.UtcNow.Add(_options.IdempotencyTtl) },
-                ct).ConfigureAwait(false);
+            await _idempotencyStore
+                .SetAsync(
+                    new IdempotencyRecord
+                    {
+                        Key = key.Value,
+                        ExpiresAt = DateTimeOffset.UtcNow.Add(_options.IdempotencyTtl),
+                    },
+                    ct
+                )
+                .ConfigureAwait(false);
 
             _logger.LogDebug("Inbox message {MessageId} processed by {Handler}", msg.MessageId, handler.GetType().Name);
         }

@@ -19,7 +19,8 @@ public sealed class ServiceBusConsumer : IServiceBusConsumer
     public ServiceBusConsumer(
         ServiceBusClient client,
         IOptions<ServiceBusOptions> options,
-        ILogger<ServiceBusConsumer> logger)
+        ILogger<ServiceBusConsumer> logger
+    )
     {
         ArgumentNullException.ThrowIfNull(client);
         ArgumentNullException.ThrowIfNull(options);
@@ -33,7 +34,8 @@ public sealed class ServiceBusConsumer : IServiceBusConsumer
     public async Task StartAsync(
         string queueOrTopic,
         Func<ServiceBusReceivedMessage, CancellationToken, Task> handler,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(queueOrTopic);
         ArgumentNullException.ThrowIfNull(handler);
@@ -54,10 +56,7 @@ public sealed class ServiceBusConsumer : IServiceBusConsumer
 
         _processor.ProcessErrorAsync += args =>
         {
-            _logger.LogError(
-                args.Exception,
-                "Error processing Service Bus message from {EntityPath}",
-                args.EntityPath);
+            _logger.LogError(args.Exception, "Error processing Service Bus message from {EntityPath}", args.EntityPath);
             return Task.CompletedTask;
         };
 

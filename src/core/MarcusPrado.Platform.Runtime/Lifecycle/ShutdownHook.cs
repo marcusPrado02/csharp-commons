@@ -10,11 +10,8 @@ public static class ShutdownHook
     /// <summary>
     /// Wires <paramref name="handler"/> to <see cref="IHostApplicationLifetime.ApplicationStopping"/>.
     /// </summary>
-    public static void Register(
-        IHostApplicationLifetime lifetime,
-        Func<CancellationToken, Task> handler)
+    public static void Register(IHostApplicationLifetime lifetime, Func<CancellationToken, Task> handler)
     {
-        lifetime.ApplicationStopping.Register(() =>
-            handler(lifetime.ApplicationStopping).GetAwaiter().GetResult());
+        lifetime.ApplicationStopping.Register(() => handler(lifetime.ApplicationStopping).GetAwaiter().GetResult());
     }
 }

@@ -19,31 +19,30 @@ public static class ProblemDetailsExtensions
     /// </summary>
     public static IApplicationBuilder UsePlatformProblemDetails(this IApplicationBuilder app)
     {
-        app.UseExceptionHandler(errApp => errApp.Run(async context =>
-        {
-            var feature = context.Features.Get<IExceptionHandlerFeature>();
-            if (feature is null)
-                return;
+        app.UseExceptionHandler(errApp =>
+            errApp.Run(async context =>
+            {
+                var feature = context.Features.Get<IExceptionHandlerFeature>();
+                if (feature is null)
+                    return;
 
-            var exception = feature.Error;
-            var logger = context.RequestServices
-                .GetRequiredService<ILoggerFactory>()
-                .CreateLogger("PlatformProblemDetails");
+                var exception = feature.Error;
+                var logger = context
+                    .RequestServices.GetRequiredService<ILoggerFactory>()
+                    .CreateLogger("PlatformProblemDetails");
 
-            var pd = PlatformProblemDetailsFactory.Create(exception, context);
-            var status = pd.Status ?? StatusCodes.Status500InternalServerError;
+                var pd = PlatformProblemDetailsFactory.Create(exception, context);
+                var status = pd.Status ?? StatusCodes.Status500InternalServerError;
 
-            if (status >= 500)
-                logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
-            else
-                logger.LogWarning(exception, "Application exception: {Message}", exception.Message);
+                if (status >= 500)
+                    logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
+                else
+                    logger.LogWarning(exception, "Application exception: {Message}", exception.Message);
 
-            context.Response.StatusCode = status;
-            await context.Response.WriteAsJsonAsync(
-                pd,
-                options: null,
-                contentType: "application/problem+json");
-        }));
+                context.Response.StatusCode = status;
+                await context.Response.WriteAsJsonAsync(pd, options: null, contentType: "application/problem+json");
+            })
+        );
 
         return app;
     }
@@ -52,8 +51,7 @@ public static class ProblemDetailsExtensions
     /// Registers platform Problem Details services.  Call in
     /// <c>ConfigureServices</c> / <c>builder.Services</c>.
     /// </summary>
-    public static IServiceCollection AddPlatformProblemDetails(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformProblemDetails(this IServiceCollection services)
     {
         services.AddProblemDetails();
         return services;

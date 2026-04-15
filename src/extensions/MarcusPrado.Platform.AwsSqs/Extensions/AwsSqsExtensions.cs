@@ -25,7 +25,8 @@ public static class AwsSqsExtensions
     public static IServiceCollection AddPlatformAwsSqs(
         this IServiceCollection services,
         Action<SqsOptions>? configureSqs = null,
-        Action<SnsOptions>? configureSns = null)
+        Action<SnsOptions>? configureSns = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -79,15 +80,16 @@ public static class AwsSqsExtensions
             }
 
             return new Amazon.SimpleNotificationService.AmazonSimpleNotificationServiceClient(
-                new AnonymousAWSCredentials(), config);
+                new AnonymousAWSCredentials(),
+                config
+            );
         });
 
         services.AddSingleton<ISqsPublisher, SqsPublisher>();
         services.AddSingleton<ISqsConsumer, SqsConsumer>();
         services.AddSingleton<ISnsPublisher, SnsPublisher>();
 
-        services.AddHealthChecks()
-            .AddCheck<SqsHealthProbe>("aws-sqs");
+        services.AddHealthChecks().AddCheck<SqsHealthProbe>("aws-sqs");
 
         return services;
     }

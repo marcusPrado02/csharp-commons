@@ -11,7 +11,8 @@ public static class TwilioExtensions
     /// <summary>Registers <see cref="ISmsService"/> backed by Twilio.</summary>
     public static IServiceCollection AddPlatformTwilio(
         this IServiceCollection services,
-        Action<TwilioOptions>? configure = null)
+        Action<TwilioOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

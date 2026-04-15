@@ -12,5 +12,5 @@ public enum PlatformCorsProfile
     StagingRestricted,
 
     /// <summary>Restricts to a configured set of origins with strict methods/headers and preflight cache.</summary>
-    ProductionLocked
+    ProductionLocked,
 }

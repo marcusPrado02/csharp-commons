@@ -6,5 +6,6 @@ public sealed record StoredEvent(
     string StreamId,
     long SequenceNumber,
     string EventType,
-    string Payload,          // JSON-serialized event
-    DateTimeOffset OccurredOn);
+    string Payload, // JSON-serialized event
+    DateTimeOffset OccurredOn
+);

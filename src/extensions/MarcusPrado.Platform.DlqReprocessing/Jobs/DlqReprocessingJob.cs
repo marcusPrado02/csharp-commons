@@ -28,7 +28,8 @@ public sealed partial class DlqReprocessingJob : BackgroundService
         IDlqMetrics metrics,
         IOptions<DlqOptions> options,
         ILogger<DlqReprocessingJob> logger,
-        Func<DlqMessage, CancellationToken, Task<bool>>? reprocessHandler = null)
+        Func<DlqMessage, CancellationToken, Task<bool>>? reprocessHandler = null
+    )
     {
         ArgumentNullException.ThrowIfNull(store);
         ArgumentNullException.ThrowIfNull(metrics);
@@ -108,20 +109,25 @@ public sealed partial class DlqReprocessingJob : BackgroundService
 
     private static partial class Log
     {
-        [LoggerMessage(Level = LogLevel.Information,
-            Message = "DlqReprocessingJob started. PollingInterval={Interval}s, AlertThreshold={Threshold}, Topics={Topics}")]
+        [LoggerMessage(
+            Level = LogLevel.Information,
+            Message = "DlqReprocessingJob started. PollingInterval={Interval}s, AlertThreshold={Threshold}, Topics={Topics}"
+        )]
         internal static partial void JobStarted(ILogger logger, int interval, int threshold, string topics);
 
-        [LoggerMessage(Level = LogLevel.Error,
-            Message = "Unhandled error in DlqReprocessingJob polling cycle.")]
+        [LoggerMessage(Level = LogLevel.Error, Message = "Unhandled error in DlqReprocessingJob polling cycle.")]
         internal static partial void PollingError(ILogger logger, Exception ex);
 
-        [LoggerMessage(Level = LogLevel.Warning,
-            Message = "DLQ depth {Depth} exceeds alert threshold {Threshold} for topic '{Topic}'.")]
+        [LoggerMessage(
+            Level = LogLevel.Warning,
+            Message = "DLQ depth {Depth} exceeds alert threshold {Threshold} for topic '{Topic}'."
+        )]
         internal static partial void DepthAlert(ILogger logger, int depth, int threshold, string topic);
 
-        [LoggerMessage(Level = LogLevel.Error,
-            Message = "Reprocess handler failed for message '{Id}' on topic '{Topic}'.")]
+        [LoggerMessage(
+            Level = LogLevel.Error,
+            Message = "Reprocess handler failed for message '{Id}' on topic '{Topic}'."
+        )]
         internal static partial void ReprocessHandlerFailed(ILogger logger, Exception ex, string id, string topic);
     }
 }

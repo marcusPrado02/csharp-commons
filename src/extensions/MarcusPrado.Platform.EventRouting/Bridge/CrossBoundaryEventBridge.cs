@@ -64,7 +64,8 @@ public sealed class CrossBoundaryEventBridge
         if (!TryConvert(domainEvent, out var contract))
         {
             throw new InvalidOperationException(
-                $"No cross-boundary converter registered for domain event type '{domainEvent.GetType().FullName}'.");
+                $"No cross-boundary converter registered for domain event type '{domainEvent.GetType().FullName}'."
+            );
         }
 
         return contract!;
@@ -73,6 +74,5 @@ public sealed class CrossBoundaryEventBridge
     /// <summary>Returns <see langword="true"/> if a converter exists for <typeparamref name="TEvent"/>.</summary>
     /// <typeparam name="TEvent">The event type to check.</typeparam>
     public bool HasConverter<TEvent>()
-        where TEvent : IDomainEvent =>
-        _converters.ContainsKey(typeof(TEvent));
+        where TEvent : IDomainEvent => _converters.ContainsKey(typeof(TEvent));
 }

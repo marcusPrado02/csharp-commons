@@ -7,15 +7,10 @@ public static class ExponentialBackoff
     /// Returns the delay for <paramref name="attempt"/> (0-based).
     /// <c>base * 2^attempt</c>, capped at <paramref name="maxDelay"/>.
     /// </summary>
-    public static TimeSpan Calculate(
-        int attempt,
-        TimeSpan baseDelay,
-        TimeSpan? maxDelay = null)
+    public static TimeSpan Calculate(int attempt, TimeSpan baseDelay, TimeSpan? maxDelay = null)
     {
         var raw = baseDelay.TotalMilliseconds * Math.Pow(2, attempt);
-        var capped = maxDelay.HasValue
-            ? Math.Min(raw, maxDelay.Value.TotalMilliseconds)
-            : raw;
+        var capped = maxDelay.HasValue ? Math.Min(raw, maxDelay.Value.TotalMilliseconds) : raw;
         return TimeSpan.FromMilliseconds(capped);
     }
 }

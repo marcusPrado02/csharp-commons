@@ -50,8 +50,7 @@ public sealed class SendGridEmailSender : IEmailSender
     }
 
     /// <inheritdoc />
-    public async Task<EmailResult> SendBulkAsync(
-        IReadOnlyList<EmailMessage> messages, CancellationToken ct = default)
+    public async Task<EmailResult> SendBulkAsync(IReadOnlyList<EmailMessage> messages, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(messages);
 
@@ -76,11 +75,7 @@ public sealed class SendGridEmailSender : IEmailSender
             ? new EmailAddress(message.From)
             : new EmailAddress(_options.DefaultFrom, _options.DefaultFromName);
 
-        var msg = new SendGridMessage
-        {
-            From = from,
-            Subject = message.Subject,
-        };
+        var msg = new SendGridMessage { From = from, Subject = message.Subject };
 
         msg.AddTo(new EmailAddress(message.To));
 
@@ -105,10 +100,7 @@ public sealed class SendGridEmailSender : IEmailSender
         {
             foreach (var att in message.Attachments)
             {
-                msg.AddAttachment(
-                    att.FileName,
-                    Convert.ToBase64String(att.Content),
-                    att.ContentType);
+                msg.AddAttachment(att.FileName, Convert.ToBase64String(att.Content), att.ContentType);
             }
         }
 

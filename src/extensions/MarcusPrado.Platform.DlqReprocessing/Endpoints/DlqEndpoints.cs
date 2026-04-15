@@ -23,46 +23,42 @@ public static class DlqEndpoints
     {
         ArgumentNullException.ThrowIfNull(app);
 
-        app.MapGet("/dlq/{topic}", async (
-            string topic,
-            IDlqStore store,
-            CancellationToken ct) =>
-        {
-            var messages = await store.GetAsync(topic, ct).ConfigureAwait(false);
-            return Results.Ok(messages);
-        });
+        app.MapGet(
+            "/dlq/{topic}",
+            async (string topic, IDlqStore store, CancellationToken ct) =>
+            {
+                var messages = await store.GetAsync(topic, ct).ConfigureAwait(false);
+                return Results.Ok(messages);
+            }
+        );
 
-        app.MapPost("/dlq/{topic}/reprocess/{id}", async (
-            string topic,
-            string id,
-            IDlqStore store,
-            IDlqMetrics metrics,
-            CancellationToken ct) =>
-        {
-            var message = await store.GetByIdAsync(topic, id, ct).ConfigureAwait(false);
-            if (message is null)
-                return Results.NotFound(new { error = $"Message '{id}' not found in topic '{topic}'." });
+        app.MapPost(
+            "/dlq/{topic}/reprocess/{id}",
+            async (string topic, string id, IDlqStore store, IDlqMetrics metrics, CancellationToken ct) =>
+            {
+                var message = await store.GetByIdAsync(topic, id, ct).ConfigureAwait(false);
+                if (message is null)
+                    return Results.NotFound(new { error = $"Message '{id}' not found in topic '{topic}'." });
 
-            await store.RequeueAsync(topic, id, ct).ConfigureAwait(false);
-            metrics.RecordReprocessed(topic);
-            return Results.Ok(new { requeued = id });
-        });
+                await store.RequeueAsync(topic, id, ct).ConfigureAwait(false);
+                metrics.RecordReprocessed(topic);
+                return Results.Ok(new { requeued = id });
+            }
+        );
 
-        app.MapDelete("/dlq/{topic}/{id}", async (
-            string topic,
-            string id,
-            IDlqStore store,
-            IDlqMetrics metrics,
-            CancellationToken ct) =>
-        {
-            var message = await store.GetByIdAsync(topic, id, ct).ConfigureAwait(false);
-            if (message is null)
-                return Results.NotFound(new { error = $"Message '{id}' not found in topic '{topic}'." });
+        app.MapDelete(
+            "/dlq/{topic}/{id}",
+            async (string topic, string id, IDlqStore store, IDlqMetrics metrics, CancellationToken ct) =>
+            {
+                var message = await store.GetByIdAsync(topic, id, ct).ConfigureAwait(false);
+                if (message is null)
+                    return Results.NotFound(new { error = $"Message '{id}' not found in topic '{topic}'." });
 
-            await store.DeleteAsync(topic, id, ct).ConfigureAwait(false);
-            metrics.RecordDeleted(topic);
-            return Results.NoContent();
-        });
+                await store.DeleteAsync(topic, id, ct).ConfigureAwait(false);
+                metrics.RecordDeleted(topic);
+                return Results.NoContent();
+            }
+        );
 
         return app;
     }

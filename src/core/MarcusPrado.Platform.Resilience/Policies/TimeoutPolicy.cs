@@ -12,10 +12,10 @@ public sealed class TimeoutPolicy
     /// <exception cref="TimeoutException">Thrown when the timeout elapses.</exception>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        using var cts =
-            CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         cts.CancelAfter(_timeout);
 
         try

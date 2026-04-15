@@ -93,11 +93,7 @@ public sealed class ErrorFaultTests
     [Fact]
     public void Inject_RateZero_DoesNotThrow()
     {
-        var cfg = new ChaosConfig
-        {
-            InjectionRate = 0.0,
-            FaultException = new InvalidOperationException("boom"),
-        };
+        var cfg = new ChaosConfig { InjectionRate = 0.0, FaultException = new InvalidOperationException("boom") };
         var fault = new ErrorFault(cfg);
 
         var act = () => fault.Inject();
@@ -144,7 +140,14 @@ public sealed class PacketLossFaultTests
         var fault = new PacketLossFault(cfg);
         var executed = false;
 
-        await fault.InjectAsync(() => { executed = true; return Task.CompletedTask; }, _ => { });
+        await fault.InjectAsync(
+            () =>
+            {
+                executed = true;
+                return Task.CompletedTask;
+            },
+            _ => { }
+        );
 
         executed.Should().BeTrue();
     }
@@ -158,8 +161,13 @@ public sealed class PacketLossFaultTests
         var dropped = false;
 
         await fault.InjectAsync(
-            () => { executed = true; return Task.CompletedTask; },
-            wasDropped => dropped = wasDropped);
+            () =>
+            {
+                executed = true;
+                return Task.CompletedTask;
+            },
+            wasDropped => dropped = wasDropped
+        );
 
         executed.Should().BeFalse();
         dropped.Should().BeTrue();
@@ -195,7 +203,14 @@ public sealed class ChaosRunnerTests
         var cfg = new ChaosConfig { InjectionRate = 0.0 };
         var executed = false;
 
-        await ChaosRunner.RunWithChaos(cfg, () => { executed = true; return Task.CompletedTask; });
+        await ChaosRunner.RunWithChaos(
+            cfg,
+            () =>
+            {
+                executed = true;
+                return Task.CompletedTask;
+            }
+        );
 
         executed.Should().BeTrue();
     }
@@ -203,16 +218,18 @@ public sealed class ChaosRunnerTests
     [Fact]
     public async Task RunWithChaos_ErrorFaultRateOne_ThrowsBeforeAction()
     {
-        var cfg = new ChaosConfig
-        {
-            InjectionRate = 1.0,
-            FaultException = new InvalidOperationException("injected"),
-        };
+        var cfg = new ChaosConfig { InjectionRate = 1.0, FaultException = new InvalidOperationException("injected") };
         var executed = false;
 
-        var act = async () => await ChaosRunner.RunWithChaos(
-            cfg,
-            () => { executed = true; return Task.CompletedTask; });
+        var act = async () =>
+            await ChaosRunner.RunWithChaos(
+                cfg,
+                () =>
+                {
+                    executed = true;
+                    return Task.CompletedTask;
+                }
+            );
 
         await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("injected");
         executed.Should().BeFalse();

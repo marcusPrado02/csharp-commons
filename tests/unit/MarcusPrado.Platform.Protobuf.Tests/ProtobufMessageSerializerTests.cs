@@ -20,7 +20,12 @@ public sealed class ProtobufMessageSerializerTests
     [Fact]
     public void Serialize_ThenDeserialize_RoundTrips()
     {
-        var msg = new SampleMessage { Id = 42, Name = "hello", Active = true };
+        var msg = new SampleMessage
+        {
+            Id = 42,
+            Name = "hello",
+            Active = true,
+        };
         var data = _sut.Serialize(msg);
         var result = _sut.Deserialize<SampleMessage>(data);
         result!.Id.Should().Be(42);
@@ -80,7 +85,12 @@ public sealed class ProtobufMessageSerializerTests
     [Fact]
     public void Serialize_SmallMessage_Base64SmallerThanJson()
     {
-        var msg = new SampleMessage { Id = 1, Name = "test", Active = true };
+        var msg = new SampleMessage
+        {
+            Id = 1,
+            Name = "test",
+            Active = true,
+        };
         var pbBase64 = _sut.Serialize(msg);
         var pbBytes = Convert.FromBase64String(pbBase64);
         var jsonBytes = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(msg);

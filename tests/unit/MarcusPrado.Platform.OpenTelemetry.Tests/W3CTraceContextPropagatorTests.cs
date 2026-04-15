@@ -51,8 +51,7 @@ public sealed class W3CTraceContextPropagatorTests
         var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         W3CTraceContextPropagator.Inject(original, headers, (h, k, v) => h[k] = v);
 
-        var ctx = W3CTraceContextPropagator.Extract(headers,
-            (h, k) => h.TryGetValue(k, out var v) ? v : null);
+        var ctx = W3CTraceContextPropagator.Extract(headers, (h, k) => h.TryGetValue(k, out var v) ? v : null);
 
         ctx.TraceId.Should().Be(original.TraceId);
         ctx.SpanId.Should().Be(original.SpanId);
@@ -63,8 +62,7 @@ public sealed class W3CTraceContextPropagatorTests
     {
         var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        var ctx = W3CTraceContextPropagator.Extract(headers,
-            (h, k) => h.TryGetValue(k, out var v) ? v : null);
+        var ctx = W3CTraceContextPropagator.Extract(headers, (h, k) => h.TryGetValue(k, out var v) ? v : null);
 
         ctx.Should().Be(default(ActivityContext));
     }
@@ -77,8 +75,7 @@ public sealed class W3CTraceContextPropagatorTests
             ["traceparent"] = "not-a-valid-traceparent",
         };
 
-        var ctx = W3CTraceContextPropagator.Extract(headers,
-            (h, k) => h.TryGetValue(k, out var v) ? v : null);
+        var ctx = W3CTraceContextPropagator.Extract(headers, (h, k) => h.TryGetValue(k, out var v) ? v : null);
 
         ctx.Should().Be(default(ActivityContext));
     }

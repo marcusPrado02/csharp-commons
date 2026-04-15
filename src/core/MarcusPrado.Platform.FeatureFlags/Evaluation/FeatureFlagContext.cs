@@ -16,8 +16,7 @@ public sealed class FeatureFlagContext
     public string? Region { get; init; }
 
     /// <summary>Gets additional custom attributes for rule evaluation.</summary>
-    public IReadOnlyDictionary<string, string> Attributes { get; init; } =
-        new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> Attributes { get; init; } = new Dictionary<string, string>();
 
     /// <summary>Returns an anonymous context with no identifying information.</summary>
     public static FeatureFlagContext Anonymous { get; } = new();

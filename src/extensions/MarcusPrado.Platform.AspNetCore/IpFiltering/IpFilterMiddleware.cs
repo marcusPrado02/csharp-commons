@@ -15,7 +15,7 @@ public sealed class IpFilterMiddleware
 
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 
     /// <summary>Initialises the middleware.</summary>
@@ -110,7 +110,7 @@ public sealed class IpFilterMiddleware
             type = "https://tools.ietf.org/html/rfc9110#section-15.5.4",
             title = "Forbidden",
             status = 403,
-            detail = "Access denied from your IP address."
+            detail = "Access denied from your IP address.",
         };
 
         await context.Response.WriteAsync(JsonSerializer.Serialize(problem, _jsonOptions));

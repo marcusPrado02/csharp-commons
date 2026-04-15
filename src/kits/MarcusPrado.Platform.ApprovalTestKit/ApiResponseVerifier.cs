@@ -18,7 +18,8 @@ public static class ApiResponseVerifier
     /// <returns>A task that resolves to the populated <see cref="VerifySnapshot"/>.</returns>
     public static async Task<VerifySnapshot> SnapshotAsync(
         HttpResponseMessage response,
-        PlatformVerifySettings? settings = null)
+        PlatformVerifySettings? settings = null
+    )
     {
         ArgumentNullException.ThrowIfNull(response);
 

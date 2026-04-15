@@ -52,8 +52,7 @@ public sealed class ConfigCipherToolTests
     {
         var act = () => ConfigCipherTool.Decrypt("plain-text", Key);
 
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*ENC(*)*");
+        act.Should().Throw<ArgumentException>().WithMessage("*ENC(*)*");
     }
 
     [Fact]

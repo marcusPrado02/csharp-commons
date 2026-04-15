@@ -20,8 +20,7 @@ public sealed class NoEfCoreInDomainAnalyzer : DiagnosticAnalyzer
     private const string EfCoreNamespacePrefix = "Microsoft.EntityFrameworkCore";
 
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Descriptor);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -46,10 +45,7 @@ public sealed class NoEfCoreInDomainAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(
-            Descriptor,
-            usingDirective.GetLocation(),
-            namespaceName));
+        context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), namespaceName));
     }
 
     private static bool IsInsideDomainContext(SyntaxNode node)

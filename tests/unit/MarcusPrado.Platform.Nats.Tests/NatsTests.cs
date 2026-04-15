@@ -42,8 +42,7 @@ public sealed class NatsPublisherTests
     {
         var act = () => new NatsPublisher(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("connection");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("connection");
     }
 
     [Fact]
@@ -54,8 +53,7 @@ public sealed class NatsPublisherTests
 
         var act = async () => await publisher.PublishAsync<SampleMessage>("subject", null!);
 
-        await act.Should().ThrowAsync<ArgumentNullException>()
-            .WithParameterName("message");
+        await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("message");
     }
 
     [Fact]
@@ -66,8 +64,7 @@ public sealed class NatsPublisherTests
 
         var act = async () => await publisher.PublishAsync("", new SampleMessage("hello"));
 
-        await act.Should().ThrowAsync<ArgumentException>()
-            .WithParameterName("subject");
+        await act.Should().ThrowAsync<ArgumentException>().WithParameterName("subject");
     }
 
     [Fact]
@@ -80,9 +77,7 @@ public sealed class NatsPublisherTests
         await publisher.PublishAsync("test.subject", message);
 
         // The publisher serializes and calls PublishAsync on the connection.
-        await conn.Received(1).PublishAsync(
-            "test.subject",
-            Arg.Is<string>(s => s.Contains("hello-world")));
+        await conn.Received(1).PublishAsync("test.subject", Arg.Is<string>(s => s.Contains("hello-world")));
     }
 }
 
@@ -96,8 +91,7 @@ public sealed class NatsConsumerTests
     {
         var act = () => new NatsConsumer(null!, new NatsOptions());
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("connection");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("connection");
     }
 
     [Fact]
@@ -107,8 +101,7 @@ public sealed class NatsConsumerTests
 
         var act = () => new NatsConsumer(conn, null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("options");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("options");
     }
 
     [Fact]
@@ -118,13 +111,9 @@ public sealed class NatsConsumerTests
         var consumer = new NatsConsumer(conn, new NatsOptions());
 
         var act = async () =>
-            await consumer.SubscribeAsync<SampleMessage>(
-                "test.subject",
-                null!,
-                CancellationToken.None);
+            await consumer.SubscribeAsync<SampleMessage>("test.subject", null!, CancellationToken.None);
 
-        await act.Should().ThrowAsync<ArgumentNullException>()
-            .WithParameterName("handler");
+        await act.Should().ThrowAsync<ArgumentNullException>().WithParameterName("handler");
     }
 
     [Fact]
@@ -137,10 +126,10 @@ public sealed class NatsConsumerTests
             await consumer.SubscribeAsync<SampleMessage>(
                 string.Empty,
                 (_, _) => Task.CompletedTask,
-                CancellationToken.None);
+                CancellationToken.None
+            );
 
-        await act.Should().ThrowAsync<ArgumentException>()
-            .WithParameterName("subject");
+        await act.Should().ThrowAsync<ArgumentException>().WithParameterName("subject");
     }
 }
 
@@ -154,8 +143,7 @@ public sealed class NatsHealthProbeTests
     {
         var act = () => new NatsHealthProbe(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("connection");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("connection");
     }
 
     [Fact]
@@ -163,8 +151,7 @@ public sealed class NatsHealthProbeTests
     {
         var conn = Substitute.For<INatsConnection>();
         conn.ConnectionState.Returns(NatsConnectionState.Open);
-        conn.PingAsync(Arg.Any<CancellationToken>())
-            .Returns(ValueTask.FromResult(TimeSpan.FromMilliseconds(3)));
+        conn.PingAsync(Arg.Any<CancellationToken>()).Returns(ValueTask.FromResult(TimeSpan.FromMilliseconds(3)));
 
         var probe = new NatsHealthProbe(conn);
         var context = BuildContext();
@@ -195,8 +182,7 @@ public sealed class NatsHealthProbeTests
     {
         var conn = Substitute.For<INatsConnection>();
         conn.ConnectionState.Returns(NatsConnectionState.Open);
-        conn.When(c => c.PingAsync(Arg.Any<CancellationToken>()))
-            .Throw(new NatsException("server unreachable"));
+        conn.When(c => c.PingAsync(Arg.Any<CancellationToken>())).Throw(new NatsException("server unreachable"));
 
         var probe = new NatsHealthProbe(conn);
         var context = BuildContext();
@@ -213,7 +199,8 @@ public sealed class NatsHealthProbeTests
                 "nats",
                 Substitute.For<IHealthCheck>(),
                 HealthStatus.Unhealthy,
-                []),
+                []
+            ),
         };
 }
 
@@ -252,11 +239,9 @@ public sealed class NatsExtensionsTests
 
         // HealthCheckServiceOptions holds the registrations.
         var sp = services.BuildServiceProvider();
-        var healthOptions = sp.GetRequiredService<
-            Microsoft.Extensions.Options.IOptions<HealthCheckServiceOptions>>();
+        var healthOptions = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<HealthCheckServiceOptions>>();
 
-        healthOptions.Value.Registrations
-            .Should().Contain(r => r.Name == "nats");
+        healthOptions.Value.Registrations.Should().Contain(r => r.Name == "nats");
     }
 
     [Fact]
@@ -266,8 +251,7 @@ public sealed class NatsExtensionsTests
 
         var act = () => services.AddPlatformNats();
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("services");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("services");
     }
 
     [Fact]

@@ -26,8 +26,11 @@ public sealed class ConfigurationValidatorTests
     [Fact]
     public void Validate_WithPassingValidators_ShouldNotThrow()
     {
-        var validator = new ConfigurationValidator<MyOptions>()
-            .AddValidator(opts => { if (opts.Port <= 0) throw new InvalidOperationException("Port must be positive"); });
+        var validator = new ConfigurationValidator<MyOptions>().AddValidator(opts =>
+        {
+            if (opts.Port <= 0)
+                throw new InvalidOperationException("Port must be positive");
+        });
 
         var options = new MyOptions { Name = "test", Port = 8080 };
 
@@ -39,15 +42,17 @@ public sealed class ConfigurationValidatorTests
     [Fact]
     public void Validate_WithFailingValidator_ShouldThrowOptionsValidationException()
     {
-        var validator = new ConfigurationValidator<MyOptions>()
-            .AddValidator(opts => { if (string.IsNullOrEmpty(opts.Name)) throw new InvalidOperationException("Name is required"); });
+        var validator = new ConfigurationValidator<MyOptions>().AddValidator(opts =>
+        {
+            if (string.IsNullOrEmpty(opts.Name))
+                throw new InvalidOperationException("Name is required");
+        });
 
         var options = new MyOptions { Name = null, Port = 8080 };
 
         var act = () => validator.Validate(options);
 
-        act.Should().Throw<OptionsValidationException>()
-            .Which.OptionsTypeName.Should().Be(nameof(MyOptions));
+        act.Should().Throw<OptionsValidationException>().Which.OptionsTypeName.Should().Be(nameof(MyOptions));
     }
 
     [Fact]
@@ -55,8 +60,15 @@ public sealed class ConfigurationValidatorTests
     {
         int callCount = 0;
         var validator = new ConfigurationValidator<MyOptions>()
-            .AddValidator(_ => { callCount++; throw new InvalidOperationException("First fails"); })
-            .AddValidator(_ => { callCount++; });
+            .AddValidator(_ =>
+            {
+                callCount++;
+                throw new InvalidOperationException("First fails");
+            })
+            .AddValidator(_ =>
+            {
+                callCount++;
+            });
 
         var options = new MyOptions { Name = "test", Port = 8080 };
 

@@ -16,7 +16,8 @@ public static class ElasticsearchExtensions
     /// </summary>
     public static IServiceCollection AddPlatformElasticsearch(
         this IServiceCollection services,
-        Action<ElasticsearchOptions>? configure = null)
+        Action<ElasticsearchOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -26,10 +27,8 @@ public static class ElasticsearchExtensions
         services.AddSingleton(opts);
         services.AddSingleton(_ => BuildClient(opts));
         services.AddSingleton<ElasticsearchSearchClient>();
-        services.AddSingleton<ISearchClient>(sp =>
-            sp.GetRequiredService<ElasticsearchSearchClient>());
-        services.AddSingleton<IIndexManager>(sp =>
-            sp.GetRequiredService<ElasticsearchSearchClient>());
+        services.AddSingleton<ISearchClient>(sp => sp.GetRequiredService<ElasticsearchSearchClient>());
+        services.AddSingleton<IIndexManager>(sp => sp.GetRequiredService<ElasticsearchSearchClient>());
 
         return services;
     }
@@ -40,8 +39,10 @@ public static class ElasticsearchExtensions
 
         if (!string.IsNullOrWhiteSpace(opts.CloudId))
         {
-            settings = new ElasticsearchClientSettings(opts.CloudId,
-                new BasicAuthentication(opts.Username ?? string.Empty, opts.Password ?? string.Empty));
+            settings = new ElasticsearchClientSettings(
+                opts.CloudId,
+                new BasicAuthentication(opts.Username ?? string.Empty, opts.Password ?? string.Empty)
+            );
         }
         else
         {
@@ -51,7 +52,8 @@ public static class ElasticsearchExtensions
             if (!string.IsNullOrEmpty(opts.Username))
             {
                 settings = settings.Authentication(
-                    new BasicAuthentication(opts.Username, opts.Password ?? string.Empty));
+                    new BasicAuthentication(opts.Username, opts.Password ?? string.Empty)
+                );
             }
         }
 

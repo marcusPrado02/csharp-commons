@@ -9,7 +9,5 @@ public sealed class NotFoundException : AppException
     /// <param name="code">Stable error code, e.g. <c>"ORDER.NOT_FOUND"</c>.</param>
     /// <param name="message">Human-readable description.</param>
     public NotFoundException(string code, string message)
-        : base(Error.NotFound(code, message))
-    {
-    }
+        : base(Error.NotFound(code, message)) { }
 }

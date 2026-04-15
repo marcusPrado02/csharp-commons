@@ -15,10 +15,7 @@ public sealed class SqsConsumer : ISqsConsumer
     /// <param name="client">The <see cref="IAmazonSQS"/> client used to receive and delete messages.</param>
     /// <param name="options">The resolved <see cref="SqsOptions"/>.</param>
     /// <param name="logger">The logger.</param>
-    public SqsConsumer(
-        IAmazonSQS client,
-        IOptions<SqsOptions> options,
-        ILogger<SqsConsumer> logger)
+    public SqsConsumer(IAmazonSQS client, IOptions<SqsOptions> options, ILogger<SqsConsumer> logger)
     {
         ArgumentNullException.ThrowIfNull(client);
         ArgumentNullException.ThrowIfNull(options);
@@ -32,7 +29,8 @@ public sealed class SqsConsumer : ISqsConsumer
     public async Task StartAsync(
         string queueUrl,
         Func<Message, CancellationToken, Task<bool>> handler,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(queueUrl);
         ArgumentNullException.ThrowIfNull(handler);
@@ -43,15 +41,18 @@ public sealed class SqsConsumer : ISqsConsumer
 
             try
             {
-                response = await _client.ReceiveMessageAsync(
-                    new ReceiveMessageRequest
-                    {
-                        QueueUrl = queueUrl,
-                        MaxNumberOfMessages = _options.MaxNumberOfMessages,
-                        WaitTimeSeconds = _options.WaitTimeSeconds,
-                        VisibilityTimeout = _options.VisibilityTimeoutSeconds,
-                    },
-                    ct).ConfigureAwait(false);
+                response = await _client
+                    .ReceiveMessageAsync(
+                        new ReceiveMessageRequest
+                        {
+                            QueueUrl = queueUrl,
+                            MaxNumberOfMessages = _options.MaxNumberOfMessages,
+                            WaitTimeSeconds = _options.WaitTimeSeconds,
+                            VisibilityTimeout = _options.VisibilityTimeoutSeconds,
+                        },
+                        ct
+                    )
+                    .ConfigureAwait(false);
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested)
             {
@@ -66,8 +67,7 @@ public sealed class SqsConsumer : ISqsConsumer
 
                     if (success)
                     {
-                        await _client.DeleteMessageAsync(queueUrl, message.ReceiptHandle, ct)
-                            .ConfigureAwait(false);
+                        await _client.DeleteMessageAsync(queueUrl, message.ReceiptHandle, ct).ConfigureAwait(false);
                     }
                 }
 #pragma warning disable CA1031 // Consumer must not surface unexpected handler exceptions; log and continue
@@ -77,7 +77,8 @@ public sealed class SqsConsumer : ISqsConsumer
                         ex,
                         "Unhandled exception processing SQS message {MessageId} from {QueueUrl}",
                         message.MessageId,
-                        queueUrl);
+                        queueUrl
+                    );
                 }
 #pragma warning restore CA1031
             }

@@ -45,7 +45,8 @@ public sealed class IdempotencyBehaviorTests
     public async Task IdempotentCommand_CacheMiss_CallsNextAndStores()
     {
         var store = Substitute.For<IIdempotencyStore>();
-        store.TryGetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        store
+            .TryGetAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<(bool, string?)>((false, null)));
 
         var behavior = new IdempotencyBehavior<IdempotentCommand, Result<string>>(store);
@@ -63,11 +64,9 @@ public sealed class IdempotencyBehaviorTests
 
         Assert.True(called);
         Assert.True(result.IsSuccess);
-        await store.Received(1).SetAsync(
-            "key-1",
-            Arg.Any<string>(),
-            TimeSpan.FromSeconds(60),
-            Arg.Any<CancellationToken>());
+        await store
+            .Received(1)
+            .SetAsync("key-1", Arg.Any<string>(), TimeSpan.FromSeconds(60), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -76,7 +75,8 @@ public sealed class IdempotencyBehaviorTests
         var store = Substitute.For<IIdempotencyStore>();
         // Use the same JSON format that SafeSerialize produces: {"s":true,"v":"cached"}
         var serialized = """{"s":true,"v":"cached"}""";
-        store.TryGetAsync("key-2", Arg.Any<CancellationToken>())
+        store
+            .TryGetAsync("key-2", Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<(bool, string?)>((true, serialized)));
 
         var behavior = new IdempotencyBehavior<IdempotentCommand, Result<string>>(store);

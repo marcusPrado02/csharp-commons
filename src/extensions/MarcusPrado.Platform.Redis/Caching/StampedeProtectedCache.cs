@@ -19,10 +19,7 @@ public sealed class StampedeProtectedCache : ICache
     /// <param name="inner">Underlying cache.</param>
     /// <param name="distributedLock">Lock provider.</param>
     /// <param name="lockTtl">TTL for stampede locks (default: 5 s).</param>
-    public StampedeProtectedCache(
-        ICache inner,
-        IDistributedLock distributedLock,
-        TimeSpan? lockTtl = null)
+    public StampedeProtectedCache(ICache inner, IDistributedLock distributedLock, TimeSpan? lockTtl = null)
     {
         ArgumentNullException.ThrowIfNull(inner);
         ArgumentNullException.ThrowIfNull(distributedLock);
@@ -33,25 +30,17 @@ public sealed class StampedeProtectedCache : ICache
 
     /// <inheritdoc/>
     public Task<T?> GetAsync<T>(string key, CancellationToken ct = default)
-        where T : class
-        => _inner.GetAsync<T>(key, ct);
+        where T : class => _inner.GetAsync<T>(key, ct);
 
     /// <inheritdoc/>
-    public Task SetAsync<T>(
-        string key,
-        T value,
-        TimeSpan? expiry = null,
-        CancellationToken ct = default)
-        where T : class
-        => _inner.SetAsync(key, value, expiry, ct);
+    public Task SetAsync<T>(string key, T value, TimeSpan? expiry = null, CancellationToken ct = default)
+        where T : class => _inner.SetAsync(key, value, expiry, ct);
 
     /// <inheritdoc/>
-    public Task RemoveAsync(string key, CancellationToken ct = default)
-        => _inner.RemoveAsync(key, ct);
+    public Task RemoveAsync(string key, CancellationToken ct = default) => _inner.RemoveAsync(key, ct);
 
     /// <inheritdoc/>
-    public Task<bool> ExistsAsync(string key, CancellationToken ct = default)
-        => _inner.ExistsAsync(key, ct);
+    public Task<bool> ExistsAsync(string key, CancellationToken ct = default) => _inner.ExistsAsync(key, ct);
 
     /// <summary>
     /// Returns the cached value for <paramref name="key"/>, or computes it via
@@ -62,7 +51,8 @@ public sealed class StampedeProtectedCache : ICache
         string key,
         Func<CancellationToken, Task<T?>> factory,
         TimeSpan? expiry = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where T : class
     {
         ArgumentNullException.ThrowIfNull(factory);
@@ -75,10 +65,7 @@ public sealed class StampedeProtectedCache : ICache
         }
 
         // Slow path — serialise callers behind a per-key lock
-        await using var handle = await _lock.AcquireAsync(
-            $"__stampede:{key}",
-            _lockTtl,
-            ct: ct);
+        await using var handle = await _lock.AcquireAsync($"__stampede:{key}", _lockTtl, ct: ct);
 
         // Double-check after acquiring the lock
         var afterLock = await _inner.GetAsync<T>(key, ct);

@@ -34,7 +34,8 @@ public static class ErrorDocumentationGenerator
         foreach (var (code, category, message) in errors)
         {
             sb.AppendLine(
-                $"| {EscapeMarkdown(code)} | {EscapeMarkdown(category.ToString())} | {EscapeMarkdown(message)} |");
+                $"| {EscapeMarkdown(code)} | {EscapeMarkdown(category.ToString())} | {EscapeMarkdown(message)} |"
+            );
         }
 
         return sb.ToString();
@@ -42,8 +43,7 @@ public static class ErrorDocumentationGenerator
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
-    private static IEnumerable<(string Code, ErrorCategory Category, string Message)> CollectErrors(
-        Type catalogType)
+    private static IEnumerable<(string Code, ErrorCategory Category, string Message)> CollectErrors(Type catalogType)
     {
         // Enumerate static readonly Error fields on the type itself.
         foreach (var field in GetErrorFields(catalogType))
@@ -66,6 +66,5 @@ public static class ErrorDocumentationGenerator
         type.GetFields(BindingFlags.Public | BindingFlags.Static)
             .Where(f => f.FieldType == typeof(Error) && f.IsInitOnly);
 
-    private static string EscapeMarkdown(string value) =>
-        value.Replace("|", "\\|", StringComparison.Ordinal);
+    private static string EscapeMarkdown(string value) => value.Replace("|", "\\|", StringComparison.Ordinal);
 }

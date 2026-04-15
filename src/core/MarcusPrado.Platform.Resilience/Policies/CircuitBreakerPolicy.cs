@@ -25,7 +25,8 @@ public sealed class CircuitBreakerPolicy
     /// <exception cref="CircuitBreakerOpenException">Thrown when the circuit is open.</exception>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         lock (_sync)
         {
@@ -33,8 +34,7 @@ public sealed class CircuitBreakerPolicy
             {
                 if (DateTime.UtcNow - _openedAt < _options.BreakDuration)
                 {
-                    throw new CircuitBreakerOpenException(
-                        $"Circuit is open. Retry after {_options.BreakDuration}.");
+                    throw new CircuitBreakerOpenException($"Circuit is open. Retry after {_options.BreakDuration}.");
                 }
 
                 _state = CircuitBreakerState.HalfOpen;
@@ -67,8 +67,7 @@ public sealed class CircuitBreakerPolicy
             lock (_sync)
             {
                 _consecutiveFailures++;
-                if (_consecutiveFailures >= _options.FailureThreshold
-                    && _state != CircuitBreakerState.Open)
+                if (_consecutiveFailures >= _options.FailureThreshold && _state != CircuitBreakerState.Open)
                 {
                     _state = CircuitBreakerState.Open;
                     _openedAt = DateTime.UtcNow;

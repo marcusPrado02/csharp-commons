@@ -11,6 +11,6 @@ public sealed class LivenessCheck : IHealthCheck
     /// <inheritdoc />
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
-        => Task.FromResult(HealthCheckResult.Healthy("Process is alive."));
+        CancellationToken cancellationToken = default
+    ) => Task.FromResult(HealthCheckResult.Healthy("Process is alive."));
 }

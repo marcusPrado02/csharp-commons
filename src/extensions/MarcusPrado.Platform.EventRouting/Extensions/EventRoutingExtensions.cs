@@ -22,7 +22,8 @@ public static class EventRoutingExtensions
     /// <returns>The <paramref name="services"/> for fluent chaining.</returns>
     public static IServiceCollection AddDomainEventRouting(
         this IServiceCollection services,
-        Action<EventHandlerPipeline>? configurePipeline = null)
+        Action<EventHandlerPipeline>? configurePipeline = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -44,8 +45,7 @@ public static class EventRoutingExtensions
     /// <typeparam name="THandler">The handler implementation.</typeparam>
     /// <param name="services">The service collection to configure.</param>
     /// <returns>The <paramref name="services"/> for fluent chaining.</returns>
-    public static IServiceCollection AddDomainEventHandler<TEvent, THandler>(
-        this IServiceCollection services)
+    public static IServiceCollection AddDomainEventHandler<TEvent, THandler>(this IServiceCollection services)
         where THandler : class, IDomainEventHandler<TEvent>
         where TEvent : MarcusPrado.Platform.Domain.Events.IDomainEvent
     {

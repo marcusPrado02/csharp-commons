@@ -9,11 +9,9 @@ public sealed class KafkaMessageSerializer : IMessageSerializer
 
     /// <inheritdoc/>
     public string Serialize<T>(T message)
-        where T : class
-        => _inner.Serialize(message);
+        where T : class => _inner.Serialize(message);
 
     /// <inheritdoc/>
     public T? Deserialize<T>(string data)
-        where T : class
-        => _inner.Deserialize<T>(data);
+        where T : class => _inner.Deserialize<T>(data);
 }

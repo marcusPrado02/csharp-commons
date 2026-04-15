@@ -23,10 +23,7 @@ public static class ChaosRunner
     ///   <item><description>Original <paramref name="action"/></description></item>
     /// </list>
     /// </remarks>
-    public static async Task RunWithChaos(
-        ChaosConfig config,
-        Func<Task> action,
-        CancellationToken ct = default)
+    public static async Task RunWithChaos(ChaosConfig config, Func<Task> action, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(config);
         ArgumentNullException.ThrowIfNull(action);

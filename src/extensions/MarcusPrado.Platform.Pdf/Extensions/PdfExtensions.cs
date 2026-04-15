@@ -13,7 +13,8 @@ public static class PdfExtensions
     /// </summary>
     public static IServiceCollection AddPlatformPdf(
         this IServiceCollection services,
-        Action<QuestPdfTemplateRegistry>? configure = null)
+        Action<QuestPdfTemplateRegistry>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

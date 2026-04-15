@@ -18,8 +18,7 @@ public static class DistributedLockServiceCollectionExtensions
     /// Requires that <see cref="IConnectionMultiplexer"/> is already registered in the DI container
     /// (e.g. via <c>AddStackExchangeRedisCache</c> or a custom registration).
     /// </remarks>
-    public static IServiceCollection AddPlatformDistributedLock(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformDistributedLock(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

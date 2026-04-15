@@ -21,14 +21,14 @@ public sealed class HangfireRecurringJobRegistrarTests
         _recurringJobManager = Substitute.For<IRecurringJobManager>();
         _sut = new HangfireRecurringJobRegistrar(
             _recurringJobManager,
-            NullLogger<HangfireRecurringJobRegistrar>.Instance);
+            NullLogger<HangfireRecurringJobRegistrar>.Instance
+        );
     }
 
     [Fact]
     public void FindAttributedTypes_FindsDecoratedJob()
     {
-        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(
-            Assembly.GetExecutingAssembly()).ToList();
+        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(Assembly.GetExecutingAssembly()).ToList();
 
         results.Should().ContainSingle(r => r.JobType == typeof(MarkedJob));
     }
@@ -36,8 +36,7 @@ public sealed class HangfireRecurringJobRegistrarTests
     [Fact]
     public void FindAttributedTypes_DoesNotFindUndecorated()
     {
-        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(
-            Assembly.GetExecutingAssembly()).ToList();
+        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(Assembly.GetExecutingAssembly()).ToList();
 
         results.Should().NotContain(r => r.JobType == typeof(UnmarkedJob));
     }
@@ -45,12 +44,9 @@ public sealed class HangfireRecurringJobRegistrarTests
     [Fact]
     public void FindAttributedTypes_ReturnsCorrectCronExpression()
     {
-        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(
-            Assembly.GetExecutingAssembly()).ToList();
+        var results = HangfireRecurringJobRegistrar.FindAttributedTypes(Assembly.GetExecutingAssembly()).ToList();
 
-        results.Single(r => r.JobType == typeof(MarkedJob))
-               .Attribute.CronExpression
-               .Should().Be("*/5 * * * *");
+        results.Single(r => r.JobType == typeof(MarkedJob)).Attribute.CronExpression.Should().Be("*/5 * * * *");
     }
 
     [Fact]
@@ -59,11 +55,14 @@ public sealed class HangfireRecurringJobRegistrarTests
         // RecurringJobManagerExtensions.AddOrUpdate<T> delegates to IRecurringJobManager.AddOrUpdate(id, job, cron, opts)
         _sut.RegisterFromAssembly(Assembly.GetExecutingAssembly());
 
-        _recurringJobManager.Received(1).AddOrUpdate(
-            Arg.Any<string>(),
-            Arg.Is<Job>(j => j.Type == typeof(MarkedJob)),
-            "*/5 * * * *",
-            Arg.Any<RecurringJobOptions>());
+        _recurringJobManager
+            .Received(1)
+            .AddOrUpdate(
+                Arg.Any<string>(),
+                Arg.Is<Job>(j => j.Type == typeof(MarkedJob)),
+                "*/5 * * * *",
+                Arg.Any<RecurringJobOptions>()
+            );
     }
 
     [Fact]
@@ -71,8 +70,7 @@ public sealed class HangfireRecurringJobRegistrarTests
     {
         var act = () => _sut.RegisterFromAssembly(null!);
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("assembly");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("assembly");
     }
 
     [Fact]
@@ -80,8 +78,7 @@ public sealed class HangfireRecurringJobRegistrarTests
     {
         var act = () => HangfireRecurringJobRegistrar.FindAttributedTypes(null!).ToList();
 
-        act.Should().Throw<ArgumentNullException>()
-            .WithParameterName("assemblies");
+        act.Should().Throw<ArgumentNullException>().WithParameterName("assemblies");
     }
 
     // ── helpers ─────────────────────────────────────────────────────────────────

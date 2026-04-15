@@ -59,5 +59,8 @@ public sealed class AesGcmEncryption : IDataEncryption, IDisposable
         return System.Text.Encoding.UTF8.GetString(plaintext);
     }
 
-    public void Dispose() { /* key is managed memory, GC handles it */ }
+    public void Dispose()
+    {
+        // key is managed memory, GC handles it
+    }
 }

@@ -12,9 +12,7 @@ public static class MongoDbExtensions
     /// Registers <see cref="IMongoClient"/>, <see cref="IMongoDatabase"/>,
     /// and <see cref="IDocumentRepository{T}"/> backed by MongoDB.
     /// </summary>
-    public static IServiceCollection AddPlatformMongoDb(
-        this IServiceCollection services,
-        DocumentStoreOptions options)
+    public static IServiceCollection AddPlatformMongoDb(this IServiceCollection services, DocumentStoreOptions options)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(options);
@@ -27,8 +25,7 @@ public static class MongoDbExtensions
                 settings.ApplicationName = options.AppName;
             return new MongoClient(settings);
         });
-        services.AddSingleton(sp =>
-            sp.GetRequiredService<IMongoClient>().GetDatabase(options.DatabaseName));
+        services.AddSingleton(sp => sp.GetRequiredService<IMongoClient>().GetDatabase(options.DatabaseName));
 
         return services;
     }
@@ -39,12 +36,14 @@ public static class MongoDbExtensions
     /// </summary>
     public static IServiceCollection AddDocumentRepository<T>(
         this IServiceCollection services,
-        string? collectionName = null)
+        string? collectionName = null
+    )
         where T : class
     {
-        services.AddSingleton<IDocumentRepository<T>>(sp =>
-            new MongoDocumentRepository<T>(
-                sp.GetRequiredService<IMongoDatabase>(), collectionName));
+        services.AddSingleton<IDocumentRepository<T>>(sp => new MongoDocumentRepository<T>(
+            sp.GetRequiredService<IMongoDatabase>(),
+            collectionName
+        ));
 
         return services;
     }

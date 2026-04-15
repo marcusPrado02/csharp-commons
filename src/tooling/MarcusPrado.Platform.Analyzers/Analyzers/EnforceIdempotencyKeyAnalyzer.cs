@@ -22,8 +22,7 @@ public sealed class EnforceIdempotencyKeyAnalyzer : DiagnosticAnalyzer
     private const string IdempotencyKeyPropertyName = "IdempotencyKey";
 
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Descriptor);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -45,8 +44,8 @@ public sealed class EnforceIdempotencyKeyAnalyzer : DiagnosticAnalyzer
         }
 
         // Check if the class (directly) declares a property named "IdempotencyKey"
-        var hasIdempotencyKey = classDecl.Members
-            .OfType<PropertyDeclarationSyntax>()
+        var hasIdempotencyKey = classDecl
+            .Members.OfType<PropertyDeclarationSyntax>()
             .Any(p => p.Identifier.Text == IdempotencyKeyPropertyName);
 
         if (hasIdempotencyKey)
@@ -54,9 +53,6 @@ public sealed class EnforceIdempotencyKeyAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(
-            Descriptor,
-            classDecl.Identifier.GetLocation(),
-            className));
+        context.ReportDiagnostic(Diagnostic.Create(Descriptor, classDecl.Identifier.GetLocation(), className));
     }
 }

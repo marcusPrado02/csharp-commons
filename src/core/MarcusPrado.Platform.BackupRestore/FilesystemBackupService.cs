@@ -18,13 +18,12 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
     public async Task<Result<BackupEntry>> CreateFullBackupAsync(
         string sourcePath,
         string backupDirectory,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         if (!Directory.Exists(sourcePath))
         {
-            return Error.Validation(
-                "BACKUP.SOURCE_NOT_FOUND",
-                $"Source directory '{sourcePath}' does not exist.");
+            return Error.Validation("BACKUP.SOURCE_NOT_FOUND", $"Source directory '{sourcePath}' does not exist.");
         }
 
         Directory.CreateDirectory(backupDirectory);
@@ -33,17 +32,28 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         var archiveName = $"{id:N}_full.zip";
         var archivePath = Path.Combine(backupDirectory, archiveName);
 
-        await ZipFile.CreateFromDirectoryAsync(
-            sourcePath,
-            archivePath,
-            CompressionLevel.Optimal,
-            includeBaseDirectory: false,
-            cancellationToken: ct).ConfigureAwait(false);
+        await ZipFile
+            .CreateFromDirectoryAsync(
+                sourcePath,
+                archivePath,
+                CompressionLevel.Optimal,
+                includeBaseDirectory: false,
+                cancellationToken: ct
+            )
+            .ConfigureAwait(false);
 
         var checksum = await ComputeChecksumAsync(archivePath, ct).ConfigureAwait(false);
         var info = new FileInfo(archivePath);
 
-        var entry = new BackupEntry(id, archivePath, BackupType.Full, DateTimeOffset.UtcNow, info.Length, checksum, sourcePath);
+        var entry = new BackupEntry(
+            id,
+            archivePath,
+            BackupType.Full,
+            DateTimeOffset.UtcNow,
+            info.Length,
+            checksum,
+            sourcePath
+        );
         await WriteMetaAsync(entry, ct).ConfigureAwait(false);
         return entry;
     }
@@ -53,13 +63,12 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         string sourcePath,
         string backupDirectory,
         DateTimeOffset since,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         if (!Directory.Exists(sourcePath))
         {
-            return Error.Validation(
-                "BACKUP.SOURCE_NOT_FOUND",
-                $"Source directory '{sourcePath}' does not exist.");
+            return Error.Validation("BACKUP.SOURCE_NOT_FOUND", $"Source directory '{sourcePath}' does not exist.");
         }
 
         var files = Directory
@@ -78,12 +87,16 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         var archiveName = $"{id:N}_incr.zip";
         var archivePath = Path.Combine(backupDirectory, archiveName);
 
-        await using (var archive = await ZipFile.OpenAsync(archivePath, ZipArchiveMode.Create, ct).ConfigureAwait(false))
+        await using (
+            var archive = await ZipFile.OpenAsync(archivePath, ZipArchiveMode.Create, ct).ConfigureAwait(false)
+        )
         {
             foreach (var file in files)
             {
                 var relative = Path.GetRelativePath(sourcePath, file);
-                await archive.CreateEntryFromFileAsync(file, relative, CompressionLevel.Optimal, ct).ConfigureAwait(false);
+                await archive
+                    .CreateEntryFromFileAsync(file, relative, CompressionLevel.Optimal, ct)
+                    .ConfigureAwait(false);
             }
         }
 
@@ -97,16 +110,15 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
             DateTimeOffset.UtcNow,
             info.Length,
             checksum,
-            sourcePath);
+            sourcePath
+        );
 
         await WriteMetaAsync(entry, ct).ConfigureAwait(false);
         return entry;
     }
 
     /// <inheritdoc />
-    public Task<IReadOnlyList<BackupEntry>> ListBackupsAsync(
-        string backupDirectory,
-        CancellationToken ct = default)
+    public Task<IReadOnlyList<BackupEntry>> ListBackupsAsync(string backupDirectory, CancellationToken ct = default)
     {
         if (!Directory.Exists(backupDirectory))
         {
@@ -138,9 +150,7 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
     }
 
     /// <inheritdoc />
-    public async Task<Result<bool>> VerifyBackupAsync(
-        BackupEntry entry,
-        CancellationToken ct = default)
+    public async Task<Result<bool>> VerifyBackupAsync(BackupEntry entry, CancellationToken ct = default)
     {
         if (!File.Exists(entry.ArchivePath))
         {
@@ -179,7 +189,9 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         }
 
         Directory.CreateDirectory(targetPath);
-        await ZipFile.ExtractToDirectoryAsync(entry.ArchivePath, targetPath, overwriteFiles: true, ct).ConfigureAwait(false);
+        await ZipFile
+            .ExtractToDirectoryAsync(entry.ArchivePath, targetPath, overwriteFiles: true, ct)
+            .ConfigureAwait(false);
         return Result.Success();
     }
 
@@ -188,7 +200,8 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         string backupDirectory,
         DateTimeOffset pointInTime,
         string targetPath,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         var backups = await ListBackupsAsync(backupDirectory, ct).ConfigureAwait(false);
         var target = backups
@@ -200,7 +213,8 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
         {
             return Error.NotFound(
                 "BACKUP.NO_BACKUP_FOR_POINT_IN_TIME",
-                $"No backup found at or before '{pointInTime:O}'.");
+                $"No backup found at or before '{pointInTime:O}'."
+            );
         }
 
         return await RestoreAsync(target, targetPath, ct).ConfigureAwait(false);
@@ -209,7 +223,8 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
     /// <inheritdoc />
     public async Task<Result<RestoreValidationResult>> ValidateRestoreAsync(
         BackupEntry entry,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         var verify = await VerifyBackupAsync(entry, ct).ConfigureAwait(false);
         if (verify.IsFailure)

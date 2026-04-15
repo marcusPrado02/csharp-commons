@@ -12,7 +12,8 @@ public static class KafkaExtensions
     /// <summary>Registers the <see cref="KafkaProducer"/> and <see cref="IMessageSerializer"/>.</summary>
     public static IServiceCollection AddPlatformKafka(
         this IServiceCollection services,
-        Action<KafkaOptions>? configure = null)
+        Action<KafkaOptions>? configure = null
+    )
     {
         var opts = new KafkaOptions();
         configure?.Invoke(opts);

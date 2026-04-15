@@ -16,10 +16,10 @@ public sealed class InMemoryIpFilterStore : IIpFilterStore
     }
 
     /// <inheritdoc/>
-    public Task<IReadOnlyList<string>> GetWhitelistAsync(CancellationToken ct = default)
-        => Task.FromResult<IReadOnlyList<string>>(_options.Whitelist.ToList());
+    public Task<IReadOnlyList<string>> GetWhitelistAsync(CancellationToken ct = default) =>
+        Task.FromResult<IReadOnlyList<string>>(_options.Whitelist.ToList());
 
     /// <inheritdoc/>
-    public Task<IReadOnlyList<string>> GetBlacklistAsync(CancellationToken ct = default)
-        => Task.FromResult<IReadOnlyList<string>>(_options.Blacklist.ToList());
+    public Task<IReadOnlyList<string>> GetBlacklistAsync(CancellationToken ct = default) =>
+        Task.FromResult<IReadOnlyList<string>>(_options.Blacklist.ToList());
 }

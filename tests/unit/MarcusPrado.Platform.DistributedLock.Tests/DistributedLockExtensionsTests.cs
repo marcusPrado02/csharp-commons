@@ -9,14 +9,19 @@ public sealed class DistributedLockExtensionsTests
         var mockHandle = Substitute.For<IAsyncDisposable>();
         var mockLock = Substitute.For<IDistributedLock>();
 
-        mockLock.AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IAsyncDisposable?>(mockHandle));
+        mockLock
+            .AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IAsyncDisposable?>(mockHandle));
 
-        await mockLock.WithLockAsync("key", TimeSpan.FromSeconds(5), async () =>
-        {
-            executed = true;
-            await Task.CompletedTask;
-        });
+        await mockLock.WithLockAsync(
+            "key",
+            TimeSpan.FromSeconds(5),
+            async () =>
+            {
+                executed = true;
+                await Task.CompletedTask;
+            }
+        );
 
         executed.Should().BeTrue();
         await mockHandle.Received(1).DisposeAsync();
@@ -26,13 +31,13 @@ public sealed class DistributedLockExtensionsTests
     public async Task WithLockAsync_WhenNotAcquired_ThrowsInvalidOperationException()
     {
         var mockLock = Substitute.For<IDistributedLock>();
-        mockLock.AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IAsyncDisposable?>(null));
+        mockLock
+            .AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IAsyncDisposable?>(null));
 
         var act = () => mockLock.WithLockAsync("busy-key", TimeSpan.FromSeconds(5), () => Task.CompletedTask);
 
-        await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*busy-key*");
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("*busy-key*");
     }
 
     [Fact]
@@ -41,11 +46,11 @@ public sealed class DistributedLockExtensionsTests
         var mockHandle = Substitute.For<IAsyncDisposable>();
         var mockLock = Substitute.For<IDistributedLock>();
 
-        mockLock.AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult<IAsyncDisposable?>(mockHandle));
+        mockLock
+            .AcquireAsync(Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IAsyncDisposable?>(mockHandle));
 
-        var result = await mockLock.WithLockAsync(
-            "key", TimeSpan.FromSeconds(5), () => Task.FromResult(42));
+        var result = await mockLock.WithLockAsync("key", TimeSpan.FromSeconds(5), () => Task.FromResult(42));
 
         result.Should().Be(42);
         await mockHandle.Received(1).DisposeAsync();

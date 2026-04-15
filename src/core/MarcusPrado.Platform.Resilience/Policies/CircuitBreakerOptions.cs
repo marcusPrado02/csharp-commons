@@ -36,5 +36,6 @@ public enum CircuitBreakerState
 public sealed class CircuitBreakerOpenException : Exception
 {
     /// <inheritdoc />
-    public CircuitBreakerOpenException(string message) : base(message) { }
+    public CircuitBreakerOpenException(string message)
+        : base(message) { }
 }

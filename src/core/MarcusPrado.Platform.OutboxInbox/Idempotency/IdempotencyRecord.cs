@@ -16,6 +16,5 @@ public sealed class IdempotencyRecord
     public string? ResultPayload { get; set; }
 
     /// <summary>Returns true if this record has not yet expired.</summary>
-    public bool IsValid(DateTimeOffset now) =>
-        ExpiresAt is null || ExpiresAt > now;
+    public bool IsValid(DateTimeOffset now) => ExpiresAt is null || ExpiresAt > now;
 }

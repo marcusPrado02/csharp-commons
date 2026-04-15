@@ -25,7 +25,9 @@ public static class HealthCommand
         {
             using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(5) };
             var response = await client.GetAsync(url).ConfigureAwait(false);
-            await Console.Out.WriteLineAsync($"{url}: {(int)response.StatusCode} {response.ReasonPhrase}").ConfigureAwait(false);
+            await Console
+                .Out.WriteLineAsync($"{url}: {(int)response.StatusCode} {response.ReasonPhrase}")
+                .ConfigureAwait(false);
             return response.IsSuccessStatusCode ? 0 : 2;
         }
         catch (HttpRequestException ex)

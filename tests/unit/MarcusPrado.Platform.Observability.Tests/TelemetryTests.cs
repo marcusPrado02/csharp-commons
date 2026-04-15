@@ -63,10 +63,7 @@ public sealed class TelemetryTests
     public async Task OtelHealthCheckPublisher_PublishAsync_DoesNotThrow()
     {
         using var publisher = new OtelHealthCheckPublisher();
-        var report = new HealthReport(
-            new Dictionary<string, HealthReportEntry>(),
-            HealthStatus.Healthy,
-            TimeSpan.Zero);
+        var report = new HealthReport(new Dictionary<string, HealthReportEntry>(), HealthStatus.Healthy, TimeSpan.Zero);
 
         var act = async () => await publisher.PublishAsync(report, CancellationToken.None);
         await act.Should().NotThrowAsync();

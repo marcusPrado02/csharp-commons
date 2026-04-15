@@ -9,8 +9,7 @@ public sealed class RsaSignatureService : ISignatureService, IDisposable
     public RsaSignatureService(RSA rsa) => _rsa = rsa;
 
     /// <summary>Creates a service with a new ephemeral RSA-2048 key.</summary>
-    public static RsaSignatureService CreateEphemeral() =>
-        new(RSA.Create(2048));
+    public static RsaSignatureService CreateEphemeral() => new(RSA.Create(2048));
 
     public string Sign(byte[] data)
     {

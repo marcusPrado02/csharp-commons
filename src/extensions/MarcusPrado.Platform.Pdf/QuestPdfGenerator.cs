@@ -32,18 +32,19 @@ public sealed class QuestPdfGenerator : IPdfGenerator
         return Task.FromResult(bytes);
     }
 
-    private static byte[] GenerateWithComposer(
-        PdfTemplate template, Action<PageDescriptor, object> composer)
+    private static byte[] GenerateWithComposer(PdfTemplate template, Action<PageDescriptor, object> composer)
     {
         var pageSize = MapPageSize(template.PageSize, template.Landscape);
 
-        return Document.Create(container =>
-            container.Page(page =>
-            {
-                page.Size(pageSize);
-                page.Margin(2, Unit.Centimetre);
-                composer(page, template.Data);
-            }))
+        return Document
+            .Create(container =>
+                container.Page(page =>
+                {
+                    page.Size(pageSize);
+                    page.Margin(2, Unit.Centimetre);
+                    composer(page, template.Data);
+                })
+            )
             .GeneratePdf();
     }
 
@@ -53,19 +54,21 @@ public sealed class QuestPdfGenerator : IPdfGenerator
 
         var pageSize = MapPageSize(template.PageSize, template.Landscape);
 
-        return Document.Create(container =>
-            container.Page(page =>
-            {
-                page.Size(pageSize);
-                page.Margin(2, Unit.Centimetre);
-                page.Content()
-                    .Column(col =>
-                    {
-                        col.Item().Text(template.TemplateName).Bold().FontSize(14);
-                        col.Item().LineHorizontal(1);
-                        col.Item().Text(json).FontSize(10);
-                    });
-            }))
+        return Document
+            .Create(container =>
+                container.Page(page =>
+                {
+                    page.Size(pageSize);
+                    page.Margin(2, Unit.Centimetre);
+                    page.Content()
+                        .Column(col =>
+                        {
+                            col.Item().Text(template.TemplateName).Bold().FontSize(14);
+                            col.Item().LineHorizontal(1);
+                            col.Item().Text(json).FontSize(10);
+                        });
+                })
+            )
             .GeneratePdf();
     }
 

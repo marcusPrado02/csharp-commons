@@ -28,7 +28,4 @@ public interface IDocumentRepository<T>
 }
 
 /// <summary>Options for connecting to a MongoDB-compatible document store.</summary>
-public sealed record DocumentStoreOptions(
-    string ConnectionString,
-    string DatabaseName,
-    string? AppName = null);
+public sealed record DocumentStoreOptions(string ConnectionString, string DatabaseName, string? AppName = null);

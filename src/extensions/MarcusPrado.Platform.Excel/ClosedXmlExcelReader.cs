@@ -10,7 +10,8 @@ public sealed class ClosedXmlExcelReader : IExcelReader
     public Task<IReadOnlyList<IReadOnlyList<string?>>> ReadAsync(
         byte[] excelBytes,
         int sheetIndex = 1,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(excelBytes);
 
@@ -24,7 +25,8 @@ public sealed class ClosedXmlExcelReader : IExcelReader
         {
             throw new ArgumentOutOfRangeException(
                 nameof(sheetIndex),
-                $"Workbook has {workbook.Worksheets.Count} sheet(s); requested index {sheetIndex}.");
+                $"Workbook has {workbook.Worksheets.Count} sheet(s); requested index {sheetIndex}."
+            );
         }
 
         var worksheet = workbook.Worksheet(sheetIndex);

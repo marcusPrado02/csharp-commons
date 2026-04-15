@@ -23,29 +23,15 @@ public static class HealthCheckExtensions
     /// <item><c>/health/detail</c> — detailed JSON report (non-production only).</item>
     /// </list>
     /// </remarks>
-    public static IApplicationBuilder UsePlatformHealthChecks(
-        this IApplicationBuilder app,
-        bool includeDetail = false)
+    public static IApplicationBuilder UsePlatformHealthChecks(this IApplicationBuilder app, bool includeDetail = false)
     {
-        app.UseHealthChecks("/health/live",
-            new HealthCheckOptions
-            {
-                Predicate = r => r.Tags.Contains("live"),
-            });
+        app.UseHealthChecks("/health/live", new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") });
 
-        app.UseHealthChecks("/health/ready",
-            new HealthCheckOptions
-            {
-                Predicate = r => r.Tags.Contains("ready"),
-            });
+        app.UseHealthChecks("/health/ready", new HealthCheckOptions { Predicate = r => r.Tags.Contains("ready") });
 
         if (includeDetail)
         {
-            app.UseHealthChecks("/health/detail",
-                new HealthCheckOptions
-                {
-                    ResponseWriter = WriteDetailedJson,
-                });
+            app.UseHealthChecks("/health/detail", new HealthCheckOptions { ResponseWriter = WriteDetailedJson });
         }
 
         return app;
@@ -54,8 +40,7 @@ public static class HealthCheckExtensions
     /// <summary>
     /// Registers the platform liveness and readiness health checks.
     /// </summary>
-    public static IServiceCollection AddPlatformHealthChecks(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformHealthChecks(this IServiceCollection services)
     {
         services
             .AddHealthChecks()
@@ -67,9 +52,7 @@ public static class HealthCheckExtensions
 
     // ── Private helpers ───────────────────────────────────────────────────────
 
-    private static async Task WriteDetailedJson(
-        HttpContext context,
-        HealthReport report)
+    private static async Task WriteDetailedJson(HttpContext context, HealthReport report)
     {
         context.Response.ContentType = "application/json";
         var result = new
@@ -82,7 +65,8 @@ public static class HealthCheckExtensions
                     status = v.Value.Status.ToString(),
                     description = v.Value.Description,
                     exception = v.Value.Exception?.Message,
-                }),
+                }
+            ),
         };
         await context.Response.WriteAsJsonAsync(result);
     }

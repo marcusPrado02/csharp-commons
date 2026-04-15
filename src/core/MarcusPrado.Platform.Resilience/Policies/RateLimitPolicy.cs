@@ -24,7 +24,8 @@ public sealed class RateLimitPolicy
     /// <exception cref="RateLimitExceededException">Thrown when the limit is exceeded.</exception>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         lock (_sync)
         {
@@ -37,8 +38,7 @@ public sealed class RateLimitPolicy
 
             if (_count >= _limit)
             {
-                throw new RateLimitExceededException(
-                    $"Rate limit ({_limit} calls per {_window}) exceeded.");
+                throw new RateLimitExceededException($"Rate limit ({_limit} calls per {_window}) exceeded.");
             }
 
             _count++;
@@ -52,5 +52,6 @@ public sealed class RateLimitPolicy
 public sealed class RateLimitExceededException : Exception
 {
     /// <inheritdoc />
-    public RateLimitExceededException(string message) : base(message) { }
+    public RateLimitExceededException(string message)
+        : base(message) { }
 }

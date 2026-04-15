@@ -18,6 +18,6 @@ public sealed class SchemaPerTenantStrategy : ITenantIsolationStrategy
     }
 
     /// <summary>Returns the <c>SET search_path = ...</c> SQL command for the tenant.</summary>
-    public static string BuildSearchPathSql(string tenantId)
-        => $"SET search_path = \"{GetSchemaName(tenantId)}\", public;";
+    public static string BuildSearchPathSql(string tenantId) =>
+        $"SET search_path = \"{GetSchemaName(tenantId)}\", public;";
 }

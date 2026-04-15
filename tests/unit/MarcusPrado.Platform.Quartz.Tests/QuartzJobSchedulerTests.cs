@@ -27,10 +27,13 @@ public sealed class QuartzJobSchedulerTests
 
         await _sut.ScheduleAsync<StubJob>("job1", trigger);
 
-        await _mockScheduler.Received(1).ScheduleJob(
-            Arg.Is<IJobDetail>(j => j.Key.Name == "job1"),
-            Arg.Any<ITrigger>(),
-            Arg.Any<CancellationToken>());
+        await _mockScheduler
+            .Received(1)
+            .ScheduleJob(
+                Arg.Is<IJobDetail>(j => j.Key.Name == "job1"),
+                Arg.Any<ITrigger>(),
+                Arg.Any<CancellationToken>()
+            );
     }
 
     [Fact]
@@ -38,9 +41,7 @@ public sealed class QuartzJobSchedulerTests
     {
         await _sut.UnscheduleAsync("job1");
 
-        await _mockScheduler.Received(1).DeleteJob(
-            Arg.Is<JobKey>(k => k.Name == "job1"),
-            Arg.Any<CancellationToken>());
+        await _mockScheduler.Received(1).DeleteJob(Arg.Is<JobKey>(k => k.Name == "job1"), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -48,9 +49,7 @@ public sealed class QuartzJobSchedulerTests
     {
         await _sut.PauseAsync("job1");
 
-        await _mockScheduler.Received(1).PauseJob(
-            Arg.Is<JobKey>(k => k.Name == "job1"),
-            Arg.Any<CancellationToken>());
+        await _mockScheduler.Received(1).PauseJob(Arg.Is<JobKey>(k => k.Name == "job1"), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -58,9 +57,7 @@ public sealed class QuartzJobSchedulerTests
     {
         await _sut.ResumeAsync("job1");
 
-        await _mockScheduler.Received(1).ResumeJob(
-            Arg.Is<JobKey>(k => k.Name == "job1"),
-            Arg.Any<CancellationToken>());
+        await _mockScheduler.Received(1).ResumeJob(Arg.Is<JobKey>(k => k.Name == "job1"), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -71,7 +68,8 @@ public sealed class QuartzJobSchedulerTests
         await _mockScheduler.ScheduleJob(
             Arg.Any<IJobDetail>(),
             Arg.Do<ITrigger>(t => capturedTrigger = t),
-            Arg.Any<CancellationToken>());
+            Arg.Any<CancellationToken>()
+        );
 
         await _sut.ScheduleAsync<StubJob>("cron-job", trigger);
 

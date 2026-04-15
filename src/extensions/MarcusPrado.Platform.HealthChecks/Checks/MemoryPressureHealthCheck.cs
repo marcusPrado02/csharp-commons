@@ -32,7 +32,8 @@ public sealed class MemoryPressureHealthCheck : IHealthCheck
     /// <inheritdoc/>
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var allocated = GC.GetTotalMemory(forceFullCollection: false);
 
@@ -45,20 +46,20 @@ public sealed class MemoryPressureHealthCheck : IHealthCheck
 
         if (allocated >= _options.UnhealthyThresholdBytes)
         {
-            return Task.FromResult(HealthCheckResult.Unhealthy(
-                $"Memory pressure critical: {allocated:N0} bytes allocated.",
-                data: data));
+            return Task.FromResult(
+                HealthCheckResult.Unhealthy($"Memory pressure critical: {allocated:N0} bytes allocated.", data: data)
+            );
         }
 
         if (allocated >= _options.DegradedThresholdBytes)
         {
-            return Task.FromResult(HealthCheckResult.Degraded(
-                $"Memory pressure elevated: {allocated:N0} bytes allocated.",
-                data: data));
+            return Task.FromResult(
+                HealthCheckResult.Degraded($"Memory pressure elevated: {allocated:N0} bytes allocated.", data: data)
+            );
         }
 
-        return Task.FromResult(HealthCheckResult.Healthy(
-            $"Memory pressure normal: {allocated:N0} bytes allocated.",
-            data: data));
+        return Task.FromResult(
+            HealthCheckResult.Healthy($"Memory pressure normal: {allocated:N0} bytes allocated.", data: data)
+        );
     }
 }

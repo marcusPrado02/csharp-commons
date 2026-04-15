@@ -4,10 +4,19 @@ namespace MarcusPrado.Platform.BackupRestore;
 public interface IBackupService
 {
     /// <summary>Creates a full backup of the given source directory.</summary>
-    Task<Result<BackupEntry>> CreateFullBackupAsync(string sourcePath, string backupDirectory, CancellationToken ct = default);
+    Task<Result<BackupEntry>> CreateFullBackupAsync(
+        string sourcePath,
+        string backupDirectory,
+        CancellationToken ct = default
+    );
 
     /// <summary>Creates an incremental backup (only files changed since last backup).</summary>
-    Task<Result<BackupEntry>> CreateIncrementalBackupAsync(string sourcePath, string backupDirectory, DateTimeOffset since, CancellationToken ct = default);
+    Task<Result<BackupEntry>> CreateIncrementalBackupAsync(
+        string sourcePath,
+        string backupDirectory,
+        DateTimeOffset since,
+        CancellationToken ct = default
+    );
 
     /// <summary>Lists all backup entries in the given directory.</summary>
     Task<IReadOnlyList<BackupEntry>> ListBackupsAsync(string backupDirectory, CancellationToken ct = default);

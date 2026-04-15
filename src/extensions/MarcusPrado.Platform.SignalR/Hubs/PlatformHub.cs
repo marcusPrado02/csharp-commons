@@ -18,7 +18,8 @@ public abstract class PlatformHub<T> : Hub<T>
     }
 
     /// <summary>Tenant ID from the connected client's claims or query string.</summary>
-    protected string? TenantId => _tenant.TenantId
+    protected string? TenantId =>
+        _tenant.TenantId
         ?? Context.User?.FindFirst("tenant_id")?.Value
         ?? Context.GetHttpContext()?.Request.Query["tenantId"].FirstOrDefault();
 

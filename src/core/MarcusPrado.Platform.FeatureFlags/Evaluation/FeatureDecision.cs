@@ -21,13 +21,29 @@ public sealed class FeatureDecision
 
     /// <summary>Creates an enabled decision.</summary>
     public static FeatureDecision Enabled(string flagKey, string reason, FeatureVariant? variant = null) =>
-        new() { IsEnabled = true, FlagKey = flagKey, Reason = reason, Variant = variant };
+        new()
+        {
+            IsEnabled = true,
+            FlagKey = flagKey,
+            Reason = reason,
+            Variant = variant,
+        };
 
     /// <summary>Creates a disabled decision.</summary>
     public static FeatureDecision Disabled(string flagKey, string reason) =>
-        new() { IsEnabled = false, FlagKey = flagKey, Reason = reason };
+        new()
+        {
+            IsEnabled = false,
+            FlagKey = flagKey,
+            Reason = reason,
+        };
 
     /// <summary>Creates a decision for a flag that was not found.</summary>
     public static FeatureDecision NotFound(string flagKey) =>
-        new() { IsEnabled = false, FlagKey = flagKey, Reason = "flag-not-found" };
+        new()
+        {
+            IsEnabled = false,
+            FlagKey = flagKey,
+            Reason = "flag-not-found",
+        };
 }

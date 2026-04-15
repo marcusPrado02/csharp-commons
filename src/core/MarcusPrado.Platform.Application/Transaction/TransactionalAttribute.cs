@@ -6,6 +6,4 @@ namespace MarcusPrado.Platform.Application.Transaction;
 /// wraps the handler invocation in <c>IUnitOfWork.BeginTransactionAsync()</c>.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public sealed class TransactionalAttribute : Attribute
-{
-}
+public sealed class TransactionalAttribute : Attribute { }

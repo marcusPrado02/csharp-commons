@@ -19,9 +19,7 @@ internal sealed class TestDbContext : AppDbContextBase
     /// <summary>Creates a <see cref="TestDbContext"/> with InMemory provider.</summary>
     public static TestDbContext CreateInMemory(string dbName = "test-db")
     {
-        var opts = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
+        var opts = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(dbName).Options;
         return new TestDbContext(opts);
     }
 
@@ -31,16 +29,12 @@ internal sealed class TestDbContext : AppDbContextBase
     /// </summary>
     public static TestDbContext CreateInMemory(string dbName, IDomainEventPublisher? publisher)
     {
-        var opts = new DbContextOptionsBuilder<TestDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
+        var opts = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase(dbName).Options;
         return new TestDbContext(opts, publisher);
     }
 
     private TestDbContext(DbContextOptions<TestDbContext> options, IDomainEventPublisher? publisher = null)
-        : base(options, publisher)
-    {
-    }
+        : base(options, publisher) { }
 
     /// <inheritdoc/>
     protected override void ConfigureModel(ModelBuilder modelBuilder)
@@ -49,14 +43,13 @@ internal sealed class TestDbContext : AppDbContextBase
         // access it via entry.Property(nameof(IAuditable.Audit)).CurrentValue.
         var auditConverter = new ValueConverter<AuditRecord, string>(
             v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-            v => JsonSerializer.Deserialize<AuditRecord>(v, (JsonSerializerOptions?)null)!);
+            v => JsonSerializer.Deserialize<AuditRecord>(v, (JsonSerializerOptions?)null)!
+        );
 
         modelBuilder.Entity<AuditableTestEntity>(e =>
         {
             e.HasKey(x => x.Id);
-            e.Property(x => x.Audit)
-             .HasConversion(auditConverter)
-             .IsRequired(false);
+            e.Property(x => x.Audit).HasConversion(auditConverter).IsRequired(false);
         });
 
         modelBuilder.Entity<DomainEventTestEntity>(e =>
@@ -78,9 +71,7 @@ internal sealed class TenantTestDbContext : AppDbContextBase
 
     public static TenantTestDbContext CreateInMemory(string dbName, ITenantContext tenantContext)
     {
-        var opts = new DbContextOptionsBuilder<TenantTestDbContext>()
-            .UseInMemoryDatabase(dbName)
-            .Options;
+        var opts = new DbContextOptionsBuilder<TenantTestDbContext>().UseInMemoryDatabase(dbName).Options;
         return new TenantTestDbContext(opts, tenantContext);
     }
 

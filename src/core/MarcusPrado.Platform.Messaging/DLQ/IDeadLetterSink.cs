@@ -6,8 +6,5 @@ namespace MarcusPrado.Platform.Messaging.DLQ;
 public interface IDeadLetterSink
 {
     /// <summary>Sends <paramref name="envelope"/> to the dead-letter queue.</summary>
-    Task SendToDeadLetterAsync(
-        MessageEnvelope envelope,
-        Exception? reason = null,
-        CancellationToken ct = default);
+    Task SendToDeadLetterAsync(MessageEnvelope envelope, Exception? reason = null, CancellationToken ct = default);
 }

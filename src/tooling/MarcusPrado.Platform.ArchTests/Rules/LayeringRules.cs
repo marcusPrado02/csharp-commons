@@ -25,15 +25,19 @@ public sealed class LayeringRules
     {
         var platformRefs = GetPlatformReferences(KnownAssemblies.Abstractions);
 
-        platformRefs.Should().BeEmpty(
-            because: "Abstractions is the foundational layer; it must not "
-            + "depend on any other MarcusPrado.Platform.* assembly (ABS-01)");
+        platformRefs
+            .Should()
+            .BeEmpty(
+                because: "Abstractions is the foundational layer; it must not "
+                    + "depend on any other MarcusPrado.Platform.* assembly (ABS-01)"
+            );
     }
 
     [Fact]
     public void Abstractions_ShouldNotDependOnEfCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Abstractions)
+        var result = Types
+            .InAssembly(KnownAssemblies.Abstractions)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.EfCore)
             .GetResult();
@@ -44,7 +48,8 @@ public sealed class LayeringRules
     [Fact]
     public void Abstractions_ShouldNotDependOnAspNetCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Abstractions)
+        var result = Types
+            .InAssembly(KnownAssemblies.Abstractions)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.AspNetCore)
             .GetResult();
@@ -57,23 +62,24 @@ public sealed class LayeringRules
     [Fact]
     public void Domain_ShouldOnlyDependOnAbstractions_WithinPlatform()
     {
-        var allowedPlatformRefs = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "MarcusPrado.Platform.Abstractions",
-        };
+        var allowedPlatformRefs = new HashSet<string>(StringComparer.Ordinal) { "MarcusPrado.Platform.Abstractions" };
 
         var platformRefs = GetPlatformReferences(KnownAssemblies.Domain);
         var violations = platformRefs.Except(allowedPlatformRefs).ToList();
 
-        violations.Should().BeEmpty(
-            because: $"Domain may only depend on Abstractions within the platform (DOM-01). "
-            + $"Unexpected references: [{string.Join(", ", violations)}]");
+        violations
+            .Should()
+            .BeEmpty(
+                because: $"Domain may only depend on Abstractions within the platform (DOM-01). "
+                    + $"Unexpected references: [{string.Join(", ", violations)}]"
+            );
     }
 
     [Fact]
     public void Domain_ShouldNotDependOnApplication()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn("MarcusPrado.Platform.Application")
             .GetResult();
@@ -101,19 +107,22 @@ public sealed class LayeringRules
 
         var appRefs = GetAllReferences(KnownAssemblies.Application);
         var violations = appRefs
-            .Where(r => extensionPrefixes.Any(p =>
-                r.StartsWith(p, StringComparison.Ordinal)))
+            .Where(r => extensionPrefixes.Any(p => r.StartsWith(p, StringComparison.Ordinal)))
             .ToList();
 
-        violations.Should().BeEmpty(
-            because: "Application must not reference Extensions (APP-02). "
-            + $"Violations: [{string.Join(", ", violations)}]");
+        violations
+            .Should()
+            .BeEmpty(
+                because: "Application must not reference Extensions (APP-02). "
+                    + $"Violations: [{string.Join(", ", violations)}]"
+            );
     }
 
     [Fact]
     public void Application_ShouldNotDependOnEfCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Application)
+        var result = Types
+            .InAssembly(KnownAssemblies.Application)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.EfCore)
             .GetResult();
@@ -124,7 +133,8 @@ public sealed class LayeringRules
     [Fact]
     public void Application_ShouldNotDependOnAspNetCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Application)
+        var result = Types
+            .InAssembly(KnownAssemblies.Application)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.AspNetCore)
             .GetResult();
@@ -137,7 +147,8 @@ public sealed class LayeringRules
     [Fact]
     public void Contracts_ShouldNotDependOnEfCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Contracts)
+        var result = Types
+            .InAssembly(KnownAssemblies.Contracts)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.EfCore)
             .GetResult();
@@ -148,7 +159,8 @@ public sealed class LayeringRules
     [Fact]
     public void Contracts_ShouldNotDependOnAspNetCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Contracts)
+        var result = Types
+            .InAssembly(KnownAssemblies.Contracts)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.AspNetCore)
             .GetResult();
@@ -159,22 +171,19 @@ public sealed class LayeringRules
     // ── Helpers ────────────────────────────────────────────────────────
 
     private static List<string> GetPlatformReferences(Assembly assembly) =>
-        assembly.GetReferencedAssemblies()
+        assembly
+            .GetReferencedAssemblies()
             .Select(r => r.Name!)
             .Where(n => n.StartsWith("MarcusPrado.Platform.", StringComparison.Ordinal))
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToList();
 
     private static List<string> GetAllReferences(Assembly assembly) =>
-        assembly.GetReferencedAssemblies()
-            .Select(r => r.Name!)
-            .OrderBy(n => n, StringComparer.Ordinal)
-            .ToList();
+        assembly.GetReferencedAssemblies().Select(r => r.Name!).OrderBy(n => n, StringComparer.Ordinal).ToList();
 
     private static void AssertSuccess(TestResult result, string reason)
     {
         var failing = string.Join(", ", result.FailingTypeNames ?? []);
-        result.IsSuccessful.Should().BeTrue(
-            because: $"{reason} Failing types: [{failing}]");
+        result.IsSuccessful.Should().BeTrue(because: $"{reason} Failing types: [{failing}]");
     }
 }

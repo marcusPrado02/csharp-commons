@@ -7,8 +7,10 @@ namespace MarcusPrado.Platform.Resilience.Overload;
 public sealed class OverloadException : Exception
 {
     /// <inheritdoc />
-    public OverloadException(string message) : base(message) { }
+    public OverloadException(string message)
+        : base(message) { }
 
     /// <inheritdoc />
-    public OverloadException(string message, Exception inner) : base(message, inner) { }
+    public OverloadException(string message, Exception inner)
+        : base(message, inner) { }
 }

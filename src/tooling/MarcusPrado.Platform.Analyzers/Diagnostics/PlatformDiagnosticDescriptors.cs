@@ -18,7 +18,8 @@ public static class PlatformDiagnosticDescriptors
         category: ArchitectureCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Domain projects must remain persistence-ignorant. Remove any EF Core references from domain code.");
+        description: "Domain projects must remain persistence-ignorant. Remove any EF Core references from domain code."
+    );
 
     /// <summary>PLATFORM002 — ASP.NET Core types must not be used in Domain projects.</summary>
     public static readonly DiagnosticDescriptor NoAspNetInDomain = new DiagnosticDescriptor(
@@ -28,7 +29,8 @@ public static class PlatformDiagnosticDescriptors
         category: ArchitectureCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Domain projects must remain framework-agnostic. Remove any ASP.NET Core references from domain code.");
+        description: "Domain projects must remain framework-agnostic. Remove any ASP.NET Core references from domain code."
+    );
 
     /// <summary>PLATFORM003 — Domain assemblies must not reference infrastructure namespaces.</summary>
     public static readonly DiagnosticDescriptor DomainNoInfraReference = new DiagnosticDescriptor(
@@ -38,7 +40,8 @@ public static class PlatformDiagnosticDescriptors
         category: ArchitectureCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Domain assemblies must not depend on infrastructure concerns such as EF Core or Npgsql.");
+        description: "Domain assemblies must not depend on infrastructure concerns such as EF Core or Npgsql."
+    );
 
     /// <summary>PLATFORM004 — Public methods in the application layer should return Result or Task of Result.</summary>
     public static readonly DiagnosticDescriptor EnforceResultType = new DiagnosticDescriptor(
@@ -48,7 +51,8 @@ public static class PlatformDiagnosticDescriptors
         category: DesignCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Public methods in application layer classes should return Result<T> or Task<Result<T>> instead of void or bare Task.");
+        description: "Public methods in application layer classes should return Result<T> or Task<Result<T>> instead of void or bare Task."
+    );
 
     /// <summary>PLATFORM005 — Command types must have an IdempotencyKey property.</summary>
     public static readonly DiagnosticDescriptor EnforceIdempotencyKey = new DiagnosticDescriptor(
@@ -58,5 +62,6 @@ public static class PlatformDiagnosticDescriptors
         category: DesignCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: "Command handler inputs must expose an IdempotencyKey property to enable safe retry semantics.");
+        description: "Command handler inputs must expose an IdempotencyKey property to enable safe retry semantics."
+    );
 }

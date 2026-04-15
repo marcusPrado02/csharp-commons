@@ -5,4 +5,5 @@ public sealed record EventSnapshot<TState>(
     string StreamId,
     long SequenceNumber,
     TState State,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt
+);

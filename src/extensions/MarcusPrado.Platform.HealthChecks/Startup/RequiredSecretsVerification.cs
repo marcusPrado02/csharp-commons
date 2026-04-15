@@ -31,9 +31,7 @@ public sealed class RequiredSecretsVerification : IStartupVerification
     /// <inheritdoc/>
     public Task<VerificationResult> VerifyAsync(CancellationToken ct)
     {
-        var missing = _requiredKeys
-            .Where(k => string.IsNullOrEmpty(_configuration[k]))
-            .ToList();
+        var missing = _requiredKeys.Where(k => string.IsNullOrEmpty(_configuration[k])).ToList();
 
         if (missing.Count == 0)
             return Task.FromResult(new VerificationResult(true, Name, null));

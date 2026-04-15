@@ -4,6 +4,4 @@ namespace MarcusPrado.Platform.Abstractions.Execution;
 /// Combined dispatcher that exposes both command and query dispatch.
 /// The concrete implementation lives in <c>MarcusPrado.Platform.Application</c>.
 /// </summary>
-public interface IDispatcher : ICommandBus, IQueryBus
-{
-}
+public interface IDispatcher : ICommandBus, IQueryBus { }

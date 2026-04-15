@@ -14,7 +14,11 @@ public sealed class EnvironmentFeatureFlagProvider : IFeatureFlagProvider
     private const string Prefix = "FEATURE__";
 
     /// <inheritdoc/>
-    public Task<FeatureDecision> EvaluateAsync(string flagKey, FeatureFlagContext context, CancellationToken ct = default)
+    public Task<FeatureDecision> EvaluateAsync(
+        string flagKey,
+        FeatureFlagContext context,
+        CancellationToken ct = default
+    )
     {
         var envKey = Prefix + flagKey.Replace("-", "_", StringComparison.Ordinal).ToUpperInvariant();
         var value = Environment.GetEnvironmentVariable(envKey);
@@ -26,16 +30,21 @@ public sealed class EnvironmentFeatureFlagProvider : IFeatureFlagProvider
 
         if (bool.TryParse(value, out var enabled))
         {
-            return Task.FromResult(enabled
-                ? FeatureDecision.Enabled(flagKey, "env-boolean")
-                : FeatureDecision.Disabled(flagKey, "env-boolean"));
+            return Task.FromResult(
+                enabled
+                    ? FeatureDecision.Enabled(flagKey, "env-boolean")
+                    : FeatureDecision.Disabled(flagKey, "env-boolean")
+            );
         }
 
-        if (double.TryParse(
-            value,
-            System.Globalization.NumberStyles.Number,
-            System.Globalization.CultureInfo.InvariantCulture,
-            out var pct))
+        if (
+            double.TryParse(
+                value,
+                System.Globalization.NumberStyles.Number,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out var pct
+            )
+        )
         {
             var flag = new FeatureFlag
             {

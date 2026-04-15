@@ -21,7 +21,8 @@ public static class DlqExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddPlatformDlqReprocessing(
         this IServiceCollection services,
-        Action<DlqOptions>? configure = null)
+        Action<DlqOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

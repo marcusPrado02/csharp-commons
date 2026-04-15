@@ -23,13 +23,11 @@ public sealed class HttpContextResolverContext : IPlatformResolverContext
 
     /// <inheritdoc />
     public string? TenantId =>
-        Context?.User.FindFirstValue("tenant_id")
-        ?? Context?.Request.Headers["X-Tenant-Id"].FirstOrDefault();
+        Context?.User.FindFirstValue("tenant_id") ?? Context?.Request.Headers["X-Tenant-Id"].FirstOrDefault();
 
     /// <inheritdoc />
     public string? UserId =>
-        Context?.User.FindFirstValue(ClaimTypes.NameIdentifier)
-        ?? Context?.User.FindFirstValue("sub");
+        Context?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? Context?.User.FindFirstValue("sub");
 
     /// <inheritdoc />
     public string? CorrelationId =>
@@ -37,6 +35,5 @@ public sealed class HttpContextResolverContext : IPlatformResolverContext
         ?? Context?.Request.Headers["X-Request-Id"].FirstOrDefault();
 
     /// <inheritdoc />
-    public bool IsAuthenticated =>
-        Context?.User.Identity?.IsAuthenticated ?? false;
+    public bool IsAuthenticated => Context?.User.Identity?.IsAuthenticated ?? false;
 }

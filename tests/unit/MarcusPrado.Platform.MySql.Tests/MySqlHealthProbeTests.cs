@@ -3,18 +3,14 @@ namespace MarcusPrado.Platform.MySql.Tests;
 public sealed class MySqlHealthProbeTests
 {
     private static HealthCheckContext MakeContext(IHealthCheck probe) =>
-        new()
-        {
-            Registration = new HealthCheckRegistration("mysql", probe, failureStatus: null, tags: null)
-        };
+        new() { Registration = new HealthCheckRegistration("mysql", probe, failureStatus: null, tags: null) };
 
     [Fact]
     public async Task CheckHealthAsync_WhenFactorySucceeds_ReturnsHealthy()
     {
         var mockConn = Substitute.For<IDbConnection>();
         var mockFactory = Substitute.For<IMySqlConnectionFactory>();
-        mockFactory.CreateOpenConnectionAsync(Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(mockConn));
+        mockFactory.CreateOpenConnectionAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult(mockConn));
 
         var probe = new MySqlHealthProbe(mockFactory);
         var ctx = MakeContext(probe);
@@ -29,9 +25,11 @@ public sealed class MySqlHealthProbeTests
     public async Task CheckHealthAsync_WhenFactoryThrows_ReturnsUnhealthy()
     {
         var mockFactory = Substitute.For<IMySqlConnectionFactory>();
-        mockFactory.CreateOpenConnectionAsync(Arg.Any<CancellationToken>())
-            .Returns<Task<IDbConnection>>(Task.FromException<IDbConnection>(
-                new InvalidOperationException("connection refused")));
+        mockFactory
+            .CreateOpenConnectionAsync(Arg.Any<CancellationToken>())
+            .Returns<Task<IDbConnection>>(
+                Task.FromException<IDbConnection>(new InvalidOperationException("connection refused"))
+            );
 
         var probe = new MySqlHealthProbe(mockFactory);
         var ctx = MakeContext(probe);
@@ -50,9 +48,11 @@ public sealed class MySqlHealthProbeTests
         await cts.CancelAsync();
 
         var mockFactory = Substitute.For<IMySqlConnectionFactory>();
-        mockFactory.CreateOpenConnectionAsync(Arg.Any<CancellationToken>())
+        mockFactory
+            .CreateOpenConnectionAsync(Arg.Any<CancellationToken>())
             .Returns<Task<IDbConnection>>(callInfo =>
-                Task.FromException<IDbConnection>(new OperationCanceledException(cts.Token)));
+                Task.FromException<IDbConnection>(new OperationCanceledException(cts.Token))
+            );
 
         var probe = new MySqlHealthProbe(mockFactory);
         var ctx = MakeContext(probe);

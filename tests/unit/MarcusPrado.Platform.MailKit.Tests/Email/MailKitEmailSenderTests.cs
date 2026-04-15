@@ -17,8 +17,12 @@ public sealed class MailKitEmailSenderTests
     public async Task SendAsync_WhenSmtpThrows_ReturnsFailureResult()
     {
         var smtp = Substitute.For<ISmtpClient>();
-        smtp.ConnectAsync(Arg.Any<string>(), Arg.Any<int>(),
-                Arg.Any<SecureSocketOptions>(), Arg.Any<CancellationToken>())
+        smtp.ConnectAsync(
+                Arg.Any<string>(),
+                Arg.Any<int>(),
+                Arg.Any<SecureSocketOptions>(),
+                Arg.Any<CancellationToken>()
+            )
             .Returns(x => throw new InvalidOperationException("SMTP unavailable"));
 
         var sender = BuildSender(smtp);
@@ -39,8 +43,7 @@ public sealed class MailKitEmailSenderTests
         var result = await sender.SendBulkAsync(Array.Empty<EmailMessage>());
 
         result.Success.Should().BeTrue();
-        await smtp.DidNotReceiveWithAnyArgs()
-            .ConnectAsync(default!, default, default(SecureSocketOptions), default);
+        await smtp.DidNotReceiveWithAnyArgs().ConnectAsync(default!, default, default(SecureSocketOptions), default);
     }
 
     [Fact]
@@ -79,8 +82,7 @@ public sealed class SimpleTemplateRendererTests
         var opts = new MailKitOptions { TemplateDirectory = Path.GetTempPath() };
         var renderer = new SimpleTemplateRenderer(opts);
 
-        await Assert.ThrowsAsync<FileNotFoundException>(
-            () => renderer.RenderAsync("nonexistent", new { }));
+        await Assert.ThrowsAsync<FileNotFoundException>(() => renderer.RenderAsync("nonexistent", new { }));
     }
 }
 
@@ -94,9 +96,11 @@ public sealed class MailKitExtensionsTests
         var sp = services.BuildServiceProvider();
 
         sp.GetRequiredService<MarcusPrado.Platform.Abstractions.Email.IEmailSender>()
-            .Should().BeOfType<MailKitEmailSender>();
+            .Should()
+            .BeOfType<MailKitEmailSender>();
         sp.GetRequiredService<MarcusPrado.Platform.Abstractions.Email.IEmailTemplateRenderer>()
-            .Should().BeOfType<SimpleTemplateRenderer>();
+            .Should()
+            .BeOfType<SimpleTemplateRenderer>();
     }
 }
 

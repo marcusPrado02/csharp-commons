@@ -21,14 +21,15 @@ public static class DistributedLockExtensions
         string key,
         TimeSpan expiry,
         Func<Task> action,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(@lock);
         ArgumentNullException.ThrowIfNull(action);
 
-        var handle = await @lock.AcquireAsync(key, expiry, ct).ConfigureAwait(false)
-            ?? throw new InvalidOperationException(
-                $"Could not acquire distributed lock for key '{key}'.");
+        var handle =
+            await @lock.AcquireAsync(key, expiry, ct).ConfigureAwait(false)
+            ?? throw new InvalidOperationException($"Could not acquire distributed lock for key '{key}'.");
 
         await using (handle)
         {
@@ -56,14 +57,15 @@ public static class DistributedLockExtensions
         string key,
         TimeSpan expiry,
         Func<Task<TResult>> func,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(@lock);
         ArgumentNullException.ThrowIfNull(func);
 
-        var handle = await @lock.AcquireAsync(key, expiry, ct).ConfigureAwait(false)
-            ?? throw new InvalidOperationException(
-                $"Could not acquire distributed lock for key '{key}'.");
+        var handle =
+            await @lock.AcquireAsync(key, expiry, ct).ConfigureAwait(false)
+            ?? throw new InvalidOperationException($"Could not acquire distributed lock for key '{key}'.");
 
         await using (handle)
         {

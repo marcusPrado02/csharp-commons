@@ -41,7 +41,12 @@ public sealed class EfInboxStoreAdditionalTests : IDisposable
     [Fact]
     public async Task SaveAsync_DefaultStateIsPending()
     {
-        var msg = new InboxMessage { MessageId = Guid.NewGuid().ToString(), EventType = "e", Payload = "{}" };
+        var msg = new InboxMessage
+        {
+            MessageId = Guid.NewGuid().ToString(),
+            EventType = "e",
+            Payload = "{}",
+        };
         await _store.SaveAsync(msg);
 
         var saved = await _ctx.InboxMessages.FirstAsync(m => m.Id == msg.Id);

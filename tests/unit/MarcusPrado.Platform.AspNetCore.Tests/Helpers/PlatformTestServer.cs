@@ -51,16 +51,13 @@ internal static class PlatformTestServer
                             break;
 
                         case "/correlation":
-                            var correlCtx = ctx.RequestServices
-                                .GetRequiredService<ICorrelationContext>();
+                            var correlCtx = ctx.RequestServices.GetRequiredService<ICorrelationContext>();
                             ctx.Response.StatusCode = 200;
-                            await ctx.Response.WriteAsync(
-                                $"{correlCtx.CorrelationId}|{correlCtx.RequestId}");
+                            await ctx.Response.WriteAsync($"{correlCtx.CorrelationId}|{correlCtx.RequestId}");
                             break;
 
                         case "/tenant":
-                            var tenantCtx = ctx.RequestServices
-                                .GetRequiredService<ITenantContext>();
+                            var tenantCtx = ctx.RequestServices.GetRequiredService<ITenantContext>();
                             ctx.Response.StatusCode = 200;
                             await ctx.Response.WriteAsync(tenantCtx.TenantId ?? "null");
                             break;
@@ -102,8 +99,7 @@ internal static class PlatformTestServer
     /// Creates a <see cref="TestServer"/> with custom <see cref="Security.SecurityHeadersOptions"/>
     /// so individual header-toggle tests can be isolated.
     /// </summary>
-    internal static TestServer CreateWithSecurityOptions(
-        Action<Security.SecurityHeadersOptions>? configure = null)
+    internal static TestServer CreateWithSecurityOptions(Action<Security.SecurityHeadersOptions>? configure = null)
     {
         var builder = new WebHostBuilder()
             .UseEnvironment("Test")

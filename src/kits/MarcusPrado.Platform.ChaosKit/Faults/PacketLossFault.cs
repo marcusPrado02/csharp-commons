@@ -33,7 +33,8 @@ public sealed class PacketLossFault
     public async Task InjectAsync(
         Func<Task> action,
         Action<bool> onResult,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ArgumentNullException.ThrowIfNull(action);
         ArgumentNullException.ThrowIfNull(onResult);

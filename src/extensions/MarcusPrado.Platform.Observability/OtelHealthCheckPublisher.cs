@@ -13,7 +13,8 @@ public sealed class OtelHealthCheckPublisher : IHealthCheckPublisher, IDisposabl
             "platform.health.status",
             () => (int)(_lastReport?.Status ?? HealthStatus.Healthy),
             "status",
-            "Health check status: 2=Healthy, 1=Degraded, 0=Unhealthy");
+            "Health check status: 2=Healthy, 1=Degraded, 0=Unhealthy"
+        );
     }
 
     public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)

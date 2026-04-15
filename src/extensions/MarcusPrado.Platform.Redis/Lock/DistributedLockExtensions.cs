@@ -12,7 +12,8 @@ public static class DistributedLockExtensions
         string key,
         TimeSpan ttl,
         Func<Task> action,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(@lock);
         ArgumentNullException.ThrowIfNull(action);
@@ -30,7 +31,8 @@ public static class DistributedLockExtensions
         string key,
         TimeSpan ttl,
         Func<Task<TResult>> func,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(@lock);
         ArgumentNullException.ThrowIfNull(func);

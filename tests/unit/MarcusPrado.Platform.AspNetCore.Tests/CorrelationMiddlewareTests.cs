@@ -26,10 +26,12 @@ public sealed class CorrelationMiddlewareTests
         var response = await client.SendAsync(request);
 
         response.Headers.TryGetValues(CorrelationIdHeader, out var values);
-        values.Should().NotBeNull()
+        values
+            .Should()
+            .NotBeNull()
             .And.ContainSingle()
-            .Which.Should().Be(expectedId,
-                because: "the correlation ID from the request header must be echoed in the response");
+            .Which.Should()
+            .Be(expectedId, because: "the correlation ID from the request header must be echoed in the response");
     }
 
     [Fact]
@@ -42,8 +44,9 @@ public sealed class CorrelationMiddlewareTests
 
         response.Headers.TryGetValues(CorrelationIdHeader, out var values);
         var correlationId = values?.FirstOrDefault();
-        correlationId.Should().NotBeNullOrWhiteSpace(
-            because: "a correlation ID must always be present in the response");
+        correlationId
+            .Should()
+            .NotBeNullOrWhiteSpace(because: "a correlation ID must always be present in the response");
     }
 
     // ── X-Request-ID ──────────────────────────────────────────────────────────
@@ -61,10 +64,12 @@ public sealed class CorrelationMiddlewareTests
         var response = await client.SendAsync(request);
 
         response.Headers.TryGetValues(RequestIdHeader, out var values);
-        values.Should().NotBeNull()
+        values
+            .Should()
+            .NotBeNull()
             .And.ContainSingle()
-            .Which.Should().Be(expectedId,
-                because: "the request ID from the request header must be echoed in the response");
+            .Which.Should()
+            .Be(expectedId, because: "the request ID from the request header must be echoed in the response");
     }
 
     [Fact]
@@ -77,8 +82,7 @@ public sealed class CorrelationMiddlewareTests
 
         response.Headers.TryGetValues(RequestIdHeader, out var values);
         var requestId = values?.FirstOrDefault();
-        requestId.Should().NotBeNullOrWhiteSpace(
-            because: "a request ID must always be present in the response");
+        requestId.Should().NotBeNullOrWhiteSpace(because: "a request ID must always be present in the response");
     }
 
     // ── ICorrelationContext ───────────────────────────────────────────────────
@@ -99,7 +103,10 @@ public sealed class CorrelationMiddlewareTests
         var response = await client.SendAsync(request);
         var body = await response.Content.ReadAsStringAsync();
 
-        body.Should().Be($"{correlationId}|{requestId}",
-            because: "ICorrelationContext must be populated with the same IDs as the headers");
+        body.Should()
+            .Be(
+                $"{correlationId}|{requestId}",
+                because: "ICorrelationContext must be populated with the same IDs as the headers"
+            );
     }
 }

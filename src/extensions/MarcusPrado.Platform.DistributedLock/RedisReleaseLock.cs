@@ -10,11 +10,11 @@ internal sealed class RedisReleaseLock : IAsyncDisposable
 {
     // Lua: DEL only when GET matches token (atomic compare-and-delete)
     private const string ReleaseLua =
-        "if redis.call(\"GET\", KEYS[1]) == ARGV[1] then\n" +
-        "    return redis.call(\"DEL\", KEYS[1])\n" +
-        "else\n" +
-        "    return 0\n" +
-        "end";
+        "if redis.call(\"GET\", KEYS[1]) == ARGV[1] then\n"
+        + "    return redis.call(\"DEL\", KEYS[1])\n"
+        + "else\n"
+        + "    return 0\n"
+        + "end";
 
     private readonly IDatabase _db;
     private readonly string _key;
@@ -54,10 +54,7 @@ internal sealed class RedisReleaseLock : IAsyncDisposable
     {
         if (Interlocked.Exchange(ref _released, 1) == 0)
         {
-            await _db.ScriptEvaluateAsync(
-                ReleaseLua,
-                [(RedisKey)_key],
-                [(RedisValue)_token]).ConfigureAwait(false);
+            await _db.ScriptEvaluateAsync(ReleaseLua, [(RedisKey)_key], [(RedisValue)_token]).ConfigureAwait(false);
         }
     }
 }

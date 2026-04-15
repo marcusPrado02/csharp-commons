@@ -6,10 +6,7 @@ namespace MarcusPrado.Platform.HotChocolate.Errors;
 public sealed class GraphQlError : IGraphQlError
 {
     /// <summary>Initializes a new <see cref="GraphQlError"/>.</summary>
-    public GraphQlError(
-        string message,
-        string? code = null,
-        IReadOnlyDictionary<string, object?>? extensions = null)
+    public GraphQlError(string message, string? code = null, IReadOnlyDictionary<string, object?>? extensions = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(message);
         Message = message;

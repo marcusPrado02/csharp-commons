@@ -29,11 +29,9 @@ public sealed class InMemoryIdempotencyStoreTests
     public async Task ExpiredRecord_IsIgnored()
     {
         var key = new IdempotencyKey("op:3");
-        await _store.SetAsync(new IdempotencyRecord
-        {
-            Key = key.Value,
-            ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(-1),
-        });
+        await _store.SetAsync(
+            new IdempotencyRecord { Key = key.Value, ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(-1) }
+        );
 
         var exists = await _store.ExistsAsync(key);
 

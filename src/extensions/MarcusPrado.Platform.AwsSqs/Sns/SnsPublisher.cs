@@ -20,8 +20,8 @@ public sealed class SnsPublisher : ISnsPublisher
     }
 
     /// <inheritdoc/>
-    public Task PublishAsync<T>(string topicArn, T message, CancellationToken ct = default)
-        => PublishAsync(topicArn, message, subject: string.Empty, ct);
+    public Task PublishAsync<T>(string topicArn, T message, CancellationToken ct = default) =>
+        PublishAsync(topicArn, message, subject: string.Empty, ct);
 
     /// <inheritdoc/>
     public async Task PublishAsync<T>(string topicArn, T message, string subject, CancellationToken ct = default)
@@ -32,11 +32,7 @@ public sealed class SnsPublisher : ISnsPublisher
 
         var json = JsonSerializer.Serialize(message);
 
-        var request = new PublishRequest
-        {
-            TopicArn = topicArn,
-            Message = json,
-        };
+        var request = new PublishRequest { TopicArn = topicArn, Message = json };
 
         if (!string.IsNullOrEmpty(subject))
         {

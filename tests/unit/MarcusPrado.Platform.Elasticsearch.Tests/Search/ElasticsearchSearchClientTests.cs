@@ -69,8 +69,7 @@ public sealed class ElasticsearchSearchClientTests
         var settings = new ElasticsearchClientSettings(new Uri("http://localhost:9200"));
         var client = new ElasticsearchSearchClient(new ElasticsearchClient(settings));
 
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            () => client.SearchAsync<object>(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => client.SearchAsync<object>(null!));
     }
 }
 
@@ -84,10 +83,8 @@ public sealed class ElasticsearchExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<ISearchClient>()
-            .Should().BeOfType<ElasticsearchSearchClient>();
-        sp.GetRequiredService<IIndexManager>()
-            .Should().BeOfType<ElasticsearchSearchClient>();
+        sp.GetRequiredService<ISearchClient>().Should().BeOfType<ElasticsearchSearchClient>();
+        sp.GetRequiredService<IIndexManager>().Should().BeOfType<ElasticsearchSearchClient>();
     }
 
     [Fact]

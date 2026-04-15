@@ -17,8 +17,7 @@ public sealed class StripeSubscriptionService : AbsPayment.ISubscriptionService
     }
 
     /// <inheritdoc />
-    public async Task<AbsPayment.Subscription> CreateAsync(
-        SubscriptionRequest request, CancellationToken ct = default)
+    public async Task<AbsPayment.Subscription> CreateAsync(SubscriptionRequest request, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -29,41 +28,31 @@ public sealed class StripeSubscriptionService : AbsPayment.ISubscriptionService
             Description = request.Description,
         };
 
-        var sub = await _subscriptions.CreateAsync(options, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var sub = await _subscriptions.CreateAsync(options, cancellationToken: ct).ConfigureAwait(false);
 
         return MapSubscription(sub);
     }
 
     /// <inheritdoc />
-    public async Task<AbsPayment.Subscription> CancelAsync(
-        string subscriptionId, CancellationToken ct = default)
+    public async Task<AbsPayment.Subscription> CancelAsync(string subscriptionId, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(subscriptionId);
 
-        var sub = await _subscriptions.CancelAsync(subscriptionId, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var sub = await _subscriptions.CancelAsync(subscriptionId, cancellationToken: ct).ConfigureAwait(false);
 
         return MapSubscription(sub);
     }
 
     /// <inheritdoc />
-    public async Task<AbsPayment.Subscription> GetAsync(
-        string subscriptionId, CancellationToken ct = default)
+    public async Task<AbsPayment.Subscription> GetAsync(string subscriptionId, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(subscriptionId);
 
-        var sub = await _subscriptions.GetAsync(subscriptionId, cancellationToken: ct)
-            .ConfigureAwait(false);
+        var sub = await _subscriptions.GetAsync(subscriptionId, cancellationToken: ct).ConfigureAwait(false);
 
         return MapSubscription(sub);
     }
 
     private static AbsPayment.Subscription MapSubscription(global::Stripe.Subscription sub) =>
-        new(
-            sub.Id,
-            sub.CustomerId,
-            sub.Status,
-            sub.Created,
-            sub.CanceledAt);
+        new(sub.Id, sub.CustomerId, sub.Status, sub.Created, sub.CanceledAt);
 }

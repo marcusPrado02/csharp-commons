@@ -28,8 +28,7 @@ public sealed class MongoDocumentRepository<T> : IDocumentRepository<T>
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
 
         var filter = Builders<DocumentEnvelope<T>>.Filter.Eq(e => e.Id, id);
-        var envelope = await _collection.Find(filter).FirstOrDefaultAsync(ct)
-            .ConfigureAwait(false);
+        var envelope = await _collection.Find(filter).FirstOrDefaultAsync(ct).ConfigureAwait(false);
 
         return envelope?.Data;
     }
@@ -37,15 +36,16 @@ public sealed class MongoDocumentRepository<T> : IDocumentRepository<T>
     /// <inheritdoc />
     public async Task<IReadOnlyList<T>> FindAllAsync(CancellationToken ct = default)
     {
-        var envelopes = await _collection.Find(Builders<DocumentEnvelope<T>>.Filter.Empty)
-            .ToListAsync(ct).ConfigureAwait(false);
+        var envelopes = await _collection
+            .Find(Builders<DocumentEnvelope<T>>.Filter.Empty)
+            .ToListAsync(ct)
+            .ConfigureAwait(false);
 
         return envelopes.Select(e => e.Data).ToList();
     }
 
     /// <inheritdoc />
-    public async Task<IReadOnlyList<T>> FindAsync(
-        Func<T, bool> predicate, CancellationToken ct = default)
+    public async Task<IReadOnlyList<T>> FindAsync(Func<T, bool> predicate, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(predicate);
 
@@ -60,8 +60,7 @@ public sealed class MongoDocumentRepository<T> : IDocumentRepository<T>
         ArgumentNullException.ThrowIfNull(document);
 
         var envelope = new DocumentEnvelope<T> { Id = id, Data = document };
-        await _collection.InsertOneAsync(envelope, cancellationToken: ct)
-            .ConfigureAwait(false);
+        await _collection.InsertOneAsync(envelope, cancellationToken: ct).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -72,8 +71,7 @@ public sealed class MongoDocumentRepository<T> : IDocumentRepository<T>
 
         var filter = Builders<DocumentEnvelope<T>>.Filter.Eq(e => e.Id, id);
         var envelope = new DocumentEnvelope<T> { Id = id, Data = document };
-        await _collection.ReplaceOneAsync(filter, envelope, cancellationToken: ct)
-            .ConfigureAwait(false);
+        await _collection.ReplaceOneAsync(filter, envelope, cancellationToken: ct).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
@@ -82,15 +80,14 @@ public sealed class MongoDocumentRepository<T> : IDocumentRepository<T>
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
 
         var filter = Builders<DocumentEnvelope<T>>.Filter.Eq(e => e.Id, id);
-        await _collection.DeleteOneAsync(filter, cancellationToken: ct)
-            .ConfigureAwait(false);
+        await _collection.DeleteOneAsync(filter, cancellationToken: ct).ConfigureAwait(false);
     }
 
     /// <inheritdoc />
     public async Task<long> CountAsync(CancellationToken ct = default)
     {
-        return await _collection.CountDocumentsAsync(
-            Builders<DocumentEnvelope<T>>.Filter.Empty, cancellationToken: ct)
+        return await _collection
+            .CountDocumentsAsync(Builders<DocumentEnvelope<T>>.Filter.Empty, cancellationToken: ct)
             .ConfigureAwait(false);
     }
 }

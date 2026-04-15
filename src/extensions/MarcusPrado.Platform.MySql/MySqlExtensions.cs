@@ -6,9 +6,7 @@ public static class MySqlExtensions
     /// <summary>
     /// Registers <see cref="IMySqlConnectionFactory"/> and configures <see cref="MySqlOptions"/>.
     /// </summary>
-    public static IServiceCollection AddPlatformMySql(
-        this IServiceCollection services,
-        Action<MySqlOptions> configure)
+    public static IServiceCollection AddPlatformMySql(this IServiceCollection services, Action<MySqlOptions> configure)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configure);
@@ -25,7 +23,8 @@ public static class MySqlExtensions
     /// </summary>
     public static IServiceCollection AddPlatformMySql<TContext>(
         this IServiceCollection services,
-        Action<MySqlOptions> configure)
+        Action<MySqlOptions> configure
+    )
         where TContext : DbContext
     {
         ArgumentNullException.ThrowIfNull(services);
@@ -33,15 +32,21 @@ public static class MySqlExtensions
 
         services.AddPlatformMySql(configure);
 
-        services.AddDbContext<TContext>((sp, opts) =>
-        {
-            var mysqlOpts = sp.GetRequiredService<IOptions<MySqlOptions>>().Value;
-            var serverVersion = MySqlServerVersion.Parse(mysqlOpts.ServerVersion);
-            opts.UseMySql(mysqlOpts.ConnectionString, serverVersion, mysql =>
+        services.AddDbContext<TContext>(
+            (sp, opts) =>
             {
-                mysql.EnableRetryOnFailure(mysqlOpts.MaxRetryCount, mysqlOpts.MaxRetryDelay, null);
-            });
-        });
+                var mysqlOpts = sp.GetRequiredService<IOptions<MySqlOptions>>().Value;
+                var serverVersion = MySqlServerVersion.Parse(mysqlOpts.ServerVersion);
+                opts.UseMySql(
+                    mysqlOpts.ConnectionString,
+                    serverVersion,
+                    mysql =>
+                    {
+                        mysql.EnableRetryOnFailure(mysqlOpts.MaxRetryCount, mysqlOpts.MaxRetryDelay, null);
+                    }
+                );
+            }
+        );
 
         return services;
     }
@@ -49,17 +54,18 @@ public static class MySqlExtensions
     /// <summary>
     /// Adds a <see cref="MySqlHealthProbe"/> health check named <paramref name="name"/>.
     /// </summary>
-    public static IHealthChecksBuilder AddMySqlHealthCheck(
-        this IHealthChecksBuilder builder,
-        string name = "mysql")
+    public static IHealthChecksBuilder AddMySqlHealthCheck(this IHealthChecksBuilder builder, string name = "mysql")
     {
         ArgumentNullException.ThrowIfNull(builder);
 
         builder.Services.AddSingleton<MySqlHealthProbe>();
-        return builder.Add(new HealthCheckRegistration(
-            name,
-            sp => sp.GetRequiredService<MySqlHealthProbe>(),
-            failureStatus: null,
-            tags: null));
+        return builder.Add(
+            new HealthCheckRegistration(
+                name,
+                sp => sp.GetRequiredService<MySqlHealthProbe>(),
+                failureStatus: null,
+                tags: null
+            )
+        );
     }
 }

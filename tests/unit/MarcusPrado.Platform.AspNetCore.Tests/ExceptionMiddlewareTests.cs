@@ -21,8 +21,7 @@ public sealed class ExceptionMiddlewareTests
         var response = await client.GetAsync("/error/notfound");
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        response.Content.Headers.ContentType?.MediaType
-            .Should().Be("application/problem+json");
+        response.Content.Headers.ContentType?.MediaType.Should().Be("application/problem+json");
         using var doc = await PlatformTestServer.ReadJsonAsync(response);
         doc.RootElement.GetProperty("status").GetInt32().Should().Be(404);
     }
@@ -78,8 +77,9 @@ public sealed class ExceptionMiddlewareTests
         using var doc = await PlatformTestServer.ReadJsonAsync(response);
         var root = doc.RootElement;
         root.GetProperty("status").GetInt32().Should().Be(422);
-        root.TryGetProperty("errors", out _).Should().BeTrue(
-            because: "ValidationException errors must be included in the ProblemDetails extensions");
+        root.TryGetProperty("errors", out _)
+            .Should()
+            .BeTrue(because: "ValidationException errors must be included in the ProblemDetails extensions");
     }
 
     [Fact]

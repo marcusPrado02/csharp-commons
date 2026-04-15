@@ -8,7 +8,8 @@ public sealed record BackupEntry(
     DateTimeOffset CreatedAt,
     long SizeBytes,
     string Checksum,
-    string SourcePath);
+    string SourcePath
+);
 
 /// <summary>The type of a backup operation.</summary>
 public enum BackupType

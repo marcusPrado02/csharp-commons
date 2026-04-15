@@ -23,7 +23,8 @@ public static class AdvancedHealthCheckExtensions
     public static IHealthChecksBuilder AddDegradedHealthCheck(
         this IHealthChecksBuilder builder,
         string name,
-        string reason)
+        string reason
+    )
     {
         ArgumentNullException.ThrowIfNull(builder);
         return builder.AddCheck(name, new DegradedHealthCheck(reason));
@@ -37,7 +38,8 @@ public static class AdvancedHealthCheckExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddHealthCheckHistory(
         this IServiceCollection services,
-        int maxHistoryPerCheck = 10)
+        int maxHistoryPerCheck = 10
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton(new HealthCheckHistory(maxHistoryPerCheck));
@@ -50,23 +52,27 @@ public static class AdvancedHealthCheckExtensions
     /// </summary>
     /// <param name="endpoints">The <see cref="IEndpointRouteBuilder"/> to extend.</param>
     /// <returns>The <see cref="RouteHandlerBuilder"/> for the mapped endpoint.</returns>
-    public static RouteHandlerBuilder MapExtendedHealthEndpoint(
-        this IEndpointRouteBuilder endpoints)
+    public static RouteHandlerBuilder MapExtendedHealthEndpoint(this IEndpointRouteBuilder endpoints)
     {
         ArgumentNullException.ThrowIfNull(endpoints);
 
-        return endpoints.MapGet("/health/extended", (HealthCheckHistory history) =>
-        {
-            var all = history.GetAll();
-            var payload = all.SelectMany(kvp => kvp.Value).OrderByDescending(r => r.CheckedAt).Select(r => new
+        return endpoints.MapGet(
+            "/health/extended",
+            (HealthCheckHistory history) =>
             {
-                name = r.Name,
-                status = r.Status.ToString(),
-                checkedAt = r.CheckedAt,
-                description = r.Description,
-            });
+                var all = history.GetAll();
+                var payload = all.SelectMany(kvp => kvp.Value)
+                    .OrderByDescending(r => r.CheckedAt)
+                    .Select(r => new
+                    {
+                        name = r.Name,
+                        status = r.Status.ToString(),
+                        checkedAt = r.CheckedAt,
+                        description = r.Description,
+                    });
 
-            return Results.Ok(payload);
-        });
+                return Results.Ok(payload);
+            }
+        );
     }
 }

@@ -47,7 +47,8 @@ public sealed class TwilioExtensionsTests
         var sp = services.BuildServiceProvider();
 
         sp.GetRequiredService<MarcusPrado.Platform.Abstractions.Sms.ISmsService>()
-            .Should().BeOfType<TwilioSmsService>();
+            .Should()
+            .BeOfType<TwilioSmsService>();
     }
 }
 

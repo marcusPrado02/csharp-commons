@@ -9,16 +9,11 @@ namespace MarcusPrado.Platform.AspNetCore.Internal;
 /// </summary>
 internal sealed class SystemTextJsonSerializer : IJsonSerializer
 {
-    private static readonly JsonSerializerOptions _options = new(JsonSerializerDefaults.Web)
-    {
-        WriteIndented = false,
-    };
+    private static readonly JsonSerializerOptions _options = new(JsonSerializerDefaults.Web) { WriteIndented = false };
 
     /// <inheritdoc />
-    public string Serialize<T>(T value)
-        => JsonSerializer.Serialize(value, _options);
+    public string Serialize<T>(T value) => JsonSerializer.Serialize(value, _options);
 
     /// <inheritdoc />
-    public T? Deserialize<T>(string json)
-        => JsonSerializer.Deserialize<T>(json, _options);
+    public T? Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, _options);
 }

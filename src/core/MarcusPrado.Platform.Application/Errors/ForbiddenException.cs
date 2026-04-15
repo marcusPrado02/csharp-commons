@@ -7,7 +7,5 @@ public sealed class ForbiddenException : AppException
 {
     /// <summary>Initializes a <see cref="ForbiddenException"/>.</summary>
     public ForbiddenException(string code, string message)
-        : base(Error.Forbidden(code, message))
-    {
-    }
+        : base(Error.Forbidden(code, message)) { }
 }

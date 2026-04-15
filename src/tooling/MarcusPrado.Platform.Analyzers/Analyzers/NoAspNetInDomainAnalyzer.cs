@@ -20,8 +20,7 @@ public sealed class NoAspNetInDomainAnalyzer : DiagnosticAnalyzer
     private const string AspNetCoreNamespacePrefix = "Microsoft.AspNetCore";
 
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Descriptor);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -36,7 +35,10 @@ public sealed class NoAspNetInDomainAnalyzer : DiagnosticAnalyzer
         var usingDirective = (UsingDirectiveSyntax)context.Node;
         var namespaceName = usingDirective.Name?.ToString();
 
-        if (namespaceName == null || !namespaceName.StartsWith(AspNetCoreNamespacePrefix, System.StringComparison.Ordinal))
+        if (
+            namespaceName == null
+            || !namespaceName.StartsWith(AspNetCoreNamespacePrefix, System.StringComparison.Ordinal)
+        )
         {
             return;
         }
@@ -46,10 +48,7 @@ public sealed class NoAspNetInDomainAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(
-            Descriptor,
-            usingDirective.GetLocation(),
-            namespaceName));
+        context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), namespaceName));
     }
 
     private static bool IsInsideDomainContext(SyntaxNode node)

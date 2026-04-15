@@ -90,8 +90,7 @@ public sealed class InMemoryAuditSinkTests
     [Fact]
     public async Task Log_WithActorAndTenant_StoresCorrectly()
     {
-        var entry = AuditEntry.Create(AuditAction.Deleted, "Order", "o9",
-            actorId: "actor-1", tenantId: "tenant-1");
+        var entry = AuditEntry.Create(AuditAction.Deleted, "Order", "o9", actorId: "actor-1", tenantId: "tenant-1");
         await _sink.LogAsync(entry);
         _sink.Entries[0].ActorId.Should().Be("actor-1");
         _sink.Entries[0].TenantId.Should().Be("tenant-1");

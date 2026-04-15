@@ -17,4 +17,5 @@ public sealed record DlqMessage(
     string FailureReason,
     int AttemptCount,
     DateTimeOffset EnqueuedAt,
-    DateTimeOffset? LastAttemptAt);
+    DateTimeOffset? LastAttemptAt
+);

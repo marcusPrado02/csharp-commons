@@ -16,7 +16,8 @@ public static class ApiVersioningExtensions
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformApiVersioning(
         this IServiceCollection services,
-        Action<ApiVersioningOptions>? configure = null)
+        Action<ApiVersioningOptions>? configure = null
+    )
     {
         services.AddApiVersioning(options =>
         {
@@ -26,7 +27,8 @@ public static class ApiVersioningExtensions
             options.ApiVersionReader = ApiVersionReader.Combine(
                 new UrlSegmentApiVersionReader(),
                 new HeaderApiVersionReader("api-version"),
-                new MediaTypeApiVersionReader("v"));
+                new MediaTypeApiVersionReader("v")
+            );
             configure?.Invoke(options);
         });
 

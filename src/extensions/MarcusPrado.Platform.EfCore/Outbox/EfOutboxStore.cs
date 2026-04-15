@@ -24,12 +24,10 @@ public sealed class EfOutboxStore : IOutboxStore
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<OutboxMessage>> GetPendingAsync(
-        int batchSize,
-        CancellationToken ct = default)
+    public async Task<IReadOnlyList<OutboxMessage>> GetPendingAsync(int batchSize, CancellationToken ct = default)
     {
-        return await _context.OutboxMessages
-            .Where(m => m.State == OutboxState.Pending && m.ScheduledAt <= DateTimeOffset.UtcNow)
+        return await _context
+            .OutboxMessages.Where(m => m.State == OutboxState.Pending && m.ScheduledAt <= DateTimeOffset.UtcNow)
             .OrderBy(m => m.ScheduledAt)
             .Take(batchSize)
             .ToListAsync(ct);
@@ -38,35 +36,32 @@ public sealed class EfOutboxStore : IOutboxStore
     /// <inheritdoc/>
     public async Task MarkPublishedAsync(Guid messageId, CancellationToken ct = default)
     {
-        await _context.OutboxMessages
-            .Where(m => m.Id == messageId)
-            .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.State, OutboxState.Published),
-                ct);
+        await _context
+            .OutboxMessages.Where(m => m.Id == messageId)
+            .ExecuteUpdateAsync(s => s.SetProperty(m => m.State, OutboxState.Published), ct);
     }
 
     /// <inheritdoc/>
     public async Task MarkFailedAsync(Guid messageId, string error, CancellationToken ct = default)
     {
-        await _context.OutboxMessages
-            .Where(m => m.Id == messageId)
+        await _context
+            .OutboxMessages.Where(m => m.Id == messageId)
             .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.State, OutboxState.Failed)
-                       .SetProperty(m => m.LastError, error),
-                ct);
+                s => s.SetProperty(m => m.State, OutboxState.Failed).SetProperty(m => m.LastError, error),
+                ct
+            );
     }
 
     /// <inheritdoc/>
-    public async Task IncrementRetryAsync(
-        Guid messageId,
-        DateTimeOffset nextAttempt,
-        CancellationToken ct = default)
+    public async Task IncrementRetryAsync(Guid messageId, DateTimeOffset nextAttempt, CancellationToken ct = default)
     {
-        await _context.OutboxMessages
-            .Where(m => m.Id == messageId)
+        await _context
+            .OutboxMessages.Where(m => m.Id == messageId)
             .ExecuteUpdateAsync(
-                s => s.SetProperty(m => m.RetryCount, m => m.RetryCount + 1)
-                       .SetProperty(m => m.ScheduledAt, nextAttempt),
-                ct);
+                s =>
+                    s.SetProperty(m => m.RetryCount, m => m.RetryCount + 1)
+                        .SetProperty(m => m.ScheduledAt, nextAttempt),
+                ct
+            );
     }
 }

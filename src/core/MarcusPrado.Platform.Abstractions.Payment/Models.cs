@@ -1,11 +1,7 @@
 namespace MarcusPrado.Platform.Abstractions.Payment;
 
 /// <summary>Request to charge a customer.</summary>
-public sealed record PaymentRequest(
-    string CustomerId,
-    decimal Amount,
-    string Currency,
-    string? Description = null);
+public sealed record PaymentRequest(string CustomerId, decimal Amount, string Currency, string? Description = null);
 
 /// <summary>A completed payment transaction.</summary>
 public sealed record Payment(
@@ -14,21 +10,14 @@ public sealed record Payment(
     decimal Amount,
     string Currency,
     PaymentStatus Status,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt
+);
 
 /// <summary>A refund issued against a payment.</summary>
-public sealed record Refund(
-    string Id,
-    string PaymentId,
-    decimal Amount,
-    string Currency,
-    DateTimeOffset CreatedAt);
+public sealed record Refund(string Id, string PaymentId, decimal Amount, string Currency, DateTimeOffset CreatedAt);
 
 /// <summary>Request to create a recurring subscription.</summary>
-public sealed record SubscriptionRequest(
-    string CustomerId,
-    string PriceId,
-    string? Description = null);
+public sealed record SubscriptionRequest(string CustomerId, string PriceId, string? Description = null);
 
 /// <summary>A recurring subscription.</summary>
 public sealed record Subscription(
@@ -36,7 +25,8 @@ public sealed record Subscription(
     string CustomerId,
     string Status,
     DateTimeOffset CreatedAt,
-    DateTimeOffset? CancelledAt);
+    DateTimeOffset? CancelledAt
+);
 
 /// <summary>The lifecycle status of a payment transaction.</summary>
 public enum PaymentStatus

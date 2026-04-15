@@ -9,8 +9,7 @@ public static class JwtTokenFactory
     public const string TestIssuer = "platform-tests";
     public const string TestAudience = "platform-api";
 
-    private static SymmetricSecurityKey SigningKey =>
-        new(Encoding.UTF8.GetBytes(TestSigningKey));
+    private static SymmetricSecurityKey SigningKey => new(Encoding.UTF8.GetBytes(TestSigningKey));
 
     private static readonly JsonWebTokenHandler TokenHandler = new();
 
@@ -20,7 +19,8 @@ public static class JwtTokenFactory
         string? issuer = TestIssuer,
         string? audience = TestAudience,
         IEnumerable<Claim>? extraClaims = null,
-        TimeSpan? expiresIn = null)
+        TimeSpan? expiresIn = null
+    )
     {
         var now = DateTime.UtcNow;
         var claims = new List<Claim>();
@@ -60,6 +60,5 @@ public static class JwtTokenFactory
     }
 
     /// <summary>Creates an already-expired token.</summary>
-    public static string CreateExpiredToken() =>
-        CreateValidToken(expiresIn: TimeSpan.FromSeconds(-1));
+    public static string CreateExpiredToken() => CreateValidToken(expiresIn: TimeSpan.FromSeconds(-1));
 }

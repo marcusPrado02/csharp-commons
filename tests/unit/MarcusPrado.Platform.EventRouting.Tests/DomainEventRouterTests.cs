@@ -86,11 +86,14 @@ public sealed class EventHandlerPipelineTests
         var invoked = false;
 
         // Act
-        await pipeline.ExecuteAsync(@event, () =>
-        {
-            invoked = true;
-            return Task.CompletedTask;
-        });
+        await pipeline.ExecuteAsync(
+            @event,
+            () =>
+            {
+                invoked = true;
+                return Task.CompletedTask;
+            }
+        );
 
         // Assert
         invoked.Should().BeTrue();
@@ -102,22 +105,27 @@ public sealed class EventHandlerPipelineTests
         // Arrange
         var log = new List<string>();
         var pipeline = new EventHandlerPipeline();
-        pipeline.Use((evt, next) =>
-        {
-            log.Add("before");
-            var t = next();
-            log.Add("after");
-            return t;
-        });
+        pipeline.Use(
+            (evt, next) =>
+            {
+                log.Add("before");
+                var t = next();
+                log.Add("after");
+                return t;
+            }
+        );
 
         var @event = new OrderPlacedEvent(Guid.NewGuid());
 
         // Act
-        await pipeline.ExecuteAsync(@event, () =>
-        {
-            log.Add("handler");
-            return Task.CompletedTask;
-        });
+        await pipeline.ExecuteAsync(
+            @event,
+            () =>
+            {
+                log.Add("handler");
+                return Task.CompletedTask;
+            }
+        );
 
         // Assert
         log.Should().ContainInOrder("before", "handler", "after");
@@ -130,17 +138,34 @@ public sealed class EventHandlerPipelineTests
         var log = new List<string>();
         var pipeline = new EventHandlerPipeline();
         pipeline
-            .Use(async (evt, next) => { log.Add("m1-start"); await next(); log.Add("m1-end"); })
-            .Use(async (evt, next) => { log.Add("m2-start"); await next(); log.Add("m2-end"); });
+            .Use(
+                async (evt, next) =>
+                {
+                    log.Add("m1-start");
+                    await next();
+                    log.Add("m1-end");
+                }
+            )
+            .Use(
+                async (evt, next) =>
+                {
+                    log.Add("m2-start");
+                    await next();
+                    log.Add("m2-end");
+                }
+            );
 
         var @event = new OrderPlacedEvent(Guid.NewGuid());
 
         // Act
-        await pipeline.ExecuteAsync(@event, () =>
-        {
-            log.Add("handler");
-            return Task.CompletedTask;
-        });
+        await pipeline.ExecuteAsync(
+            @event,
+            () =>
+            {
+                log.Add("handler");
+                return Task.CompletedTask;
+            }
+        );
 
         // Assert
         log.Should().ContainInOrder("m1-start", "m2-start", "handler", "m2-end", "m1-end");
@@ -233,7 +258,13 @@ public sealed class DomainEventRouterTests
         // Arrange
         int middlewareInvokeCount = 0;
         var pipeline = new EventHandlerPipeline();
-        pipeline.Use(async (evt, next) => { middlewareInvokeCount++; await next(); });
+        pipeline.Use(
+            async (evt, next) =>
+            {
+                middlewareInvokeCount++;
+                await next();
+            }
+        );
 
         var first = new TrackingOrderHandler();
         var second = new SecondOrderHandler();
@@ -322,8 +353,7 @@ public sealed class CrossBoundaryEventBridgeTests
 
         // Assert
         result.Should().BeTrue();
-        contract.Should().BeOfType<OrderPlacedContract>()
-            .Which.OrderId.Should().Be(@event.OrderId);
+        contract.Should().BeOfType<OrderPlacedContract>().Which.OrderId.Should().Be(@event.OrderId);
     }
 
     [Fact]
@@ -352,8 +382,7 @@ public sealed class CrossBoundaryEventBridgeTests
         var act = () => bridge.Convert(@event);
 
         // Assert
-        act.Should().Throw<InvalidOperationException>()
-           .WithMessage("*OrderPlacedEvent*");
+        act.Should().Throw<InvalidOperationException>().WithMessage("*OrderPlacedEvent*");
     }
 
     [Fact]

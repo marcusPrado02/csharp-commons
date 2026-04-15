@@ -60,7 +60,8 @@ public sealed class StartupVerificationTests
     {
         var verification = new DatabaseConnectivityVerification(
             "db",
-            () => Task.FromException<bool>(new InvalidOperationException("connection refused")));
+            () => Task.FromException<bool>(new InvalidOperationException("connection refused"))
+        );
 
         var result = await verification.VerifyAsync(CancellationToken.None);
 
@@ -94,9 +95,7 @@ public sealed class StartupVerificationTests
     [Fact]
     public async Task RequiredSecrets_MissingKey_ReturnsFailureWithKeyName()
     {
-        var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>())
-            .Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>()).Build();
 
         var verification = new RequiredSecretsVerification(["MissingKey"], config);
 
@@ -130,8 +129,7 @@ public sealed class StartupVerificationTests
 
         var passing = Substitute.For<IStartupVerification>();
         passing.Name.Returns("pass");
-        passing.VerifyAsync(Arg.Any<CancellationToken>())
-               .Returns(new VerificationResult(true, "pass", null));
+        passing.VerifyAsync(Arg.Any<CancellationToken>()).Returns(new VerificationResult(true, "pass", null));
 
         var service = new StartupVerificationHostedService([passing], lifetime, logger);
 
@@ -148,8 +146,7 @@ public sealed class StartupVerificationTests
 
         var failing = Substitute.For<IStartupVerification>();
         failing.Name.Returns("fail");
-        failing.VerifyAsync(Arg.Any<CancellationToken>())
-               .Returns(new VerificationResult(false, "fail", "boom"));
+        failing.VerifyAsync(Arg.Any<CancellationToken>()).Returns(new VerificationResult(false, "fail", "boom"));
 
         var service = new StartupVerificationHostedService([failing], lifetime, logger);
 
@@ -163,9 +160,7 @@ public sealed class StartupVerificationTests
     [Fact]
     public void AddStartupVerification_RegistersHostedService()
     {
-        var services = new ServiceCollection()
-            .AddLogging()
-            .AddSingleton(Substitute.For<IHostApplicationLifetime>());
+        var services = new ServiceCollection().AddLogging().AddSingleton(Substitute.For<IHostApplicationLifetime>());
 
         services.AddStartupVerification();
 

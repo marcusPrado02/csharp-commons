@@ -24,20 +24,14 @@ public sealed class PostgresConnectionFactory : IAsyncDisposable
     }
 
     /// <summary>Executes a raw SQL query via Dapper and returns the results.</summary>
-    public async Task<IEnumerable<T>> QueryAsync<T>(
-        string sql,
-        object? param = null,
-        CancellationToken ct = default)
+    public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object? param = null, CancellationToken ct = default)
     {
         await using var conn = await OpenAsync(ct);
         return await conn.QueryAsync<T>(sql, param, commandTimeout: 30);
     }
 
     /// <summary>Executes a non-query SQL command and returns affected rows.</summary>
-    public async Task<int> ExecuteAsync(
-        string sql,
-        object? param = null,
-        CancellationToken ct = default)
+    public async Task<int> ExecuteAsync(string sql, object? param = null, CancellationToken ct = default)
     {
         await using var conn = await OpenAsync(ct);
         return await conn.ExecuteAsync(sql, param, commandTimeout: 30);

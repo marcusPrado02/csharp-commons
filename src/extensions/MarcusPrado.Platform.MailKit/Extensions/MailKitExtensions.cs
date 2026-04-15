@@ -15,7 +15,8 @@ public static class MailKitExtensions
     /// </summary>
     public static IServiceCollection AddPlatformMailKit(
         this IServiceCollection services,
-        Action<MailKitOptions>? configure = null)
+        Action<MailKitOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

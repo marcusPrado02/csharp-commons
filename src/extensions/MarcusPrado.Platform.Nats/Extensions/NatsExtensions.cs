@@ -17,7 +17,8 @@ public static class NatsExtensions
     /// </exception>
     public static IServiceCollection AddPlatformNats(
         this IServiceCollection services,
-        Action<NatsOptions>? configure = null)
+        Action<NatsOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -26,18 +27,14 @@ public static class NatsExtensions
 
         services.AddSingleton(opts);
 
-        services.AddSingleton<INatsConnection>(
-            _ => new NatsConnection(new NatsOpts
-            {
-                Url = opts.Url,
-                MaxReconnectRetry = opts.MaxReconnectAttempts,
-            }));
+        services.AddSingleton<INatsConnection>(_ => new NatsConnection(
+            new NatsOpts { Url = opts.Url, MaxReconnectRetry = opts.MaxReconnectAttempts }
+        ));
 
         services.AddSingleton<INatsPublisher, NatsPublisher>();
         services.AddSingleton<INatsConsumer, NatsConsumer>();
 
-        services.AddHealthChecks()
-            .AddCheck<NatsHealthProbe>("nats");
+        services.AddHealthChecks().AddCheck<NatsHealthProbe>("nats");
 
         return services;
     }

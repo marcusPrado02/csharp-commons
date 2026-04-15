@@ -6,7 +6,4 @@ namespace MarcusPrado.Platform.PerformanceTestKit;
 /// <param name="VirtualUsers">Number of concurrent virtual users to simulate.</param>
 /// <param name="Duration">How long the load test should run after the warmup period.</param>
 /// <param name="WarmupDuration">Optional warmup period before measurements begin. Defaults to <see langword="null"/> (no warmup).</param>
-public sealed record LoadTestConfig(
-    int VirtualUsers,
-    TimeSpan Duration,
-    TimeSpan? WarmupDuration = null);
+public sealed record LoadTestConfig(int VirtualUsers, TimeSpan Duration, TimeSpan? WarmupDuration = null);

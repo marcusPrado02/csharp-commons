@@ -22,10 +22,10 @@ namespace MarcusPrado.Platform.AspNetCore.Localization;
 public static class LocalizedErrorTranslator
 {
     // ResourceManager for the Errors resource family embedded in this assembly.
-    private static readonly ResourceManager _resources =
-        new(
-            "MarcusPrado.Platform.AspNetCore.Resources.Errors",
-            typeof(LocalizedErrorTranslator).Assembly);
+    private static readonly ResourceManager _resources = new(
+        "MarcusPrado.Platform.AspNetCore.Resources.Errors",
+        typeof(LocalizedErrorTranslator).Assembly
+    );
 
     /// <summary>
     /// Returns a localized message for the given <paramref name="error"/> in the

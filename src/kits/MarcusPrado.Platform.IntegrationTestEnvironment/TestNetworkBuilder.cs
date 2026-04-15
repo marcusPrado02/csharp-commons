@@ -28,9 +28,7 @@ public sealed class TestNetworkBuilder : IAsyncDisposable
             await _network.DisposeAsync().ConfigureAwait(false);
         }
 
-        _network = new NetworkBuilder()
-            .WithName(name)
-            .Build();
+        _network = new NetworkBuilder().WithName(name).Build();
 
         await _network.CreateAsync(ct).ConfigureAwait(false);
 

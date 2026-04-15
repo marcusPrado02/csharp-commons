@@ -16,9 +16,6 @@ public interface INatsConsumer
     /// <param name="handler">The async handler invoked for every received message.</param>
     /// <param name="ct">Cancellation token used to stop the subscription loop.</param>
     /// <returns>A <see cref="Task"/> that completes when the subscription loop exits.</returns>
-    Task SubscribeAsync<T>(
-        string subject,
-        Func<T, CancellationToken, Task> handler,
-        CancellationToken ct = default)
+    Task SubscribeAsync<T>(string subject, Func<T, CancellationToken, Task> handler, CancellationToken ct = default)
         where T : class;
 }

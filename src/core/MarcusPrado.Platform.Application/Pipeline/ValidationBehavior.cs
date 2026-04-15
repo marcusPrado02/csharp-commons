@@ -28,11 +28,10 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        var validators = _serviceProvider
-            .GetServices<IValidator<TRequest>>()
-            .ToArray();
+        var validators = _serviceProvider.GetServices<IValidator<TRequest>>().ToArray();
 
         if (validators.Length == 0)
         {
@@ -42,10 +41,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         var validationTasks = validators.Select(v => v.ValidateAsync(request, cancellationToken));
         var results = await Task.WhenAll(validationTasks);
 
-        var errors = results
-            .Where(r => !r.IsValid)
-            .SelectMany(r => r.Errors)
-            .ToArray();
+        var errors = results.Where(r => !r.IsValid).SelectMany(r => r.Errors).ToArray();
 
         if (errors.Length > 0)
         {
@@ -64,8 +60,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             return (TResponse)(object)Result.Failure(error);
         }
 
-        if (responseType.IsGenericType
-            && responseType.GetGenericTypeDefinition() == typeof(Result<>))
+        if (responseType.IsGenericType && responseType.GetGenericTypeDefinition() == typeof(Result<>))
         {
             var valueType = responseType.GetGenericArguments()[0];
             var method = typeof(Result)
@@ -73,7 +68,9 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
                 .First(m =>
                     m.Name == nameof(Result.Failure)
                     && m.IsGenericMethod
-                    && m.GetParameters() is [var p] && p.ParameterType == typeof(Error))
+                    && m.GetParameters() is [var p]
+                    && p.ParameterType == typeof(Error)
+                )
                 .MakeGenericMethod(valueType);
 
             return (TResponse)method.Invoke(null, new object[] { error })!;
@@ -81,6 +78,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
 
         throw new InvalidOperationException(
             $"ValidationBehavior does not support response type '{responseType.FullName}'. "
-            + "Expected Result or Result<T>.");
+                + "Expected Result or Result<T>."
+        );
     }
 }

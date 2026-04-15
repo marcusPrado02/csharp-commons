@@ -46,7 +46,8 @@ public static class AsyncContractVerifier
     private static ContractVerificationResult VerifyInternal(
         EventContractEnvelope envelope,
         JsonDocument schemaDocument,
-        string interactionLabel)
+        string interactionLabel
+    )
     {
         var schema = schemaDocument.RootElement;
         var payload = envelope.Payload;
@@ -56,12 +57,12 @@ public static class AsyncContractVerifier
             return new ContractVerificationResult(
                 interactionLabel,
                 false,
-                $"Payload must be a JSON object but was '{payload.ValueKind}'.");
+                $"Payload must be a JSON object but was '{payload.ValueKind}'."
+            );
         }
 
         // Validate required properties
-        if (schema.TryGetProperty("required", out var required) &&
-            required.ValueKind == JsonValueKind.Array)
+        if (schema.TryGetProperty("required", out var required) && required.ValueKind == JsonValueKind.Array)
         {
             foreach (var reqProp in required.EnumerateArray())
             {
@@ -69,21 +70,23 @@ public static class AsyncContractVerifier
                 if (propName is null)
                     continue;
 
-                if (!payload.TryGetProperty(propName, out var propValue) ||
-                    propValue.ValueKind == JsonValueKind.Null ||
-                    propValue.ValueKind == JsonValueKind.Undefined)
+                if (
+                    !payload.TryGetProperty(propName, out var propValue)
+                    || propValue.ValueKind == JsonValueKind.Null
+                    || propValue.ValueKind == JsonValueKind.Undefined
+                )
                 {
                     return new ContractVerificationResult(
                         interactionLabel,
                         false,
-                        $"Required property '{propName}' is missing or null in the payload.");
+                        $"Required property '{propName}' is missing or null in the payload."
+                    );
                 }
             }
         }
 
         // Validate types declared under "properties"
-        if (schema.TryGetProperty("properties", out var properties) &&
-            properties.ValueKind == JsonValueKind.Object)
+        if (schema.TryGetProperty("properties", out var properties) && properties.ValueKind == JsonValueKind.Object)
         {
             foreach (var schemaProp in properties.EnumerateObject())
             {
@@ -119,12 +122,10 @@ public static class AsyncContractVerifier
             "object" => actualKind == JsonValueKind.Object,
             "array" => actualKind == JsonValueKind.Array,
             "null" => actualKind == JsonValueKind.Null,
-            _ => true
+            _ => true,
         };
 
-        return valid
-            ? null
-            : $"Property '{propName}' expected type '{expectedType}' but got '{actualKind}'.";
+        return valid ? null : $"Property '{propName}' expected type '{expectedType}' but got '{actualKind}'.";
     }
 
     private static bool IsInteger(JsonElement element)

@@ -116,7 +116,9 @@ public sealed class AsyncContractVerifierTests
     {
         using var payloadDoc = JsonDocument.Parse("{\"count\":\"not-a-number\"}");
         var envelope = new EventContractEnvelope("Stats", "svc", payloadDoc.RootElement);
-        using var schemaDoc = JsonDocument.Parse("{\"required\":[\"count\"],\"properties\":{\"count\":{\"type\":\"number\"}}}");
+        using var schemaDoc = JsonDocument.Parse(
+            "{\"required\":[\"count\"],\"properties\":{\"count\":{\"type\":\"number\"}}}"
+        );
 
         var result = AsyncContractVerifier.Verify(envelope, schemaDoc);
 
@@ -129,7 +131,9 @@ public sealed class AsyncContractVerifierTests
     {
         using var payloadDoc = JsonDocument.Parse("{\"count\":42}");
         var envelope = new EventContractEnvelope("Stats", "svc", payloadDoc.RootElement);
-        using var schemaDoc = JsonDocument.Parse("{\"required\":[\"count\"],\"properties\":{\"count\":{\"type\":\"number\"}}}");
+        using var schemaDoc = JsonDocument.Parse(
+            "{\"required\":[\"count\"],\"properties\":{\"count\":{\"type\":\"number\"}}}"
+        );
 
         var result = AsyncContractVerifier.Verify(envelope, schemaDoc);
 
@@ -145,13 +149,15 @@ public sealed class PactVerifierTests : IDisposable
 
     public PactVerifierTests()
     {
-        _server = new TestServer(new WebHostBuilder()
-            .ConfigureServices(s => s.AddRouting())
-            .Configure(app =>
-            {
-                app.UseRouting();
-                app.UseEndpoints(e => e.MapGet("/ping", () => Results.Ok(new { pong = true })));
-            }));
+        _server = new TestServer(
+            new WebHostBuilder()
+                .ConfigureServices(s => s.AddRouting())
+                .Configure(app =>
+                {
+                    app.UseRouting();
+                    app.UseEndpoints(e => e.MapGet("/ping", () => Results.Ok(new { pong = true })));
+                })
+        );
     }
 
     public void Dispose() => _server.Dispose();
@@ -199,8 +205,7 @@ public sealed class PactVerifierTests : IDisposable
         using var pactVerifier = BuildPactVerifier();
         var act = async () => await pactVerifier.VerifyAsync(pactPath);
 
-        await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*interactions*");
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("*interactions*");
 
         File.Delete(pactPath);
     }
@@ -222,9 +227,9 @@ public sealed class PactVerifierTests : IDisposable
                 {
                     description = $"{method} {path} - {expectedStatus}",
                     request = new { method, path },
-                    response = new { status = expectedStatus }
-                }
-            }
+                    response = new { status = expectedStatus },
+                },
+            },
         };
 
         var filePath = Path.GetTempFileName();

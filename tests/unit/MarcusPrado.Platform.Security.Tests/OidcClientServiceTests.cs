@@ -7,14 +7,19 @@ internal sealed class FakeTokenHandler : HttpMessageHandler
     public int CallCount { get; private set; }
     public int ExpiresIn { get; set; } = 3600;
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken
+    )
     {
         CallCount++;
         var json = $$"""{"access_token":"token-{{CallCount}}","token_type":"Bearer","expires_in":{{ExpiresIn}}}""";
-        return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-        {
-            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
-        });
+        return Task.FromResult(
+            new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+            {
+                Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json"),
+            }
+        );
     }
 }
 
@@ -23,14 +28,16 @@ public class OidcClientServiceTests
     private static OidcClientService CreateService(FakeTokenHandler handler, OidcClientOptions? options = null)
     {
         var http = new HttpClient(handler) { BaseAddress = new Uri("https://auth.example.com") };
-        var opts = options ?? new OidcClientOptions
-        {
-            Authority = "https://auth.example.com",
-            ClientId = "my-client",
-            ClientSecret = "secret",
-            Scope = "api",
-            RefreshBeforeExpirySeconds = 30,
-        };
+        var opts =
+            options
+            ?? new OidcClientOptions
+            {
+                Authority = "https://auth.example.com",
+                ClientId = "my-client",
+                ClientSecret = "secret",
+                Scope = "api",
+                RefreshBeforeExpirySeconds = 30,
+            };
         var wrappedOptions = Options.Create(opts);
         var logger = NullLogger<OidcClientService>.Instance;
         return new OidcClientService(http, wrappedOptions, logger);
@@ -66,14 +73,17 @@ public class OidcClientServiceTests
     public async Task GetAccessTokenAsync_TokenExpired_ReFetchesNewToken()
     {
         var handler = new FakeTokenHandler { ExpiresIn = 0 };
-        var svc = CreateService(handler, new OidcClientOptions
-        {
-            Authority = "https://auth.example.com",
-            ClientId = "my-client",
-            ClientSecret = "secret",
-            Scope = "api",
-            RefreshBeforeExpirySeconds = 0,
-        });
+        var svc = CreateService(
+            handler,
+            new OidcClientOptions
+            {
+                Authority = "https://auth.example.com",
+                ClientId = "my-client",
+                ClientSecret = "secret",
+                Scope = "api",
+                RefreshBeforeExpirySeconds = 0,
+            }
+        );
 
         var token1 = await svc.GetAccessTokenAsync();
         // With ExpiresIn=0, the token is immediately expired
@@ -170,9 +180,10 @@ internal sealed class FakeInnerHandler : HttpMessageHandler
 {
     private readonly Func<HttpRequestMessage, HttpResponseMessage> _handler;
 
-    public FakeInnerHandler(Func<HttpRequestMessage, HttpResponseMessage> handler)
-        => _handler = handler;
+    public FakeInnerHandler(Func<HttpRequestMessage, HttpResponseMessage> handler) => _handler = handler;
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        => Task.FromResult(_handler(request));
+    protected override Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken
+    ) => Task.FromResult(_handler(request));
 }

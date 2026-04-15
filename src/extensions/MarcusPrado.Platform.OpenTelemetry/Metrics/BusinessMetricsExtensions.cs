@@ -14,8 +14,7 @@ public static class BusinessMetricsExtensions
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
-    public static IServiceCollection AddPlatformBusinessMetrics(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformBusinessMetrics(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton(new Meter("MarcusPrado.Platform.Business", "1.0.0"));

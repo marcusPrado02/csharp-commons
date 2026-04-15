@@ -11,12 +11,14 @@ public sealed class OutboxProcessorTests
 
     public OutboxProcessorTests()
     {
-        var opts = Options.Create(new OutboxProcessorOptions
-        {
-            PollingInterval = TimeSpan.FromMilliseconds(50),
-            BatchSize = 10,
-            MaxRetries = 2,
-        });
+        var opts = Options.Create(
+            new OutboxProcessorOptions
+            {
+                PollingInterval = TimeSpan.FromMilliseconds(50),
+                BatchSize = 10,
+                MaxRetries = 2,
+            }
+        );
         _processor = new OutboxProcessor(_store, _publisher, opts, NullLogger<OutboxProcessor>.Instance);
     }
 
@@ -26,8 +28,7 @@ public sealed class OutboxProcessorTests
         var msg = new OutboxMessage { ScheduledAt = DateTimeOffset.UtcNow.AddSeconds(-1) };
         await _store.SaveAsync(msg);
 
-        _publisher.PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>())
-            .Returns(Task.CompletedTask);
+        _publisher.PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
 
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
         await _processor.StartAsync(cts.Token);
@@ -43,7 +44,8 @@ public sealed class OutboxProcessorTests
         var msg = new OutboxMessage { ScheduledAt = DateTimeOffset.UtcNow.AddSeconds(-1) };
         await _store.SaveAsync(msg);
 
-        _publisher.PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>())
+        _publisher
+            .PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException(new InvalidOperationException("bus down")));
 
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
@@ -57,14 +59,11 @@ public sealed class OutboxProcessorTests
     [Fact]
     public async Task PublishFailsMaxRetries_MarksMessageFailed()
     {
-        var msg = new OutboxMessage
-        {
-            ScheduledAt = DateTimeOffset.UtcNow.AddSeconds(-1),
-            RetryCount = 2,
-        };
+        var msg = new OutboxMessage { ScheduledAt = DateTimeOffset.UtcNow.AddSeconds(-1), RetryCount = 2 };
         await _store.SaveAsync(msg);
 
-        _publisher.PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>())
+        _publisher
+            .PublishAsync(Arg.Any<OutboxMessage>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException(new InvalidOperationException("bus down")));
 
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));

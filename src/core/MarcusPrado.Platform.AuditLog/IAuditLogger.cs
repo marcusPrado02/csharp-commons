@@ -12,5 +12,6 @@ public interface IAuditLogger
         string? resourceId = null,
         DateTimeOffset? from = null,
         DateTimeOffset? to = null,
-        CancellationToken ct = default);
+        CancellationToken ct = default
+    );
 }

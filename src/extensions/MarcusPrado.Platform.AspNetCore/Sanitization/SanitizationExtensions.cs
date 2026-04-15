@@ -12,7 +12,8 @@ public static class SanitizationExtensions
         ArgumentNullException.ThrowIfNull(services);
         services.AddSingleton<IInputSanitizer, HtmlSanitizerAdapter>();
         services.Configure<MvcOptions>(opts =>
-            opts.ModelBinderProviders.Insert(0, new SanitizingModelBinderProvider()));
+            opts.ModelBinderProviders.Insert(0, new SanitizingModelBinderProvider())
+        );
         return services;
     }
 }

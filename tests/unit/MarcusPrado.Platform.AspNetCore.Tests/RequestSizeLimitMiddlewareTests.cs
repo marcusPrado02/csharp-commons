@@ -63,8 +63,9 @@ public sealed class RequestSizeLimitMiddlewareTests
         var content = new ByteArrayContent(new byte[freeLimit]);
         var response = await client.PostAsync("/", content);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "a body exactly at the limit boundary should be permitted");
+        response
+            .StatusCode.Should()
+            .Be(HttpStatusCode.OK, because: "a body exactly at the limit boundary should be permitted");
     }
 
     [Fact]
@@ -85,7 +86,9 @@ public sealed class RequestSizeLimitMiddlewareTests
 
         doc.RootElement.GetProperty("status").GetInt32().Should().Be(413);
         doc.RootElement.GetProperty("title").GetString().Should().Be("Payload Too Large");
-        doc.RootElement.GetProperty("detail").GetString().Should()
+        doc.RootElement.GetProperty("detail")
+            .GetString()
+            .Should()
             .Contain("Free", because: "the detail message should mention the tier name");
     }
 
@@ -104,8 +107,7 @@ public sealed class RequestSizeLimitMiddlewareTests
         var content = new ByteArrayContent(new byte[fiveMb]);
         var response = await client.PostAsync("/", content);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "5 MB is within the Pro tier 10 MB limit");
+        response.StatusCode.Should().Be(HttpStatusCode.OK, because: "5 MB is within the Pro tier 10 MB limit");
     }
 
     [Fact]
@@ -119,14 +121,18 @@ public sealed class RequestSizeLimitMiddlewareTests
 
         var request = new HttpRequestMessage(HttpMethod.Post, "/")
         {
-            Content = new ByteArrayContent(Array.Empty<byte>())
+            Content = new ByteArrayContent(Array.Empty<byte>()),
         };
         // Manually override Content-Length to a value exceeding the Free tier limit.
         request.Content.Headers.ContentLength = twoMb;
 
         var response = await client.SendAsync(request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge,
-            because: "the Content-Length header alone should trigger the 413 short-circuit");
+        response
+            .StatusCode.Should()
+            .Be(
+                HttpStatusCode.RequestEntityTooLarge,
+                because: "the Content-Length header alone should trigger the 413 short-circuit"
+            );
     }
 }

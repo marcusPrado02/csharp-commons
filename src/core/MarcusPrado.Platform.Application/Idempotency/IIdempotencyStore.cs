@@ -12,12 +12,14 @@ public interface IIdempotencyStore
     /// </returns>
     Task<(bool Found, string? SerializedResponse)> TryGetAsync(
         string key,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>Stores a serialized response under the given key with a TTL.</summary>
     Task SetAsync(
         string key,
         string serializedResponse,
         TimeSpan timeToLive,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken = default
+    );
 }

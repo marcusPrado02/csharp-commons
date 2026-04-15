@@ -18,15 +18,10 @@ public sealed class DomainNoInfraReferenceAnalyzer : DiagnosticAnalyzer
     /// <summary>The <see cref="DiagnosticDescriptor"/> for PLATFORM003.</summary>
     public static readonly DiagnosticDescriptor Descriptor = PlatformDiagnosticDescriptors.DomainNoInfraReference;
 
-    private static readonly string[] _infraNamespacePrefixes = new[]
-    {
-        "Microsoft.EntityFrameworkCore",
-        "Npgsql",
-    };
+    private static readonly string[] _infraNamespacePrefixes = new[] { "Microsoft.EntityFrameworkCore", "Npgsql" };
 
     /// <inheritdoc />
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(Descriptor);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Descriptor);
 
     /// <inheritdoc />
     public override void Initialize(AnalysisContext context)
@@ -46,8 +41,7 @@ public sealed class DomainNoInfraReferenceAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        var isInfra = _infraNamespacePrefixes.Any(p =>
-            namespaceName.StartsWith(p, System.StringComparison.Ordinal));
+        var isInfra = _infraNamespacePrefixes.Any(p => namespaceName.StartsWith(p, System.StringComparison.Ordinal));
 
         if (!isInfra)
         {
@@ -59,10 +53,7 @@ public sealed class DomainNoInfraReferenceAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        context.ReportDiagnostic(Diagnostic.Create(
-            Descriptor,
-            usingDirective.GetLocation(),
-            namespaceName));
+        context.ReportDiagnostic(Diagnostic.Create(Descriptor, usingDirective.GetLocation(), namespaceName));
     }
 
     private static bool IsInsideDomainContext(SyntaxNode node)

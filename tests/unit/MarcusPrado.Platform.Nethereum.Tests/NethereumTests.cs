@@ -95,8 +95,7 @@ public sealed class NethereumWalletManagerTests
     {
         var manager = new NethereumWalletManager();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => manager.SignMessageAsync("0xUnknown", [0x01]));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => manager.SignMessageAsync("0xUnknown", [0x01]));
     }
 }
 
@@ -109,8 +108,9 @@ public sealed class NethereumSmartContractClientTests
         var registry = new ContractRegistry();
         var client = new NethereumSmartContractClient(web3, registry);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.CallAsync<string>("0xNOCONTRACT", "balanceOf", ["0xADDR"]));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            client.CallAsync<string>("0xNOCONTRACT", "balanceOf", ["0xADDR"])
+        );
     }
 
     [Fact]
@@ -120,8 +120,9 @@ public sealed class NethereumSmartContractClientTests
         var registry = new ContractRegistry();
         var client = new NethereumSmartContractClient(web3, registry);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => client.SendAsync("0xNOCONTRACT", "transfer", ["0xTO", 100]));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            client.SendAsync("0xNOCONTRACT", "transfer", ["0xTO", 100])
+        );
     }
 }
 
@@ -135,11 +136,8 @@ public sealed class NethereumExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IBlockchainClient>()
-            .Should().BeOfType<NethereumBlockchainClient>();
-        sp.GetRequiredService<IWalletManager>()
-            .Should().BeOfType<NethereumWalletManager>();
-        sp.GetRequiredService<ISmartContractClient>()
-            .Should().BeOfType<NethereumSmartContractClient>();
+        sp.GetRequiredService<IBlockchainClient>().Should().BeOfType<NethereumBlockchainClient>();
+        sp.GetRequiredService<IWalletManager>().Should().BeOfType<NethereumWalletManager>();
+        sp.GetRequiredService<ISmartContractClient>().Should().BeOfType<NethereumSmartContractClient>();
     }
 }

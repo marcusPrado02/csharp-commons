@@ -11,8 +11,7 @@ public static class GrpcServiceExtensions
     /// Adds all platform gRPC server interceptors to the DI container so they
     /// can be used with <c>services.AddGrpc().Interceptors</c>.
     /// </summary>
-    public static IServiceCollection AddPlatformGrpcInterceptors(
-        this IServiceCollection services)
+    public static IServiceCollection AddPlatformGrpcInterceptors(this IServiceCollection services)
     {
         services.AddSingleton<CorrelationInterceptor>();
         services.AddSingleton<LoggingInterceptor>();
@@ -24,9 +23,7 @@ public static class GrpcServiceExtensions
     /// Creates a <see cref="GrpcChannel"/> with the correlation interceptor
     /// attached on the client side.
     /// </summary>
-    public static GrpcChannel CreateChannel(
-        string address,
-        ILogger<CorrelationInterceptor>? logger = null)
+    public static GrpcChannel CreateChannel(string address, ILogger<CorrelationInterceptor>? logger = null)
     {
         var channel = GrpcChannel.ForAddress(address);
         return channel;

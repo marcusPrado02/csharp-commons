@@ -20,8 +20,8 @@ public sealed class SqsPublisher : ISqsPublisher
     }
 
     /// <inheritdoc/>
-    public Task SendAsync<T>(string queueUrl, T message, CancellationToken ct = default)
-        => SendAsync(queueUrl, message, messageGroupId: null, ct);
+    public Task SendAsync<T>(string queueUrl, T message, CancellationToken ct = default) =>
+        SendAsync(queueUrl, message, messageGroupId: null, ct);
 
     /// <inheritdoc/>
     public async Task SendAsync<T>(string queueUrl, T message, string? messageGroupId, CancellationToken ct = default)
@@ -31,11 +31,7 @@ public sealed class SqsPublisher : ISqsPublisher
 
         var json = JsonSerializer.Serialize(message);
 
-        var request = new SendMessageRequest
-        {
-            QueueUrl = queueUrl,
-            MessageBody = json,
-        };
+        var request = new SendMessageRequest { QueueUrl = queueUrl, MessageBody = json };
 
         if (messageGroupId is not null)
         {

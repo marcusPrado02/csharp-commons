@@ -1,5 +1,4 @@
 using System.Diagnostics;
-
 using MarcusPrado.Platform.Abstractions.Context;
 using MarcusPrado.Platform.Application.Errors;
 using MarcusPrado.Platform.AspNetCore.ProblemDetails.Mappers;
@@ -51,8 +50,7 @@ public static class PlatformProblemDetailsFactory
 
     private static void Enrich(MvcProblemDetails pd, Exception exception, HttpContext context)
     {
-        var traceId = Activity.Current?.TraceId.ToString()
-                      ?? context.TraceIdentifier;
+        var traceId = Activity.Current?.TraceId.ToString() ?? context.TraceIdentifier;
         pd.Extensions["traceId"] = traceId;
 
         var tenantCtx = context.RequestServices.GetService<ITenantContext>();
@@ -68,21 +66,23 @@ public static class PlatformProblemDetailsFactory
 
         if (exception is AppException)
         {
-            pd.Extensions["code"] = exception.GetType().Name
-                .Replace("Exception", string.Empty, StringComparison.OrdinalIgnoreCase)
+            pd.Extensions["code"] = exception
+                .GetType()
+                .Name.Replace("Exception", string.Empty, StringComparison.OrdinalIgnoreCase)
                 .ToUpperInvariant();
         }
     }
 
-    private static string GetTitle(int statusCode) => statusCode switch
-    {
-        400 => "Bad Request",
-        401 => "Unauthorized",
-        403 => "Forbidden",
-        404 => "Not Found",
-        409 => "Conflict",
-        422 => "Unprocessable Content",
-        500 => "Internal Server Error",
-        _ => "An error occurred",
-    };
+    private static string GetTitle(int statusCode) =>
+        statusCode switch
+        {
+            400 => "Bad Request",
+            401 => "Unauthorized",
+            403 => "Forbidden",
+            404 => "Not Found",
+            409 => "Conflict",
+            422 => "Unprocessable Content",
+            500 => "Internal Server Error",
+            _ => "An error occurred",
+        };
 }

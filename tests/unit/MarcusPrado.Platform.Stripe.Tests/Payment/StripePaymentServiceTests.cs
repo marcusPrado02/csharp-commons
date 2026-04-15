@@ -30,8 +30,7 @@ public sealed class StripeExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IPaymentService>()
-            .Should().BeOfType<StripePaymentService>();
+        sp.GetRequiredService<IPaymentService>().Should().BeOfType<StripePaymentService>();
     }
 
     [Fact]
@@ -42,8 +41,7 @@ public sealed class StripeExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<ISubscriptionService>()
-            .Should().BeOfType<StripeSubscriptionService>();
+        sp.GetRequiredService<ISubscriptionService>().Should().BeOfType<StripeSubscriptionService>();
     }
 
     [Fact]
@@ -54,8 +52,7 @@ public sealed class StripeExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IStripeClient>()
-            .Should().NotBeNull();
+        sp.GetRequiredService<IStripeClient>().Should().NotBeNull();
     }
 }
 
@@ -82,8 +79,7 @@ public sealed class StripePaymentServiceTests
         var client = Substitute.For<IStripeClient>();
         var svc = new StripePaymentService(client);
 
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            () => svc.ChargeAsync(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => svc.ChargeAsync(null!));
     }
 }
 

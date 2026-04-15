@@ -58,7 +58,8 @@ public static class DeprecationExtensions
     /// </summary>
     public static IServiceCollection AddPlatformDeprecation(
         this IServiceCollection services,
-        Action<DeprecationOptions>? configure = null)
+        Action<DeprecationOptions>? configure = null
+    )
     {
         var opts = new DeprecationOptions();
         configure?.Invoke(opts);
@@ -70,6 +71,6 @@ public static class DeprecationExtensions
     /// Adds the <see cref="DeprecationHeaderMiddleware"/> to the request pipeline.
     /// Call after registering <see cref="AddPlatformDeprecation"/>.
     /// </summary>
-    public static IApplicationBuilder UseDeprecationHeaders(this IApplicationBuilder app)
-        => app.UseMiddleware<DeprecationHeaderMiddleware>();
+    public static IApplicationBuilder UseDeprecationHeaders(this IApplicationBuilder app) =>
+        app.UseMiddleware<DeprecationHeaderMiddleware>();
 }

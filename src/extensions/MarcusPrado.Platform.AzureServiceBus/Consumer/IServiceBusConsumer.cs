@@ -18,5 +18,6 @@ public interface IServiceBusConsumer : IAsyncDisposable
     Task StartAsync(
         string queueOrTopic,
         Func<ServiceBusReceivedMessage, CancellationToken, Task> handler,
-        CancellationToken ct = default);
+        CancellationToken ct = default
+    );
 }

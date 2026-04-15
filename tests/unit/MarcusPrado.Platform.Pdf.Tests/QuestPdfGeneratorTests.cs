@@ -10,8 +10,7 @@ public sealed class QuestPdfGeneratorTests
         QuestPDF.Settings.License = LicenseType.Community;
     }
 
-    private static QuestPdfGenerator BuildGenerator(
-        Action<QuestPdfTemplateRegistry>? configure = null)
+    private static QuestPdfGenerator BuildGenerator(Action<QuestPdfTemplateRegistry>? configure = null)
     {
         var registry = new QuestPdfTemplateRegistry();
         configure?.Invoke(registry);
@@ -46,11 +45,15 @@ public sealed class QuestPdfGeneratorTests
     {
         var composerCalled = false;
         var generator = BuildGenerator(r =>
-            r.Register("custom", (page, _) =>
-            {
-                composerCalled = true;
-                page.Content().Text("Custom content");
-            }));
+            r.Register(
+                "custom",
+                (page, _) =>
+                {
+                    composerCalled = true;
+                    page.Content().Text("Custom content");
+                }
+            )
+        );
 
         var template = new PdfTemplate("custom", new { });
         await generator.GenerateAsync(template);
@@ -94,7 +97,6 @@ public sealed class PdfExtensionsTests
         services.AddPlatformPdf();
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IPdfGenerator>()
-            .Should().BeOfType<QuestPdfGenerator>();
+        sp.GetRequiredService<IPdfGenerator>().Should().BeOfType<QuestPdfGenerator>();
     }
 }

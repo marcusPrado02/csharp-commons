@@ -18,7 +18,8 @@ public sealed class RetryPolicy
     /// </summary>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var exceptions = new List<Exception>();
         var previousDelay = TimeSpan.Zero;
@@ -33,22 +34,20 @@ public sealed class RetryPolicy
             {
                 throw;
             }
-            catch (Exception ex) when (
-                attempt < _options.MaxRetries
-                && (_options.ShouldRetry?.Invoke(ex) ?? true))
+            catch (Exception ex) when (attempt < _options.MaxRetries && (_options.ShouldRetry?.Invoke(ex) ?? true))
             {
                 exceptions.Add(ex);
                 _options.OnRetry?.Invoke(attempt, ex);
 
                 var delay = _options.BackoffStrategy switch
                 {
-                    BackoffStrategy.Fixed
-                        => _options.BaseDelay,
-                    BackoffStrategy.Exponential
-                        => ExponentialBackoff.Calculate(attempt, _options.BaseDelay),
-                    BackoffStrategy.ExponentialWithJitter
-                        => DecorrelatedJitterBackoff.Calculate(
-                            previousDelay, _options.BaseDelay, _options.MaxDelay),
+                    BackoffStrategy.Fixed => _options.BaseDelay,
+                    BackoffStrategy.Exponential => ExponentialBackoff.Calculate(attempt, _options.BaseDelay),
+                    BackoffStrategy.ExponentialWithJitter => DecorrelatedJitterBackoff.Calculate(
+                        previousDelay,
+                        _options.BaseDelay,
+                        _options.MaxDelay
+                    ),
                     _ => _options.BaseDelay,
                 };
                 previousDelay = delay;
@@ -64,7 +63,6 @@ public sealed class RetryPolicy
 #pragma warning restore CA1031
         }
 
-        throw new AggregateException(
-            $"Action failed after {_options.MaxRetries} retries.", exceptions);
+        throw new AggregateException($"Action failed after {_options.MaxRetries} retries.", exceptions);
     }
 }

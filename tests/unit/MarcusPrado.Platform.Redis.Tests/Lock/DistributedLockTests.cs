@@ -13,16 +13,25 @@ public sealed class DistributedLockTests
         var mockLock = Substitute.For<IDistributedLock>();
         var handle = Substitute.For<ILockHandle>();
 
-        mockLock.AcquireAsync(
-                    Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<int>(),
-                    Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(handle));
+        mockLock
+            .AcquireAsync(
+                Arg.Any<string>(),
+                Arg.Any<TimeSpan>(),
+                Arg.Any<int>(),
+                Arg.Any<TimeSpan?>(),
+                Arg.Any<CancellationToken>()
+            )
+            .Returns(Task.FromResult(handle));
 
-        await mockLock.WithLockAsync("key", TimeSpan.FromSeconds(5), async () =>
-        {
-            executed = true;
-            await Task.CompletedTask;
-        });
+        await mockLock.WithLockAsync(
+            "key",
+            TimeSpan.FromSeconds(5),
+            async () =>
+            {
+                executed = true;
+                await Task.CompletedTask;
+            }
+        );
 
         executed.Should().BeTrue();
         await handle.Received(1).DisposeAsync();
@@ -34,13 +43,17 @@ public sealed class DistributedLockTests
         var mockLock = Substitute.For<IDistributedLock>();
         var handle = Substitute.For<ILockHandle>();
 
-        mockLock.AcquireAsync(
-                    Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<int>(),
-                    Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(handle));
+        mockLock
+            .AcquireAsync(
+                Arg.Any<string>(),
+                Arg.Any<TimeSpan>(),
+                Arg.Any<int>(),
+                Arg.Any<TimeSpan?>(),
+                Arg.Any<CancellationToken>()
+            )
+            .Returns(Task.FromResult(handle));
 
-        var result = await mockLock.WithLockAsync(
-            "key", TimeSpan.FromSeconds(5), () => Task.FromResult(99));
+        var result = await mockLock.WithLockAsync("key", TimeSpan.FromSeconds(5), () => Task.FromResult(99));
 
         result.Should().Be(99);
     }

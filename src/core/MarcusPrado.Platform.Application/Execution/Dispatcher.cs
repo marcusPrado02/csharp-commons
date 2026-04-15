@@ -23,9 +23,7 @@ public sealed class Dispatcher : IDispatcher
     }
 
     /// <inheritdoc/>
-    public Task<Result> SendAsync<TCommand>(
-        TCommand command,
-        CancellationToken cancellationToken = default)
+    public Task<Result> SendAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default)
         where TCommand : notnull
     {
         var commandType = command.GetType();
@@ -41,7 +39,8 @@ public sealed class Dispatcher : IDispatcher
     /// <inheritdoc/>
     public Task<Result<TResult>> SendAsync<TCommand, TResult>(
         TCommand command,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
         where TCommand : notnull
     {
         var commandType = command.GetType();
@@ -57,7 +56,8 @@ public sealed class Dispatcher : IDispatcher
     /// <inheritdoc/>
     public Task<Result<TResult>> QueryAsync<TQuery, TResult>(
         TQuery query,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
         where TQuery : notnull
     {
         var queryType = query.GetType();
@@ -72,16 +72,13 @@ public sealed class Dispatcher : IDispatcher
 
     // ── Private core dispatch ───────────────────────────────────────────────
 
-    private Task<Result> SendVoidCoreAsync<TCommand>(
-        TCommand command,
-        CancellationToken cancellationToken)
+    private Task<Result> SendVoidCoreAsync<TCommand>(TCommand command, CancellationToken cancellationToken)
         where TCommand : ICommand
     {
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
         var behaviors = _serviceProvider.GetServices<IPipelineBehavior<TCommand, Result>>().ToArray();
 
-        RequestHandlerDelegate<Result> pipeline =
-            ct => handler.HandleAsync(command, ct);
+        RequestHandlerDelegate<Result> pipeline = ct => handler.HandleAsync(command, ct);
 
         for (var i = behaviors.Length - 1; i >= 0; i--)
         {
@@ -96,14 +93,14 @@ public sealed class Dispatcher : IDispatcher
 
     private Task<Result<TResult>> SendValuedCoreAsync<TCommand, TResult>(
         TCommand command,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
         where TCommand : ICommand<TResult>
     {
         var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand, TResult>>();
         var behaviors = _serviceProvider.GetServices<IPipelineBehavior<TCommand, Result<TResult>>>().ToArray();
 
-        RequestHandlerDelegate<Result<TResult>> pipeline =
-            ct => handler.HandleAsync(command, ct);
+        RequestHandlerDelegate<Result<TResult>> pipeline = ct => handler.HandleAsync(command, ct);
 
         for (var i = behaviors.Length - 1; i >= 0; i--)
         {
@@ -116,16 +113,13 @@ public sealed class Dispatcher : IDispatcher
         return pipeline(cancellationToken);
     }
 
-    private Task<Result<TResult>> QueryCoreAsync<TQuery, TResult>(
-        TQuery query,
-        CancellationToken cancellationToken)
+    private Task<Result<TResult>> QueryCoreAsync<TQuery, TResult>(TQuery query, CancellationToken cancellationToken)
         where TQuery : IQuery<TResult>
     {
         var handler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResult>>();
         var behaviors = _serviceProvider.GetServices<IPipelineBehavior<TQuery, Result<TResult>>>().ToArray();
 
-        RequestHandlerDelegate<Result<TResult>> pipeline =
-            ct => handler.HandleAsync(query, ct);
+        RequestHandlerDelegate<Result<TResult>> pipeline = ct => handler.HandleAsync(query, ct);
 
         for (var i = behaviors.Length - 1; i >= 0; i--)
         {

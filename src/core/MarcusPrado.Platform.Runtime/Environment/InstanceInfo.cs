@@ -40,6 +40,6 @@ public sealed record InstanceInfo
         };
     }
 
-    private static string Env(string name, string fallback)
-        => System.Environment.GetEnvironmentVariable(name) ?? fallback;
+    private static string Env(string name, string fallback) =>
+        System.Environment.GetEnvironmentVariable(name) ?? fallback;
 }

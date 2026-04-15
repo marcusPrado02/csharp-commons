@@ -25,14 +25,16 @@ public sealed class NatsHealthProbe : IHealthCheck
     /// <inheritdoc/>
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         try
         {
             if (_connection.ConnectionState != NatsConnectionState.Open)
             {
                 return HealthCheckResult.Unhealthy(
-                    $"NATS connection is not open (state: {_connection.ConnectionState}).");
+                    $"NATS connection is not open (state: {_connection.ConnectionState})."
+                );
             }
 
             var rtt = await _connection.PingAsync(cancellationToken).ConfigureAwait(false);

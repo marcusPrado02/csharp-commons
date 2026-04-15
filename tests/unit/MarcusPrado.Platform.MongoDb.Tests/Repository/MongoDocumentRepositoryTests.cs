@@ -70,8 +70,7 @@ public sealed class MongoDbExtensionsTests
         var sp = services.BuildServiceProvider();
 
         sp.GetRequiredService<IMongoClient>().Should().NotBeNull();
-        sp.GetRequiredService<IDocumentRepository<Product>>()
-            .Should().BeOfType<MongoDocumentRepository<Product>>();
+        sp.GetRequiredService<IDocumentRepository<Product>>().Should().BeOfType<MongoDocumentRepository<Product>>();
     }
 
     [Fact]

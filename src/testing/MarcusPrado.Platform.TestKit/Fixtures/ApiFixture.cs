@@ -19,17 +19,16 @@ public abstract class ApiFixture<TProgram> : IAsyncLifetime
     public HttpClient Client { get; private set; } = null!;
 
     /// <summary>The underlying <see cref="WebApplicationFactory{TProgram}"/>.</summary>
-    protected WebApplicationFactory<TProgram> Factory => _factory
-        ?? throw new InvalidOperationException("InitializeAsync has not been called.");
+    protected WebApplicationFactory<TProgram> Factory =>
+        _factory ?? throw new InvalidOperationException("InitializeAsync has not been called.");
 
     /// <inheritdoc/>
     public virtual Task InitializeAsync()
     {
-        _factory = new WebApplicationFactory<TProgram>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(ConfigureTestServices);
-            });
+        _factory = new WebApplicationFactory<TProgram>().WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(ConfigureTestServices);
+        });
 
         Client = _factory.CreateClient();
         Client.DefaultRequestHeaders.Add("X-Correlation-Id", Guid.NewGuid().ToString());
@@ -47,7 +46,5 @@ public abstract class ApiFixture<TProgram> : IAsyncLifetime
     }
 
     /// <summary>Override to replace services in the test DI container.</summary>
-    protected virtual void ConfigureTestServices(IServiceCollection services)
-    {
-    }
+    protected virtual void ConfigureTestServices(IServiceCollection services) { }
 }

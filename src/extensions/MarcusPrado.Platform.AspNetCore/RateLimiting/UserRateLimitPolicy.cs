@@ -24,9 +24,10 @@ public sealed class UserRateLimitPolicy : IRateLimiterPolicy<string>
     {
         ArgumentNullException.ThrowIfNull(httpContext);
 
-        var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
-                     ?? httpContext.Connection.RemoteIpAddress?.ToString()
-                     ?? "__anon__";
+        var userId =
+            httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? httpContext.Connection.RemoteIpAddress?.ToString()
+            ?? "__anon__";
 
         return RateLimitPartition.GetSlidingWindowLimiter(
             userId,
@@ -35,7 +36,8 @@ public sealed class UserRateLimitPolicy : IRateLimiterPolicy<string>
                 PermitLimit = _options.UserPermitLimit,
                 Window = _options.UserWindow,
                 SegmentsPerWindow = _options.UserSegmentsPerWindow,
-            });
+            }
+        );
     }
 
     /// <inheritdoc/>

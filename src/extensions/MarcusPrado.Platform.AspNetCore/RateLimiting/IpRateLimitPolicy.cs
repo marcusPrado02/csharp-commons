@@ -28,22 +28,20 @@ public sealed class IpRateLimitPolicy : IRateLimiterPolicy<string>
 
         return RateLimitPartition.GetFixedWindowLimiter(
             ip,
-            _ => new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = _options.IpPermitLimit,
-                Window = _options.IpWindow,
-            });
+            _ => new FixedWindowRateLimiterOptions { PermitLimit = _options.IpPermitLimit, Window = _options.IpWindow }
+        );
     }
 
     /// <inheritdoc/>
-    public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected
-        => static (context, _) =>
+    public Func<OnRejectedContext, CancellationToken, ValueTask>? OnRejected =>
+        static (context, _) =>
         {
             context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
             if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
             {
-                context.HttpContext.Response.Headers.RetryAfter =
-                    ((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                context.HttpContext.Response.Headers.RetryAfter = ((int)retryAfter.TotalSeconds).ToString(
+                    CultureInfo.InvariantCulture
+                );
             }
 
             return ValueTask.CompletedTask;

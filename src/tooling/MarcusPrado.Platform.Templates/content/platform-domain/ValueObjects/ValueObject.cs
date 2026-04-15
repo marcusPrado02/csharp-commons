@@ -9,13 +9,12 @@ public abstract class ValueObject
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        if (obj is null || obj.GetType() != GetType()) return false;
-        return ((ValueObject)obj).GetEqualityComponents()
-            .SequenceEqual(GetEqualityComponents());
+        if (obj is null || obj.GetType() != GetType())
+            return false;
+        return ((ValueObject)obj).GetEqualityComponents().SequenceEqual(GetEqualityComponents());
     }
 
     /// <inheritdoc/>
     public override int GetHashCode() =>
-        GetEqualityComponents()
-            .Aggregate(0, (hash, item) => HashCode.Combine(hash, item));
+        GetEqualityComponents().Aggregate(0, (hash, item) => HashCode.Combine(hash, item));
 }

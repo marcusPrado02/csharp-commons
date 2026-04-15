@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.Configuration;
 /// </summary>
 public static class ConfigCipherTool
 {
-    private const int IvSize = 16;   // 128-bit block size
+    private const int IvSize = 16; // 128-bit block size
 
     /// <summary>
     /// Encrypts the given plain text using AES-256 CBC and returns it wrapped as <c>ENC(&lt;base64&gt;)</c>.

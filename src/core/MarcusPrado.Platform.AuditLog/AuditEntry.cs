@@ -23,7 +23,8 @@ public sealed record AuditEntry(
     string? Changes,
     string? IpAddress,
     string? UserAgent,
-    IDictionary<string, string>? Metadata = null)
+    IDictionary<string, string>? Metadata = null
+)
 {
     /// <summary>Creates a new audit entry with auto-generated ID and current UTC timestamp.</summary>
     /// <param name="action">The type of operation being recorded.</param>
@@ -45,11 +46,21 @@ public sealed record AuditEntry(
         string? changes = null,
         string? ipAddress = null,
         string? userAgent = null,
-        IDictionary<string, string>? metadata = null)
-            => new(
-                Guid.NewGuid(), action, resource, resourceId,
-                actorId, tenantId, DateTimeOffset.UtcNow,
-                changes, ipAddress, userAgent, metadata);
+        IDictionary<string, string>? metadata = null
+    ) =>
+        new(
+            Guid.NewGuid(),
+            action,
+            resource,
+            resourceId,
+            actorId,
+            tenantId,
+            DateTimeOffset.UtcNow,
+            changes,
+            ipAddress,
+            userAgent,
+            metadata
+        );
 }
 
 /// <summary>The type of operation being audited.</summary>

@@ -10,10 +10,7 @@ public sealed class InMemoryAdrStore : IAdrStore
     /// <inheritdoc/>
     public Task<IReadOnlyList<AdrRecord>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var result = (IReadOnlyList<AdrRecord>)_records.Values
-            .OrderBy(r => r.Number)
-            .ToList()
-            .AsReadOnly();
+        var result = (IReadOnlyList<AdrRecord>)_records.Values.OrderBy(r => r.Number).ToList().AsReadOnly();
 
         return Task.FromResult(result);
     }

@@ -29,7 +29,8 @@ public static class LocalizationExtensions
     /// </example>
     public static IServiceCollection AddPlatformLocalization(
         this IServiceCollection services,
-        Action<PlatformLocalizationOptions>? configure = null)
+        Action<PlatformLocalizationOptions>? configure = null
+    )
     {
         // Configure options.
         var optionsBuilder = services.AddOptions<PlatformLocalizationOptions>();

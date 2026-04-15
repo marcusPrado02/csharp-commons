@@ -19,7 +19,11 @@ public sealed class InMemoryFeatureFlagProvider : IFeatureFlagProvider
     public void RemoveFlag(string key) => _flags.TryRemove(key, out _);
 
     /// <inheritdoc/>
-    public Task<FeatureDecision> EvaluateAsync(string flagKey, FeatureFlagContext context, CancellationToken ct = default)
+    public Task<FeatureDecision> EvaluateAsync(
+        string flagKey,
+        FeatureFlagContext context,
+        CancellationToken ct = default
+    )
     {
         if (!_flags.TryGetValue(flagKey, out var flag))
         {

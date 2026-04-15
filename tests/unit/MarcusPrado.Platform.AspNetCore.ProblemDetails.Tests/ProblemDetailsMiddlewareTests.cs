@@ -33,31 +33,57 @@ public sealed class ProblemDetailsMiddlewareTests : IDisposable
             {
                 app.UsePlatformProblemDetails();
                 app.UseRouting();
-                app.UseEndpoints(e =>
-                    e.MapGet("/throw", _ => throw toThrow));
+                app.UseEndpoints(e => e.MapGet("/throw", _ => throw toThrow));
             });
 
         return new TestServer(builder).CreateClient();
     }
 
     private readonly HttpClient _notFound = BuildClient(new NotFoundException("ORDER.NOT_FOUND", "Order not found."));
-    private readonly HttpClient _conflict = BuildClient(new ConflictException("RESOURCE.CONFLICT", "Resource already exists."));
-    private readonly HttpClient _unauth = BuildClient(new UnauthorizedException("AUTH.UNAUTHORIZED", "Not authenticated."));
+    private readonly HttpClient _conflict = BuildClient(
+        new ConflictException("RESOURCE.CONFLICT", "Resource already exists.")
+    );
+    private readonly HttpClient _unauth = BuildClient(
+        new UnauthorizedException("AUTH.UNAUTHORIZED", "Not authenticated.")
+    );
     private readonly HttpClient _forbidden = BuildClient(new ForbiddenException("AUTH.FORBIDDEN", "Access denied."));
-    private readonly HttpClient _validation = BuildClient(new ValidationException(
-        new[] { Error.Validation("VALIDATION.NAME", "Required", "Name") }));
-    private readonly HttpClient _appEx = BuildClient(new AppException(Error.Validation("APP.ERROR", "Generic app error.")));
+    private readonly HttpClient _validation = BuildClient(
+        new ValidationException(new[] { Error.Validation("VALIDATION.NAME", "Required", "Name") })
+    );
+    private readonly HttpClient _appEx = BuildClient(
+        new AppException(Error.Validation("APP.ERROR", "Generic app error."))
+    );
     private readonly HttpClient _unexpected = BuildClient(new InvalidOperationException("Boom."));
 
     // ── Status code mapping ───────────────────────────────────────────────────
 
-    [Fact] public async Task NotFoundException_Returns404() => (await _notFound.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.NotFound);
-    [Fact] public async Task ConflictException_Returns409() => (await _conflict.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Conflict);
-    [Fact] public async Task UnauthorizedException_Returns401() => (await _unauth.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-    [Fact] public async Task ForbiddenException_Returns403() => (await _forbidden.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Forbidden);
-    [Fact] public async Task ValidationException_Returns422() => (await _validation.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
-    [Fact] public async Task AppException_Returns422() => (await _appEx.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
-    [Fact] public async Task UnknownException_Returns500() => (await _unexpected.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+    [Fact]
+    public async Task NotFoundException_Returns404() =>
+        (await _notFound.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+    [Fact]
+    public async Task ConflictException_Returns409() =>
+        (await _conflict.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Conflict);
+
+    [Fact]
+    public async Task UnauthorizedException_Returns401() =>
+        (await _unauth.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+    [Fact]
+    public async Task ForbiddenException_Returns403() =>
+        (await _forbidden.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.Forbidden);
+
+    [Fact]
+    public async Task ValidationException_Returns422() =>
+        (await _validation.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+
+    [Fact]
+    public async Task AppException_Returns422() =>
+        (await _appEx.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+
+    [Fact]
+    public async Task UnknownException_Returns500() =>
+        (await _unexpected.GetAsync("/throw")).StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
     // ── Content-Type ──────────────────────────────────────────────────────────
 
@@ -94,8 +120,8 @@ public sealed class ProblemDetailsMiddlewareTests : IDisposable
     [InlineData(404, "https://tools.ietf.org/html/rfc9110#section-15.5.5")]
     [InlineData(401, "https://tools.ietf.org/html/rfc9110#section-15.5.2")]
     [InlineData(500, "https://tools.ietf.org/html/rfc9110#section-15.6.1")]
-    public void GetProblemTypeUri_ReturnsCorrectUri(int status, string expected)
-        => ExceptionMapper.GetProblemTypeUri(status).Should().Be(expected);
+    public void GetProblemTypeUri_ReturnsCorrectUri(int status, string expected) =>
+        ExceptionMapper.GetProblemTypeUri(status).Should().Be(expected);
 
     public void Dispose()
     {

@@ -45,7 +45,8 @@ public sealed class ResilientExecutor : IDisposable
     /// <summary>Executes <paramref name="action"/> through the composed pipeline.</summary>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         Func<CancellationToken, Task<T>> pipeline = action;
 
@@ -73,8 +74,7 @@ public sealed class ResilientExecutor : IDisposable
         if (_timeout.HasValue)
         {
             var timeoutPolicy = new TimeoutPolicy(_timeout.Value);
-            return await timeoutPolicy.ExecuteAsync(
-                pipeline, cancellationToken).ConfigureAwait(false);
+            return await timeoutPolicy.ExecuteAsync(pipeline, cancellationToken).ConfigureAwait(false);
         }
 
         return await pipeline(cancellationToken).ConfigureAwait(false);

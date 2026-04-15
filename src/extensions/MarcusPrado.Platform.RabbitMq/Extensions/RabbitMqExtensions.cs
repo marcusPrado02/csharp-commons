@@ -11,7 +11,8 @@ public static class RabbitMqExtensions
     /// <summary>Registers the <see cref="IMessageSerializer"/> for RabbitMQ.</summary>
     public static IServiceCollection AddPlatformRabbitMq(
         this IServiceCollection services,
-        Action<RabbitMqOptions>? configure = null)
+        Action<RabbitMqOptions>? configure = null
+    )
     {
         var opts = new RabbitMqOptions();
         configure?.Invoke(opts);

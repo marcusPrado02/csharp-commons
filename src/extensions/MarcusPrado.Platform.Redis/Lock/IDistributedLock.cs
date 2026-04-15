@@ -25,14 +25,12 @@ public interface IDistributedLock
         TimeSpan ttl,
         int retryCount = 3,
         TimeSpan? retryDelay = null,
-        CancellationToken ct = default);
+        CancellationToken ct = default
+    );
 
     /// <summary>
     /// Tries to acquire the lock once.  Returns <c>null</c> when the lock
     /// is currently held by another holder.
     /// </summary>
-    Task<ILockHandle?> TryAcquireAsync(
-        string key,
-        TimeSpan ttl,
-        CancellationToken ct = default);
+    Task<ILockHandle?> TryAcquireAsync(string key, TimeSpan ttl, CancellationToken ct = default);
 }

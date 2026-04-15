@@ -3,8 +3,16 @@ namespace MarcusPrado.Platform.Governance.Tests.ADR;
 public sealed class InMemoryAdrStoreTests
 {
     private static AdrRecord CreateRecord(int number = 1) =>
-        new(number, "Use CQRS", AdrStatus.Accepted, new DateOnly(2025, 1, 15),
-            ["Alice", "Bob"], "We need a command bus.", "Adopt CQRS without MediatR.", "Fast, testable.");
+        new(
+            number,
+            "Use CQRS",
+            AdrStatus.Accepted,
+            new DateOnly(2025, 1, 15),
+            ["Alice", "Bob"],
+            "We need a command bus.",
+            "Adopt CQRS without MediatR.",
+            "Fast, testable."
+        );
 
     [Fact]
     public async Task SaveAsync_StoresRecord()

@@ -23,7 +23,8 @@ public static class HangfireExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddPlatformHangfire(
         this IServiceCollection services,
-        Action<HangfireOptions>? configure = null)
+        Action<HangfireOptions>? configure = null
+    )
     {
         var options = new HangfireOptions();
         configure?.Invoke(options);

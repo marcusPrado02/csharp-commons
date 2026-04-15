@@ -9,6 +9,5 @@ public sealed class EnvironmentSecretProvider : ISecretProvider
         return Task.FromResult(Environment.GetEnvironmentVariable(envName));
     }
 
-    public Task InvalidateCacheAsync(string name, CancellationToken cancellationToken = default)
-        => Task.CompletedTask;
+    public Task InvalidateCacheAsync(string name, CancellationToken cancellationToken = default) => Task.CompletedTask;
 }

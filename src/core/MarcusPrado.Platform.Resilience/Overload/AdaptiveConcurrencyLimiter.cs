@@ -23,7 +23,8 @@ public sealed class AdaptiveConcurrencyLimiter
         int initialLimit = 100,
         int minLimit = 1,
         int maxLimit = 1000,
-        BackpressureSignal? backpressure = null)
+        BackpressureSignal? backpressure = null
+    )
     {
         _limit = initialLimit;
         _minLimit = minLimit;
@@ -38,32 +39,28 @@ public sealed class AdaptiveConcurrencyLimiter
     /// <exception cref="OverloadException">Thrown when the limit is exceeded.</exception>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (Interlocked.Increment(ref _inflight) > _limit)
         {
             Interlocked.Decrement(ref _inflight);
             _backpressure.Activate();
-            throw new OverloadException(
-                $"Adaptive concurrency limit ({_limit}) exceeded.");
+            throw new OverloadException($"Adaptive concurrency limit ({_limit}) exceeded.");
         }
 
         try
         {
             var result = await action(cancellationToken).ConfigureAwait(false);
             // Additive increase on success
-            Interlocked.Exchange(
-                ref _limit,
-                Math.Min(_limit + 1, _maxLimit));
+            Interlocked.Exchange(ref _limit, Math.Min(_limit + 1, _maxLimit));
             _backpressure.Clear();
             return result;
         }
         catch
         {
             // Multiplicative decrease on failure
-            Interlocked.Exchange(
-                ref _limit,
-                Math.Max(_limit / 2, _minLimit));
+            Interlocked.Exchange(ref _limit, Math.Max(_limit / 2, _minLimit));
             throw;
         }
         finally

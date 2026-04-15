@@ -19,9 +19,7 @@ public sealed class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior
     private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>Initializes the behavior.</summary>
-    public TransactionBehavior(
-        ILogger<TransactionBehavior<TRequest, TResponse>> logger,
-        IUnitOfWork? unitOfWork = null)
+    public TransactionBehavior(ILogger<TransactionBehavior<TRequest, TResponse>> logger, IUnitOfWork? unitOfWork = null)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
@@ -31,11 +29,11 @@ public sealed class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        var hasAttribute = typeof(TRequest)
-            .GetCustomAttributes(typeof(TransactionalAttribute), inherit: false)
-            .Length > 0;
+        var hasAttribute =
+            typeof(TRequest).GetCustomAttributes(typeof(TransactionalAttribute), inherit: false).Length > 0;
 
         if (!hasAttribute || _unitOfWork is null)
         {
@@ -53,10 +51,7 @@ public sealed class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior
 #pragma warning disable S2139
         catch (Exception ex)
         {
-            _logger.LogError(
-                ex,
-                "Transaction rolled back for {RequestType}",
-                typeof(TRequest).Name);
+            _logger.LogError(ex, "Transaction rolled back for {RequestType}", typeof(TRequest).Name);
 
             await _unitOfWork.RollbackAsync(cancellationToken);
             throw;

@@ -64,9 +64,7 @@ public sealed class BusinessMetricsTests
     [Fact]
     public void AddPlatformBusinessMetrics_RegistersIBusinessMetrics()
     {
-        var sp = new ServiceCollection()
-            .AddPlatformBusinessMetrics()
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddPlatformBusinessMetrics().BuildServiceProvider();
 
         sp.GetService<IBusinessMetrics>().Should().BeOfType<OtelBusinessMetrics>();
     }

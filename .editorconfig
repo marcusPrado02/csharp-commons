@@ -342,6 +342,11 @@ dotnet_diagnostic.SA1010.severity = suggestion
 #           the two formatters don't conflict.
 dotnet_diagnostic.SA1111.severity = none
 
+# SA1206 — Required modifier should appear before access modifier
+#           CSharpier outputs 'public required' (C# language-standard order),
+#           while StyleCop SA1206 wants 'required public'. Suppress the conflict.
+dotnet_diagnostic.SA1206.severity = none
+
 # SA1116 — parameters should begin on line after declaration
 #           Too prescriptive for short multi-line LINQ / factory calls
 dotnet_diagnostic.SA1116.severity = suggestion

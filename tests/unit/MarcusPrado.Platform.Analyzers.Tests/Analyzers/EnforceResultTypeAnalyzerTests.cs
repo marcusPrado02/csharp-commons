@@ -36,8 +36,7 @@ public sealed class EnforceResultTypeAnalyzerTests
     [Fact]
     public void Analyzer_HasDiagnosticAnalyzerAttribute()
     {
-        var attrs = typeof(EnforceResultTypeAnalyzer)
-            .GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
+        var attrs = typeof(EnforceResultTypeAnalyzer).GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
 
         attrs.Should().NotBeEmpty();
     }
@@ -124,11 +123,13 @@ public sealed class EnforceResultTypeAnalyzerTests
             "TestAssembly",
             new[] { syntaxTree },
             new[] { MetadataReference.CreateFromFile(typeof(object).Assembly.Location) },
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+        );
 
         var analyzer = new EnforceResultTypeAnalyzer();
         var compilationWithAnalyzers = compilation.WithAnalyzers(
-            System.Collections.Immutable.ImmutableArray.Create<DiagnosticAnalyzer>(analyzer));
+            System.Collections.Immutable.ImmutableArray.Create<DiagnosticAnalyzer>(analyzer)
+        );
 
         var allDiagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync();
         return allDiagnostics;

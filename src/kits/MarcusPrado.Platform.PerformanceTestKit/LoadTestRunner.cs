@@ -24,7 +24,8 @@ public sealed class LoadTestRunner
     public static async Task<LoadTestResult> RunAsync(
         LoadTestConfig config,
         Func<CancellationToken, Task> action,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(config);
         ArgumentNullException.ThrowIfNull(action);
@@ -73,7 +74,8 @@ public sealed class LoadTestRunner
         Func<CancellationToken, Task> action,
         RunContext context,
         bool collectSamples,
-        CancellationToken ct)
+        CancellationToken ct
+    )
     {
         var tasks = new Task[virtualUsers];
         for (int i = 0; i < virtualUsers; i++)
@@ -89,7 +91,8 @@ public sealed class LoadTestRunner
         Func<CancellationToken, Task> action,
         RunContext context,
         bool collectSamples,
-        CancellationToken ct)
+        CancellationToken ct
+    )
     {
         var sw = new Stopwatch();
         while (!ct.IsCancellationRequested)

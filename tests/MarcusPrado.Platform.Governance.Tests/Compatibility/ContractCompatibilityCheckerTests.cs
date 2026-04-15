@@ -22,8 +22,7 @@ public sealed class ContractCompatibilityCheckerTests
         var report = ContractCompatibilityChecker.Check(previous, current);
 
         report.IsCompatible.Should().BeFalse();
-        report.Violations.Should().ContainSingle(v =>
-            v.Type == ViolationType.FieldRemoved && v.FieldPath == "amount");
+        report.Violations.Should().ContainSingle(v => v.Type == ViolationType.FieldRemoved && v.FieldPath == "amount");
     }
 
     [Fact]
@@ -35,8 +34,7 @@ public sealed class ContractCompatibilityCheckerTests
         var report = ContractCompatibilityChecker.Check(previous, current);
 
         report.IsCompatible.Should().BeFalse();
-        report.Violations.Should().ContainSingle(v =>
-            v.Type == ViolationType.TypeChanged && v.FieldPath == "amount");
+        report.Violations.Should().ContainSingle(v => v.Type == ViolationType.TypeChanged && v.FieldPath == "amount");
     }
 
     [Fact]

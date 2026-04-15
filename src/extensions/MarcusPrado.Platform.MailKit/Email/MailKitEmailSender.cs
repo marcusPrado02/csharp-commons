@@ -41,8 +41,7 @@ public sealed class MailKitEmailSender : IEmailSender
     }
 
     /// <inheritdoc />
-    public async Task<EmailResult> SendBulkAsync(
-        IReadOnlyList<EmailMessage> messages, CancellationToken ct = default)
+    public async Task<EmailResult> SendBulkAsync(IReadOnlyList<EmailMessage> messages, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(messages);
 
@@ -55,13 +54,11 @@ public sealed class MailKitEmailSender : IEmailSender
                 ? SecureSocketOptions.SslOnConnect
                 : SecureSocketOptions.StartTlsWhenAvailable;
 
-            await _smtp.ConnectAsync(_options.SmtpHost, _options.SmtpPort, secureOptions, ct)
-                .ConfigureAwait(false);
+            await _smtp.ConnectAsync(_options.SmtpHost, _options.SmtpPort, secureOptions, ct).ConfigureAwait(false);
 
             if (!string.IsNullOrEmpty(_options.Username))
             {
-                await _smtp.AuthenticateAsync(_options.Username, _options.Password, ct)
-                    .ConfigureAwait(false);
+                await _smtp.AuthenticateAsync(_options.Username, _options.Password, ct).ConfigureAwait(false);
             }
 
             string? lastMessageId = null;
@@ -89,13 +86,11 @@ public sealed class MailKitEmailSender : IEmailSender
             ? SecureSocketOptions.SslOnConnect
             : SecureSocketOptions.StartTlsWhenAvailable;
 
-        await _smtp.ConnectAsync(_options.SmtpHost, _options.SmtpPort, secureOptions, ct)
-            .ConfigureAwait(false);
+        await _smtp.ConnectAsync(_options.SmtpHost, _options.SmtpPort, secureOptions, ct).ConfigureAwait(false);
 
         if (!string.IsNullOrEmpty(_options.Username))
         {
-            await _smtp.AuthenticateAsync(_options.Username, _options.Password, ct)
-                .ConfigureAwait(false);
+            await _smtp.AuthenticateAsync(_options.Username, _options.Password, ct).ConfigureAwait(false);
         }
 
         await _smtp.SendAsync(mime, ct).ConfigureAwait(false);
@@ -136,10 +131,7 @@ public sealed class MailKitEmailSender : IEmailSender
         {
             foreach (var att in message.Attachments)
             {
-                builder.Attachments.Add(
-                    att.FileName,
-                    att.Content,
-                    global::MimeKit.ContentType.Parse(att.ContentType));
+                builder.Attachments.Add(att.FileName, att.Content, global::MimeKit.ContentType.Parse(att.ContentType));
             }
         }
 

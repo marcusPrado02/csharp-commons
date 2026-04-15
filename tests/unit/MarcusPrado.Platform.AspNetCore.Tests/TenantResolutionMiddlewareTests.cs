@@ -23,8 +23,11 @@ public sealed class TenantResolutionMiddlewareTests
         var response = await client.SendAsync(request);
         var body = await response.Content.ReadAsStringAsync();
 
-        body.Should().Be("acme",
-            because: $"a '{TenantResolutionMiddleware.TenantIdHeader}' header value must be propagated to ITenantContext");
+        body.Should()
+            .Be(
+                "acme",
+                because: $"a '{TenantResolutionMiddleware.TenantIdHeader}' header value must be propagated to ITenantContext"
+            );
     }
 
     [Fact]
@@ -36,8 +39,8 @@ public sealed class TenantResolutionMiddlewareTests
         var response = await client.GetAsync("/tenant");
         var body = await response.Content.ReadAsStringAsync();
 
-        body.Should().Be("null",
-            because: "ITenantContext.TenantId must be null when no header, claim, or subdomain is present");
+        body.Should()
+            .Be("null", because: "ITenantContext.TenantId must be null when no header, claim, or subdomain is present");
     }
 
     [Theory]

@@ -20,7 +20,8 @@ public sealed class DeprecationSchedule
         {
             throw new ArgumentException(
                 "RetirementDate must be strictly after DeprecationDate.",
-                nameof(retirementDate));
+                nameof(retirementDate)
+            );
         }
 
         DeprecationDate = deprecationDate;
@@ -31,8 +32,7 @@ public sealed class DeprecationSchedule
     /// Returns <c>true</c> when <paramref name="now"/> is in the deprecation
     /// window (after deprecation date but before retirement date).
     /// </summary>
-    public bool IsWithinDeprecationWindow(DateTimeOffset now) =>
-        now >= DeprecationDate && now < RetirementDate;
+    public bool IsWithinDeprecationWindow(DateTimeOffset now) => now >= DeprecationDate && now < RetirementDate;
 
     /// <summary>Returns <c>true</c> when the contract has been retired.</summary>
     public bool IsRetired(DateTimeOffset now) => now >= RetirementDate;

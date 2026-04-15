@@ -1,7 +1,7 @@
 using FluentAssertions;
+using MarcusPrado.Platform.Secrets;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using MarcusPrado.Platform.Secrets;
 
 namespace MarcusPrado.Platform.Secrets.Tests;
 
@@ -10,10 +10,7 @@ public sealed class InMemorySecretProviderTests
     [Fact]
     public async Task GetSecretAsync_ExistingKey_ReturnsValue()
     {
-        var provider = new InMemorySecretProvider(new Dictionary<string, string>
-        {
-            ["db-password"] = "s3cr3t"
-        });
+        var provider = new InMemorySecretProvider(new Dictionary<string, string> { ["db-password"] = "s3cr3t" });
 
         var result = await provider.GetSecretAsync("db-password");
 
@@ -44,18 +41,19 @@ public sealed class InMemorySecretProviderTests
 
 public sealed class CachedSecretProviderTests
 {
-    private static IMemoryCache CreateMemoryCache()
-        => new MemoryCache(new MemoryCacheOptions());
+    private static IMemoryCache CreateMemoryCache() => new MemoryCache(new MemoryCacheOptions());
 
     [Fact]
     public async Task GetSecretAsync_FirstCall_FetchesFromInner()
     {
         var callCount = 0;
-        var delegate_ = new DelegateSecretProvider((name, _) =>
-        {
-            callCount++;
-            return Task.FromResult<string?>("value1");
-        });
+        var delegate_ = new DelegateSecretProvider(
+            (name, _) =>
+            {
+                callCount++;
+                return Task.FromResult<string?>("value1");
+            }
+        );
         var cached = new CachedSecretProvider(delegate_, CreateMemoryCache(), new SecretCacheOptions());
 
         var result = await cached.GetSecretAsync("my-secret");
@@ -68,11 +66,13 @@ public sealed class CachedSecretProviderTests
     public async Task GetSecretAsync_SecondCall_UsesCacheAndInnerCalledOnlyOnce()
     {
         var callCount = 0;
-        var delegate_ = new DelegateSecretProvider((name, _) =>
-        {
-            callCount++;
-            return Task.FromResult<string?>("value1");
-        });
+        var delegate_ = new DelegateSecretProvider(
+            (name, _) =>
+            {
+                callCount++;
+                return Task.FromResult<string?>("value1");
+            }
+        );
         var cached = new CachedSecretProvider(delegate_, CreateMemoryCache(), new SecretCacheOptions());
 
         await cached.GetSecretAsync("my-secret");
@@ -86,11 +86,13 @@ public sealed class CachedSecretProviderTests
     public async Task InvalidateCacheAsync_ClearsCache_NextCallFetchesFromInner()
     {
         var callCount = 0;
-        var delegate_ = new DelegateSecretProvider((name, _) =>
-        {
-            callCount++;
-            return Task.FromResult<string?>($"value{callCount}");
-        });
+        var delegate_ = new DelegateSecretProvider(
+            (name, _) =>
+            {
+                callCount++;
+                return Task.FromResult<string?>($"value{callCount}");
+            }
+        );
         var cached = new CachedSecretProvider(delegate_, CreateMemoryCache(), new SecretCacheOptions());
 
         var first = await cached.GetSecretAsync("my-secret");
@@ -106,11 +108,13 @@ public sealed class CachedSecretProviderTests
     public async Task GetSecretAsync_NullValueFromInner_NotCached()
     {
         var callCount = 0;
-        var delegate_ = new DelegateSecretProvider((name, _) =>
-        {
-            callCount++;
-            return Task.FromResult<string?>(null);
-        });
+        var delegate_ = new DelegateSecretProvider(
+            (name, _) =>
+            {
+                callCount++;
+                return Task.FromResult<string?>(null);
+            }
+        );
         var cached = new CachedSecretProvider(delegate_, CreateMemoryCache(), new SecretCacheOptions());
 
         var first = await cached.GetSecretAsync("missing");
@@ -167,11 +171,13 @@ public sealed class DelegateSecretProviderTests
     public async Task GetSecretAsync_CallsDelegateWithCorrectName()
     {
         string? capturedName = null;
-        var provider = new DelegateSecretProvider((name, _) =>
-        {
-            capturedName = name;
-            return Task.FromResult<string?>("delegated-value");
-        });
+        var provider = new DelegateSecretProvider(
+            (name, _) =>
+            {
+                capturedName = name;
+                return Task.FromResult<string?>("delegated-value");
+            }
+        );
 
         var result = await provider.GetSecretAsync("target-secret");
 
@@ -185,7 +191,8 @@ public sealed class DelegateSecretProviderTests
         string? rotatedName = null;
         var provider = new DelegateSecretProvider(
             (name, _) => Task.FromResult<string?>("value"),
-            onRotation: name => rotatedName = name);
+            onRotation: name => rotatedName = name
+        );
 
         await provider.InvalidateCacheAsync("rotated-secret");
 

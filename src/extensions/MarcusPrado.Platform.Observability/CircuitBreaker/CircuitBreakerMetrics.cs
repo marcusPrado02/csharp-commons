@@ -37,12 +37,14 @@ public sealed class CircuitBreakerMetrics : IDisposable
             "circuit_breaker.state",
             observeValues: ObserveStates,
             unit: "state",
-            description: "Current state of each circuit breaker (0=Closed, 1=Open, 2=HalfOpen).");
+            description: "Current state of each circuit breaker (0=Closed, 1=Open, 2=HalfOpen)."
+        );
 
         _failuresCounter = _meter.CreateCounter<long>(
             "circuit_breaker.failures_total",
             unit: "failures",
-            description: "Total number of failures recorded per circuit breaker.");
+            description: "Total number of failures recorded per circuit breaker."
+        );
     }
 
     /// <summary>Records a failure metric for the named circuit breaker.</summary>
@@ -71,7 +73,8 @@ public sealed class CircuitBreakerMetrics : IDisposable
         {
             yield return new Measurement<int>(
                 (int)entry.State,
-                new KeyValuePair<string, object?>("circuit_breaker.name", entry.Name));
+                new KeyValuePair<string, object?>("circuit_breaker.name", entry.Name)
+            );
         }
     }
 }

@@ -10,7 +10,5 @@ namespace MarcusPrado.Platform.Abstractions.Validation;
 public interface IValidator<in TRequest>
 {
     /// <summary>Validates the request asynchronously.</summary>
-    Task<IValidationResult> ValidateAsync(
-        TRequest request,
-        CancellationToken cancellationToken = default);
+    Task<IValidationResult> ValidateAsync(TRequest request, CancellationToken cancellationToken = default);
 }

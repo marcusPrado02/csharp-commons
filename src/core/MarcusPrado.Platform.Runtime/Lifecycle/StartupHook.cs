@@ -12,11 +12,8 @@ public static class StartupHook
     /// <summary>
     /// Wires <paramref name="handler"/> to <see cref="IHostApplicationLifetime.ApplicationStarted"/>.
     /// </summary>
-    public static void Register(
-        IHostApplicationLifetime lifetime,
-        Func<CancellationToken, Task> handler)
+    public static void Register(IHostApplicationLifetime lifetime, Func<CancellationToken, Task> handler)
     {
-        lifetime.ApplicationStarted.Register(() =>
-            handler(lifetime.ApplicationStopping).GetAwaiter().GetResult());
+        lifetime.ApplicationStarted.Register(() => handler(lifetime.ApplicationStopping).GetAwaiter().GetResult());
     }
 }

@@ -17,12 +17,13 @@ public sealed class RequestSizeLimitOptions
     ///   <item><see cref="RequestSizeTier.Enterprise"/> → 100 MB</item>
     /// </list>
     /// </summary>
-    public Dictionary<RequestSizeTier, long> TierLimits { get; set; } = new()
-    {
-        [RequestSizeTier.Free] = OneMegabyte,
-        [RequestSizeTier.Pro] = TenMegabytes,
-        [RequestSizeTier.Enterprise] = HundredMegabytes
-    };
+    public Dictionary<RequestSizeTier, long> TierLimits { get; set; } =
+        new()
+        {
+            [RequestSizeTier.Free] = OneMegabyte,
+            [RequestSizeTier.Pro] = TenMegabytes,
+            [RequestSizeTier.Enterprise] = HundredMegabytes,
+        };
 
     /// <summary>
     /// Tier applied when <see cref="TierResolver"/> returns no result or is not set.
@@ -41,6 +42,5 @@ public sealed class RequestSizeLimitOptions
     /// Returns the byte limit for the given tier, falling back to the <see cref="RequestSizeTier.Free"/>
     /// limit if the tier is not present in <see cref="TierLimits"/>.
     /// </summary>
-    internal long GetLimit(RequestSizeTier tier)
-        => TierLimits.TryGetValue(tier, out var limit) ? limit : OneMegabyte;
+    internal long GetLimit(RequestSizeTier tier) => TierLimits.TryGetValue(tier, out var limit) ? limit : OneMegabyte;
 }

@@ -35,10 +35,7 @@ public sealed class PostgresAdvisoryLock : IDistributedLock
     /// transaction locks are automatically released at transaction end; there is no
     /// TTL mechanism.
     /// </remarks>
-    public Task<IAsyncDisposable?> AcquireAsync(
-        string key,
-        TimeSpan expiry,
-        CancellationToken ct = default)
+    public Task<IAsyncDisposable?> AcquireAsync(string key, TimeSpan expiry, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
 
@@ -61,8 +58,10 @@ public sealed class PostgresAdvisoryLock : IDistributedLock
         cmd.Parameters.Add(param);
 
         var result = cmd.ExecuteScalar();
-        var acquired = result is true || result?.ToString()?.Equals("t", StringComparison.OrdinalIgnoreCase) == true
-                       || result?.ToString()?.Equals("True", StringComparison.OrdinalIgnoreCase) == true;
+        var acquired =
+            result is true
+            || result?.ToString()?.Equals("t", StringComparison.OrdinalIgnoreCase) == true
+            || result?.ToString()?.Equals("True", StringComparison.OrdinalIgnoreCase) == true;
 
         IAsyncDisposable? handle = acquired ? new NoOpDisposable() : null;
         return Task.FromResult(handle);

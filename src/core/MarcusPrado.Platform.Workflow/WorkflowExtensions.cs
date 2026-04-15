@@ -8,7 +8,8 @@ public static class WorkflowExtensions
     /// <summary>Registers <see cref="DefaultWorkflowEngine"/> as the singleton <see cref="IWorkflowEngine"/>.</summary>
     public static IServiceCollection AddWorkflowEngine(
         this IServiceCollection services,
-        Action<DefaultWorkflowEngine>? configure = null)
+        Action<DefaultWorkflowEngine>? configure = null
+    )
     {
         services.AddSingleton<DefaultWorkflowEngine>();
         services.AddSingleton<IWorkflowEngine>(sp =>

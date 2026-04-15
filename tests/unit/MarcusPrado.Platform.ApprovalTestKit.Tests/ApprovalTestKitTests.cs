@@ -96,8 +96,7 @@ public sealed class PlatformVerifySettingsTests
         var result = settings.Apply(input);
 
         result.Should().NotContain(guid);
-        result.Should().NotMatchRegex(
-            @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
+        result.Should().NotMatchRegex(@"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
         result.Should().Contain("«CorrelationId»");
         result.Should().Contain("«DateTimeOffset»");
     }
@@ -105,7 +104,9 @@ public sealed class PlatformVerifySettingsTests
     [Fact]
     public void AddScrubber_CustomDelegate_IsApplied()
     {
-        var settings = new PlatformVerifySettings().AddScrubber(s => s.Replace("secret", "«REDACTED»", StringComparison.Ordinal));
+        var settings = new PlatformVerifySettings().AddScrubber(s =>
+            s.Replace("secret", "«REDACTED»", StringComparison.Ordinal)
+        );
         var result = settings.Apply("value=secret");
 
         result.Should().Be("value=«REDACTED»");
@@ -148,14 +149,9 @@ public sealed class ApiResponseVerifierTests
     [Fact]
     public async Task SnapshotAsync_CapturesStatusCode()
     {
-        using var response = new HttpResponseMessage(HttpStatusCode.OK)
-        {
-            Content = new StringContent(string.Empty),
-        };
+        using var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(string.Empty) };
 
-        var snapshot = await ApiResponseVerifier.SnapshotAsync(
-            response,
-            new PlatformVerifySettings());
+        var snapshot = await ApiResponseVerifier.SnapshotAsync(response, new PlatformVerifySettings());
 
         snapshot.StatusCode.Should().Be(200);
     }
@@ -184,9 +180,7 @@ public sealed class ApiResponseVerifierTests
             Content = new StringContent("not found"),
         };
 
-        var snapshot = await ApiResponseVerifier.SnapshotAsync(
-            response,
-            new PlatformVerifySettings());
+        var snapshot = await ApiResponseVerifier.SnapshotAsync(response, new PlatformVerifySettings());
 
         snapshot.StatusCode.Should().Be(404);
     }
@@ -209,10 +203,7 @@ public sealed class DomainEventVerifierTests
     [Fact]
     public void Snapshot_ProducesValidJson()
     {
-        var evt = new OrderCreatedEvent(
-            Guid.NewGuid(),
-            DateTimeOffset.UtcNow,
-            "customer-123");
+        var evt = new OrderCreatedEvent(Guid.NewGuid(), DateTimeOffset.UtcNow, "customer-123");
         var settings = new PlatformVerifySettings();
 
         var result = DomainEventVerifier.Snapshot(evt, settings);
@@ -225,13 +216,8 @@ public sealed class DomainEventVerifierTests
     [Fact]
     public void Snapshot_ScrubsGuidsAndTimestamps()
     {
-        var evt = new OrderCreatedEvent(
-            Guid.NewGuid(),
-            DateTimeOffset.UtcNow,
-            "customer-abc");
-        var settings = new PlatformVerifySettings()
-            .AddGuidScrubber()
-            .AddDateTimeOffsetScrubber();
+        var evt = new OrderCreatedEvent(Guid.NewGuid(), DateTimeOffset.UtcNow, "customer-abc");
+        var settings = new PlatformVerifySettings().AddGuidScrubber().AddDateTimeOffsetScrubber();
 
         var result = DomainEventVerifier.Snapshot(evt, settings);
 

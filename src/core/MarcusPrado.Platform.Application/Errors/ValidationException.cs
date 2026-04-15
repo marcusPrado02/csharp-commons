@@ -10,9 +10,11 @@ public sealed class ValidationException : AppException
 
     /// <summary>Initializes a <see cref="ValidationException"/> with a list of errors.</summary>
     public ValidationException(IReadOnlyList<Error> errors)
-        : base(errors.Count > 0
-            ? errors[0]
-            : Error.Validation("VALIDATION.FAILED", "One or more validation errors occurred."))
+        : base(
+            errors.Count > 0
+                ? errors[0]
+                : Error.Validation("VALIDATION.FAILED", "One or more validation errors occurred.")
+        )
     {
         Errors = errors;
     }

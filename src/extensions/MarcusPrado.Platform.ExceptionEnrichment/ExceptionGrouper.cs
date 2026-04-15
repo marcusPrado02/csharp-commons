@@ -19,7 +19,8 @@ public static class ExceptionGrouper
     /// Thrown when <paramref name="exceptions"/> is <see langword="null"/>.
     /// </exception>
     public static IReadOnlyDictionary<string, IReadOnlyList<Exception>> GroupByFingerprint(
-        IEnumerable<Exception> exceptions)
+        IEnumerable<Exception> exceptions
+    )
     {
         ArgumentNullException.ThrowIfNull(exceptions);
 
@@ -41,6 +42,7 @@ public static class ExceptionGrouper
         return result.ToDictionary(
             kvp => kvp.Key,
             kvp => (IReadOnlyList<Exception>)kvp.Value.AsReadOnly(),
-            StringComparer.Ordinal);
+            StringComparer.Ordinal
+        );
     }
 }

@@ -10,8 +10,8 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Handlers;
 public sealed class ApiKeyAuthenticationHandler(
     IOptionsMonitor<ApiKeyAuthenticationOptions> options,
     ILoggerFactory logger,
-    UrlEncoder encoder)
-    : AuthenticationHandler<ApiKeyAuthenticationOptions>(options, logger, encoder)
+    UrlEncoder encoder
+) : AuthenticationHandler<ApiKeyAuthenticationOptions>(options, logger, encoder)
 {
     /// <inheritdoc />
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -32,11 +32,7 @@ public sealed class ApiKeyAuthenticationHandler(
         }
 
         // Build a minimal principal representing the API client
-        var claims = new[]
-        {
-            new Claim("apikey", apiKey),
-            new Claim(ClaimTypes.Name, "api-client"),
-        };
+        var claims = new[] { new Claim("apikey", apiKey), new Claim(ClaimTypes.Name, "api-client") };
         var identity = new ClaimsIdentity(claims, Scheme.Name);
         var principal = new ClaimsPrincipal(identity);
 

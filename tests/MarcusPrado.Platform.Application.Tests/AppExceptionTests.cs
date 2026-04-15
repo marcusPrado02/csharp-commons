@@ -35,11 +35,7 @@ public sealed class AppExceptionTests
     [Fact]
     public void ValidationException_CarriesAllErrors()
     {
-        var errors = new[]
-        {
-            Error.Validation("V1", "First"),
-            Error.Validation("V2", "Second"),
-        };
+        var errors = new[] { Error.Validation("V1", "First"), Error.Validation("V2", "Second") };
         var ex = new ValidationException(errors);
         Assert.Equal(2, ex.Errors.Count);
         Assert.Equal(ErrorCategory.Validation, ex.Error.Category);

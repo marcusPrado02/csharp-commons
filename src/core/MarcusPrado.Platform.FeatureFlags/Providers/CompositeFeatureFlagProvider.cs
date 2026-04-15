@@ -17,7 +17,11 @@ public sealed class CompositeFeatureFlagProvider : IFeatureFlagProvider
     }
 
     /// <inheritdoc/>
-    public async Task<FeatureDecision> EvaluateAsync(string flagKey, FeatureFlagContext context, CancellationToken ct = default)
+    public async Task<FeatureDecision> EvaluateAsync(
+        string flagKey,
+        FeatureFlagContext context,
+        CancellationToken ct = default
+    )
     {
         foreach (var provider in _providers)
         {

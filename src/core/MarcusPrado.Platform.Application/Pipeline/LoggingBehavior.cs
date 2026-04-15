@@ -23,7 +23,8 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var requestName = typeof(TRequest).Name;
 
@@ -49,19 +50,13 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
             if (succeeded)
             {
 #pragma warning disable CA1873
-                _logger.LogInformation(
-                    "Handled {RequestName} in {ElapsedMs}ms",
-                    requestName,
-                    elapsedMs);
+                _logger.LogInformation("Handled {RequestName} in {ElapsedMs}ms", requestName, elapsedMs);
 #pragma warning restore CA1873
             }
             else
             {
 #pragma warning disable CA1873
-                _logger.LogWarning(
-                    "Failed {RequestName} after {ElapsedMs}ms",
-                    requestName,
-                    elapsedMs);
+                _logger.LogWarning("Failed {RequestName} after {ElapsedMs}ms", requestName, elapsedMs);
 #pragma warning restore CA1873
             }
         }

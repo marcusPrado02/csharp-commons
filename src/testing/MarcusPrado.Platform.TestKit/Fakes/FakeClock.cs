@@ -12,9 +12,7 @@ public sealed class FakeClock : IClock
 
     /// <summary>Initialises the fake clock at <see cref="DateTimeOffset.UtcNow"/>.</summary>
     public FakeClock()
-        : this(DateTimeOffset.UtcNow)
-    {
-    }
+        : this(DateTimeOffset.UtcNow) { }
 
     /// <summary>Initialises the fake clock at the given <paramref name="startTime"/>.</summary>
     public FakeClock(DateTimeOffset startTime)

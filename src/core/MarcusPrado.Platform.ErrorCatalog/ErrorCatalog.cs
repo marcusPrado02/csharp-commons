@@ -47,9 +47,15 @@ public static class ErrorCatalog
         public static readonly Error NotFound = Error.NotFound("ORDER_001", "Order not found.");
 
         /// <summary>The order is in an invalid state for the attempted operation.</summary>
-        public static readonly Error InvalidState = Error.Validation("ORDER_002", "Order is in an invalid state for this operation.");
+        public static readonly Error InvalidState = Error.Validation(
+            "ORDER_002",
+            "Order is in an invalid state for this operation."
+        );
 
         /// <summary>The order has already been cancelled and cannot be modified.</summary>
-        public static readonly Error AlreadyCancelled = Error.Conflict("ORDER_003", "Order has already been cancelled.");
+        public static readonly Error AlreadyCancelled = Error.Conflict(
+            "ORDER_003",
+            "Order has already been cancelled."
+        );
     }
 }

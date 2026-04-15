@@ -11,13 +11,13 @@ public sealed class ReadinessCheck : IHealthCheck
     private readonly IEnumerable<IDependencyHealthProbe> _probes;
 
     /// <summary>Initialises with the registered dependency probes.</summary>
-    public ReadinessCheck(IEnumerable<IDependencyHealthProbe> probes)
-        => _probes = probes;
+    public ReadinessCheck(IEnumerable<IDependencyHealthProbe> probes) => _probes = probes;
 
     /// <inheritdoc />
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var failures = new List<string>();
 

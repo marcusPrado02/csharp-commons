@@ -30,7 +30,8 @@ public sealed class FakeUserContext : IUserContext
     public static FakeUserContext Authenticated(
         string userId,
         IEnumerable<string>? permissions = null,
-        IEnumerable<string>? scopes = null)
+        IEnumerable<string>? scopes = null
+    )
     {
         return new FakeUserContext
         {
@@ -41,15 +42,13 @@ public sealed class FakeUserContext : IUserContext
     }
 
     /// <inheritdoc/>
-    public string? GetClaim(string claimType)
-        => _principal?.FindFirst(claimType)?.Value;
+    public string? GetClaim(string claimType) => _principal?.FindFirst(claimType)?.Value;
 
     /// <inheritdoc/>
     public void SetUser(ClaimsPrincipal principal)
     {
         _principal = principal;
-        UserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                 ?? principal.FindFirst("sub")?.Value;
+        UserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? principal.FindFirst("sub")?.Value;
         Permissions = principal
             .FindAll("permission")
             .Concat(principal.FindAll("permissions"))

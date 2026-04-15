@@ -27,7 +27,8 @@ public static class PlatformRateLimitingExtensions
     /// </summary>
     public static IServiceCollection AddPlatformRateLimiting(
         this IServiceCollection services,
-        Action<PlatformRateLimitingOptions>? configure = null)
+        Action<PlatformRateLimitingOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -51,14 +52,15 @@ public static class PlatformRateLimitingExtensions
 
                 if (ctx.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
                 {
-                    ctx.HttpContext.Response.Headers.RetryAfter =
-                        ((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                    ctx.HttpContext.Response.Headers.RetryAfter = ((int)retryAfter.TotalSeconds).ToString(
+                        CultureInfo.InvariantCulture
+                    );
                 }
 
                 const string Body =
-                    "{\"status\":429,\"title\":\"Too Many Requests\"," +
-                    "\"detail\":\"Rate limit exceeded. Try again after the Retry-After period.\"," +
-                    "\"type\":\"https://tools.ietf.org/html/rfc6585#section-4\"}";
+                    "{\"status\":429,\"title\":\"Too Many Requests\","
+                    + "\"detail\":\"Rate limit exceeded. Try again after the Retry-After period.\","
+                    + "\"type\":\"https://tools.ietf.org/html/rfc6585#section-4\"}";
 
                 ctx.HttpContext.Response.ContentType = "application/problem+json";
                 await ctx.HttpContext.Response.WriteAsync(Body, token);

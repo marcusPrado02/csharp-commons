@@ -30,7 +30,8 @@ public sealed class ServiceBusDeadLetterSink
         string queueOrTopic,
         ServiceBusReceivedMessage message,
         string reason,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(queueOrTopic);
         ArgumentNullException.ThrowIfNull(message);

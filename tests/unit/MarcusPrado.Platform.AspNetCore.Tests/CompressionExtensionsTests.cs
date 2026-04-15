@@ -18,8 +18,11 @@ public sealed class CompressionExtensionsTests
 
         var providers = sp.GetServices<IResponseCompressionProvider>();
 
-        providers.Should().NotBeNullOrEmpty(
-            because: "AddPlatformResponseCompression must register at least one IResponseCompressionProvider");
+        providers
+            .Should()
+            .NotBeNullOrEmpty(
+                because: "AddPlatformResponseCompression must register at least one IResponseCompressionProvider"
+            );
     }
 
     [Fact]
@@ -34,8 +37,8 @@ public sealed class CompressionExtensionsTests
         var sp = services.BuildServiceProvider();
         var opts = sp.GetRequiredService<IOptions<ResponseCompressionOptions>>().Value;
 
-        opts.EnableForHttps.Should().BeTrue(
-            because: "HTTPS compression must be enabled by default to compress API responses over TLS");
+        opts.EnableForHttps.Should()
+            .BeTrue(because: "HTTPS compression must be enabled by default to compress API responses over TLS");
     }
 
     [Fact]
@@ -44,8 +47,8 @@ public sealed class CompressionExtensionsTests
         var sp = BuildServiceProvider();
         var opts = sp.GetRequiredService<IOptions<ResponseCompressionOptions>>().Value;
 
-        opts.MimeTypes.Should().Contain("application/json",
-            because: "JSON is the primary API response format and should be compressed");
+        opts.MimeTypes.Should()
+            .Contain("application/json", because: "JSON is the primary API response format and should be compressed");
     }
 
     [Fact]
@@ -54,8 +57,11 @@ public sealed class CompressionExtensionsTests
         var sp = BuildServiceProvider();
         var opts = sp.GetRequiredService<IOptions<ResponseCompressionOptions>>().Value;
 
-        opts.MimeTypes.Should().Contain("application/x-protobuf",
-            because: "Protobuf binary responses must also be eligible for compression");
+        opts.MimeTypes.Should()
+            .Contain(
+                "application/x-protobuf",
+                because: "Protobuf binary responses must also be eligible for compression"
+            );
     }
 
     [Fact]
@@ -67,8 +73,8 @@ public sealed class CompressionExtensionsTests
 
         var opts = sp.GetRequiredService<IOptions<ResponseCompressionOptions>>().Value;
 
-        opts.EnableForHttps.Should().BeFalse(
-            because: "the caller-supplied configure delegate must override the defaults");
+        opts.EnableForHttps.Should()
+            .BeFalse(because: "the caller-supplied configure delegate must override the defaults");
     }
 
     // ── Integration: actual response compression ──────────────────────────────
@@ -85,8 +91,12 @@ public sealed class CompressionExtensionsTests
         var response = await client.SendAsync(request);
 
         response.IsSuccessStatusCode.Should().BeTrue();
-        response.Content.Headers.ContentEncoding.Should().Contain("br",
-            because: "when the client sends Accept-Encoding: br, the server must use Brotli compression");
+        response
+            .Content.Headers.ContentEncoding.Should()
+            .Contain(
+                "br",
+                because: "when the client sends Accept-Encoding: br, the server must use Brotli compression"
+            );
     }
 
     [Fact]
@@ -101,17 +111,18 @@ public sealed class CompressionExtensionsTests
         var response = await client.SendAsync(request);
 
         response.IsSuccessStatusCode.Should().BeTrue();
-        response.Content.Headers.ContentEncoding.Should().Contain("gzip",
-            because: "when the client sends Accept-Encoding: gzip, the server must use Gzip compression");
+        response
+            .Content.Headers.ContentEncoding.Should()
+            .Contain(
+                "gzip",
+                because: "when the client sends Accept-Encoding: gzip, the server must use Gzip compression"
+            );
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private static IServiceProvider BuildServiceProvider()
-        => new ServiceCollection()
-            .AddLogging()
-            .AddPlatformResponseCompression()
-            .BuildServiceProvider();
+    private static IServiceProvider BuildServiceProvider() =>
+        new ServiceCollection().AddLogging().AddPlatformResponseCompression().BuildServiceProvider();
 
     /// <summary>
     /// Creates an inline <see cref="TestServer"/> that uses
@@ -121,9 +132,10 @@ public sealed class CompressionExtensionsTests
     private static TestServer BuildCompressionTestServer()
     {
         // A payload well above the built-in minimum-size threshold (~150 B).
-        var largeJson = "{\"items\":[" +
-            string.Join(",", Enumerable.Range(1, 50).Select(i => $"{{\"id\":{i},\"name\":\"item-{i}\"}}")) +
-            "]}";
+        var largeJson =
+            "{\"items\":["
+            + string.Join(",", Enumerable.Range(1, 50).Select(i => $"{{\"id\":{i},\"name\":\"item-{i}\"}}"))
+            + "]}";
 
         var builder = new WebHostBuilder()
             .UseEnvironment("Test")

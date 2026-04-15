@@ -9,7 +9,8 @@ public sealed class CorsTests
     private static TestServer CreateCorsServer(
         Action<PlatformCorsOptions>? configure = null,
         string policyName = CorsConstants.DefaultPolicy,
-        Action<IServiceCollection>? configureServices = null)
+        Action<IServiceCollection>? configureServices = null
+    )
     {
         var builder = new WebHostBuilder()
             .UseEnvironment("Test")
@@ -33,14 +34,10 @@ public sealed class CorsTests
         return new TestServer(builder);
     }
 
-    private static HttpRequestMessage Preflight(string origin, string method = "GET")
-        => new(HttpMethod.Options, "/test")
+    private static HttpRequestMessage Preflight(string origin, string method = "GET") =>
+        new(HttpMethod.Options, "/test")
         {
-            Headers =
-            {
-                { "Origin", origin },
-                { "Access-Control-Request-Method", method }
-            }
+            Headers = { { "Origin", origin }, { "Access-Control-Request-Method", method } },
         };
 
     // ── Tests ─────────────────────────────────────────────────────────────────
@@ -125,7 +122,8 @@ public sealed class CorsTests
             {
                 // Register a fake ITenantContext that always returns our tenant ID
                 services.AddScoped<ITenantContext>(_ => new FakeTenantContext(tenantId));
-            });
+            }
+        );
 
         var client = server.CreateClient();
 
@@ -151,7 +149,8 @@ public sealed class CorsTests
             {
                 // Unknown tenant — not in TenantOrigins
                 services.AddScoped<ITenantContext>(_ => new FakeTenantContext("unknown-tenant"));
-            });
+            }
+        );
 
         var client = server.CreateClient();
 

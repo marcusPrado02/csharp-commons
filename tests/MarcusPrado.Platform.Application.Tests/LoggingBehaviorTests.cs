@@ -12,8 +12,7 @@ public sealed class LoggingBehaviorTests
         var logger = Substitute.For<ILogger<LoggingBehavior<SimpleCommand, Result<string>>>>();
         var behavior = new LoggingBehavior<SimpleCommand, Result<string>>(logger);
 
-        RequestHandlerDelegate<Result<string>> next = _ =>
-            Task.FromResult(Result.Success<string>("logged"));
+        RequestHandlerDelegate<Result<string>> next = _ => Task.FromResult(Result.Success<string>("logged"));
 
         var result = await behavior.HandleAsync(new SimpleCommand(), next);
 
@@ -27,10 +26,8 @@ public sealed class LoggingBehaviorTests
         var logger = Substitute.For<ILogger<LoggingBehavior<SimpleCommand, Result<string>>>>();
         var behavior = new LoggingBehavior<SimpleCommand, Result<string>>(logger);
 
-        RequestHandlerDelegate<Result<string>> next = _ =>
-            throw new InvalidOperationException("boom");
+        RequestHandlerDelegate<Result<string>> next = _ => throw new InvalidOperationException("boom");
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => behavior.HandleAsync(new SimpleCommand(), next));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => behavior.HandleAsync(new SimpleCommand(), next));
     }
 }

@@ -9,7 +9,8 @@ public static class TelemetryExtensions
 
     public static IServiceCollection AddPlatformTelemetry(
         this IServiceCollection services,
-        Action<TelemetryOptions>? configure = null)
+        Action<TelemetryOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -18,7 +19,8 @@ public static class TelemetryExtensions
         services.AddSingleton(opts);
         services.AddSingleton(sp => new PlatformMeter(opts.ServiceName));
 
-        var resourceBuilder = ResourceBuilder.CreateDefault()
+        var resourceBuilder = ResourceBuilder
+            .CreateDefault()
             .AddService(serviceName: opts.ServiceName, serviceVersion: opts.ServiceVersion);
 
         var otelBuilder = services.AddOpenTelemetry();

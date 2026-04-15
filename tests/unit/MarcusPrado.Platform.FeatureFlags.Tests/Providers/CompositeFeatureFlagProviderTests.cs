@@ -36,8 +36,7 @@ public sealed class CompositeFeatureFlagProviderTests
     [Fact]
     public async Task NoProviderResponds_ReturnsNotFound()
     {
-        var composite = new CompositeFeatureFlagProvider(
-            new[] { new InMemoryFeatureFlagProvider() });
+        var composite = new CompositeFeatureFlagProvider(new[] { new InMemoryFeatureFlagProvider() });
 
         var d = await composite.EvaluateAsync("no-flag", FeatureFlagContext.Anonymous);
 

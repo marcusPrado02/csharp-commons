@@ -15,7 +15,8 @@ public static class OutboxInboxExtensions
     public static IServiceCollection AddInMemoryOutboxInbox(
         this IServiceCollection services,
         Action<OutboxProcessorOptions>? configureOutbox = null,
-        Action<InboxProcessorOptions>? configureInbox = null)
+        Action<InboxProcessorOptions>? configureInbox = null
+    )
     {
         services.AddSingleton<IOutboxStore, InMemoryOutboxStore>();
         services.AddSingleton<IInboxStore, InMemoryInboxStore>();
@@ -46,8 +47,7 @@ public static class OutboxInboxExtensions
     }
 
     /// <summary>Registers a custom <see cref="IOutboxPublisher"/> implementation.</summary>
-    public static IServiceCollection AddOutboxPublisher<TPublisher>(
-        this IServiceCollection services)
+    public static IServiceCollection AddOutboxPublisher<TPublisher>(this IServiceCollection services)
         where TPublisher : class, IOutboxPublisher
     {
         services.AddSingleton<IOutboxPublisher, TPublisher>();
@@ -55,8 +55,7 @@ public static class OutboxInboxExtensions
     }
 
     /// <summary>Registers an <see cref="IInboxMessageHandler"/> for a specific event type.</summary>
-    public static IServiceCollection AddInboxHandler<THandler>(
-        this IServiceCollection services)
+    public static IServiceCollection AddInboxHandler<THandler>(this IServiceCollection services)
         where THandler : class, IInboxMessageHandler
     {
         services.AddSingleton<IInboxMessageHandler, THandler>();

@@ -32,17 +32,20 @@ public sealed class OtelDlqMetrics : IDlqMetrics, IDisposable
                 return measurements;
             },
             unit: "messages",
-            description: "Current number of dead-lettered messages per topic");
+            description: "Current number of dead-lettered messages per topic"
+        );
 
         _reprocessedCounter = _meter.CreateCounter<long>(
             "dlq.reprocessed_total",
             unit: "messages",
-            description: "Total number of dead-lettered messages requeued for reprocessing");
+            description: "Total number of dead-lettered messages requeued for reprocessing"
+        );
 
         _deletedCounter = _meter.CreateCounter<long>(
             "dlq.deleted_total",
             unit: "messages",
-            description: "Total number of dead-lettered messages permanently deleted");
+            description: "Total number of dead-lettered messages permanently deleted"
+        );
     }
 
     /// <inheritdoc />

@@ -84,7 +84,8 @@ public sealed class PlatformJobFactoryTests
             DateTimeOffset.UtcNow,
             null,
             null,
-            null);
+            null
+        );
     }
 
     private sealed class FakeQuartzJob : global::Quartz.IJob
@@ -95,7 +96,9 @@ public sealed class PlatformJobFactoryTests
     private sealed class DisposableFakeJob : global::Quartz.IJob, IDisposable
     {
         public bool Disposed { get; private set; }
+
         public Task Execute(IJobExecutionContext context) => Task.CompletedTask;
+
         public void Dispose() => Disposed = true;
     }
 }

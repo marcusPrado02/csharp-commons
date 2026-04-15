@@ -27,9 +27,7 @@ public sealed class DomainEventDispatcher : IDomainEventDispatcher
     }
 
     /// <inheritdoc />
-    public async Task DispatchAsync(
-        IEnumerable<IDomainEvent> events,
-        CancellationToken cancellationToken = default)
+    public async Task DispatchAsync(IEnumerable<IDomainEvent> events, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(events);
 
@@ -43,7 +41,8 @@ public sealed class DomainEventDispatcher : IDomainEventDispatcher
                     "Dispatching domain event {EventType} ({EventId}) occurred at {OccurredOn}",
                     domainEvent.GetType().Name,
                     domainEvent.EventId,
-                    domainEvent.OccurredOn);
+                    domainEvent.OccurredOn
+                );
             }
 
             await _router.RouteAsync(domainEvent, cancellationToken).ConfigureAwait(false);

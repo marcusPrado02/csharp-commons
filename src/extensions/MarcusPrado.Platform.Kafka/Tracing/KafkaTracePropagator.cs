@@ -17,10 +17,14 @@ public static class KafkaTracePropagator
     {
         ArgumentNullException.ThrowIfNull(headers);
 
-        W3CTraceContextPropagator.Inject(activity, headers, static (h, key, value) =>
-        {
-            h.Add(key, Encoding.UTF8.GetBytes(value));
-        });
+        W3CTraceContextPropagator.Inject(
+            activity,
+            headers,
+            static (h, key, value) =>
+            {
+                h.Add(key, Encoding.UTF8.GetBytes(value));
+            }
+        );
     }
 
     /// <summary>
@@ -33,17 +37,20 @@ public static class KafkaTracePropagator
             return default;
         }
 
-        return W3CTraceContextPropagator.Extract(headers, static (h, key) =>
-        {
-            try
+        return W3CTraceContextPropagator.Extract(
+            headers,
+            static (h, key) =>
             {
-                var bytes = h.GetLastBytes(key);
-                return bytes is null ? null : Encoding.UTF8.GetString(bytes);
+                try
+                {
+                    var bytes = h.GetLastBytes(key);
+                    return bytes is null ? null : Encoding.UTF8.GetString(bytes);
+                }
+                catch (KeyNotFoundException)
+                {
+                    return null;
+                }
             }
-            catch (KeyNotFoundException)
-            {
-                return null;
-            }
-        });
+        );
     }
 }

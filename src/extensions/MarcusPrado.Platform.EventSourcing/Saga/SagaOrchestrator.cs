@@ -48,8 +48,7 @@ public sealed class SagaOrchestrator
 
                 saga.Status = SagaStatus.Failed;
 
-                throw new SagaExecutionException(
-                    $"Saga '{saga.Id}' failed at step '{step.Name}'.", step.Name, ex);
+                throw new SagaExecutionException($"Saga '{saga.Id}' failed at step '{step.Name}'.", step.Name, ex);
             }
         }
 

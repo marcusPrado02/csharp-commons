@@ -16,7 +16,8 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
     public override DbDataReader ReaderExecuted(
         DbCommand command,
         CommandExecutedEventData eventData,
-        DbDataReader result)
+        DbDataReader result
+    )
     {
         RecordActivity(command, eventData.Duration);
         return result;
@@ -26,16 +27,14 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
         DbCommand command,
         CommandExecutedEventData eventData,
         DbDataReader result,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         RecordActivity(command, eventData.Duration);
         return new ValueTask<DbDataReader>(result);
     }
 
-    public override int NonQueryExecuted(
-        DbCommand command,
-        CommandExecutedEventData eventData,
-        int result)
+    public override int NonQueryExecuted(DbCommand command, CommandExecutedEventData eventData, int result)
     {
         RecordActivity(command, eventData.Duration);
         return result;
@@ -45,7 +44,8 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
         DbCommand command,
         CommandExecutedEventData eventData,
         int result,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         RecordActivity(command, eventData.Duration);
         return new ValueTask<int>(result);
@@ -53,9 +53,7 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
 
     private static void RecordActivity(DbCommand command, TimeSpan duration)
     {
-        using var activity = DbActivitySource.Instance.StartActivity(
-            "db.query",
-            ActivityKind.Client);
+        using var activity = DbActivitySource.Instance.StartActivity("db.query", ActivityKind.Client);
 
         if (activity is null)
             return;
@@ -69,8 +67,8 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
     public static string ExtractOperation(string sql)
     {
         var trimmed = sql.TrimStart();
-        var firstWord = trimmed.Split([' ', '\n', '\r', '\t'], StringSplitOptions.RemoveEmptyEntries)
-                               .FirstOrDefault() ?? "UNKNOWN";
+        var firstWord =
+            trimmed.Split([' ', '\n', '\r', '\t'], StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "UNKNOWN";
         return firstWord.ToUpperInvariant();
     }
 }

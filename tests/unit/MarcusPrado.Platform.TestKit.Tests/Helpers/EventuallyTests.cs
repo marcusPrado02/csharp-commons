@@ -12,11 +12,13 @@ public sealed class EventuallyTests
     [Fact]
     public async Task BecomesTrue_Sync_ThrowsOnTimeout()
     {
-        await Assert.ThrowsAsync<TimeoutException>(
-            () => Eventually.BecomesTrue(
+        await Assert.ThrowsAsync<TimeoutException>(() =>
+            Eventually.BecomesTrue(
                 () => false,
                 timeout: TimeSpan.FromMilliseconds(100),
-                interval: TimeSpan.FromMilliseconds(20)));
+                interval: TimeSpan.FromMilliseconds(20)
+            )
+        );
     }
 
     [Fact]
@@ -29,10 +31,12 @@ public sealed class EventuallyTests
     [Fact]
     public async Task BecomesTrue_Async_ThrowsOnTimeout()
     {
-        await Assert.ThrowsAsync<TimeoutException>(
-            () => Eventually.BecomesTrue(
+        await Assert.ThrowsAsync<TimeoutException>(() =>
+            Eventually.BecomesTrue(
                 () => Task.FromResult(false),
                 timeout: TimeSpan.FromMilliseconds(100),
-                interval: TimeSpan.FromMilliseconds(20)));
+                interval: TimeSpan.FromMilliseconds(20)
+            )
+        );
     }
 }

@@ -44,7 +44,8 @@ public sealed class ValidationMessageLocalizer
     {
         var localizer = _factory.Create(
             baseName: "MarcusPrado.Platform.AspNetCore.Resources.Errors",
-            location: typeof(ValidationMessageLocalizer).Assembly.GetName().Name!);
+            location: typeof(ValidationMessageLocalizer).Assembly.GetName().Name!
+        );
 
         using var scope = new CultureScope(culture);
         var result = localizer[key];

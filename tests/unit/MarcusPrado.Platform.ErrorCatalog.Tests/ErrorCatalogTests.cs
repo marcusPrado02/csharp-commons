@@ -23,8 +23,10 @@ public sealed class ErrorCatalogTests
 
     private static void CollectErrors(Type type, List<Error> target)
     {
-        foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static)
-                     .Where(f => f.FieldType == typeof(Error) && f.IsInitOnly))
+        foreach (
+            var field in type.GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.FieldType == typeof(Error) && f.IsInitOnly)
+        )
         {
             target.Add((Error)field.GetValue(null)!);
         }
@@ -46,11 +48,15 @@ public sealed class ErrorCatalogTests
 
         foreach (var error in errors)
         {
-            error.Code.Should().NotBeNullOrWhiteSpace(
-                because: $"error declared in ErrorCatalog must have a non-empty Code (offender message: '{error.Message}')");
+            error
+                .Code.Should()
+                .NotBeNullOrWhiteSpace(
+                    because: $"error declared in ErrorCatalog must have a non-empty Code (offender message: '{error.Message}')"
+                );
 
-            error.Message.Should().NotBeNullOrWhiteSpace(
-                because: $"error with code '{error.Code}' must have a non-empty Message");
+            error
+                .Message.Should()
+                .NotBeNullOrWhiteSpace(because: $"error with code '{error.Code}' must have a non-empty Message");
         }
     }
 
@@ -116,8 +122,12 @@ public sealed class ErrorCatalogTests
 
         foreach (var error in errors)
         {
-            table.Should().Contain(error.Code,
-                because: $"the markdown table must include every error code, missing: '{error.Code}'");
+            table
+                .Should()
+                .Contain(
+                    error.Code,
+                    because: $"the markdown table must include every error code, missing: '{error.Code}'"
+                );
         }
     }
 

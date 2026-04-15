@@ -17,9 +17,7 @@ public sealed class RequestLoggingMiddleware
     private readonly ILogger<RequestLoggingMiddleware> _logger;
 
     /// <summary>Initialises the middleware.</summary>
-    public RequestLoggingMiddleware(
-        RequestDelegate next,
-        ILogger<RequestLoggingMiddleware> logger)
+    public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -48,7 +46,8 @@ public sealed class RequestLoggingMiddleware
                         context.Request.Method,
                         context.Request.Path,
                         statusCode,
-                        elapsed.TotalMilliseconds);
+                        elapsed.TotalMilliseconds
+                    );
                 }
             }
             else
@@ -60,7 +59,8 @@ public sealed class RequestLoggingMiddleware
                         context.Request.Method,
                         context.Request.Path,
                         statusCode,
-                        elapsed.TotalMilliseconds);
+                        elapsed.TotalMilliseconds
+                    );
                 }
             }
         }

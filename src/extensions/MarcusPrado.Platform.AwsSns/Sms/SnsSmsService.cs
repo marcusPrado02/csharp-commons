@@ -49,21 +49,13 @@ public sealed class SnsSmsService : ISmsService
     {
         var attrs = new Dictionary<string, MessageAttributeValue>
         {
-            ["AWS.SNS.SMS.SMSType"] = new MessageAttributeValue
-            {
-                DataType = "String",
-                StringValue = _options.SmsType,
-            },
+            ["AWS.SNS.SMS.SMSType"] = new MessageAttributeValue { DataType = "String", StringValue = _options.SmsType },
         };
 
         var senderId = from ?? _options.SenderId;
         if (!string.IsNullOrWhiteSpace(senderId))
         {
-            attrs["AWS.SNS.SMS.SenderID"] = new MessageAttributeValue
-            {
-                DataType = "String",
-                StringValue = senderId,
-            };
+            attrs["AWS.SNS.SMS.SenderID"] = new MessageAttributeValue { DataType = "String", StringValue = senderId };
         }
 
         return attrs;

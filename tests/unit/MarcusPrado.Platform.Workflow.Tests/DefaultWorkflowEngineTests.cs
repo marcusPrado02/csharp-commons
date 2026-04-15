@@ -9,15 +9,18 @@ public sealed class DefaultWorkflowEngineTests
             Steps:
             [
                 new WorkflowStep(
-                    Id:      "validate",
-                    Name:    "Validate order",
-                    Execute: (ctx, _) => Task.FromResult<object?>(ctx)),
+                    Id: "validate",
+                    Name: "Validate order",
+                    Execute: (ctx, _) => Task.FromResult<object?>(ctx)
+                ),
                 new WorkflowStep(
-                    Id:          "charge",
-                    Name:        "Charge customer",
-                    Execute:     (ctx, _) => Task.FromResult<object?>(new { Charged = true }),
-                    Compensate:  (_, _) => Task.CompletedTask),
-            ]);
+                    Id: "charge",
+                    Name: "Charge customer",
+                    Execute: (ctx, _) => Task.FromResult<object?>(new { Charged = true }),
+                    Compensate: (_, _) => Task.CompletedTask
+                ),
+            ]
+        );
 
     private static DefaultWorkflowEngine Engine(WorkflowDefinition? def = null)
     {
@@ -51,8 +54,11 @@ public sealed class DefaultWorkflowEngineTests
     [Fact]
     public async Task StartWorkflow_StepThrows_ReturnsFailure()
     {
-        var def = new WorkflowDefinition("fail.wf", "Fail WF",
-            [new WorkflowStep("boom", "Boom", (_, _) => throw new InvalidOperationException("explode"))]);
+        var def = new WorkflowDefinition(
+            "fail.wf",
+            "Fail WF",
+            [new WorkflowStep("boom", "Boom", (_, _) => throw new InvalidOperationException("explode"))]
+        );
         var engine = new DefaultWorkflowEngine();
         engine.RegisterDefinition(def);
 
@@ -98,12 +104,22 @@ public sealed class DefaultWorkflowEngineTests
     public async Task CompensateWorkflow_CompletedSteps_RunsCompensation()
     {
         var compensated = false;
-        var def = new WorkflowDefinition("comp.wf", "Comp WF",
-        [
-            new WorkflowStep("step1", "S1",
-                Execute:    (ctx, _) => Task.FromResult<object?>(ctx),
-                Compensate: (_, _) => { compensated = true; return Task.CompletedTask; }),
-        ]);
+        var def = new WorkflowDefinition(
+            "comp.wf",
+            "Comp WF",
+            [
+                new WorkflowStep(
+                    "step1",
+                    "S1",
+                    Execute: (ctx, _) => Task.FromResult<object?>(ctx),
+                    Compensate: (_, _) =>
+                    {
+                        compensated = true;
+                        return Task.CompletedTask;
+                    }
+                ),
+            ]
+        );
         var engine = new DefaultWorkflowEngine();
         engine.RegisterDefinition(def);
         var start = await engine.StartWorkflowAsync("comp.wf");

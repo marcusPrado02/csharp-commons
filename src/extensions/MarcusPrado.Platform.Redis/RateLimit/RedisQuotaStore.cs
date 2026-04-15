@@ -9,14 +9,16 @@ namespace MarcusPrado.Platform.Redis.RateLimit;
 /// </summary>
 public sealed class RedisQuotaStore : IQuotaStore
 {
-    private static readonly string _luaIncrExpire = @"
+    private static readonly string _luaIncrExpire =
+        @"
 local current = redis.call('INCR', KEYS[1])
 if current == 1 then
   redis.call('EXPIRE', KEYS[1], ARGV[1])
 end
 return current";
 
-    private static readonly string _luaTryConsume = @"
+    private static readonly string _luaTryConsume =
+        @"
 local current = redis.call('GET', KEYS[1])
 local count = tonumber(current) or 0
 if count >= tonumber(ARGV[2]) then
@@ -38,29 +40,24 @@ return 1";
     }
 
     /// <inheritdoc/>
-    public async Task<long> IncrementAsync(
-        string key,
-        long windowSeconds,
-        CancellationToken ct = default)
+    public async Task<long> IncrementAsync(string key, long windowSeconds, CancellationToken ct = default)
     {
         var result = await _db.ScriptEvaluateAsync(
             _luaIncrExpire,
             keys: new RedisKey[] { key },
-            values: new RedisValue[] { windowSeconds });
+            values: new RedisValue[] { windowSeconds }
+        );
         return (long)result;
     }
 
     /// <inheritdoc/>
-    public async Task<bool> TryConsumeAsync(
-        string key,
-        long limit,
-        long windowSeconds,
-        CancellationToken ct = default)
+    public async Task<bool> TryConsumeAsync(string key, long limit, long windowSeconds, CancellationToken ct = default)
     {
         var result = await _db.ScriptEvaluateAsync(
             _luaTryConsume,
             keys: new RedisKey[] { key },
-            values: new RedisValue[] { windowSeconds, limit });
+            values: new RedisValue[] { windowSeconds, limit }
+        );
         return (long)result == 1;
     }
 

@@ -19,9 +19,7 @@ public sealed class TestEnvironmentHealthCheck
     /// null logger (no logging output).
     /// </summary>
     public TestEnvironmentHealthCheck()
-        : this(NullLogger<TestEnvironmentHealthCheck>.Instance)
-    {
-    }
+        : this(NullLogger<TestEnvironmentHealthCheck>.Instance) { }
 
     /// <summary>
     /// Initializes a new instance of <see cref="TestEnvironmentHealthCheck"/> with
@@ -55,7 +53,8 @@ public sealed class TestEnvironmentHealthCheck
     public async Task WaitForHealthyAsync(
         IReadOnlyList<IContainer> containers,
         TimeSpan timeout,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(containers);
 
@@ -80,20 +79,16 @@ public sealed class TestEnvironmentHealthCheck
 
             if (_logger.IsEnabled(LogLevel.Debug))
             {
-                _logger.LogDebug(
-                    "Waiting for containers to become healthy. Deadline: {Deadline}.",
-                    deadline);
+                _logger.LogDebug("Waiting for containers to become healthy. Deadline: {Deadline}.", deadline);
             }
 
             await Task.Delay(_defaultPollInterval, cts.Token).ConfigureAwait(false);
         }
 
-        var unhealthy = containers
-            .Where(c => c.State != TestcontainersStates.Running)
-            .Select(c => c.Name)
-            .ToList();
+        var unhealthy = containers.Where(c => c.State != TestcontainersStates.Running).Select(c => c.Name).ToList();
 
         throw new TimeoutException(
-            $"The following container(s) did not become healthy within {timeout}: {string.Join(", ", unhealthy)}");
+            $"The following container(s) did not become healthy within {timeout}: {string.Join(", ", unhealthy)}"
+        );
     }
 }

@@ -14,20 +14,30 @@ public sealed class MetricsBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
 {
     private static readonly Meter _appMeter = new("MarcusPrado.Platform", "1.0.0");
 
-    private static readonly Histogram<long> _durationHistogram =
-        _appMeter.CreateHistogram<long>("command.duration_ms", "ms", "Time to handle a request.");
+    private static readonly Histogram<long> _durationHistogram = _appMeter.CreateHistogram<long>(
+        "command.duration_ms",
+        "ms",
+        "Time to handle a request."
+    );
 
-    private static readonly Counter<long> _successCounter =
-        _appMeter.CreateCounter<long>("command.success", "requests", "Total successful requests.");
+    private static readonly Counter<long> _successCounter = _appMeter.CreateCounter<long>(
+        "command.success",
+        "requests",
+        "Total successful requests."
+    );
 
-    private static readonly Counter<long> _failureCounter =
-        _appMeter.CreateCounter<long>("command.failure", "requests", "Total failed requests.");
+    private static readonly Counter<long> _failureCounter = _appMeter.CreateCounter<long>(
+        "command.failure",
+        "requests",
+        "Total failed requests."
+    );
 
     /// <inheritdoc/>
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var requestName = typeof(TRequest).Name;
         var tags = new TagList { { "request_type", requestName } };

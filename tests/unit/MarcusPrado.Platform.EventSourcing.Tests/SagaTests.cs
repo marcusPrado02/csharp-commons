@@ -19,11 +19,27 @@ public sealed class SagaOrchestratorTests
 
         var saga = new DefaultSaga<OrderCommand>("saga-1", new OrderCommand(Guid.NewGuid(), 100));
         saga.AddStep(
-            new SagaStep<OrderCommand>("Step1", (_, _) => { executed.Add("S1"); return Task.CompletedTask; }),
-            saga.State);
+            new SagaStep<OrderCommand>(
+                "Step1",
+                (_, _) =>
+                {
+                    executed.Add("S1");
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
         saga.AddStep(
-            new SagaStep<OrderCommand>("Step2", (_, _) => { executed.Add("S2"); return Task.CompletedTask; }),
-            saga.State);
+            new SagaStep<OrderCommand>(
+                "Step2",
+                (_, _) =>
+                {
+                    executed.Add("S2");
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
 
         await CreateOrchestrator().ExecuteAsync(saga);
 
@@ -42,20 +58,39 @@ public sealed class SagaOrchestratorTests
         saga.AddStep(
             new SagaStep<OrderCommand>(
                 "Step1",
-                execute: (_, _) => { log.Add("exec-S1"); return Task.CompletedTask; },
-                compensate: (_, _) => { log.Add("comp-S1"); return Task.CompletedTask; }),
-            saga.State);
+                execute: (_, _) =>
+                {
+                    log.Add("exec-S1");
+                    return Task.CompletedTask;
+                },
+                compensate: (_, _) =>
+                {
+                    log.Add("comp-S1");
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
         saga.AddStep(
             new SagaStep<OrderCommand>(
                 "Step2",
-                execute: (_, _) => { log.Add("exec-S2"); return Task.CompletedTask; },
-                compensate: (_, _) => { log.Add("comp-S2"); return Task.CompletedTask; }),
-            saga.State);
+                execute: (_, _) =>
+                {
+                    log.Add("exec-S2");
+                    return Task.CompletedTask;
+                },
+                compensate: (_, _) =>
+                {
+                    log.Add("comp-S2");
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
         saga.AddStep(
-            new SagaStep<OrderCommand>(
-                "Step3",
-                execute: (_, _) => throw new InvalidOperationException("Step3 failed")),
-            saga.State);
+            new SagaStep<OrderCommand>("Step3", execute: (_, _) => throw new InvalidOperationException("Step3 failed")),
+            saga.State
+        );
 
         var act = () => CreateOrchestrator().ExecuteAsync(saga);
 
@@ -69,13 +104,15 @@ public sealed class SagaOrchestratorTests
     public async Task OnFailure_StatusTransitionsTo_Failed()
     {
         var saga = new DefaultSaga<OrderCommand>("saga-3", new OrderCommand(Guid.NewGuid(), 75));
-        saga.AddStep(
-            new SagaStep<OrderCommand>("Boom", (_, _) => throw new Exception("boom")),
-            saga.State);
+        saga.AddStep(new SagaStep<OrderCommand>("Boom", (_, _) => throw new Exception("boom")), saga.State);
 
         try
-        { await CreateOrchestrator().ExecuteAsync(saga); }
-        catch { /* expected */ }
+        {
+            await CreateOrchestrator().ExecuteAsync(saga);
+        }
+        catch
+        { /* expected */
+        }
 
         saga.Status.Should().Be(SagaStatus.Failed);
     }
@@ -89,10 +126,10 @@ public sealed class SagaOrchestratorTests
         var saga = new DefaultSaga<OrderCommand>("saga-4", new OrderCommand(Guid.NewGuid(), 200));
         saga.AddStep(
             new SagaStep<OrderCommand>(stepName, (_, _) => throw new InvalidOperationException("card declined")),
-            saga.State);
+            saga.State
+        );
 
-        var ex = await Assert.ThrowsAsync<SagaExecutionException>(
-            () => CreateOrchestrator().ExecuteAsync(saga));
+        var ex = await Assert.ThrowsAsync<SagaExecutionException>(() => CreateOrchestrator().ExecuteAsync(saga));
 
         ex.FailedStepName.Should().Be(stepName);
         ex.InnerException.Should().BeOfType<InvalidOperationException>();
@@ -108,11 +145,17 @@ public sealed class SagaOrchestratorTests
 
         // Step 1 has NO compensation
         saga.AddStep(
-            new SagaStep<OrderCommand>("NoComp", (_, _) => { log.Add("S1"); return Task.CompletedTask; }),
-            saga.State);
-        saga.AddStep(
-            new SagaStep<OrderCommand>("Fail", (_, _) => throw new Exception("fail")),
-            saga.State);
+            new SagaStep<OrderCommand>(
+                "NoComp",
+                (_, _) =>
+                {
+                    log.Add("S1");
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
+        saga.AddStep(new SagaStep<OrderCommand>("Fail", (_, _) => throw new Exception("fail")), saga.State);
 
         var act = () => CreateOrchestrator().ExecuteAsync(saga);
 
@@ -131,11 +174,12 @@ public sealed class SagaOrchestratorTests
             new SagaStep<OrderCommand>(
                 "SlowStep",
                 execute: async (_, ct) => await Task.Delay(TimeSpan.FromSeconds(10), ct),
-                timeout: TimeSpan.FromMilliseconds(50)),
-            saga.State);
+                timeout: TimeSpan.FromMilliseconds(50)
+            ),
+            saga.State
+        );
 
-        var ex = await Assert.ThrowsAsync<SagaExecutionException>(
-            () => CreateOrchestrator().ExecuteAsync(saga));
+        var ex = await Assert.ThrowsAsync<SagaExecutionException>(() => CreateOrchestrator().ExecuteAsync(saga));
 
         ex.InnerException.Should().BeAssignableTo<OperationCanceledException>();
         saga.Status.Should().Be(SagaStatus.Failed);
@@ -161,9 +205,21 @@ public sealed class SagaOrchestratorTests
         var log = new List<int>();
         var handler = new SagaCompensationHandler();
 
-        handler.Register(_ => { log.Add(1); return Task.CompletedTask; });
-        handler.Register(_ => { log.Add(2); return Task.CompletedTask; });
-        handler.Register(_ => { log.Add(3); return Task.CompletedTask; });
+        handler.Register(_ =>
+        {
+            log.Add(1);
+            return Task.CompletedTask;
+        });
+        handler.Register(_ =>
+        {
+            log.Add(2);
+            return Task.CompletedTask;
+        });
+        handler.Register(_ =>
+        {
+            log.Add(3);
+            return Task.CompletedTask;
+        });
 
         await handler.CompensateAsync();
 
@@ -222,15 +278,14 @@ public sealed class SagaOrchestratorTests
     public void BoundSagaStep_HasCompensation_ReflectsDelegate()
     {
         var withComp = new BoundSagaStep<OrderCommand>(
-            new SagaStep<OrderCommand>(
-                "WithComp",
-                (_, _) => Task.CompletedTask,
-                (_, _) => Task.CompletedTask),
-            new OrderCommand(Guid.NewGuid(), 1));
+            new SagaStep<OrderCommand>("WithComp", (_, _) => Task.CompletedTask, (_, _) => Task.CompletedTask),
+            new OrderCommand(Guid.NewGuid(), 1)
+        );
 
         var noComp = new BoundSagaStep<OrderCommand>(
             new SagaStep<OrderCommand>("NoComp", (_, _) => Task.CompletedTask),
-            new OrderCommand(Guid.NewGuid(), 1));
+            new OrderCommand(Guid.NewGuid(), 1)
+        );
 
         withComp.HasCompensation.Should().BeTrue();
         noComp.HasCompensation.Should().BeFalse();
@@ -244,13 +299,17 @@ public sealed class SagaOrchestratorTests
         SagaStatus? capturedStatus = null;
         var saga = new DefaultSaga<OrderCommand>("saga-13", new OrderCommand(Guid.NewGuid(), 5));
         saga.AddStep(
-            new SagaStep<OrderCommand>("Capture", (_, _) =>
-            {
-                // capture status at execution time
-                capturedStatus = saga.Status;
-                return Task.CompletedTask;
-            }),
-            saga.State);
+            new SagaStep<OrderCommand>(
+                "Capture",
+                (_, _) =>
+                {
+                    // capture status at execution time
+                    capturedStatus = saga.Status;
+                    return Task.CompletedTask;
+                }
+            ),
+            saga.State
+        );
 
         await CreateOrchestrator().ExecuteAsync(saga);
 

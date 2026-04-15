@@ -21,5 +21,6 @@ public interface ISqsConsumer
     Task StartAsync(
         string queueUrl,
         Func<Message, CancellationToken, Task<bool>> handler,
-        CancellationToken ct = default);
+        CancellationToken ct = default
+    );
 }

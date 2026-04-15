@@ -23,7 +23,8 @@ public sealed partial class HangfireRecurringJobRegistrar
     /// <param name="logger">Logger instance.</param>
     public HangfireRecurringJobRegistrar(
         IRecurringJobManager recurringJobManager,
-        ILogger<HangfireRecurringJobRegistrar> logger)
+        ILogger<HangfireRecurringJobRegistrar> logger
+    )
     {
         _recurringJobManager = recurringJobManager ?? throw new ArgumentNullException(nameof(recurringJobManager));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -59,7 +60,8 @@ public sealed partial class HangfireRecurringJobRegistrar
             throw new ArgumentNullException(nameof(assembly));
         }
 
-        var jobTypes = assembly.GetTypes()
+        var jobTypes = assembly
+            .GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && typeof(IHangfireJob).IsAssignableFrom(t))
             .Select(t => (Type: t, Attr: t.GetCustomAttribute<RecurringJobAttribute>()))
             .Where(x => x.Attr is not null)
@@ -78,7 +80,8 @@ public sealed partial class HangfireRecurringJobRegistrar
     /// <param name="assemblies">The assemblies to scan.</param>
     /// <returns>An enumerable of (type, attribute) pairs.</returns>
     public static IEnumerable<(Type JobType, RecurringJobAttribute Attribute)> FindAttributedTypes(
-        params Assembly[] assemblies)
+        params Assembly[] assemblies
+    )
     {
         if (assemblies is null)
         {
@@ -118,8 +121,10 @@ public sealed partial class HangfireRecurringJobRegistrar
                 && m.IsGenericMethodDefinition
                 && m.GetParameters().Length == 4
                 && m.GetParameters()[2].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>)
-                && m.GetParameters()[2].ParameterType.GetGenericArguments()[0].GetGenericTypeDefinition() == typeof(Func<,>)
-                && m.GetParameters()[3].ParameterType == typeof(string));
+                && m.GetParameters()[2].ParameterType.GetGenericArguments()[0].GetGenericTypeDefinition()
+                    == typeof(Func<,>)
+                && m.GetParameters()[3].ParameterType == typeof(string)
+            );
 
         if (genericAddOrUpdate is not null)
         {
@@ -136,6 +141,7 @@ public sealed partial class HangfireRecurringJobRegistrar
 
     [LoggerMessage(
         Level = LogLevel.Information,
-        Message = "Registering recurring job {JobId} ({JobType}) with cron {Cron} on queue {Queue}")]
+        Message = "Registering recurring job {JobId} ({JobType}) with cron {Cron} on queue {Queue}"
+    )]
     private partial void LogRegisterJob(string jobId, string jobType, string cron, string queue);
 }

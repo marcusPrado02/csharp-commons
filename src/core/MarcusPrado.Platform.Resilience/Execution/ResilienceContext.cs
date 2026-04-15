@@ -10,10 +10,9 @@ public sealed class ResilienceContext
     public string? OperationKey { get; init; }
 
     /// <summary>Gets or sets free-form properties attached to this execution.</summary>
-    public IDictionary<string, object?> Properties { get; init; }
-        = new Dictionary<string, object?>(StringComparer.Ordinal);
+    public IDictionary<string, object?> Properties { get; init; } =
+        new Dictionary<string, object?>(StringComparer.Ordinal);
 
     /// <summary>Creates a default context with an optional operation key.</summary>
-    public static ResilienceContext Create(string? operationKey = null)
-        => new() { OperationKey = operationKey };
+    public static ResilienceContext Create(string? operationKey = null) => new() { OperationKey = operationKey };
 }

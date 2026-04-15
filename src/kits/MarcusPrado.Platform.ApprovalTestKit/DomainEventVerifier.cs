@@ -8,10 +8,7 @@ namespace MarcusPrado.Platform.ApprovalTestKit;
 /// </summary>
 public static class DomainEventVerifier
 {
-    private static readonly JsonSerializerOptions _defaultOptions = new()
-    {
-        WriteIndented = true,
-    };
+    private static readonly JsonSerializerOptions _defaultOptions = new() { WriteIndented = true };
 
     /// <summary>
     /// Serialises <paramref name="domainEvent"/> to an indented JSON string, applies all
@@ -24,9 +21,7 @@ public static class DomainEventVerifier
     /// Pass <see langword="null"/> to use <see cref="PlatformVerifySettings.CreateDefault"/>.
     /// </param>
     /// <returns>The scrubbed JSON string.</returns>
-    public static string Snapshot<T>(
-        T domainEvent,
-        PlatformVerifySettings? settings = null)
+    public static string Snapshot<T>(T domainEvent, PlatformVerifySettings? settings = null)
     {
         ArgumentNullException.ThrowIfNull(domainEvent);
 

@@ -11,7 +11,11 @@ public sealed class ClosedXmlExcelWriterTests
         var doc = new ExcelDocument(
             "Sheet1",
             ["Name", "Age"],
-            [["Alice", "30"], ["Bob", "25"]]);
+            [
+                ["Alice", "30"],
+                ["Bob", "25"],
+            ]
+        );
 
         var bytes = await writer.WriteAsync(doc);
 
@@ -41,7 +45,11 @@ public sealed class ClosedXmlExcelReaderTests
         var doc = new ExcelDocument(
             "TestSheet",
             ["Name", "Score"],
-            [["Alice", "95"], ["Bob", "87"]]);
+            [
+                ["Alice", "95"],
+                ["Bob", "87"],
+            ]
+        );
 
         var bytes = await writer.WriteAsync(doc);
         var rows = await reader.ReadAsync(bytes);
@@ -60,8 +68,7 @@ public sealed class ClosedXmlExcelReaderTests
         var reader = new ClosedXmlExcelReader();
         var bytes = await writer.WriteAsync(new ExcelDocument("S", ["H1"], []));
 
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
-            () => reader.ReadAsync(bytes, sheetIndex: 99));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => reader.ReadAsync(bytes, sheetIndex: 99));
     }
 
     [Fact]
@@ -69,8 +76,7 @@ public sealed class ClosedXmlExcelReaderTests
     {
         var reader = new ClosedXmlExcelReader();
 
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
-            () => reader.ReadAsync([], sheetIndex: 0));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => reader.ReadAsync([], sheetIndex: 0));
     }
 }
 
@@ -95,9 +101,7 @@ public sealed class ClosedXmlExcelWriterAdditionalTests
     {
         var writer = new ClosedXmlExcelWriter();
         var reader = new ClosedXmlExcelReader();
-        var rows = Enumerable.Range(1, 5)
-            .Select(i => new[] { $"Row{i}", i.ToString() })
-            .ToList();
+        var rows = Enumerable.Range(1, 5).Select(i => new[] { $"Row{i}", i.ToString() }).ToList();
         var doc = new ExcelDocument("Sheet", ["Col1", "Col2"], rows);
 
         var bytes = await writer.WriteAsync(doc);
@@ -111,7 +115,14 @@ public sealed class ClosedXmlExcelWriterAdditionalTests
     public async Task WriteAsync_SingleColumn_WorksCorrectly()
     {
         var writer = new ClosedXmlExcelWriter();
-        var doc = new ExcelDocument("Sheet", ["Only"], [["Value1"], ["Value2"]]);
+        var doc = new ExcelDocument(
+            "Sheet",
+            ["Only"],
+            [
+                ["Value1"],
+                ["Value2"],
+            ]
+        );
 
         var bytes = await writer.WriteAsync(doc);
 

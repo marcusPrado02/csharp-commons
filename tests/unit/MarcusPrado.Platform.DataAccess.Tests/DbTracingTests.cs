@@ -61,8 +61,7 @@ public sealed class DbTracingTests
         await conn.ExecuteAsync("CREATE TABLE items (id INTEGER, name TEXT)");
         await conn.ExecuteAsync("INSERT INTO items VALUES (1, 'test')");
 
-        var results = await conn.QueryWithTraceAsync<(long id, string name)>(
-            "SELECT id, name FROM items");
+        var results = await conn.QueryWithTraceAsync<(long id, string name)>("SELECT id, name FROM items");
 
         results.Should().ContainSingle(r => r.id == 1 && r.name == "test");
     }
@@ -75,8 +74,7 @@ public sealed class DbTracingTests
         await conn.OpenAsync();
         await conn.ExecuteAsync("CREATE TABLE items (id INTEGER, name TEXT)");
 
-        var affected = await conn.ExecuteWithTraceAsync(
-            "INSERT INTO items VALUES (1, 'hello')");
+        var affected = await conn.ExecuteWithTraceAsync("INSERT INTO items VALUES (1, 'hello')");
 
         affected.Should().Be(1);
     }

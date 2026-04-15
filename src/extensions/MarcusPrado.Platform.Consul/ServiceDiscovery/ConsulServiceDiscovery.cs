@@ -20,29 +20,28 @@ public sealed class ConsulServiceDiscovery : IServiceDiscovery
     }
 
     /// <inheritdoc />
-    public async Task<IReadOnlyList<ServiceEndpoint>> ResolveAsync(
-        string serviceName, CancellationToken ct = default)
+    public async Task<IReadOnlyList<ServiceEndpoint>> ResolveAsync(string serviceName, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(serviceName);
 
-        var result = await _client.Health.Service(
-            serviceName, string.Empty, passingOnly: false, ct)
+        var result = await _client
+            .Health.Service(serviceName, string.Empty, passingOnly: false, ct)
             .ConfigureAwait(false);
 
-        return result.Response
-            .Select(e => new ServiceEndpoint(
+        return result
+            .Response.Select(e => new ServiceEndpoint(
                 e.Service.ID,
                 e.Service.Service,
                 e.Service.Address,
                 e.Service.Port,
                 e.Service.Tags ?? [],
-                MapHealth(e.Checks)))
+                MapHealth(e.Checks)
+            ))
             .ToList();
     }
 
     /// <inheritdoc />
-    public async Task RegisterAsync(
-        ServiceRegistration registration, CancellationToken ct = default)
+    public async Task RegisterAsync(ServiceRegistration registration, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(registration);
 
@@ -85,8 +84,6 @@ public sealed class ConsulServiceDiscovery : IServiceDiscovery
         if (checks.Any(c => c.Status == HealthStatus.Warning))
             return ServiceHealth.Warning;
 
-        return checks.All(c => c.Status == HealthStatus.Passing)
-            ? ServiceHealth.Passing
-            : ServiceHealth.Unknown;
+        return checks.All(c => c.Status == HealthStatus.Passing) ? ServiceHealth.Passing : ServiceHealth.Unknown;
     }
 }

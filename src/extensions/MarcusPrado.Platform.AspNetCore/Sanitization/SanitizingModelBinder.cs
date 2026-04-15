@@ -26,9 +26,7 @@ public sealed class SanitizingModelBinder : IModelBinder
 
         if (bindingContext.Result.IsModelSet && bindingContext.Result.Model is string raw)
         {
-            var sanitized = _stripAll
-                ? _sanitizer.StripHtml(raw)
-                : _sanitizer.SanitizeHtml(raw);
+            var sanitized = _stripAll ? _sanitizer.StripHtml(raw) : _sanitizer.SanitizeHtml(raw);
             bindingContext.Result = ModelBindingResult.Success(sanitized);
         }
     }
@@ -49,19 +47,15 @@ public sealed class SanitizingModelBinderProvider : IModelBinderProvider
 
         if (context.Metadata is DefaultModelMetadata defaultMetadata)
         {
-            attr = defaultMetadata.Attributes.ParameterAttributes?
-                .OfType<SanitizeInputAttribute>()
-                .FirstOrDefault()
-                ?? defaultMetadata.Attributes.PropertyAttributes?
-                .OfType<SanitizeInputAttribute>()
-                .FirstOrDefault();
+            attr =
+                defaultMetadata.Attributes.ParameterAttributes?.OfType<SanitizeInputAttribute>().FirstOrDefault()
+                ?? defaultMetadata.Attributes.PropertyAttributes?.OfType<SanitizeInputAttribute>().FirstOrDefault();
         }
 
         if (attr is null)
             return null;
 
-        var innerBinder = context.CreateBinder(
-            context.MetadataProvider.GetMetadataForType(typeof(string)));
+        var innerBinder = context.CreateBinder(context.MetadataProvider.GetMetadataForType(typeof(string)));
 
         var sanitizer = context.Services.GetRequiredService<IInputSanitizer>();
         return new SanitizingModelBinder(innerBinder, sanitizer, attr.StripAll);

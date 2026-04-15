@@ -23,10 +23,7 @@ public static class W3CTraceContextPropagator
     /// <param name="activity">The activity whose context to propagate. If <c>null</c>, no-op.</param>
     /// <param name="carrier">The carrier to inject headers into.</param>
     /// <param name="setter">A delegate that sets a header key/value on the carrier.</param>
-    public static void Inject<TCarrier>(
-        Activity? activity,
-        TCarrier carrier,
-        Action<TCarrier, string, string> setter)
+    public static void Inject<TCarrier>(Activity? activity, TCarrier carrier, Action<TCarrier, string, string> setter)
     {
         ArgumentNullException.ThrowIfNull(setter);
 
@@ -36,7 +33,8 @@ public static class W3CTraceContextPropagator
         }
 
         // W3C traceparent format: 00-{traceId}-{spanId}-{flags}
-        var traceparent = $"00-{activity.TraceId}-{activity.SpanId}-{(activity.ActivityTraceFlags.HasFlag(ActivityTraceFlags.Recorded) ? "01" : "00")}";
+        var traceparent =
+            $"00-{activity.TraceId}-{activity.SpanId}-{(activity.ActivityTraceFlags.HasFlag(ActivityTraceFlags.Recorded) ? "01" : "00")}";
         setter(carrier, TraceparentHeader, traceparent);
 
         if (!string.IsNullOrEmpty(activity.TraceStateString))
@@ -54,9 +52,7 @@ public static class W3CTraceContextPropagator
     /// <param name="carrier">The carrier to extract headers from.</param>
     /// <param name="getter">A delegate that retrieves a header value by key from the carrier. Returns <c>null</c> when the header is absent.</param>
     /// <returns>The extracted <see cref="ActivityContext"/>, or <see langword="default"/> if extraction fails.</returns>
-    public static ActivityContext Extract<TCarrier>(
-        TCarrier carrier,
-        Func<TCarrier, string, string?> getter)
+    public static ActivityContext Extract<TCarrier>(TCarrier carrier, Func<TCarrier, string, string?> getter)
     {
         ArgumentNullException.ThrowIfNull(getter);
 

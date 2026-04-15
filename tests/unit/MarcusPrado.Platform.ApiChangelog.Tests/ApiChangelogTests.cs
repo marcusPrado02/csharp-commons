@@ -24,12 +24,9 @@ public sealed class ApiChangelogTests
 
         // Assert
         surface.Types.Should().NotBeEmpty();
-        surface.Types.Select(t => t.FullName).Should()
-            .Contain("MarcusPrado.Platform.ApiChangelog.ApiSurface");
-        surface.Types.Select(t => t.FullName).Should()
-            .Contain("MarcusPrado.Platform.ApiChangelog.ApiDiffEngine");
-        surface.Types.Select(t => t.FullName).Should()
-            .Contain("MarcusPrado.Platform.ApiChangelog.ChangelogRenderer");
+        surface.Types.Select(t => t.FullName).Should().Contain("MarcusPrado.Platform.ApiChangelog.ApiSurface");
+        surface.Types.Select(t => t.FullName).Should().Contain("MarcusPrado.Platform.ApiChangelog.ApiDiffEngine");
+        surface.Types.Select(t => t.FullName).Should().Contain("MarcusPrado.Platform.ApiChangelog.ChangelogRenderer");
     }
 
     [Fact]
@@ -42,12 +39,14 @@ public sealed class ApiChangelogTests
         var surface = ApiSurfaceExtractor.Extract(assembly);
 
         // Assert – no type name should indicate a private/internal helper
-        surface.Types.Should().AllSatisfy(t =>
-        {
-            var type = assembly.GetType(t.FullName);
-            type.Should().NotBeNull();
-            type!.IsPublic.Should().BeTrue(because: $"{t.FullName} must be public to appear in the surface");
-        });
+        surface
+            .Types.Should()
+            .AllSatisfy(t =>
+            {
+                var type = assembly.GetType(t.FullName);
+                type.Should().NotBeNull();
+                type!.IsPublic.Should().BeTrue(because: $"{t.FullName} must be public to appear in the surface");
+            });
     }
 
     [Fact]
@@ -63,13 +62,11 @@ public sealed class ApiChangelogTests
     public void ApiDiffEngine_NoChanges_ReturnsEmptyDiff()
     {
         // Arrange
-        var surface = BuildSurface("MyLib", "1.0.0",
-        [
-            new ApiType("MyLib.Foo", "class",
-            [
-                new ApiMember("DoThing", "public void DoThing(string s)", "method"),
-            ]),
-        ]);
+        var surface = BuildSurface(
+            "MyLib",
+            "1.0.0",
+            [new ApiType("MyLib.Foo", "class", [new ApiMember("DoThing", "public void DoThing(string s)", "method")])]
+        );
 
         // Act
         var diff = ApiDiffEngine.Compare(surface, surface);
@@ -86,16 +83,13 @@ public sealed class ApiChangelogTests
     public void ApiDiffEngine_AddedType_ReportedAsAddition()
     {
         // Arrange
-        var baseline = BuildSurface("MyLib", "1.0.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-        ]);
+        var baseline = BuildSurface("MyLib", "1.0.0", [new ApiType("MyLib.Foo", "class", [])]);
 
-        var current = BuildSurface("MyLib", "1.1.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-            new ApiType("MyLib.Bar", "class", []),
-        ]);
+        var current = BuildSurface(
+            "MyLib",
+            "1.1.0",
+            [new ApiType("MyLib.Foo", "class", []), new ApiType("MyLib.Bar", "class", [])]
+        );
 
         // Act
         var diff = ApiDiffEngine.Compare(baseline, current);
@@ -110,16 +104,13 @@ public sealed class ApiChangelogTests
     public void ApiDiffEngine_RemovedType_ReportedAsBreaking()
     {
         // Arrange
-        var baseline = BuildSurface("MyLib", "1.0.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-            new ApiType("MyLib.Bar", "class", []),
-        ]);
+        var baseline = BuildSurface(
+            "MyLib",
+            "1.0.0",
+            [new ApiType("MyLib.Foo", "class", []), new ApiType("MyLib.Bar", "class", [])]
+        );
 
-        var current = BuildSurface("MyLib", "2.0.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-        ]);
+        var current = BuildSurface("MyLib", "2.0.0", [new ApiType("MyLib.Foo", "class", [])]);
 
         // Act
         var diff = ApiDiffEngine.Compare(baseline, current);
@@ -134,25 +125,19 @@ public sealed class ApiChangelogTests
     public void ApiDiffEngine_AddedMember_ReportedAsAddition()
     {
         // Arrange
-        var baseline = BuildSurface("MyLib", "1.0.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-        ]);
+        var baseline = BuildSurface("MyLib", "1.0.0", [new ApiType("MyLib.Foo", "class", [])]);
 
-        var current = BuildSurface("MyLib", "1.1.0",
-        [
-            new ApiType("MyLib.Foo", "class",
-            [
-                new ApiMember("NewMethod", "public void NewMethod()", "method"),
-            ]),
-        ]);
+        var current = BuildSurface(
+            "MyLib",
+            "1.1.0",
+            [new ApiType("MyLib.Foo", "class", [new ApiMember("NewMethod", "public void NewMethod()", "method")])]
+        );
 
         // Act
         var diff = ApiDiffEngine.Compare(baseline, current);
 
         // Assert
-        diff.AddedMembers.Should().ContainSingle()
-            .Which.MemberSignature.Should().Be("public void NewMethod()");
+        diff.AddedMembers.Should().ContainSingle().Which.MemberSignature.Should().Be("public void NewMethod()");
         diff.RemovedMembers.Should().BeEmpty();
         diff.HasBreakingChanges.Should().BeFalse();
     }
@@ -161,25 +146,22 @@ public sealed class ApiChangelogTests
     public void ApiDiffEngine_RemovedMember_ReportedAsBreaking()
     {
         // Arrange
-        var baseline = BuildSurface("MyLib", "1.0.0",
-        [
-            new ApiType("MyLib.Foo", "class",
-            [
-                new ApiMember("DoThing", "public void DoThing(string s)", "method"),
-            ]),
-        ]);
+        var baseline = BuildSurface(
+            "MyLib",
+            "1.0.0",
+            [new ApiType("MyLib.Foo", "class", [new ApiMember("DoThing", "public void DoThing(string s)", "method")])]
+        );
 
-        var current = BuildSurface("MyLib", "2.0.0",
-        [
-            new ApiType("MyLib.Foo", "class", []),
-        ]);
+        var current = BuildSurface("MyLib", "2.0.0", [new ApiType("MyLib.Foo", "class", [])]);
 
         // Act
         var diff = ApiDiffEngine.Compare(baseline, current);
 
         // Assert
-        diff.RemovedMembers.Should().ContainSingle()
-            .Which.MemberSignature.Should().Be("public void DoThing(string s)");
+        diff.RemovedMembers.Should()
+            .ContainSingle()
+            .Which.MemberSignature.Should()
+            .Be("public void DoThing(string s)");
         diff.HasBreakingChanges.Should().BeTrue();
     }
 
@@ -194,7 +176,8 @@ public sealed class ApiChangelogTests
             RemovedTypes: ["MyLib.Foo"],
             AddedMembers: [],
             RemovedMembers: [new ApiMemberDiff("MyLib.Bar", "public void DoThing(string s)")],
-            HasBreakingChanges: true);
+            HasBreakingChanges: true
+        );
 
         // Act
         var markdown = ChangelogRenderer.Render(diff, "2.0.0", new DateTimeOffset(2026, 4, 6, 0, 0, 0, TimeSpan.Zero));
@@ -214,7 +197,8 @@ public sealed class ApiChangelogTests
             RemovedTypes: [],
             AddedMembers: [new ApiMemberDiff("MyLib.Foo", "public void NewMethod()")],
             RemovedMembers: [],
-            HasBreakingChanges: false);
+            HasBreakingChanges: false
+        );
 
         // Act
         var markdown = ChangelogRenderer.Render(diff, "1.1.0", new DateTimeOffset(2026, 4, 6, 0, 0, 0, TimeSpan.Zero));
@@ -235,7 +219,8 @@ public sealed class ApiChangelogTests
             RemovedTypes: [],
             AddedMembers: [],
             RemovedMembers: [],
-            HasBreakingChanges: false);
+            HasBreakingChanges: false
+        );
 
         // Act
         var markdown = ChangelogRenderer.Render(diff, "1.0.1", new DateTimeOffset(2026, 4, 6, 0, 0, 0, TimeSpan.Zero));

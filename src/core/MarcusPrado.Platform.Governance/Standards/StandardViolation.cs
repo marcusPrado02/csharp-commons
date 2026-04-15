@@ -5,4 +5,5 @@ public sealed record StandardViolation(
     PlatformStandard Standard,
     string Service,
     string Details,
-    DateTimeOffset DetectedAt);
+    DateTimeOffset DetectedAt
+);

@@ -21,12 +21,12 @@ public sealed class PostgresHealthProbe : IHealthCheck
     /// <inheritdoc/>
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         try
         {
-            var rows = await _factory.QueryAsync<string>(
-                "SELECT version()", ct: cancellationToken);
+            var rows = await _factory.QueryAsync<string>("SELECT version()", ct: cancellationToken);
             var version = rows.FirstOrDefault() ?? "unknown";
             return HealthCheckResult.Healthy($"PostgreSQL {version}");
         }

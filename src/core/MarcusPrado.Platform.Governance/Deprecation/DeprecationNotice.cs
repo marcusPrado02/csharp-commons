@@ -4,4 +4,5 @@ namespace MarcusPrado.Platform.Governance.Deprecation;
 public sealed record DeprecationNotice(
     string Message,
     string? MigrationGuideUrl = null,
-    DateTimeOffset? EffectiveDate = null);
+    DateTimeOffset? EffectiveDate = null
+);

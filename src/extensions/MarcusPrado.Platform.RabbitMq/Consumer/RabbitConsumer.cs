@@ -16,9 +16,7 @@ namespace MarcusPrado.Platform.RabbitMq.Consumer;
 /// <typeparamref name="TMessage"/> as a hosted service.
 /// </summary>
 /// <typeparam name="TMessage">The message payload type.</typeparam>
-public abstract partial class RabbitConsumer<TMessage> :
-    BackgroundService,
-    IMessageConsumer
+public abstract partial class RabbitConsumer<TMessage> : BackgroundService, IMessageConsumer
     where TMessage : class
 {
     private readonly RabbitMqOptions _options;
@@ -33,10 +31,7 @@ public abstract partial class RabbitConsumer<TMessage> :
     public abstract string QueueName { get; }
 
     /// <summary>Initialises the consumer.</summary>
-    protected RabbitConsumer(
-        RabbitMqOptions options,
-        IMessageSerializer serializer,
-        ILogger logger)
+    protected RabbitConsumer(RabbitMqOptions options, IMessageSerializer serializer, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(options);
         _options = options;
@@ -56,20 +51,23 @@ public abstract partial class RabbitConsumer<TMessage> :
             type: _options.ExchangeType,
             durable: true,
             autoDelete: false,
-            cancellationToken: stoppingToken);
+            cancellationToken: stoppingToken
+        );
 
         await _channel.QueueDeclareAsync(
             queue: QueueName,
             durable: true,
             exclusive: false,
             autoDelete: false,
-            cancellationToken: stoppingToken);
+            cancellationToken: stoppingToken
+        );
 
         await _channel.QueueBindAsync(
             queue: QueueName,
             exchange: _options.Exchange,
             routingKey: Topic,
-            cancellationToken: stoppingToken);
+            cancellationToken: stoppingToken
+        );
 
         await _channel.BasicQosAsync(0, _options.PrefetchCount, false, stoppingToken);
 
@@ -122,9 +120,7 @@ public abstract partial class RabbitConsumer<TMessage> :
     }
 
     /// <summary>Override to handle the deserialized message envelope.</summary>
-    protected abstract Task HandleAsync(
-        MessageEnvelope<TMessage> envelope,
-        CancellationToken ct);
+    protected abstract Task HandleAsync(MessageEnvelope<TMessage> envelope, CancellationToken ct);
 
     /// <inheritdoc/>
     public override void Dispose()

@@ -6,7 +6,5 @@ namespace MarcusPrado.Platform.Application.CQRS;
 /// </summary>
 /// <typeparam name="TResult">The type of the projected response.</typeparam>
 #pragma warning disable S2326 // TResult unused in interface — phantom type that binds handler to result type
-public interface IQuery<TResult>
-{
-}
+public interface IQuery<TResult> { }
 #pragma warning restore S2326

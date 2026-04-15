@@ -32,7 +32,9 @@ public sealed class NethereumBlockchainClient : IBlockchainClient
 
     /// <inheritdoc />
     public async Task<Abstractions.Blockchain.TransactionReceipt> SendTransactionAsync(
-        BlockchainTransaction tx, CancellationToken ct = default)
+        BlockchainTransaction tx,
+        CancellationToken ct = default
+    )
     {
         ArgumentNullException.ThrowIfNull(tx);
 
@@ -43,8 +45,10 @@ public sealed class NethereumBlockchainClient : IBlockchainClient
             .TransferEtherAndWaitForReceiptAsync(
                 tx.To,
                 tx.Amount,
-                tx.GasPrice.HasValue ? (decimal?)Web3.Convert.FromWei(
-                    new BigInteger((long)(tx.GasPrice.Value * 1e9m))) : null)
+                tx.GasPrice.HasValue
+                    ? (decimal?)Web3.Convert.FromWei(new BigInteger((long)(tx.GasPrice.Value * 1e9m)))
+                    : null
+            )
             .ConfigureAwait(false);
 #pragma warning restore CA2016
 
@@ -52,24 +56,28 @@ public sealed class NethereumBlockchainClient : IBlockchainClient
             receipt.TransactionHash,
             receipt.Status?.Value == BigInteger.One,
             (long)receipt.BlockNumber.Value,
-            (long)receipt.GasUsed.Value);
+            (long)receipt.GasUsed.Value
+        );
     }
 
     /// <inheritdoc />
     public async Task<Abstractions.Blockchain.TransactionReceipt> GetReceiptAsync(
-        string txHash, CancellationToken ct = default)
+        string txHash,
+        CancellationToken ct = default
+    )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(txHash);
 
-        var receipt = await _web3.Eth.Transactions.GetTransactionReceipt
-            .SendRequestAsync(txHash).ConfigureAwait(false)
+        var receipt =
+            await _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(txHash).ConfigureAwait(false)
             ?? throw new InvalidOperationException($"Transaction receipt not found for hash '{txHash}'.");
 
         return new Abstractions.Blockchain.TransactionReceipt(
             receipt.TransactionHash,
             receipt.Status?.Value == BigInteger.One,
             (long)receipt.BlockNumber.Value,
-            (long)receipt.GasUsed.Value);
+            (long)receipt.GasUsed.Value
+        );
     }
 }
 
@@ -94,8 +102,7 @@ public sealed class NethereumWalletManager : IWalletManager
     }
 
     /// <inheritdoc />
-    public Task<string> SignMessageAsync(
-        string walletAddress, byte[] message, CancellationToken ct = default)
+    public Task<string> SignMessageAsync(string walletAddress, byte[] message, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(walletAddress);
         ArgumentNullException.ThrowIfNull(message);
@@ -103,12 +110,12 @@ public sealed class NethereumWalletManager : IWalletManager
         if (!_keyStore.TryGetValue(walletAddress, out var key))
         {
             throw new InvalidOperationException(
-                $"No key found for wallet '{walletAddress}'. Use CreateWalletAsync first.");
+                $"No key found for wallet '{walletAddress}'. Use CreateWalletAsync first."
+            );
         }
 
         var signer = new EthereumMessageSigner();
-        var signature = signer.EncodeUTF8AndSign(
-            System.Convert.ToBase64String(message), key);
+        var signature = signer.EncodeUTF8AndSign(System.Convert.ToBase64String(message), key);
 
         return Task.FromResult(signature);
     }

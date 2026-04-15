@@ -13,9 +13,7 @@ public static class TenantDbContextDecorator
     /// Applies a global query filter on all entity types that have a
     /// <c>TenantId</c> property, restricting results to the current tenant.
     /// </summary>
-    public static void ApplyTenantFilter(
-        this ModelBuilder modelBuilder,
-        ITenantContext tenantContext)
+    public static void ApplyTenantFilter(this ModelBuilder modelBuilder, ITenantContext tenantContext)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
         ArgumentNullException.ThrowIfNull(tenantContext);
@@ -28,8 +26,7 @@ public static class TenantDbContextDecorator
                 continue;
             }
 
-            var parameter = System.Linq.Expressions.Expression.Parameter(
-                entityType.ClrType, "e");
+            var parameter = System.Linq.Expressions.Expression.Parameter(entityType.ClrType, "e");
             var property = System.Linq.Expressions.Expression.Property(parameter, "TenantId");
             var tenantIdExpr = System.Linq.Expressions.Expression.Constant(tenantContext.TenantId);
             var equals = System.Linq.Expressions.Expression.Equal(property, tenantIdExpr);

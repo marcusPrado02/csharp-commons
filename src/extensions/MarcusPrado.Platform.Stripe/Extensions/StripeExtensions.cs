@@ -15,7 +15,8 @@ public static class StripeExtensions
     /// </summary>
     public static IServiceCollection AddPlatformStripe(
         this IServiceCollection services,
-        Action<StripeOptions>? configure = null)
+        Action<StripeOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

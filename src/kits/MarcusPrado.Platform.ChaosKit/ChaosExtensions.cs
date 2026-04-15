@@ -16,7 +16,8 @@ public static class ChaosExtensions
     /// <returns>The same <paramref name="services"/> instance for chaining.</returns>
     public static IServiceCollection AddPlatformChaos(
         this IServiceCollection services,
-        Action<ChaosConfig>? configure = null)
+        Action<ChaosConfig>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

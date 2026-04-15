@@ -25,7 +25,8 @@ public sealed class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavi
     public Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         // Authorization logic is injected via IPolicyAuthorizer when available.
         // Default pass-through; concrete authorization is wired per-deployment.

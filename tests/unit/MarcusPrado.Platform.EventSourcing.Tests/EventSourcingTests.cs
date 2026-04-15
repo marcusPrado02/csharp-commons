@@ -91,7 +91,8 @@ public sealed class InMemoryEventStoreTests
 
         var act = () => store.AppendAsync("s", new[] { new ItemAddedEvent() }, expectedVersion: 99);
 
-        await act.Should().ThrowAsync<OptimisticConcurrencyException>()
+        await act.Should()
+            .ThrowAsync<OptimisticConcurrencyException>()
             .Where(ex => ex.StreamId == "s" && ex.ExpectedVersion == 99 && ex.ActualVersion == 0);
     }
 
@@ -99,12 +100,11 @@ public sealed class InMemoryEventStoreTests
     public async Task LoadAsync_WithFromSequence_FiltersCorrectly()
     {
         var store = new InMemoryEventStore();
-        await store.AppendAsync("s", new IDomainEvent[]
-        {
-            new ItemAddedEvent(),
-            new ItemAddedEvent(),
-            new ItemAddedEvent(),
-        }, expectedVersion: -1);
+        await store.AppendAsync(
+            "s",
+            new IDomainEvent[] { new ItemAddedEvent(), new ItemAddedEvent(), new ItemAddedEvent() },
+            expectedVersion: -1
+        );
 
         var loaded = await store.LoadAsync("s", fromSequence: 1);
 
@@ -128,12 +128,16 @@ public sealed class AggregateEventReplayerTests
     public async Task Replay_AppliesEventsInOrder()
     {
         var store = new InMemoryEventStore();
-        await store.AppendAsync("order-42", new IDomainEvent[]
-        {
-            new OrderCreatedEvent { OrderId = "order-42" },
-            new ItemAddedEvent(),
-            new ItemAddedEvent(),
-        }, expectedVersion: -1);
+        await store.AppendAsync(
+            "order-42",
+            new IDomainEvent[]
+            {
+                new OrderCreatedEvent { OrderId = "order-42" },
+                new ItemAddedEvent(),
+                new ItemAddedEvent(),
+            },
+            expectedVersion: -1
+        );
 
         var storedEvents = await store.LoadAsync("order-42");
         var state = AggregateEventReplayer.Replay(new OrderState(), storedEvents);
@@ -152,7 +156,8 @@ public sealed class AggregateEventReplayerTests
             SequenceNumber: 0,
             EventType: "This.Does.Not.Exist, SomeAssembly",
             Payload: "{}",
-            OccurredOn: DateTimeOffset.UtcNow);
+            OccurredOn: DateTimeOffset.UtcNow
+        );
 
         var state = new OrderState();
         var act = () => AggregateEventReplayer.Replay(state, new[] { bogus });
@@ -172,7 +177,8 @@ public sealed class InMemorySnapshotStoreTests
             StreamId: "order-1",
             SequenceNumber: 5,
             State: new OrderState { OrderId = "order-1", ItemCount = 3 },
-            CreatedAt: DateTimeOffset.UtcNow);
+            CreatedAt: DateTimeOffset.UtcNow
+        );
 
         await store.SaveAsync(snapshot);
         var loaded = await store.LoadLatestAsync("order-1");
@@ -201,11 +207,15 @@ public sealed class EventSourcedRepositoryTests
         var snapshotStore = new InMemorySnapshotStore<OrderState>();
         var repo = new EventSourcedRepository<OrderState>(eventStore, snapshotStore);
 
-        await eventStore.AppendAsync("order-99", new IDomainEvent[]
-        {
-            new OrderCreatedEvent { OrderId = "order-99" },
-            new ItemAddedEvent(),
-        }, expectedVersion: -1);
+        await eventStore.AppendAsync(
+            "order-99",
+            new IDomainEvent[]
+            {
+                new OrderCreatedEvent { OrderId = "order-99" },
+                new ItemAddedEvent(),
+            },
+            expectedVersion: -1
+        );
 
         var (state, version) = await repo.LoadAsync("order-99");
 
@@ -223,23 +233,21 @@ public sealed class EventSourcedRepositoryTests
         var repo = new EventSourcedRepository<OrderState>(eventStore, snapshotStore, snapshotEvery: 3);
 
         // Append first event to get version 0
-        await repo.SaveAsync("order-snap",
+        await repo.SaveAsync(
+            "order-snap",
             new IDomainEvent[] { new OrderCreatedEvent { OrderId = "order-snap" } },
-            expectedVersion: -1);
+            expectedVersion: -1
+        );
 
         // No snapshot yet (version=0, (0+1)%3 != 0)
         var noSnap = await snapshotStore.LoadLatestAsync("order-snap");
         noSnap.Should().BeNull();
 
         // Append second event -> version=1, (1+1)%3 != 0
-        await repo.SaveAsync("order-snap",
-            new IDomainEvent[] { new ItemAddedEvent() },
-            expectedVersion: 0);
+        await repo.SaveAsync("order-snap", new IDomainEvent[] { new ItemAddedEvent() }, expectedVersion: 0);
 
         // Append third event -> version=2, (2+1)%3==0 => snapshot created
-        await repo.SaveAsync("order-snap",
-            new IDomainEvent[] { new ItemAddedEvent() },
-            expectedVersion: 1);
+        await repo.SaveAsync("order-snap", new IDomainEvent[] { new ItemAddedEvent() }, expectedVersion: 1);
 
         var snap = await snapshotStore.LoadLatestAsync("order-snap");
         snap.Should().NotBeNull();

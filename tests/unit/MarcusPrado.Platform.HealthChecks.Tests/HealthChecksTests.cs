@@ -55,8 +55,7 @@ public sealed class HealthChecksTests
         p1.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((true, "ok")));
         p2.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((true, "ok")));
 
-        var result = await new ReadinessCheck([p1, p2])
-            .CheckHealthAsync(new HealthCheckContext());
+        var result = await new ReadinessCheck([p1, p2]).CheckHealthAsync(new HealthCheckContext());
 
         result.Status.Should().Be(HealthStatus.Healthy);
     }
@@ -69,10 +68,10 @@ public sealed class HealthChecksTests
         good.Name.Returns("cache");
         bad.Name.Returns("postgres");
         good.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((true, "ok")));
-        bad.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((false, "connection refused")));
+        bad.CheckAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<(bool, string)>((false, "connection refused")));
 
-        var result = await new ReadinessCheck([good, bad])
-            .CheckHealthAsync(new HealthCheckContext());
+        var result = await new ReadinessCheck([good, bad]).CheckHealthAsync(new HealthCheckContext());
 
         result.Status.Should().Be(HealthStatus.Unhealthy);
         result.Description.Should().Contain("postgres");
@@ -84,11 +83,11 @@ public sealed class HealthChecksTests
     {
         var faulted = Substitute.For<IDependencyHealthProbe>();
         faulted.Name.Returns("kafka");
-        faulted.CheckAsync(Arg.Any<CancellationToken>())
+        faulted
+            .CheckAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromException<(bool, string)>(new InvalidOperationException("broker down")));
 
-        var result = await new ReadinessCheck([faulted])
-            .CheckHealthAsync(new HealthCheckContext());
+        var result = await new ReadinessCheck([faulted]).CheckHealthAsync(new HealthCheckContext());
 
         result.Status.Should().Be(HealthStatus.Unhealthy);
         result.Description.Should().Contain("kafka");
@@ -105,8 +104,7 @@ public sealed class HealthChecksTests
         p1.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((false, "timeout")));
         p2.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((false, "timeout")));
 
-        var result = await new ReadinessCheck([p1, p2])
-            .CheckHealthAsync(new HealthCheckContext());
+        var result = await new ReadinessCheck([p1, p2]).CheckHealthAsync(new HealthCheckContext());
 
         result.Status.Should().Be(HealthStatus.Unhealthy);
         result.Description.Should().Contain("db1");
@@ -118,8 +116,7 @@ public sealed class HealthChecksTests
     [Fact]
     public void AddPlatformHealthChecks_RegistersLivenessAndReadiness()
     {
-        var services = new ServiceCollection()
-            .AddLogging();
+        var services = new ServiceCollection().AddLogging();
 
         services.AddPlatformHealthChecks();
 

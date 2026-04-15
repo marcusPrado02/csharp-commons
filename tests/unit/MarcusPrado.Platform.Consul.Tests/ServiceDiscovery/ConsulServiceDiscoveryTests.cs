@@ -37,8 +37,7 @@ public sealed class ConsulExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IServiceDiscovery>()
-            .Should().BeOfType<ConsulServiceDiscovery>();
+        sp.GetRequiredService<IServiceDiscovery>().Should().BeOfType<ConsulServiceDiscovery>();
     }
 }
 
@@ -54,8 +53,7 @@ public sealed class ConsulServiceDiscoveryConstructorTests
 
 public sealed class ConsulServiceDiscoveryTests
 {
-    private static ConsulServiceDiscovery BuildService(
-        IConsulClient client, ConsulOptions? opts = null)
+    private static ConsulServiceDiscovery BuildService(IConsulClient client, ConsulOptions? opts = null)
     {
         return new ConsulServiceDiscovery(client, opts ?? new ConsulOptions());
     }
@@ -67,13 +65,9 @@ public sealed class ConsulServiceDiscoveryTests
         var client = Substitute.For<IConsulClient>();
         client.Health.Returns(health);
 
-        health.Service(
-                Arg.Any<string>(), Arg.Any<string>(),
-                Arg.Any<bool>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new QueryResult<ServiceEntry[]>
-            {
-                Response = [],
-            }));
+        health
+            .Service(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new QueryResult<ServiceEntry[]> { Response = [] }));
 
         var svc = BuildService(client);
 
@@ -102,13 +96,9 @@ public sealed class ConsulServiceDiscoveryTests
             Checks = [new HealthCheck { Status = HealthStatus.Passing }],
         };
 
-        health.Service(
-                Arg.Any<string>(), Arg.Any<string>(),
-                Arg.Any<bool>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new QueryResult<ServiceEntry[]>
-            {
-                Response = [entry],
-            }));
+        health
+            .Service(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new QueryResult<ServiceEntry[]> { Response = [entry] }));
 
         var svc = BuildService(client);
         var result = await svc.ResolveAsync("my-svc");
@@ -126,7 +116,8 @@ public sealed class ConsulServiceDiscoveryTests
         var agent = Substitute.For<IAgentEndpoint>();
         var client = Substitute.For<IConsulClient>();
         client.Agent.Returns(agent);
-        agent.ServiceDeregister(Arg.Any<string>(), Arg.Any<CancellationToken>())
+        agent
+            .ServiceDeregister(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new WriteResult()));
 
         var svc = BuildService(client);

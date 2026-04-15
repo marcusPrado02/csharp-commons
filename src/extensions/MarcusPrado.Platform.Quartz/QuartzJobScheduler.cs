@@ -33,9 +33,7 @@ public sealed partial class QuartzJobScheduler : IJobScheduler
 
         var quartzJobType = typeof(QuartzJobAdapter<TJob>);
 
-        var jobDetail = JobBuilder.Create(quartzJobType)
-            .WithIdentity(jobKey)
-            .Build();
+        var jobDetail = JobBuilder.Create(quartzJobType).WithIdentity(jobKey).Build();
 
         var quartzTrigger = BuildQuartzTrigger(jobKey, trigger);
 
@@ -69,9 +67,7 @@ public sealed partial class QuartzJobScheduler : IJobScheduler
 
     private static ITrigger BuildQuartzTrigger(string jobKey, JobTrigger trigger)
     {
-        var triggerBuilder = TriggerBuilder.Create()
-            .WithIdentity($"{jobKey}-trigger")
-            .ForJob(jobKey);
+        var triggerBuilder = TriggerBuilder.Create().WithIdentity($"{jobKey}-trigger").ForJob(jobKey);
 
         triggerBuilder = trigger.StartAt.HasValue
             ? triggerBuilder.StartAt(trigger.StartAt.Value)

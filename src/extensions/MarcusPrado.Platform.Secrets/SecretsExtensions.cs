@@ -4,7 +4,8 @@ public static class SecretsExtensions
 {
     public static IServiceCollection AddPlatformSecrets(
         this IServiceCollection services,
-        Action<SecretCacheOptions>? configure = null)
+        Action<SecretCacheOptions>? configure = null
+    )
     {
         var cacheOpts = new SecretCacheOptions();
         configure?.Invoke(cacheOpts);
@@ -15,14 +16,14 @@ public static class SecretsExtensions
 
     public static IServiceCollection AddInMemorySecretProvider(
         this IServiceCollection services,
-        IReadOnlyDictionary<string, string>? secrets = null)
+        IReadOnlyDictionary<string, string>? secrets = null
+    )
     {
         services.AddSingleton<ISecretProvider>(new InMemorySecretProvider(secrets));
         return services;
     }
 
-    public static IServiceCollection AddEnvironmentSecretProvider(
-        this IServiceCollection services)
+    public static IServiceCollection AddEnvironmentSecretProvider(this IServiceCollection services)
     {
         services.AddSingleton<ISecretProvider, EnvironmentSecretProvider>();
         return services;
@@ -34,15 +35,16 @@ public static class SecretsExtensions
     /// </summary>
     public static IServiceCollection AddCachedInMemorySecretProvider(
         this IServiceCollection services,
-        IReadOnlyDictionary<string, string>? secrets = null)
+        IReadOnlyDictionary<string, string>? secrets = null
+    )
     {
         var inner = new InMemorySecretProvider(secrets);
         services.AddSingleton(inner);
-        services.AddSingleton<ISecretProvider>(sp =>
-            new CachedSecretProvider(
-                inner,
-                sp.GetRequiredService<IMemoryCache>(),
-                sp.GetRequiredService<SecretCacheOptions>()));
+        services.AddSingleton<ISecretProvider>(sp => new CachedSecretProvider(
+            inner,
+            sp.GetRequiredService<IMemoryCache>(),
+            sp.GetRequiredService<SecretCacheOptions>()
+        ));
         return services;
     }
 }

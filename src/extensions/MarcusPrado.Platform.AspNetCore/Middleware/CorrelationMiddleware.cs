@@ -31,11 +31,11 @@ public sealed class CorrelationMiddleware
     /// <summary>Processes the request, enriching context with correlation identifiers.</summary>
     public async Task InvokeAsync(HttpContext context, ICorrelationContext correlationContext)
     {
-        var correlationId = context.Request.Headers[CorrelationIdHeader].FirstOrDefault()
-                            ?? _guidFactory.NewGuid().ToString("N");
+        var correlationId =
+            context.Request.Headers[CorrelationIdHeader].FirstOrDefault() ?? _guidFactory.NewGuid().ToString("N");
 
-        var requestId = context.Request.Headers[RequestIdHeader].FirstOrDefault()
-                        ?? _guidFactory.NewGuid().ToString("N");
+        var requestId =
+            context.Request.Headers[RequestIdHeader].FirstOrDefault() ?? _guidFactory.NewGuid().ToString("N");
 
         correlationContext.SetCorrelationId(correlationId);
         correlationContext.SetRequestId(requestId);

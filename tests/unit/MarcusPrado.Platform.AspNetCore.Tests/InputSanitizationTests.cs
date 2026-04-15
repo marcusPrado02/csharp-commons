@@ -60,28 +60,24 @@ public sealed class InputSanitizationTests
     [Fact]
     public void SqlInjectionDetector_DetectsDropTablePattern()
     {
-        SqlInjectionDetector.ContainsSqlInjection("'; DROP TABLE users; --")
-            .Should().BeTrue();
+        SqlInjectionDetector.ContainsSqlInjection("'; DROP TABLE users; --").Should().BeTrue();
     }
 
     [Fact]
     public void SqlInjectionDetector_DetectsSelectPattern()
     {
-        SqlInjectionDetector.ContainsSqlInjection("SELECT * FROM users")
-            .Should().BeTrue();
+        SqlInjectionDetector.ContainsSqlInjection("SELECT * FROM users").Should().BeTrue();
     }
 
     [Fact]
     public void SqlInjectionDetector_ReturnsFalseForSafeInput()
     {
-        SqlInjectionDetector.ContainsSqlInjection("hello world")
-            .Should().BeFalse();
+        SqlInjectionDetector.ContainsSqlInjection("hello world").Should().BeFalse();
     }
 
     [Fact]
     public void SqlInjectionDetector_ReturnsFalseForNull()
     {
-        SqlInjectionDetector.ContainsSqlInjection(null)
-            .Should().BeFalse();
+        SqlInjectionDetector.ContainsSqlInjection(null).Should().BeFalse();
     }
 }

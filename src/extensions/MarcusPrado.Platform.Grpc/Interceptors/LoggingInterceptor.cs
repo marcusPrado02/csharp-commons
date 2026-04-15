@@ -7,8 +7,7 @@ public sealed partial class LoggingInterceptor : Interceptor
 
     /// <summary>Initializes a new instance of <see cref="LoggingInterceptor"/> with the given logger.</summary>
     /// <param name="logger">Logger used to record request lifecycle events.</param>
-    public LoggingInterceptor(ILogger<LoggingInterceptor> logger)
-        => _logger = logger;
+    public LoggingInterceptor(ILogger<LoggingInterceptor> logger) => _logger = logger;
 
     [LoggerMessage(Level = LogLevel.Information, Message = "gRPC [{Method}] started")]
     private static partial void LogStarted(ILogger logger, string method);
@@ -30,7 +29,8 @@ public sealed partial class LoggingInterceptor : Interceptor
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
         ServerCallContext context,
-        UnaryServerMethod<TRequest, TResponse> continuation)
+        UnaryServerMethod<TRequest, TResponse> continuation
+    )
     {
         var start = DateTimeOffset.UtcNow;
         LogStarted(_logger, context.Method);
@@ -60,7 +60,8 @@ public sealed partial class LoggingInterceptor : Interceptor
     public override async Task<TResponse> ClientStreamingServerHandler<TRequest, TResponse>(
         IAsyncStreamReader<TRequest> requestStream,
         ServerCallContext context,
-        ClientStreamingServerMethod<TRequest, TResponse> continuation)
+        ClientStreamingServerMethod<TRequest, TResponse> continuation
+    )
     {
         LogStreamingStarted(_logger, context.Method);
         return await continuation(requestStream, context).ConfigureAwait(false);

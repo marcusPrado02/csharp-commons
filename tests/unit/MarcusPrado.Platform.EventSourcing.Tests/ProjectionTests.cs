@@ -206,8 +206,12 @@ public sealed class ProjectionRebuildJobTests
         // Append a ProductCreatedEvent to the event store
         await eventStore.AppendAsync(
             "product-stream",
-            new IDomainEvent[] { new ProductCreatedEvent { ProductId = "p-rebuild", Name = "Rebuilt Product" } },
-            expectedVersion: -1);
+            new IDomainEvent[]
+            {
+                new ProductCreatedEvent { ProductId = "p-rebuild", Name = "Rebuilt Product" },
+            },
+            expectedVersion: -1
+        );
 
         var job = new ProjectionRebuildJob(eventStore, engine);
         await job.RebuildAsync("product-stream");
@@ -233,7 +237,8 @@ public sealed class ProjectionRebuildJobTests
                 new ProductViewedEvent { ProductId = "p-v" },
                 new ProductViewedEvent { ProductId = "p-v" },
             },
-            expectedVersion: -1);
+            expectedVersion: -1
+        );
 
         var job = new ProjectionRebuildJob(eventStore, engine);
         await job.RebuildAsync("view-stream");

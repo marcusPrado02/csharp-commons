@@ -135,7 +135,6 @@ static int PrintHelp()
 #pragma warning disable S3903 // Top-level program types cannot be placed in a named namespace
 internal static class ApiChangelogJsonOptions
 {
-    internal static readonly JsonSerializerOptions Default =
-        new() { WriteIndented = true };
+    internal static readonly JsonSerializerOptions Default = new() { WriteIndented = true };
 }
 #pragma warning restore S3903

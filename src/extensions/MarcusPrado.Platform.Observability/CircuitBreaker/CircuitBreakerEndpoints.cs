@@ -23,19 +23,22 @@ public static class CircuitBreakerEndpoints
     /// <returns>The same <paramref name="endpoints"/> builder for chaining.</returns>
     public static IEndpointRouteBuilder MapCircuitBreakerEndpoints(
         this IEndpointRouteBuilder endpoints,
-        CircuitBreakerRegistry registry)
+        CircuitBreakerRegistry registry
+    )
     {
         ArgumentNullException.ThrowIfNull(endpoints);
         ArgumentNullException.ThrowIfNull(registry);
 
-        endpoints.MapGet("/circuit-breakers", () =>
-            Results.Ok(registry.GetAll()));
+        endpoints.MapGet("/circuit-breakers", () => Results.Ok(registry.GetAll()));
 
-        endpoints.MapPost("/circuit-breakers/{name}/reset", (string name) =>
-        {
-            registry.Reset(name);
-            return Results.Ok();
-        });
+        endpoints.MapPost(
+            "/circuit-breakers/{name}/reset",
+            (string name) =>
+            {
+                registry.Reset(name);
+                return Results.Ok();
+            }
+        );
 
         return endpoints;
     }

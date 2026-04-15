@@ -41,7 +41,8 @@ public sealed class ConfigurationValidator<T>
                 throw new OptionsValidationException(
                     typeof(T).Name,
                     $"Validation failed for options type '{typeof(T).Name}': {ex.Message}",
-                    ex);
+                    ex
+                );
             }
         }
     }

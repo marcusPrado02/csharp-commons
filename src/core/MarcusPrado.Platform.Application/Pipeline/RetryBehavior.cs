@@ -26,7 +26,8 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
     public async Task<TResponse> HandleAsync(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var attempt = 0;
 
@@ -40,8 +41,7 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
             {
                 attempt++;
 
-                var delay = TimeSpan.FromMilliseconds(
-                    _baseDelay.TotalMilliseconds * Math.Pow(2, attempt - 1));
+                var delay = TimeSpan.FromMilliseconds(_baseDelay.TotalMilliseconds * Math.Pow(2, attempt - 1));
 
                 _logger.LogWarning(
                     ex,
@@ -49,7 +49,8 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
                     typeof(TRequest).Name,
                     attempt,
                     MaxRetries,
-                    (long)delay.TotalMilliseconds);
+                    (long)delay.TotalMilliseconds
+                );
 
                 await Task.Delay(delay, cancellationToken);
             }
@@ -57,7 +58,5 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
     }
 
     private static bool IsTransient(Exception ex) =>
-        ex is TimeoutException
-        or OperationCanceledException
-        or System.IO.IOException;
+        ex is TimeoutException or OperationCanceledException or System.IO.IOException;
 }

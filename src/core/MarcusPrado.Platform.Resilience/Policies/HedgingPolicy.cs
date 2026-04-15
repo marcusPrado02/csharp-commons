@@ -14,18 +14,15 @@ public sealed class HedgingPolicy
     /// <summary>Executes <paramref name="action"/> with hedging.</summary>
     public async Task<T> ExecuteAsync<T>(
         Func<CancellationToken, Task<T>> action,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        using var linkedCts =
-            CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
         var primaryTask = action(linkedCts.Token);
 
         // Wait for hedging delay OR primary completion, whichever comes first
-        await Task.WhenAny(
-            primaryTask,
-            Task.Delay(_options.HedgingDelay, linkedCts.Token))
-            .ConfigureAwait(false);
+        await Task.WhenAny(primaryTask, Task.Delay(_options.HedgingDelay, linkedCts.Token)).ConfigureAwait(false);
 
         if (primaryTask.IsCompletedSuccessfully)
         {
@@ -35,8 +32,7 @@ public sealed class HedgingPolicy
         // Start hedged attempt
         var hedgedTask = action(linkedCts.Token);
 
-        var winner = await Task.WhenAny(primaryTask, hedgedTask)
-            .ConfigureAwait(false);
+        var winner = await Task.WhenAny(primaryTask, hedgedTask).ConfigureAwait(false);
 
         await linkedCts.CancelAsync().ConfigureAwait(false);
 

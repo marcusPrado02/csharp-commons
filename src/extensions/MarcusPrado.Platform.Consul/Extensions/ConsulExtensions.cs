@@ -12,7 +12,8 @@ public static class ConsulExtensions
     /// <summary>Registers <see cref="IServiceDiscovery"/> backed by Consul.</summary>
     public static IServiceCollection AddPlatformConsul(
         this IServiceCollection services,
-        Action<ConsulOptions>? configure = null)
+        Action<ConsulOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -22,11 +23,7 @@ public static class ConsulExtensions
         services.AddSingleton(opts);
         services.AddSingleton<IConsulClient>(_ =>
         {
-            var config = new ConsulClientConfiguration
-            {
-                Address = new Uri(opts.Address),
-                Token = opts.Token,
-            };
+            var config = new ConsulClientConfiguration { Address = new Uri(opts.Address), Token = opts.Token };
             return new ConsulClient(config);
         });
         services.AddSingleton<IServiceDiscovery, ConsulServiceDiscovery>();

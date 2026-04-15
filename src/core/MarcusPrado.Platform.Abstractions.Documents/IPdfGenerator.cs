@@ -21,5 +21,6 @@ public interface IExcelReader
     Task<IReadOnlyList<IReadOnlyList<string?>>> ReadAsync(
         byte[] excelBytes,
         int sheetIndex = 1,
-        CancellationToken ct = default);
+        CancellationToken ct = default
+    );
 }

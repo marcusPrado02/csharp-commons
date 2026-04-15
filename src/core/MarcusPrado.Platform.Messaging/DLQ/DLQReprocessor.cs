@@ -15,15 +15,8 @@ public sealed class DLQReprocessor
     }
 
     /// <summary>Re-publishes the given <paramref name="message"/> to <paramref name="originalTopic"/>.</summary>
-    public async Task ReprocessAsync(
-        DeadLetterMessage message,
-        string originalTopic,
-        CancellationToken ct = default)
+    public async Task ReprocessAsync(DeadLetterMessage message, string originalTopic, CancellationToken ct = default)
     {
-        await _publisher.PublishAsync(
-            originalTopic,
-            message.Original,
-            null,
-            ct);
+        await _publisher.PublishAsync(originalTopic, message.Original, null, ct);
     }
 }

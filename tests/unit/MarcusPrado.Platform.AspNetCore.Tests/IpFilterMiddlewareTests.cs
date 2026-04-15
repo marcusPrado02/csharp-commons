@@ -40,8 +40,9 @@ public sealed class IpFilterMiddlewareTests
     private static Task<HttpContext> SendAsync(
         TestServer server,
         string remoteIp,
-        Action<HttpContext>? configureContext = null)
-        => server.SendAsync(ctx =>
+        Action<HttpContext>? configureContext = null
+    ) =>
+        server.SendAsync(ctx =>
         {
             ctx.Connection.RemoteIpAddress = IPAddress.Parse(remoteIp);
             configureContext?.Invoke(ctx);
@@ -109,13 +110,17 @@ public sealed class IpFilterMiddlewareTests
             opts.Blacklist.Add("203.0.113.5");
         });
 
-        var ctx = await SendAsync(server, "10.0.0.1", c =>
-        {
-            c.Request.Headers["X-Forwarded-For"] = "203.0.113.5";
-        });
+        var ctx = await SendAsync(
+            server,
+            "10.0.0.1",
+            c =>
+            {
+                c.Request.Headers["X-Forwarded-For"] = "203.0.113.5";
+            }
+        );
 
-        ctx.Response.StatusCode.Should().Be(403,
-            because: "the X-Forwarded-For IP should be evaluated when TrustForwardedFor is true");
+        ctx.Response.StatusCode.Should()
+            .Be(403, because: "the X-Forwarded-For IP should be evaluated when TrustForwardedFor is true");
     }
 
     [Fact]
@@ -130,8 +135,7 @@ public sealed class IpFilterMiddlewareTests
 
         var ctx = await SendAsync(server, "192.168.1.1");
 
-        ctx.Response.StatusCode.Should().Be(403,
-            because: "blacklist must be evaluated before whitelist");
+        ctx.Response.StatusCode.Should().Be(403, because: "blacklist must be evaluated before whitelist");
     }
 
     [Fact]
@@ -144,8 +148,7 @@ public sealed class IpFilterMiddlewareTests
 
         var ctx = await SendAsync(server, "10.10.0.55");
 
-        ctx.Response.StatusCode.Should().Be(403,
-            because: "an IP within the blacklisted CIDR range must be blocked");
+        ctx.Response.StatusCode.Should().Be(403, because: "an IP within the blacklisted CIDR range must be blocked");
     }
 
     [Fact]
@@ -158,7 +161,6 @@ public sealed class IpFilterMiddlewareTests
 
         var ctx = await SendAsync(server, "172.20.5.10");
 
-        ctx.Response.StatusCode.Should().Be(200,
-            because: "an IP within the whitelisted CIDR range must be allowed");
+        ctx.Response.StatusCode.Should().Be(200, because: "an IP within the whitelisted CIDR range must be allowed");
     }
 }

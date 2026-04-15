@@ -10,6 +10,7 @@ public interface IMessagePublisher
         string topic,
         TMessage message,
         MessageMetadata? metadata = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where TMessage : class;
 }

@@ -7,10 +7,8 @@ public static class LogSanitizer
     {
         // Email addresses
         (@"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}", "***@***.***"),
-
         // Credit card numbers (4 groups of 4 digits)
         (@"(?:\d[ \-]?){13,19}", "****"),
-
         // CPF (Brazilian tax ID)
         (@"\d{3}[.\- ]?\d{3}[.\- ]?\d{3}[.\- ]?\d{2}", "***.***.**/***-**"),
     };

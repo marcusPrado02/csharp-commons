@@ -23,7 +23,8 @@ public static class EncryptedConfigurationExtensions
         string path,
         Func<string, string> decryptor,
         bool optional = false,
-        bool reloadOnChange = false)
+        bool reloadOnChange = false
+    )
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(path);
@@ -50,7 +51,8 @@ public static class EncryptedConfigurationExtensions
     /// <returns>The <see cref="IConfigurationBuilder"/> for chaining.</returns>
     public static IConfigurationBuilder AddEncryptedEnvironmentVariables(
         this IConfigurationBuilder builder,
-        Func<string, string> decryptor)
+        Func<string, string> decryptor
+    )
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(decryptor);

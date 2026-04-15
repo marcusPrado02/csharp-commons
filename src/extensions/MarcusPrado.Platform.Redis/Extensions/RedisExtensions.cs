@@ -19,15 +19,15 @@ public static class RedisExtensions
     /// </summary>
     public static IServiceCollection AddPlatformRedis(
         this IServiceCollection services,
-        Action<RedisCacheOptions>? configure = null)
+        Action<RedisCacheOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
         var opts = new RedisCacheOptions();
         configure?.Invoke(opts);
 
-        services.AddSingleton<IConnectionMultiplexer>(
-            _ => ConnectionMultiplexer.Connect(opts.ConnectionString));
+        services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(opts.ConnectionString));
 
         services.AddSingleton(opts);
         services.AddSingleton<ICache, RedisCache>();

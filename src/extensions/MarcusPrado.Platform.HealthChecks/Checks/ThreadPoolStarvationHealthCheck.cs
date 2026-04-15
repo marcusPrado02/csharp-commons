@@ -31,7 +31,8 @@ public sealed class ThreadPoolStarvationHealthCheck : IHealthCheck
     /// <inheritdoc/>
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ThreadPool.GetAvailableThreads(out var workerThreads, out var completionPortThreads);
         ThreadPool.GetMaxThreads(out var maxWorker, out _);
@@ -45,20 +46,26 @@ public sealed class ThreadPoolStarvationHealthCheck : IHealthCheck
 
         if (workerThreads <= _options.UnhealthyMinAvailableWorkers)
         {
-            return Task.FromResult(HealthCheckResult.Unhealthy(
-                $"Thread pool starved: only {workerThreads} worker threads available.",
-                data: data));
+            return Task.FromResult(
+                HealthCheckResult.Unhealthy(
+                    $"Thread pool starved: only {workerThreads} worker threads available.",
+                    data: data
+                )
+            );
         }
 
         if (workerThreads <= _options.DegradedMinAvailableWorkers)
         {
-            return Task.FromResult(HealthCheckResult.Degraded(
-                $"Thread pool pressure: {workerThreads} worker threads available.",
-                data: data));
+            return Task.FromResult(
+                HealthCheckResult.Degraded(
+                    $"Thread pool pressure: {workerThreads} worker threads available.",
+                    data: data
+                )
+            );
         }
 
-        return Task.FromResult(HealthCheckResult.Healthy(
-            $"Thread pool healthy: {workerThreads} worker threads available.",
-            data: data));
+        return Task.FromResult(
+            HealthCheckResult.Healthy($"Thread pool healthy: {workerThreads} worker threads available.", data: data)
+        );
     }
 }

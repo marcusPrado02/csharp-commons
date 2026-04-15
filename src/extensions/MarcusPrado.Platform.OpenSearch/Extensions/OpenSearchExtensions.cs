@@ -15,7 +15,8 @@ public static class OpenSearchExtensions
     /// </summary>
     public static IServiceCollection AddPlatformOpenSearch(
         this IServiceCollection services,
-        Action<OpenSearchOptions>? configure = null)
+        Action<OpenSearchOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

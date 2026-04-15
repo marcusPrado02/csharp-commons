@@ -15,7 +15,8 @@ public static class RequestSizeLimitExtensions
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformRequestSizeLimit(
         this IServiceCollection services,
-        Action<RequestSizeLimitOptions>? configure = null)
+        Action<RequestSizeLimitOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

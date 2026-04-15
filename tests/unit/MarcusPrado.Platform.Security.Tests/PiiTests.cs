@@ -7,8 +7,12 @@ namespace MarcusPrado.Platform.Security.Tests;
 internal sealed class CustomerDto
 {
     public string Name { get; set; } = "";
-    [PiiData(Type = PiiType.Email)] public string Email { get; set; } = "";
-    [PiiData(Type = PiiType.Phone)] public string Phone { get; set; } = "";
+
+    [PiiData(Type = PiiType.Email)]
+    public string Email { get; set; } = "";
+
+    [PiiData(Type = PiiType.Phone)]
+    public string Phone { get; set; } = "";
     public int Age { get; set; }
 }
 
@@ -79,7 +83,7 @@ public sealed class PiiTests
             Name = "Alice",
             Email = "alice@example.com",
             Phone = "(21) 99887-6543",
-            Age = 30
+            Age = 30,
         };
 
         var result = PiiClassifier.Redact(dto);
@@ -115,7 +119,7 @@ public sealed class PiiTests
             Name = "Bob",
             Email = "bob@test.com",
             Phone = "11912345678",
-            Age = 25
+            Age = 25,
         };
 
         var factory = new ScalarValueFactory();
@@ -129,6 +133,6 @@ public sealed class PiiTests
 // Minimal ILogEventPropertyValueFactory for testing
 internal sealed class ScalarValueFactory : ILogEventPropertyValueFactory
 {
-    public LogEventPropertyValue CreatePropertyValue(object? value, bool destructureObjects = false)
-        => new ScalarValue(value);
+    public LogEventPropertyValue CreatePropertyValue(object? value, bool destructureObjects = false) =>
+        new ScalarValue(value);
 }

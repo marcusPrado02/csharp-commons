@@ -13,17 +13,23 @@ public sealed class StampedeProtectedCacheTests
 
     public StampedeProtectedCacheTests()
     {
-        _lock.AcquireAsync(
-                 Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<int>(),
-                 Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>())
-             .Returns(Task.FromResult(_handle));
+        _lock
+            .AcquireAsync(
+                Arg.Any<string>(),
+                Arg.Any<TimeSpan>(),
+                Arg.Any<int>(),
+                Arg.Any<TimeSpan?>(),
+                Arg.Any<CancellationToken>()
+            )
+            .Returns(Task.FromResult(_handle));
     }
 
     [Fact]
     public async Task GetAsync_DelegatesToInner()
     {
-        _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
-              .Returns(Task.FromResult<string?>("val"));
+        _inner
+            .GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<string?>("val"));
 
         var sut = new StampedeProtectedCache(_inner, _lock);
         var result = await sut.GetAsync<string>("k");
@@ -37,8 +43,7 @@ public sealed class StampedeProtectedCacheTests
         var sut = new StampedeProtectedCache(_inner, _lock);
         await sut.SetAsync("k", "v");
 
-        await _inner.Received(1).SetAsync(
-            "k", "v", Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>());
+        await _inner.Received(1).SetAsync("k", "v", Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -53,8 +58,7 @@ public sealed class StampedeProtectedCacheTests
     [Fact]
     public async Task ExistsAsync_DelegatesToInner()
     {
-        _inner.ExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
-              .Returns(Task.FromResult(true));
+        _inner.ExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(true));
 
         var sut = new StampedeProtectedCache(_inner, _lock);
         var result = await sut.ExistsAsync("k");
@@ -65,14 +69,21 @@ public sealed class StampedeProtectedCacheTests
     [Fact]
     public async Task GetOrAddAsync_CacheHit_DoesNotCallFactory()
     {
-        _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
-              .Returns(Task.FromResult<string?>("cached"));
+        _inner
+            .GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<string?>("cached"));
 
         var sut = new StampedeProtectedCache(_inner, _lock);
         var called = false;
 
-        var result = await sut.GetOrAddAsync<string>("k",
-            async _ => { called = true; return await Task.FromResult("miss"); });
+        var result = await sut.GetOrAddAsync<string>(
+            "k",
+            async _ =>
+            {
+                called = true;
+                return await Task.FromResult("miss");
+            }
+        );
 
         result.Should().Be("cached");
         called.Should().BeFalse();
@@ -81,18 +92,24 @@ public sealed class StampedeProtectedCacheTests
     [Fact]
     public async Task GetOrAddAsync_CacheMiss_CallsFactoryAndCachesResult()
     {
-        _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
-              .Returns(Task.FromResult<string?>(null));
+        _inner
+            .GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<string?>(null));
 
         var sut = new StampedeProtectedCache(_inner, _lock);
         var called = false;
 
-        var result = await sut.GetOrAddAsync<string>("k",
-            async _ => { called = true; return await Task.FromResult<string?>("fresh"); });
+        var result = await sut.GetOrAddAsync<string>(
+            "k",
+            async _ =>
+            {
+                called = true;
+                return await Task.FromResult<string?>("fresh");
+            }
+        );
 
         result.Should().Be("fresh");
         called.Should().BeTrue();
-        await _inner.Received(1).SetAsync(
-            "k", "fresh", Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>());
+        await _inner.Received(1).SetAsync("k", "fresh", Arg.Any<TimeSpan?>(), Arg.Any<CancellationToken>());
     }
 }

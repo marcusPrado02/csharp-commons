@@ -12,19 +12,20 @@ public sealed partial class LoggingAuditSink : IAuditLogger
     private readonly InMemoryAuditSink _store = new();
 
     /// <summary>Initialises the sink with the given logger.</summary>
-    public LoggingAuditSink(ILogger<LoggingAuditSink> logger)
-        => _logger = logger;
+    public LoggingAuditSink(ILogger<LoggingAuditSink> logger) => _logger = logger;
 
     [LoggerMessage(
         Level = LogLevel.Information,
-        Message = "AUDIT {Action} {Resource}/{ResourceId} by {ActorId} at {Timestamp}")]
+        Message = "AUDIT {Action} {Resource}/{ResourceId} by {ActorId} at {Timestamp}"
+    )]
     private static partial void LogAudit(
         ILogger logger,
         AuditAction action,
         string resource,
         string resourceId,
         string? actorId,
-        DateTimeOffset timestamp);
+        DateTimeOffset timestamp
+    );
 
     /// <inheritdoc />
     public Task LogAsync(AuditEntry entry, CancellationToken ct = default)
@@ -39,6 +40,6 @@ public sealed partial class LoggingAuditSink : IAuditLogger
         string? resourceId = null,
         DateTimeOffset? from = null,
         DateTimeOffset? to = null,
-        CancellationToken ct = default)
-        => _store.QueryAsync(resource, resourceId, from, to, ct);
+        CancellationToken ct = default
+    ) => _store.QueryAsync(resource, resourceId, from, to, ct);
 }

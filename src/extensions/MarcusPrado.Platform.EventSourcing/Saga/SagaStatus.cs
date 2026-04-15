@@ -15,5 +15,5 @@ public enum SagaStatus
     Compensating,
 
     /// <summary>The saga has failed (and compensation may have run).</summary>
-    Failed
+    Failed,
 }

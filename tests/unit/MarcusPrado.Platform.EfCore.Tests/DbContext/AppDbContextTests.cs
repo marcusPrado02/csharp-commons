@@ -138,7 +138,12 @@ public sealed class AppDbContextTests : IDisposable
     [Fact]
     public async Task OutboxMessages_CanPersistAndQuery_ViaDbSet()
     {
-        var msg = new OutboxMessage { EventType = "test", Payload = "{}", Topic = "t" };
+        var msg = new OutboxMessage
+        {
+            EventType = "test",
+            Payload = "{}",
+            Topic = "t",
+        };
         _ctx.OutboxMessages.Add(msg);
         await _ctx.SaveChangesAsync();
 

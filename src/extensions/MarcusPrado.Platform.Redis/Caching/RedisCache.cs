@@ -36,11 +36,7 @@ public sealed class RedisCache : ICache
     }
 
     /// <inheritdoc/>
-    public async Task SetAsync<T>(
-        string key,
-        T value,
-        TimeSpan? expiry = null,
-        CancellationToken ct = default)
+    public async Task SetAsync<T>(string key, T value, TimeSpan? expiry = null, CancellationToken ct = default)
         where T : class
     {
         var redisKey = BuildKey(key);

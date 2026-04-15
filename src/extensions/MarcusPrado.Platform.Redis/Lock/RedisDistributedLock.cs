@@ -23,7 +23,8 @@ public sealed class RedisDistributedLock : IDistributedLock
         TimeSpan ttl,
         int retryCount = 3,
         TimeSpan? retryDelay = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
         var delay = retryDelay ?? TimeSpan.FromMilliseconds(100);
 
@@ -42,14 +43,12 @@ public sealed class RedisDistributedLock : IDistributedLock
         }
 
         throw new InvalidOperationException(
-            $"Unable to acquire distributed lock for key '{key}' after {retryCount + 1} attempt(s).");
+            $"Unable to acquire distributed lock for key '{key}' after {retryCount + 1} attempt(s)."
+        );
     }
 
     /// <inheritdoc/>
-    public async Task<ILockHandle?> TryAcquireAsync(
-        string key,
-        TimeSpan ttl,
-        CancellationToken ct = default)
+    public async Task<ILockHandle?> TryAcquireAsync(string key, TimeSpan ttl, CancellationToken ct = default)
     {
         var token = Guid.NewGuid().ToString("N");
         var acquired = await _db.StringSetAsync(key, token, ttl, When.NotExists);

@@ -23,9 +23,7 @@ public abstract class AppDbContextBase : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<InboxMessage> InboxMessages => Set<InboxMessage>();
 
     /// <summary>Initialises the context with optional domain event dispatching.</summary>
-    protected AppDbContextBase(
-        DbContextOptions options,
-        IDomainEventPublisher? eventPublisher = null)
+    protected AppDbContextBase(DbContextOptions options, IDomainEventPublisher? eventPublisher = null)
         : base(options)
     {
         _eventPublisher = eventPublisher;
@@ -70,9 +68,7 @@ public abstract class AppDbContextBase : Microsoft.EntityFrameworkCore.DbContext
     }
 
     /// <summary>Override to customise the model for the derived bounded context.</summary>
-    protected virtual void ConfigureModel(ModelBuilder modelBuilder)
-    {
-    }
+    protected virtual void ConfigureModel(ModelBuilder modelBuilder) { }
 
     // ── Private helpers ────────────────────────────────────────────────────
 
@@ -86,14 +82,12 @@ public abstract class AppDbContextBase : Microsoft.EntityFrameworkCore.DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Property(nameof(IAuditable.Audit)).CurrentValue =
-                        AuditRecord.Create(SystemActor, now);
+                    entry.Property(nameof(IAuditable.Audit)).CurrentValue = AuditRecord.Create(SystemActor, now);
                     break;
 
                 case EntityState.Modified:
                     var existing = (AuditRecord)entry.Property(nameof(IAuditable.Audit)).CurrentValue!;
-                    entry.Property(nameof(IAuditable.Audit)).CurrentValue =
-                        existing.Update(SystemActor, now);
+                    entry.Property(nameof(IAuditable.Audit)).CurrentValue = existing.Update(SystemActor, now);
                     break;
             }
         }

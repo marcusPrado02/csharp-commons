@@ -48,8 +48,9 @@ public sealed class ServiceCollectionExtensionsTests
     {
         var sp = BuildServiceProvider();
 
-        var descriptor = ((IServiceCollection)new ServiceCollection().AddPlatformCore())
-            .FirstOrDefault(d => d.ServiceType == typeof(ICorrelationContext));
+        var descriptor = ((IServiceCollection)new ServiceCollection().AddPlatformCore()).FirstOrDefault(d =>
+            d.ServiceType == typeof(ICorrelationContext)
+        );
 
         descriptor.Should().NotBeNull();
         descriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
@@ -60,8 +61,9 @@ public sealed class ServiceCollectionExtensionsTests
     {
         var sp = BuildServiceProvider();
 
-        var descriptor = ((IServiceCollection)new ServiceCollection().AddPlatformCore())
-            .FirstOrDefault(d => d.ServiceType == typeof(ITenantContext));
+        var descriptor = ((IServiceCollection)new ServiceCollection().AddPlatformCore()).FirstOrDefault(d =>
+            d.ServiceType == typeof(ITenantContext)
+        );
 
         descriptor.Should().NotBeNull();
         descriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
@@ -75,13 +77,15 @@ public sealed class ServiceCollectionExtensionsTests
         var services = new ServiceCollection();
         services.AddPlatformCqrs();
 
-        var behaviors = services
-            .Where(d => d.ServiceType == typeof(IPipelineBehavior<,>))
-            .ToList();
+        var behaviors = services.Where(d => d.ServiceType == typeof(IPipelineBehavior<,>)).ToList();
 
-        behaviors.Should().HaveCount(8,
-            because: "the platform CQRS pipeline must include all 8 standard behaviours: " +
-                     "Validation, Authorization, Logging, Tracing, Metrics, Retry, Idempotency, Transaction");
+        behaviors
+            .Should()
+            .HaveCount(
+                8,
+                because: "the platform CQRS pipeline must include all 8 standard behaviours: "
+                    + "Validation, Authorization, Logging, Tracing, Metrics, Retry, Idempotency, Transaction"
+            );
     }
 
     [Fact]
@@ -97,8 +101,12 @@ public sealed class ServiceCollectionExtensionsTests
 
         behaviorTypes[0].Should().Be("ValidationBehavior");
         behaviorTypes[1].Should().Be("AuthorizationBehavior");
-        behaviorTypes[^1].Should().Be("TransactionBehavior",
-            because: "TransactionBehavior must be the last (innermost) decorator in the pipeline");
+        behaviorTypes[^1]
+            .Should()
+            .Be(
+                "TransactionBehavior",
+                because: "TransactionBehavior must be the last (innermost) decorator in the pipeline"
+            );
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

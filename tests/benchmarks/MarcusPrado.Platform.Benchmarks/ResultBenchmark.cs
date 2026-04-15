@@ -19,8 +19,7 @@ namespace MarcusPrado.Platform.Benchmarks;
 [RankColumn]
 public class ResultBenchmark
 {
-    private static readonly Error NotFoundError =
-        Error.NotFound("ORDER.NOT_FOUND", "Order was not found.");
+    private static readonly Error NotFoundError = Error.NotFound("ORDER.NOT_FOUND", "Order was not found.");
 
     // ── Happy path ──────────────────────────────────────────────────────────
 
@@ -80,8 +79,7 @@ public class ResultBenchmark
         }
     }
 
-    private static void ThrowNotFound() =>
-        throw new InvalidOperationException("Order was not found.");
+    private static void ThrowNotFound() => throw new InvalidOperationException("Order was not found.");
 
     /// <summary>
     /// Pre-allocated exception (no stack trace capture).
@@ -101,17 +99,15 @@ public class ResultBenchmark
     /// </summary>
     [Benchmark(Description = "Result<T> Map chain ×3")]
     public Result<string> ResultMapChain() =>
-        Result<int>.Success(42)
-            .Map(x => x * 2)
-            .Map(x => x + 1)
-            .Map(x => x.ToString());
+        Result<int>.Success(42).Map(x => x * 2).Map(x => x + 1).Map(x => x.ToString());
 
     /// <summary>
     /// Bind: sequential operations where each can fail.
     /// </summary>
     [Benchmark(Description = "Result<T> Bind chain ×3")]
     public Result<string> ResultBindChain() =>
-        Result<int>.Success(42)
+        Result<int>
+            .Success(42)
             .Bind(x => Result<int>.Success(x * 2))
             .Bind(x => Result<int>.Success(x + 1))
             .Bind(x => Result<string>.Success(x.ToString()));

@@ -84,9 +84,7 @@ public sealed class AcceptLanguageMiddleware
             .Select(lq => lq!.Value)
             .OrderByDescending(lq => lq.Quality);
 
-        var matched = candidates
-            .Select(lq => MatchSupportedCulture(lq.Locale))
-            .FirstOrDefault(c => c is not null);
+        var matched = candidates.Select(lq => MatchSupportedCulture(lq.Locale)).FirstOrDefault(c => c is not null);
 
         return matched ?? GetDefaultCulture();
     }
@@ -94,16 +92,17 @@ public sealed class AcceptLanguageMiddleware
     private CultureInfo? MatchSupportedCulture(string locale)
     {
         // Exact match first (e.g. "pt-BR").
-        var exactMatch = _options.SupportedCultures
-            .FirstOrDefault(s => string.Equals(s, locale, StringComparison.OrdinalIgnoreCase));
+        var exactMatch = _options.SupportedCultures.FirstOrDefault(s =>
+            string.Equals(s, locale, StringComparison.OrdinalIgnoreCase)
+        );
         if (exactMatch is not null)
             return TryCreateCulture(exactMatch);
 
         // Language-only fallback (e.g. "pt" matches "pt-BR").
         var languageOnly = locale.Split('-')[0];
-        var languageMatch = _options.SupportedCultures
-            .FirstOrDefault(s => string.Equals(
-                s.Split('-')[0], languageOnly, StringComparison.OrdinalIgnoreCase));
+        var languageMatch = _options.SupportedCultures.FirstOrDefault(s =>
+            string.Equals(s.Split('-')[0], languageOnly, StringComparison.OrdinalIgnoreCase)
+        );
 
         return languageMatch is not null ? TryCreateCulture(languageMatch) : null;
     }
@@ -120,12 +119,10 @@ public sealed class AcceptLanguageMiddleware
         if (parts.Length > 1)
         {
             var qPart = parts[1].Trim();
-            if (qPart.StartsWith("q=", StringComparison.OrdinalIgnoreCase) &&
-                double.TryParse(
-                    qPart[2..],
-                    NumberStyles.Any,
-                    CultureInfo.InvariantCulture,
-                    out var parsedQ))
+            if (
+                qPart.StartsWith("q=", StringComparison.OrdinalIgnoreCase)
+                && double.TryParse(qPart[2..], NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedQ)
+            )
             {
                 quality = parsedQ;
             }

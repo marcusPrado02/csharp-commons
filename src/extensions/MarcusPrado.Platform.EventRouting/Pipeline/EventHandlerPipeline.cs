@@ -36,7 +36,8 @@ public sealed class EventHandlerPipeline
     public Task ExecuteAsync(
         IDomainEvent domainEvent,
         Func<Task> handler,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ArgumentNullException.ThrowIfNull(domainEvent);
         ArgumentNullException.ThrowIfNull(handler);

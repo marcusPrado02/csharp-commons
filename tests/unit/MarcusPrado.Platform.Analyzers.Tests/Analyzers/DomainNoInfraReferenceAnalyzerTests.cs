@@ -32,8 +32,10 @@ public sealed class DomainNoInfraReferenceAnalyzerTests
     [Fact]
     public void Analyzer_HasDiagnosticAnalyzerAttribute()
     {
-        var attrs = typeof(DomainNoInfraReferenceAnalyzer)
-            .GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
+        var attrs = typeof(DomainNoInfraReferenceAnalyzer).GetCustomAttributes(
+            typeof(DiagnosticAnalyzerAttribute),
+            false
+        );
 
         attrs.Should().NotBeEmpty();
     }

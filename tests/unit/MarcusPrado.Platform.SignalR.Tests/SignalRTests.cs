@@ -35,10 +35,7 @@ public sealed class HubRealtimePublisherTests
         await publisher.PublishAsync("test-topic", payload);
 
         // Assert
-        await mockAll.Received(1).SendCoreAsync(
-            "test-topic",
-            Arg.Any<object?[]>(),
-            Arg.Any<CancellationToken>());
+        await mockAll.Received(1).SendCoreAsync("test-topic", Arg.Any<object?[]>(), Arg.Any<CancellationToken>());
     }
 
     // ── Test 2: PublishToTenantAsync calls Clients.Group("tenant:t1").SendCoreAsync ──
@@ -59,10 +56,7 @@ public sealed class HubRealtimePublisherTests
         await publisher.PublishToTenantAsync("t1", "order-topic", new { id = 42 });
 
         // Assert
-        await mockGroup.Received(1).SendCoreAsync(
-            "order-topic",
-            Arg.Any<object?[]>(),
-            Arg.Any<CancellationToken>());
+        await mockGroup.Received(1).SendCoreAsync("order-topic", Arg.Any<object?[]>(), Arg.Any<CancellationToken>());
     }
 
     // ── Test 3: PublishToUserAsync calls Clients.User("u1").SendCoreAsync ──
@@ -83,10 +77,7 @@ public sealed class HubRealtimePublisherTests
         await publisher.PublishToUserAsync("u1", "user-topic", new { msg = "hello" });
 
         // Assert
-        await mockUser.Received(1).SendCoreAsync(
-            "user-topic",
-            Arg.Any<object?[]>(),
-            Arg.Any<CancellationToken>());
+        await mockUser.Received(1).SendCoreAsync("user-topic", Arg.Any<object?[]>(), Arg.Any<CancellationToken>());
     }
 }
 
@@ -106,10 +97,9 @@ public sealed class SignalRDomainEventSinkTests
         await sink.HandleAsync(domainEvent);
 
         // Assert
-        await mockPublisher.Received(1).PublishAsync(
-            "order_placed_event",
-            Arg.Any<IDomainEvent>(),
-            Arg.Any<CancellationToken>());
+        await mockPublisher
+            .Received(1)
+            .PublishAsync("order_placed_event", Arg.Any<IDomainEvent>(), Arg.Any<CancellationToken>());
     }
 
     // ── Test 5: ToSnakeCase("OrderPlaced") → "order_placed" ──

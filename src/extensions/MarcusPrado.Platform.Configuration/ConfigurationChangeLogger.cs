@@ -39,10 +39,12 @@ public sealed partial class ConfigurationChangeLogger
     [LoggerMessage(
         EventId = 1,
         Level = LogLevel.Information,
-        Message = "Configuration changed for {OptionsType}. Old: {OldValue} | New: {NewValue}")]
+        Message = "Configuration changed for {OptionsType}. Old: {OldValue} | New: {NewValue}"
+    )]
     private static partial void LogConfigurationChanged(
         ILogger logger,
         string optionsType,
         string oldValue,
-        string newValue);
+        string newValue
+    );
 }

@@ -22,11 +22,7 @@ public sealed class KafkaProducer : IMessagePublisher, IDisposable
         _options = options;
         _serializer = serializer;
 
-        var config = new ProducerConfig
-        {
-            BootstrapServers = options.BootstrapServers,
-            ClientId = options.ClientId,
-        };
+        var config = new ProducerConfig { BootstrapServers = options.BootstrapServers, ClientId = options.ClientId };
         _producer = new ProducerBuilder<string, string>(config).Build();
     }
 
@@ -35,13 +31,12 @@ public sealed class KafkaProducer : IMessagePublisher, IDisposable
         string topic,
         TMessage message,
         PlatformMetadata? metadata = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where TMessage : class
     {
         ArgumentNullException.ThrowIfNull(message);
-        var fullTopic = string.IsNullOrEmpty(_options.TopicPrefix)
-            ? topic
-            : $"{_options.TopicPrefix}{topic}";
+        var fullTopic = string.IsNullOrEmpty(_options.TopicPrefix) ? topic : $"{_options.TopicPrefix}{topic}";
 
         var envelope = new Envelope.MessageEnvelope<TMessage>
         {
@@ -50,11 +45,7 @@ public sealed class KafkaProducer : IMessagePublisher, IDisposable
         };
 
         var json = _serializer.Serialize(envelope);
-        var msg = new Message<string, string>
-        {
-            Key = envelope.Metadata.MessageId,
-            Value = json,
-        };
+        var msg = new Message<string, string> { Key = envelope.Metadata.MessageId, Value = json };
 
         await _producer.ProduceAsync(fullTopic, msg, ct);
     }

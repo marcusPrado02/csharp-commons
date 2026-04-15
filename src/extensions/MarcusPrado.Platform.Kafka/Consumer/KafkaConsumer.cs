@@ -13,9 +13,7 @@ namespace MarcusPrado.Platform.Kafka.Consumer;
 /// <typeparamref name="TMessage"/> as a hosted service.
 /// </summary>
 /// <typeparam name="TMessage">The message payload type.</typeparam>
-public abstract partial class KafkaConsumer<TMessage> :
-    BackgroundService,
-    IMessageConsumer
+public abstract partial class KafkaConsumer<TMessage> : BackgroundService, IMessageConsumer
     where TMessage : class
 {
     private readonly IConsumer<string, string> _consumer;
@@ -26,10 +24,7 @@ public abstract partial class KafkaConsumer<TMessage> :
     public abstract string Topic { get; }
 
     /// <summary>Initialises the consumer.</summary>
-    protected KafkaConsumer(
-        KafkaOptions options,
-        IMessageSerializer serializer,
-        ILogger logger)
+    protected KafkaConsumer(KafkaOptions options, IMessageSerializer serializer, ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(options);
         _serializer = serializer;
@@ -80,12 +75,14 @@ public abstract partial class KafkaConsumer<TMessage> :
             catch (ConsumeException ex)
             {
                 LogConsumeError(_logger, ex, fullTopic);
-                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken).ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
+                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken)
+                    .ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
             }
             catch (KafkaException ex)
             {
                 LogConsumeError(_logger, ex, fullTopic);
-                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken).ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
+                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken)
+                    .ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
             }
         }
 
@@ -93,9 +90,7 @@ public abstract partial class KafkaConsumer<TMessage> :
     }
 
     /// <summary>Override to handle the deserialized message envelope.</summary>
-    protected abstract Task HandleAsync(
-        MessageEnvelope<TMessage> envelope,
-        CancellationToken ct);
+    protected abstract Task HandleAsync(MessageEnvelope<TMessage> envelope, CancellationToken ct);
 
     /// <inheritdoc/>
     public override void Dispose()

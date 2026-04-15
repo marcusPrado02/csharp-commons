@@ -70,11 +70,7 @@ public sealed class JobTriggerBuilderTests
     {
         var interval = TimeSpan.FromSeconds(30);
         var startAt = DateTimeOffset.UtcNow.AddHours(1);
-        var trigger = new JobTriggerBuilder()
-            .WithRepeat(interval)
-            .WithRepeatCount(10)
-            .StartAt(startAt)
-            .Build();
+        var trigger = new JobTriggerBuilder().WithRepeat(interval).WithRepeatCount(10).StartAt(startAt).Build();
 
         trigger.RepeatInterval.Should().Be(interval);
         trigger.RepeatCount.Should().Be(10);

@@ -11,4 +11,5 @@ public sealed record JobTrigger(
     string? CronExpression = null,
     TimeSpan? RepeatInterval = null,
     DateTimeOffset? StartAt = null,
-    int? RepeatCount = null);
+    int? RepeatCount = null
+);

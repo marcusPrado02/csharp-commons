@@ -14,19 +14,18 @@ public static class EndpointDiscovery
     /// </summary>
     public static IEndpointRouteBuilder MapPlatformEndpoints(
         this IEndpointRouteBuilder app,
-        params Assembly[] assemblies)
+        params Assembly[] assemblies
+    )
     {
         ArgumentNullException.ThrowIfNull(app);
 
-        var targets = assemblies.Length > 0
-            ? assemblies
-            : [Assembly.GetCallingAssembly()];
+        var targets = assemblies.Length > 0 ? assemblies : [Assembly.GetCallingAssembly()];
 
         foreach (var assembly in targets)
         {
-            var types = assembly.GetTypes()
-                .Where(t => t is { IsAbstract: false, IsInterface: false }
-                             && typeof(IEndpoint).IsAssignableFrom(t));
+            var types = assembly
+                .GetTypes()
+                .Where(t => t is { IsAbstract: false, IsInterface: false } && typeof(IEndpoint).IsAssignableFrom(t));
 
             foreach (var type in types)
             {

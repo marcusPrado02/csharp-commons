@@ -11,11 +11,8 @@ public sealed class BuildersTests
 
     private sealed class SampleFaker : EntityFaker<SampleEntity>
     {
-        public override SampleEntity Build() => new(
-            Id: NewId(),
-            Name: RandomString(12),
-            Email: RandomEmail(),
-            Value: RandomDecimal());
+        public override SampleEntity Build() =>
+            new(Id: NewId(), Name: RandomString(12), Email: RandomEmail(), Value: RandomDecimal());
     }
 
     private sealed record SampleEntity(Guid Id, string Name, string Email, decimal Value);
@@ -63,10 +60,8 @@ public sealed class BuildersTests
 
     private sealed class SampleCommandFaker : CommandFaker<SampleCommand>
     {
-        public override SampleCommand Build() => new(
-            OrderId: NewId(),
-            Amount: RandomDecimal(1m, 500m),
-            Currency: PickRandom("BRL", "USD", "EUR"));
+        public override SampleCommand Build() =>
+            new(OrderId: NewId(), Amount: RandomDecimal(1m, 500m), Currency: PickRandom("BRL", "USD", "EUR"));
     }
 
     private sealed record SampleCommand(Guid OrderId, decimal Amount, string Currency);

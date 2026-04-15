@@ -20,8 +20,7 @@ public sealed class SimpleTemplateRenderer : IEmailTemplateRenderer
     }
 
     /// <inheritdoc />
-    public Task<string> RenderAsync(
-        string templateName, object model, CancellationToken ct = default)
+    public Task<string> RenderAsync(string templateName, object model, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(templateName);
         ArgumentNullException.ThrowIfNull(model);

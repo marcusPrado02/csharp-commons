@@ -67,9 +67,10 @@ public sealed class RateLimitingTests
     }
 
     [Fact]
-    public void TenantPolicy_OnRejected_IsNull_DelegatesTo_GlobalHandler()
-        => new TenantRateLimitPolicy(new PlatformRateLimitingOptions())
-            .OnRejected.Should().BeNull("the global OnRejected handler writes the ProblemDetails body");
+    public void TenantPolicy_OnRejected_IsNull_DelegatesTo_GlobalHandler() =>
+        new TenantRateLimitPolicy(new PlatformRateLimitingOptions())
+            .OnRejected.Should()
+            .BeNull("the global OnRejected handler writes the ProblemDetails body");
 
     // ── UserRateLimitPolicy ───────────────────────────────────────────────────
 
@@ -88,9 +89,9 @@ public sealed class RateLimitingTests
         var policy = new UserRateLimitPolicy(new PlatformRateLimitingOptions());
         var ctx = new DefaultHttpContext();
 
-        ctx.User = new ClaimsPrincipal(new ClaimsIdentity(
-            new[] { new Claim(ClaimTypes.NameIdentifier, "user-99") },
-            authenticationType: "test"));
+        ctx.User = new ClaimsPrincipal(
+            new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "user-99") }, authenticationType: "test")
+        );
 
         var partition = policy.GetPartition(ctx);
 
@@ -98,9 +99,10 @@ public sealed class RateLimitingTests
     }
 
     [Fact]
-    public void UserPolicy_OnRejected_IsNull_DelegatesTo_GlobalHandler()
-        => new UserRateLimitPolicy(new PlatformRateLimitingOptions())
-            .OnRejected.Should().BeNull("the global OnRejected handler writes the ProblemDetails body");
+    public void UserPolicy_OnRejected_IsNull_DelegatesTo_GlobalHandler() =>
+        new UserRateLimitPolicy(new PlatformRateLimitingOptions())
+            .OnRejected.Should()
+            .BeNull("the global OnRejected handler writes the ProblemDetails body");
 
     // ── IpRateLimitPolicy ─────────────────────────────────────────────────────
 
@@ -127,9 +129,8 @@ public sealed class RateLimitingTests
     }
 
     [Fact]
-    public void IpPolicy_OnRejected_IsNotNull()
-        => new IpRateLimitPolicy(new PlatformRateLimitingOptions())
-            .OnRejected.Should().NotBeNull();
+    public void IpPolicy_OnRejected_IsNotNull() =>
+        new IpRateLimitPolicy(new PlatformRateLimitingOptions()).OnRejected.Should().NotBeNull();
 
     // ── IpOptions defaults ────────────────────────────────────────────────────
 
@@ -148,9 +149,11 @@ public sealed class RateLimitingTests
     public async Task RateLimiting_WithinLimit_Returns200()
     {
         using var server = BuildRateLimitServer(
-            tenantPermit: 5, userPermit: 5,
+            tenantPermit: 5,
+            userPermit: 5,
             policy: PlatformRateLimitingExtensions.TenantPolicy,
-            tenantId: "t-integration");
+            tenantId: "t-integration"
+        );
         using var client = server.CreateClient();
 
         var response = await client.SendAsync(BuildTenantRequest("t-integration"));
@@ -163,9 +166,11 @@ public sealed class RateLimitingTests
     {
         const string tenant = "t-exceeded";
         using var server = BuildRateLimitServer(
-            tenantPermit: 2, userPermit: 100,
+            tenantPermit: 2,
+            userPermit: 100,
             policy: PlatformRateLimitingExtensions.TenantPolicy,
-            tenantId: tenant);
+            tenantId: tenant
+        );
         using var client = server.CreateClient();
 
         // Exhaust the 2-permit budget
@@ -183,17 +188,18 @@ public sealed class RateLimitingTests
     {
         const string tenant = "t-content-type";
         using var server = BuildRateLimitServer(
-            tenantPermit: 1, userPermit: 100,
+            tenantPermit: 1,
+            userPermit: 100,
             policy: PlatformRateLimitingExtensions.TenantPolicy,
-            tenantId: tenant);
+            tenantId: tenant
+        );
         using var client = server.CreateClient();
 
-        await client.SendAsync(BuildTenantRequest(tenant));     // exhaust
+        await client.SendAsync(BuildTenantRequest(tenant)); // exhaust
         var response = await client.SendAsync(BuildTenantRequest(tenant));
 
         response.StatusCode.Should().Be(HttpStatusCode.TooManyRequests);
-        response.Content.Headers.ContentType?.MediaType
-            .Should().Be("application/problem+json");
+        response.Content.Headers.ContentType?.MediaType.Should().Be("application/problem+json");
     }
 
     [Fact]
@@ -201,12 +207,14 @@ public sealed class RateLimitingTests
     {
         const string tenant = "t-body";
         using var server = BuildRateLimitServer(
-            tenantPermit: 1, userPermit: 100,
+            tenantPermit: 1,
+            userPermit: 100,
             policy: PlatformRateLimitingExtensions.TenantPolicy,
-            tenantId: tenant);
+            tenantId: tenant
+        );
         using var client = server.CreateClient();
 
-        await client.SendAsync(BuildTenantRequest(tenant));     // exhaust
+        await client.SendAsync(BuildTenantRequest(tenant)); // exhaust
         var response = await client.SendAsync(BuildTenantRequest(tenant));
 
         response.StatusCode.Should().Be(HttpStatusCode.TooManyRequests);
@@ -224,39 +232,32 @@ public sealed class RateLimitingTests
 
         // Permit 1 per window — tenantA will be exhausted, tenantB must still pass
         using var server = BuildRateLimitServer(
-            tenantPermit: 1, userPermit: 100,
+            tenantPermit: 1,
+            userPermit: 100,
             policy: PlatformRateLimitingExtensions.TenantPolicy,
-            tenantId: null /* endpoint has no RequireRateLimiting restriction inline */);
+            tenantId: null /* endpoint has no RequireRateLimiting restriction inline */
+        );
         using var client = server.CreateClient();
 
-        await client.SendAsync(BuildTenantRequest(tenantA));    // exhaust tenantA
+        await client.SendAsync(BuildTenantRequest(tenantA)); // exhaust tenantA
         var rejectA = await client.SendAsync(BuildTenantRequest(tenantA));
         var passB = await client.SendAsync(BuildTenantRequest(tenantB));
 
-        rejectA.StatusCode.Should().Be(HttpStatusCode.TooManyRequests,
-            because: "tenantA has exhausted its quota");
-        passB.StatusCode.Should().Be(HttpStatusCode.OK,
-            because: "tenantB has its own independent counter");
+        rejectA.StatusCode.Should().Be(HttpStatusCode.TooManyRequests, because: "tenantA has exhausted its quota");
+        passB.StatusCode.Should().Be(HttpStatusCode.OK, because: "tenantB has its own independent counter");
     }
 
     // ── helpers ───────────────────────────────────────────────────────────────
 
-    private static IServiceProvider BuildServiceProvider()
-        => new ServiceCollection()
-            .AddLogging()
-            .AddPlatformRateLimiting()
-            .BuildServiceProvider();
+    private static IServiceProvider BuildServiceProvider() =>
+        new ServiceCollection().AddLogging().AddPlatformRateLimiting().BuildServiceProvider();
 
     /// <summary>
     /// Builds a <see cref="TestServer"/> that maps GET /limited with the
     /// given rate-limit policy and exposes the raw tenant header to the
     /// partitioned limiter.
     /// </summary>
-    private static TestServer BuildRateLimitServer(
-        int tenantPermit,
-        int userPermit,
-        string policy,
-        string? tenantId)
+    private static TestServer BuildRateLimitServer(int tenantPermit, int userPermit, string policy, string? tenantId)
     {
         var builder = new WebHostBuilder()
             .UseEnvironment("Test")
@@ -276,9 +277,7 @@ public sealed class RateLimitingTests
                 app.UseRateLimiter();
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints
-                        .MapGet("/limited", () => "ok")
-                        .RequireRateLimiting(policy);
+                    endpoints.MapGet("/limited", () => "ok").RequireRateLimiting(policy);
                 });
             });
 

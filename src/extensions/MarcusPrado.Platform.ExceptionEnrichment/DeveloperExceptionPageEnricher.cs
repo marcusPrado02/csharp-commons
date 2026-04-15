@@ -13,8 +13,7 @@ namespace MarcusPrado.Platform.ExceptionEnrichment;
 /// </summary>
 public sealed class DeveloperExceptionPageEnricher : IMiddleware
 {
-    private static readonly JsonSerializerOptions _serializerOptions =
-        new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions _serializerOptions = new() { WriteIndented = true };
 
     private readonly IWebHostEnvironment _environment;
 

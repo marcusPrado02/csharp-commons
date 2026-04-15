@@ -19,7 +19,8 @@ public sealed record ApiDiff(
     IReadOnlyList<string> RemovedTypes,
     IReadOnlyList<ApiMemberDiff> AddedMembers,
     IReadOnlyList<ApiMemberDiff> RemovedMembers,
-    bool HasBreakingChanges);
+    bool HasBreakingChanges
+);
 
 /// <summary>
 /// Identifies a single member change within a diff.
@@ -48,13 +49,13 @@ public static class ApiDiffEngine
         var baselineTypes = baseline.Types.ToDictionary(t => t.FullName, StringComparer.Ordinal);
         var currentTypes = current.Types.ToDictionary(t => t.FullName, StringComparer.Ordinal);
 
-        var addedTypes = currentTypes.Keys
-            .Except(baselineTypes.Keys, StringComparer.Ordinal)
+        var addedTypes = currentTypes
+            .Keys.Except(baselineTypes.Keys, StringComparer.Ordinal)
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToList();
 
-        var removedTypes = baselineTypes.Keys
-            .Except(currentTypes.Keys, StringComparer.Ordinal)
+        var removedTypes = baselineTypes
+            .Keys.Except(currentTypes.Keys, StringComparer.Ordinal)
             .OrderBy(n => n, StringComparer.Ordinal)
             .ToList();
 
@@ -62,25 +63,32 @@ public static class ApiDiffEngine
         var removedMembers = new List<ApiMemberDiff>();
 
         // Only compare members for types present in both snapshots
-        var commonTypeNames = baselineTypes.Keys
-            .Intersect(currentTypes.Keys, StringComparer.Ordinal);
+        var commonTypeNames = baselineTypes.Keys.Intersect(currentTypes.Keys, StringComparer.Ordinal);
 
         foreach (var typeName in commonTypeNames)
         {
-            var baselineMembers = baselineTypes[typeName].Members
-                .Select(m => m.Signature)
+            var baselineMembers = baselineTypes[typeName]
+                .Members.Select(m => m.Signature)
                 .ToHashSet(StringComparer.Ordinal);
 
-            var currentMembers = currentTypes[typeName].Members
-                .Select(m => m.Signature)
+            var currentMembers = currentTypes[typeName]
+                .Members.Select(m => m.Signature)
                 .ToHashSet(StringComparer.Ordinal);
 
-            foreach (var sig in currentMembers.Except(baselineMembers, StringComparer.Ordinal).OrderBy(s => s, StringComparer.Ordinal))
+            foreach (
+                var sig in currentMembers
+                    .Except(baselineMembers, StringComparer.Ordinal)
+                    .OrderBy(s => s, StringComparer.Ordinal)
+            )
             {
                 addedMembers.Add(new ApiMemberDiff(typeName, sig));
             }
 
-            foreach (var sig in baselineMembers.Except(currentMembers, StringComparer.Ordinal).OrderBy(s => s, StringComparer.Ordinal))
+            foreach (
+                var sig in baselineMembers
+                    .Except(currentMembers, StringComparer.Ordinal)
+                    .OrderBy(s => s, StringComparer.Ordinal)
+            )
             {
                 removedMembers.Add(new ApiMemberDiff(typeName, sig));
             }

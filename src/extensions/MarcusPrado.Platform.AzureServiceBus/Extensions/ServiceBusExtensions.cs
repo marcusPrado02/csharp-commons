@@ -20,7 +20,8 @@ public static class ServiceBusExtensions
     /// <returns>The original <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformAzureServiceBus(
         this IServiceCollection services,
-        Action<ServiceBusOptions> configure)
+        Action<ServiceBusOptions> configure
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configure);
@@ -42,14 +43,14 @@ public static class ServiceBusExtensions
             }
 
             throw new InvalidOperationException(
-                "Either ServiceBusOptions.ConnectionString or ServiceBusOptions.FullyQualifiedNamespace must be set.");
+                "Either ServiceBusOptions.ConnectionString or ServiceBusOptions.FullyQualifiedNamespace must be set."
+            );
         });
 
         services.AddSingleton<IServiceBusPublisher, ServiceBusPublisher>();
         services.AddSingleton<IServiceBusConsumer, ServiceBusConsumer>();
 
-        services.AddHealthChecks()
-            .AddCheck<ServiceBusHealthProbe>("azure-service-bus");
+        services.AddHealthChecks().AddCheck<ServiceBusHealthProbe>("azure-service-bus");
 
         return services;
     }

@@ -10,10 +10,7 @@ namespace MarcusPrado.Platform.ApprovalTestKit;
 /// </summary>
 public static class SqlQueryVerifier
 {
-    private static readonly Regex _whitespacePattern = new(
-        @"\s+",
-        RegexOptions.Compiled,
-        TimeSpan.FromSeconds(1));
+    private static readonly Regex _whitespacePattern = new(@"\s+", RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     /// <summary>
     /// Normalises all internal whitespace in <paramref name="sql"/> to a single space

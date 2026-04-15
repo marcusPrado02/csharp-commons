@@ -57,11 +57,7 @@ public sealed class PlatformTestEnvironmentBuilder
     /// <returns>A started <see cref="PlatformTestEnvironment"/>.</returns>
     public async Task<PlatformTestEnvironment> BuildAsync(CancellationToken ct = default)
     {
-        var env = new PlatformTestEnvironment(
-            _usePostgres,
-            _useRedis,
-            _useKafka,
-            _useRabbitMq);
+        var env = new PlatformTestEnvironment(_usePostgres, _useRedis, _useKafka, _useRabbitMq);
 
         await env.StartAsync(ct).ConfigureAwait(false);
 
@@ -73,6 +69,5 @@ public sealed class PlatformTestEnvironmentBuilder
     /// Useful for testing builder configuration independently.
     /// </summary>
     /// <returns>An unstarted <see cref="PlatformTestEnvironment"/>.</returns>
-    public PlatformTestEnvironment Build() =>
-        new(_usePostgres, _useRedis, _useKafka, _useRabbitMq);
+    public PlatformTestEnvironment Build() => new(_usePostgres, _useRedis, _useKafka, _useRabbitMq);
 }

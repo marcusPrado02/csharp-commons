@@ -30,8 +30,11 @@ public sealed class ApiVersionDiscoveryEndpoint : IEndpoint
     /// <inheritdoc />
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api-versions", (VersionManifestOptions opts) =>
-            Results.Ok(new VersionManifest(opts.SupportedVersions, opts.DeprecatedVersions)))
+        app.MapGet(
+                "/api-versions",
+                (VersionManifestOptions opts) =>
+                    Results.Ok(new VersionManifest(opts.SupportedVersions, opts.DeprecatedVersions))
+            )
             .WithName("GetApiVersions")
             .WithTags("Versioning")
             .Produces<VersionManifest>();
@@ -48,7 +51,8 @@ public static class ApiVersionDiscoveryExtensions
     /// </summary>
     public static IServiceCollection AddApiVersionDiscovery(
         this IServiceCollection services,
-        Action<VersionManifestOptions>? configure = null)
+        Action<VersionManifestOptions>? configure = null
+    )
     {
         var opts = new VersionManifestOptions();
         configure?.Invoke(opts);

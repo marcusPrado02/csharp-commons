@@ -10,8 +10,7 @@ public sealed class AuthInterceptor : Interceptor
 
     /// <summary>Initializes a new instance of <see cref="AuthInterceptor"/> with the given logger.</summary>
     /// <param name="logger">Logger used to emit warnings when the authorization header is absent.</param>
-    public AuthInterceptor(ILogger<AuthInterceptor> logger)
-        => _logger = logger;
+    public AuthInterceptor(ILogger<AuthInterceptor> logger) => _logger = logger;
 
     /// <summary>
     /// Intercepts a unary call, rejects it with <see cref="StatusCode.Unauthenticated"/> when the
@@ -24,7 +23,8 @@ public sealed class AuthInterceptor : Interceptor
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
         ServerCallContext context,
-        UnaryServerMethod<TRequest, TResponse> continuation)
+        UnaryServerMethod<TRequest, TResponse> continuation
+    )
     {
         var authHeader = context.RequestHeaders.GetValue("authorization");
 

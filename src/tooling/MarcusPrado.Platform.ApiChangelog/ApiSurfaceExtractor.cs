@@ -25,7 +25,8 @@ public static class ApiSurfaceExtractor
         var version = assembly.GetName().Version?.ToString() ?? "0.0.0.0";
         var assemblyName = assembly.GetName().Name ?? assembly.FullName ?? string.Empty;
 
-        var types = assembly.GetExportedTypes()
+        var types = assembly
+            .GetExportedTypes()
             .Where(t => !t.IsNested)
             .OrderBy(t => t.FullName, StringComparer.Ordinal)
             .Select(ExtractType)
@@ -82,10 +83,12 @@ public static class ApiSurfaceExtractor
         }
 
         // Methods (exclude property accessors, event accessors, record-generated methods)
-        foreach (var method in type.GetMethods(Flags)
-                     .Where(m => !m.IsSpecialName)
-                     .OrderBy(m => m.Name, StringComparer.Ordinal)
-                     .ThenBy(m => m.ToString(), StringComparer.Ordinal))
+        foreach (
+            var method in type.GetMethods(Flags)
+                .Where(m => !m.IsSpecialName)
+                .OrderBy(m => m.Name, StringComparer.Ordinal)
+                .ThenBy(m => m.ToString(), StringComparer.Ordinal)
+        )
         {
             var sig = BuildMethodSignature(method);
             members.Add(new ApiMember(method.Name, sig, "method"));

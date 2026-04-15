@@ -18,7 +18,8 @@ public static class OpenApiExtensions
     /// </summary>
     public static IServiceCollection AddPlatformOpenApi(
         this IServiceCollection services,
-        Action<PlatformOpenApiOptions>? configure = null)
+        Action<PlatformOpenApiOptions>? configure = null
+    )
     {
         var opts = new PlatformOpenApiOptions();
         configure?.Invoke(opts);
@@ -26,39 +27,41 @@ public static class OpenApiExtensions
 
         services.AddOpenApi(options =>
         {
-            options.AddDocumentTransformer((document, context, ct) =>
-            {
-                document.Info.Title = opts.Title;
-                document.Info.Version = opts.Version;
-                document.Info.Description = opts.Description;
-
-                document.Components ??= new OpenApiComponents();
-                document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
-
-                if (opts.EnableJwtAuth)
+            options.AddDocumentTransformer(
+                (document, context, ct) =>
                 {
-                    document.Components.SecuritySchemes[opts.JwtSchemeName] = new OpenApiSecurityScheme
-                    {
-                        Type = SecuritySchemeType.Http,
-                        Scheme = "bearer",
-                        BearerFormat = "JWT",
-                        Description = "Enter your JWT token."
-                    };
-                }
+                    document.Info.Title = opts.Title;
+                    document.Info.Version = opts.Version;
+                    document.Info.Description = opts.Description;
 
-                if (opts.EnableApiKeyAuth)
-                {
-                    document.Components.SecuritySchemes[opts.ApiKeySchemeName] = new OpenApiSecurityScheme
-                    {
-                        Type = SecuritySchemeType.ApiKey,
-                        In = ParameterLocation.Header,
-                        Name = opts.ApiKeyHeaderName,
-                        Description = "API key header."
-                    };
-                }
+                    document.Components ??= new OpenApiComponents();
+                    document.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
 
-                return Task.CompletedTask;
-            });
+                    if (opts.EnableJwtAuth)
+                    {
+                        document.Components.SecuritySchemes[opts.JwtSchemeName] = new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.Http,
+                            Scheme = "bearer",
+                            BearerFormat = "JWT",
+                            Description = "Enter your JWT token.",
+                        };
+                    }
+
+                    if (opts.EnableApiKeyAuth)
+                    {
+                        document.Components.SecuritySchemes[opts.ApiKeySchemeName] = new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.ApiKey,
+                            In = ParameterLocation.Header,
+                            Name = opts.ApiKeyHeaderName,
+                            Description = "API key header.",
+                        };
+                    }
+
+                    return Task.CompletedTask;
+                }
+            );
 
             if (opts.IncludeContextHeaders)
                 options.AddOperationTransformer<PlatformOperationTransformer>();

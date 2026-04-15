@@ -31,13 +31,13 @@ public static class StartupVerificationExtensions
     public static IServiceCollection AddDatabaseConnectivityVerification(
         this IServiceCollection services,
         Func<Task<bool>> probe,
-        string name = "DatabaseConnectivity")
+        string name = "DatabaseConnectivity"
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(probe);
 
-        services.AddSingleton<IStartupVerification>(
-            new DatabaseConnectivityVerification(name, probe));
+        services.AddSingleton<IStartupVerification>(new DatabaseConnectivityVerification(name, probe));
         return services;
     }
 
@@ -49,7 +49,8 @@ public static class StartupVerificationExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddRequiredSecretsVerification(
         this IServiceCollection services,
-        params string[] keys)
+        params string[] keys
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 

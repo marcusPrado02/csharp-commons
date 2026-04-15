@@ -17,7 +17,8 @@ public static class NethereumExtensions
     public static IServiceCollection AddPlatformNethereum(
         this IServiceCollection services,
         Action<NethereumOptions>? configure = null,
-        Action<ContractRegistry>? registerContracts = null)
+        Action<ContractRegistry>? registerContracts = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -43,13 +44,11 @@ public static class NethereumExtensions
 
         services.AddSingleton<IBlockchainClient, NethereumBlockchainClient>();
         services.AddSingleton<IWalletManager, NethereumWalletManager>();
-        services.AddSingleton<ISmartContractClient>(sp =>
-            new NethereumSmartContractClient(
-                sp.GetRequiredService<IWeb3>(),
-                registry,
-                opts.PrivateKey is not null
-                    ? new Account(opts.PrivateKey).Address
-                    : string.Empty));
+        services.AddSingleton<ISmartContractClient>(sp => new NethereumSmartContractClient(
+            sp.GetRequiredService<IWeb3>(),
+            registry,
+            opts.PrivateKey is not null ? new Account(opts.PrivateKey).Address : string.Empty
+        ));
 
         return services;
     }

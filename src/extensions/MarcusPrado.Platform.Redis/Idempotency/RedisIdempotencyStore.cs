@@ -14,9 +14,7 @@ public sealed class RedisIdempotencyStore : IIdempotencyStore
     private readonly TimeSpan _defaultTtl;
 
     /// <summary>Initialises the store with the given multiplexer and default TTL.</summary>
-    public RedisIdempotencyStore(
-        IConnectionMultiplexer multiplexer,
-        TimeSpan? defaultTtl = null)
+    public RedisIdempotencyStore(IConnectionMultiplexer multiplexer, TimeSpan? defaultTtl = null)
     {
         ArgumentNullException.ThrowIfNull(multiplexer);
         _db = multiplexer.GetDatabase();
@@ -24,9 +22,7 @@ public sealed class RedisIdempotencyStore : IIdempotencyStore
     }
 
     /// <inheritdoc/>
-    public async Task<IdempotencyRecord?> GetAsync(
-        IdempotencyKey key,
-        CancellationToken ct = default)
+    public async Task<IdempotencyRecord?> GetAsync(IdempotencyKey key, CancellationToken ct = default)
     {
         var value = await _db.StringGetAsync(RedisKey(key));
         if (!value.HasValue)
@@ -46,9 +42,7 @@ public sealed class RedisIdempotencyStore : IIdempotencyStore
     /// <inheritdoc/>
     public async Task SetAsync(IdempotencyRecord record, CancellationToken ct = default)
     {
-        var ttl = record.ExpiresAt.HasValue
-            ? record.ExpiresAt.Value - DateTimeOffset.UtcNow
-            : _defaultTtl;
+        var ttl = record.ExpiresAt.HasValue ? record.ExpiresAt.Value - DateTimeOffset.UtcNow : _defaultTtl;
 
         if (ttl <= TimeSpan.Zero)
         {

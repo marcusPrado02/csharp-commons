@@ -58,8 +58,7 @@ public sealed class MySqlExtensionsTests
             .AddPlatformMySql(o => o.ConnectionString = "Server=localhost;")
             .AddHealthChecks()
             .AddMySqlHealthCheck("mysql-test")
-            .Services
-            .BuildServiceProvider();
+            .Services.BuildServiceProvider();
 
         var probe = sp.GetRequiredService<MySqlHealthProbe>();
         probe.Should().NotBeNull();

@@ -12,7 +12,8 @@ public sealed class ProjectionEngine
     public void Register<TEvent, TReadModel>(
         IProjection<TEvent, TReadModel> projection,
         IReadModelStore<TReadModel> store,
-        Func<TEvent, string> idSelector)
+        Func<TEvent, string> idSelector
+    )
         where TEvent : IDomainEvent
         where TReadModel : class, new()
     {
@@ -20,14 +21,17 @@ public sealed class ProjectionEngine
         if (!_handlers.ContainsKey(eventType))
             _handlers[eventType] = [];
 
-        _handlers[eventType].Add(async (evt, ct) =>
-        {
-            var typed = (TEvent)evt;
-            var id = idSelector(typed);
-            var readModel = await store.GetAsync(id, ct) ?? new TReadModel();
-            await projection.ApplyAsync(typed, readModel, ct);
-            await store.SaveAsync(id, readModel, ct);
-        });
+        _handlers[eventType]
+            .Add(
+                async (evt, ct) =>
+                {
+                    var typed = (TEvent)evt;
+                    var id = idSelector(typed);
+                    var readModel = await store.GetAsync(id, ct) ?? new TReadModel();
+                    await projection.ApplyAsync(typed, readModel, ct);
+                    await store.SaveAsync(id, readModel, ct);
+                }
+            );
     }
 
     /// <summary>Dispatches an event to all registered projections.</summary>

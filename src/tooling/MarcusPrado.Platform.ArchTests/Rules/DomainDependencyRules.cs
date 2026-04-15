@@ -18,7 +18,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnEfCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.EfCore)
             .GetResult();
@@ -29,7 +30,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnAspNetCore()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.AspNetCore)
             .GetResult();
@@ -40,7 +42,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnKafka()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.Kafka)
             .GetResult();
@@ -51,7 +54,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnRabbitMq()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.RabbitMq)
             .GetResult();
@@ -62,7 +66,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnSerilog()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.Serilog)
             .GetResult();
@@ -73,7 +78,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotDependOnOpenTelemetry()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn(KnownAssemblies.ForbiddenInCore.OpenTelemetry)
             .GetResult();
@@ -87,26 +93,31 @@ public sealed class DomainDependencyRules
     public void Domain_NonAbstractExceptionClasses_ShouldInheritDomainException()
     {
         // Use reflection for full inheritance chain (IsAssignableFrom walks the hierarchy)
-        var violations = KnownAssemblies.Domain
-            .GetExportedTypes()
+        var violations = KnownAssemblies
+            .Domain.GetExportedTypes()
             .Where(t =>
-                t.IsClass &&
-                !t.IsAbstract &&
-                t.Name.EndsWith("Exception", StringComparison.Ordinal) &&
-                !typeof(DomainException).IsAssignableFrom(t))
+                t.IsClass
+                && !t.IsAbstract
+                && t.Name.EndsWith("Exception", StringComparison.Ordinal)
+                && !typeof(DomainException).IsAssignableFrom(t)
+            )
             .Select(t => t.FullName!)
             .ToList();
 
-        violations.Should().BeEmpty(
-            because: "all concrete domain exception classes must inherit DomainException "
-            + "(see ADR-003 — DomainException itself is abstract)");
+        violations
+            .Should()
+            .BeEmpty(
+                because: "all concrete domain exception classes must inherit DomainException "
+                    + "(see ADR-003 — DomainException itself is abstract)"
+            );
     }
 
     [Fact]
     public void Domain_AbstractExceptionBase_ShouldInheritSystemException()
     {
-        typeof(DomainException).Should().BeDerivedFrom<Exception>(
-            because: "DomainException is the root of the domain exception hierarchy");
+        typeof(DomainException)
+            .Should()
+            .BeDerivedFrom<Exception>(because: "DomainException is the root of the domain exception hierarchy");
     }
 
     // ── IRepository usage ────────────────────────────────────────────
@@ -114,7 +125,8 @@ public sealed class DomainDependencyRules
     [Fact]
     public void Domain_ShouldNotInstantiateConcreteRepositories()
     {
-        var result = Types.InAssembly(KnownAssemblies.Domain)
+        var result = Types
+            .InAssembly(KnownAssemblies.Domain)
             .ShouldNot()
             .HaveDependencyOn("MarcusPrado.Platform.EfCore")
             .GetResult();
@@ -127,7 +139,6 @@ public sealed class DomainDependencyRules
     private static void AssertSuccess(TestResult result, string reason)
     {
         var failing = string.Join(", ", result.FailingTypeNames ?? []);
-        result.IsSuccessful.Should().BeTrue(
-            because: $"{reason} Failing types: [{failing}]");
+        result.IsSuccessful.Should().BeTrue(because: $"{reason} Failing types: [{failing}]");
     }
 }

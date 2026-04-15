@@ -34,31 +34,37 @@ public class ConcurrencyLimiterBenchmark : IDisposable
     {
         _semaphore = new SemaphoreSlim(10, 10);
 
-        _concurrencyLimiter = new ConcurrencyLimiter(new ConcurrencyLimiterOptions
-        {
-            PermitLimit = 10,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0,
-        });
+        _concurrencyLimiter = new ConcurrencyLimiter(
+            new ConcurrencyLimiterOptions
+            {
+                PermitLimit = 10,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0,
+            }
+        );
 
-        _slidingWindow = new SlidingWindowRateLimiter(new SlidingWindowRateLimiterOptions
-        {
-            PermitLimit = 100,
-            Window = TimeSpan.FromSeconds(1),
-            SegmentsPerWindow = 4,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0,
-        });
+        _slidingWindow = new SlidingWindowRateLimiter(
+            new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromSeconds(1),
+                SegmentsPerWindow = 4,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0,
+            }
+        );
 
-        _tokenBucket = new TokenBucketRateLimiter(new TokenBucketRateLimiterOptions
-        {
-            TokenLimit = 100,
-            ReplenishmentPeriod = TimeSpan.FromSeconds(1),
-            TokensPerPeriod = 100,
-            AutoReplenishment = true,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0,
-        });
+        _tokenBucket = new TokenBucketRateLimiter(
+            new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 100,
+                ReplenishmentPeriod = TimeSpan.FromSeconds(1),
+                TokensPerPeriod = 100,
+                AutoReplenishment = true,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0,
+            }
+        );
     }
 
     [GlobalCleanup]
@@ -83,8 +89,7 @@ public class ConcurrencyLimiterBenchmark : IDisposable
     [Benchmark(Description = "ConcurrencyLimiter (System.Threading)")]
     public async Task ConcurrencyLimiter_AcquireRelease()
     {
-        using var lease = await _concurrencyLimiter.AcquireAsync(permitCount: 1)
-            .ConfigureAwait(false);
+        using var lease = await _concurrencyLimiter.AcquireAsync(permitCount: 1).ConfigureAwait(false);
         if (lease.IsAcquired)
         {
             await SimulateWorkAsync().ConfigureAwait(false);
@@ -94,8 +99,7 @@ public class ConcurrencyLimiterBenchmark : IDisposable
     [Benchmark(Description = "SlidingWindowRateLimiter")]
     public async Task SlidingWindow_AcquireRelease()
     {
-        using var lease = await _slidingWindow.AcquireAsync(permitCount: 1)
-            .ConfigureAwait(false);
+        using var lease = await _slidingWindow.AcquireAsync(permitCount: 1).ConfigureAwait(false);
         if (lease.IsAcquired)
         {
             await SimulateWorkAsync().ConfigureAwait(false);
@@ -105,8 +109,7 @@ public class ConcurrencyLimiterBenchmark : IDisposable
     [Benchmark(Description = "TokenBucketRateLimiter")]
     public async Task TokenBucket_AcquireRelease()
     {
-        using var lease = await _tokenBucket.AcquireAsync(permitCount: 1)
-            .ConfigureAwait(false);
+        using var lease = await _tokenBucket.AcquireAsync(permitCount: 1).ConfigureAwait(false);
         if (lease.IsAcquired)
         {
             await SimulateWorkAsync().ConfigureAwait(false);
@@ -118,26 +121,39 @@ public class ConcurrencyLimiterBenchmark : IDisposable
     [Benchmark(Description = "SemaphoreSlim contended ×8")]
     public Task SemaphoreSlim_Contended()
     {
-        return Task.WhenAll(Enumerable.Range(0, 8).Select(async _ =>
-        {
-            await _semaphore.WaitAsync().ConfigureAwait(false);
-            try
-            { await SimulateWorkAsync().ConfigureAwait(false); }
-            finally { _semaphore.Release(); }
-        }));
+        return Task.WhenAll(
+            Enumerable
+                .Range(0, 8)
+                .Select(async _ =>
+                {
+                    await _semaphore.WaitAsync().ConfigureAwait(false);
+                    try
+                    {
+                        await SimulateWorkAsync().ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
+                })
+        );
     }
 
     [Benchmark(Description = "ConcurrencyLimiter contended ×8")]
     public Task ConcurrencyLimiter_Contended()
     {
-        return Task.WhenAll(Enumerable.Range(0, 8).Select(async _ =>
-        {
-            using var lease = await _concurrencyLimiter.AcquireAsync(1).ConfigureAwait(false);
-            if (lease.IsAcquired)
-            {
-                await SimulateWorkAsync().ConfigureAwait(false);
-            }
-        }));
+        return Task.WhenAll(
+            Enumerable
+                .Range(0, 8)
+                .Select(async _ =>
+                {
+                    using var lease = await _concurrencyLimiter.AcquireAsync(1).ConfigureAwait(false);
+                    if (lease.IsAcquired)
+                    {
+                        await SimulateWorkAsync().ConfigureAwait(false);
+                    }
+                })
+        );
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────

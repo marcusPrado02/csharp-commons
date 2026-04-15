@@ -21,7 +21,8 @@ public sealed partial class StartupVerificationHostedService : IHostedService
     public StartupVerificationHostedService(
         IEnumerable<IStartupVerification> verifications,
         IHostApplicationLifetime lifetime,
-        ILogger<StartupVerificationHostedService> logger)
+        ILogger<StartupVerificationHostedService> logger
+    )
     {
         ArgumentNullException.ThrowIfNull(verifications);
         ArgumentNullException.ThrowIfNull(lifetime);
@@ -77,6 +78,9 @@ public sealed partial class StartupVerificationHostedService : IHostedService
     [LoggerMessage(Level = LogLevel.Information, Message = "Startup verification passed: {Name}")]
     private static partial void LogPassed(ILogger logger, string name);
 
-    [LoggerMessage(Level = LogLevel.Critical, Message = "{FailureCount} startup verification(s) failed. Stopping application.")]
+    [LoggerMessage(
+        Level = LogLevel.Critical,
+        Message = "{FailureCount} startup verification(s) failed. Stopping application."
+    )]
     private static partial void LogStopping(ILogger logger, int failureCount);
 }

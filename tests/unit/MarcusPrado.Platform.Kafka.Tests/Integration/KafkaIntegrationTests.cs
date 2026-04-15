@@ -35,22 +35,25 @@ public sealed class KafkaIntegrationTests : IAsyncLifetime
 
     // ─── helpers ───────────────────────────────────────────────────────────
 
-    private KafkaOptions BuildOptions(string? prefix = null) => new()
-    {
-        BootstrapServers = _bootstrapServers,
-        TopicPrefix = prefix ?? string.Empty,
-        ConsumerGroupId = $"test-group-{Guid.NewGuid():N}",
-    };
+    private KafkaOptions BuildOptions(string? prefix = null) =>
+        new()
+        {
+            BootstrapServers = _bootstrapServers,
+            TopicPrefix = prefix ?? string.Empty,
+            ConsumerGroupId = $"test-group-{Guid.NewGuid():N}",
+        };
 
     private static IConsumer<string, string> BuildConsumer(string bootstrapServers, string groupId)
     {
-        return new ConsumerBuilder<string, string>(new ConsumerConfig
-        {
-            BootstrapServers = bootstrapServers,
-            GroupId = groupId,
-            AutoOffsetReset = AutoOffsetReset.Earliest,
-            EnableAutoCommit = false,
-        }).Build();
+        return new ConsumerBuilder<string, string>(
+            new ConsumerConfig
+            {
+                BootstrapServers = bootstrapServers,
+                GroupId = groupId,
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                EnableAutoCommit = false,
+            }
+        ).Build();
     }
 
     private static string UniqueTopicName() => $"topic-{Guid.NewGuid():N}";
@@ -189,11 +192,7 @@ public sealed class KafkaIntegrationTests : IAsyncLifetime
 
         var topic = UniqueTopicName();
         var groupId = $"commit-group-{Guid.NewGuid():N}";
-        var opts = new KafkaOptions
-        {
-            BootstrapServers = _bootstrapServers,
-            ConsumerGroupId = groupId,
-        };
+        var opts = new KafkaOptions { BootstrapServers = _bootstrapServers, ConsumerGroupId = groupId };
         var serializer = new JsonMessageSerializer();
         using var producer = new KafkaProducer(opts, serializer);
 
@@ -239,12 +238,15 @@ public sealed class KafkaIntegrationTests : IAsyncLifetime
 
         var producerConfig = new Confluent.Kafka.ProducerConfig { BootstrapServers = _bootstrapServers };
         using var rawProducer = new Confluent.Kafka.ProducerBuilder<string, string>(producerConfig).Build();
-        await rawProducer.ProduceAsync(topic, new Confluent.Kafka.Message<string, string>
-        {
-            Key = Guid.NewGuid().ToString("N"),
-            Value = "trace-payload",
-            Headers = headers,
-        });
+        await rawProducer.ProduceAsync(
+            topic,
+            new Confluent.Kafka.Message<string, string>
+            {
+                Key = Guid.NewGuid().ToString("N"),
+                Value = "trace-payload",
+                Headers = headers,
+            }
+        );
 
         using var consumer = BuildConsumer(_bootstrapServers, opts.ConsumerGroupId);
         consumer.Subscribe(topic);

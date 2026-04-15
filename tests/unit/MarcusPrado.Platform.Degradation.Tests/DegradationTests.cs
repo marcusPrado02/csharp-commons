@@ -206,8 +206,7 @@ public sealed class DegradationEndpointsTests
         using var server = BuildServer(DegradationMode.None);
         var client = server.CreateClient();
 
-        var content = new StringContent(
-            """{"mode":"Maintenance"}""", Encoding.UTF8, "application/json");
+        var content = new StringContent("""{"mode":"Maintenance"}""", Encoding.UTF8, "application/json");
         var response = await client.PostAsync("/degradation/mode", content);
         var body = await response.Content.ReadAsStringAsync();
 
@@ -221,8 +220,7 @@ public sealed class DegradationEndpointsTests
         using var server = BuildServer(DegradationMode.None);
         var client = server.CreateClient();
 
-        var content = new StringContent(
-            """{"mode":"UnknownMode"}""", Encoding.UTF8, "application/json");
+        var content = new StringContent("""{"mode":"UnknownMode"}""", Encoding.UTF8, "application/json");
         var response = await client.PostAsync("/degradation/mode", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -235,8 +233,10 @@ public sealed class DegradationEndpointsTests
         var client = server.CreateClient();
 
         // set mode to PartiallyDegraded
-        await client.PostAsync("/degradation/mode",
-            new StringContent("""{"mode":"PartiallyDegraded"}""", Encoding.UTF8, "application/json"));
+        await client.PostAsync(
+            "/degradation/mode",
+            new StringContent("""{"mode":"PartiallyDegraded"}""", Encoding.UTF8, "application/json")
+        );
 
         var response = await client.GetAsync("/degradation/status");
         var body = await response.Content.ReadAsStringAsync();

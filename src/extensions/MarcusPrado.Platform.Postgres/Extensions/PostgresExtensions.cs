@@ -17,7 +17,8 @@ public static class PostgresExtensions
     /// </summary>
     public static IServiceCollection AddPlatformPostgres<TContext>(
         this IServiceCollection services,
-        Action<PostgresOptions>? configure = null)
+        Action<PostgresOptions>? configure = null
+    )
         where TContext : AppDbContextBase
     {
         var opts = new PostgresOptions();
@@ -30,14 +31,16 @@ public static class PostgresExtensions
 
         services.AddDbContext<TContext>(db =>
         {
-            db.UseNpgsql(opts.ConnectionString, npgsql =>
-            {
-                npgsql.CommandTimeout(opts.CommandTimeoutSeconds);
-            });
+            db.UseNpgsql(
+                opts.ConnectionString,
+                npgsql =>
+                {
+                    npgsql.CommandTimeout(opts.CommandTimeoutSeconds);
+                }
+            );
         });
 
-        services.AddHealthChecks()
-            .AddCheck<PostgresHealthProbe>("postgres");
+        services.AddHealthChecks().AddCheck<PostgresHealthProbe>("postgres");
 
         return services;
     }

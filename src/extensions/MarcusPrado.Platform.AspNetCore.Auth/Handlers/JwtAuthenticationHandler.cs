@@ -12,8 +12,8 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Handlers;
 public sealed class JwtAuthenticationHandler(
     IOptionsMonitor<JwtAuthenticationOptions> options,
     ILoggerFactory logger,
-    UrlEncoder encoder)
-    : AuthenticationHandler<JwtAuthenticationOptions>(options, logger, encoder)
+    UrlEncoder encoder
+) : AuthenticationHandler<JwtAuthenticationOptions>(options, logger, encoder)
 {
     private const string BearerPrefix = "Bearer ";
 

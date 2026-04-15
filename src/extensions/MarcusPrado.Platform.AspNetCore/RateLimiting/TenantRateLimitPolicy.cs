@@ -32,7 +32,8 @@ public sealed class TenantRateLimitPolicy : IRateLimiterPolicy<string>
             {
                 PermitLimit = _options.TenantPermitLimit,
                 Window = _options.TenantWindow,
-            });
+            }
+        );
     }
 
     /// <inheritdoc/>

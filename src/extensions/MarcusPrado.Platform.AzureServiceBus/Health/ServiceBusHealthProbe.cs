@@ -20,7 +20,8 @@ public sealed class ServiceBusHealthProbe : IHealthCheck
     /// <inheritdoc/>
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         // ServiceBusClient is lazy — check that the namespace is non-empty as a quick proxy.
         var healthy = !string.IsNullOrWhiteSpace(_client.FullyQualifiedNamespace);

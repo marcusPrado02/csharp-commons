@@ -35,12 +35,13 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
 
     // ─── helpers ───────────────────────────────────────────────────────────
 
-    private RabbitMqOptions BuildOptions(string? exchange = null) => new()
-    {
-        ConnectionString = _connectionString,
-        Exchange = exchange ?? $"ex-{Guid.NewGuid():N}",
-        ExchangeType = "topic",
-    };
+    private RabbitMqOptions BuildOptions(string? exchange = null) =>
+        new()
+        {
+            ConnectionString = _connectionString,
+            Exchange = exchange ?? $"ex-{Guid.NewGuid():N}",
+            ExchangeType = "topic",
+        };
 
     private static string UniqueQueueName() => $"q-{Guid.NewGuid():N}";
 
@@ -158,7 +159,8 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         // In RabbitMQ.Client 7.x publisher confirmations are configured via CreateChannelOptions
         var channelOpts = new CreateChannelOptions(
             publisherConfirmationsEnabled: true,
-            publisherConfirmationTrackingEnabled: true);
+            publisherConfirmationTrackingEnabled: true
+        );
         var channel = await connection.CreateChannelAsync(channelOpts);
 
         var exchange = $"confirm-ex-{Guid.NewGuid():N}";
@@ -356,8 +358,13 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         {
             Headers = new Dictionary<string, object?> { ["x-correlation-id"] = "corr-xyz" },
         };
-        await channel.BasicPublishAsync(exchange, rk, mandatory: false, basicProperties: props,
-            body: Encoding.UTF8.GetBytes("header-test"));
+        await channel.BasicPublishAsync(
+            exchange,
+            rk,
+            mandatory: false,
+            basicProperties: props,
+            body: Encoding.UTF8.GetBytes("header-test")
+        );
 
         await Task.Delay(100);
 
@@ -391,8 +398,12 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         await channel.ExchangeDeclareAsync(mainExchange, "direct", durable: false, autoDelete: true, arguments: args);
 
         // publish to main exchange with a routing key that has no binding → should go to alt
-        await channel.BasicPublishAsync(mainExchange, "no-binding", mandatory: false,
-            body: Encoding.UTF8.GetBytes("unroutable"));
+        await channel.BasicPublishAsync(
+            mainExchange,
+            "no-binding",
+            mandatory: false,
+            body: Encoding.UTF8.GetBytes("unroutable")
+        );
 
         await Task.Delay(200);
 

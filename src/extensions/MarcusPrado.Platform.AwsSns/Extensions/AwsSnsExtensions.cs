@@ -14,7 +14,8 @@ public static class AwsSnsExtensions
     /// </summary>
     public static IServiceCollection AddPlatformAwsSns(
         this IServiceCollection services,
-        Action<AwsSnsOptions>? configure = null)
+        Action<AwsSnsOptions>? configure = null
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -22,9 +23,9 @@ public static class AwsSnsExtensions
         configure?.Invoke(opts);
 
         services.AddSingleton(opts);
-        services.AddSingleton<IAmazonSimpleNotificationService>(
-            _ => new AmazonSimpleNotificationServiceClient(
-                Amazon.RegionEndpoint.GetBySystemName(opts.Region)));
+        services.AddSingleton<IAmazonSimpleNotificationService>(_ => new AmazonSimpleNotificationServiceClient(
+            Amazon.RegionEndpoint.GetBySystemName(opts.Region)
+        ));
         services.AddSingleton<ISmsService, SnsSmsService>();
 
         return services;

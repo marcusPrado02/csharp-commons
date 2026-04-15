@@ -32,8 +32,7 @@ public sealed class NoEfCoreInDomainAnalyzerTests
     [Fact]
     public void Analyzer_HasDiagnosticAnalyzerAttribute()
     {
-        var attrs = typeof(NoEfCoreInDomainAnalyzer)
-            .GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
+        var attrs = typeof(NoEfCoreInDomainAnalyzer).GetCustomAttributes(typeof(DiagnosticAnalyzerAttribute), false);
 
         attrs.Should().NotBeEmpty();
     }

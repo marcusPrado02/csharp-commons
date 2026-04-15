@@ -11,7 +11,8 @@ public sealed record ErrorBudgetResult(
     double AvailabilityRate,
     double ErrorBudgetConsumed,
     double ErrorBudgetRemaining,
-    bool IsBudgetExhausted);
+    bool IsBudgetExhausted
+);
 
 /// <summary>
 /// Calculates error budget metrics for a <see cref="ServiceLevelObjective"/> given a <see cref="SloSnapshot"/>.
@@ -36,7 +37,8 @@ public static class ErrorBudgetCalculator
                 AvailabilityRate: 1.0,
                 ErrorBudgetConsumed: 0.0,
                 ErrorBudgetRemaining: 1.0 - slo.Target,
-                IsBudgetExhausted: false);
+                IsBudgetExhausted: false
+            );
         }
 
         var successfulRequests = snapshot.TotalRequests - snapshot.FailedRequests;
@@ -63,6 +65,7 @@ public static class ErrorBudgetCalculator
             AvailabilityRate: availabilityRate,
             ErrorBudgetConsumed: errorBudgetConsumed,
             ErrorBudgetRemaining: errorBudgetRemaining,
-            IsBudgetExhausted: availabilityRate < slo.Target);
+            IsBudgetExhausted: availabilityRate < slo.Target
+        );
     }
 }

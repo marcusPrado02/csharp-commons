@@ -14,19 +14,25 @@ public static class OpenTelemetryConfigurator
     /// </summary>
     public static IServiceCollection AddPlatformOpenTelemetry(
         this IServiceCollection services,
-        Action<OpenTelemetryOptions>? configure = null)
+        Action<OpenTelemetryOptions>? configure = null
+    )
     {
         var opts = new OpenTelemetryOptions();
         configure?.Invoke(opts);
 
-        var resourceBuilder = ResourceBuilder.CreateDefault()
+        var resourceBuilder = ResourceBuilder
+            .CreateDefault()
             .AddService(opts.ServiceName, serviceVersion: opts.ServiceVersion)
-            .AddAttributes(new Dictionary<string, object>
-            {
-                [PlatformSpanAttributes.Environment] = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "unknown",
-            });
+            .AddAttributes(
+                new Dictionary<string, object>
+                {
+                    [PlatformSpanAttributes.Environment] =
+                        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "unknown",
+                }
+            );
 
-        services.AddOpenTelemetry()
+        services
+            .AddOpenTelemetry()
             .WithTracing(tracing =>
             {
                 tracing.SetResourceBuilder(resourceBuilder);

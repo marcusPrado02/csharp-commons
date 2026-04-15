@@ -22,8 +22,8 @@ public sealed class InMemoryInboxStore : IInboxStore
     /// <inheritdoc/>
     public Task<IReadOnlyList<InboxMessage>> GetPendingAsync(int batchSize, CancellationToken ct = default)
     {
-        var pending = _messages.Values
-            .Where(m => m.State == InboxState.Pending)
+        var pending = _messages
+            .Values.Where(m => m.State == InboxState.Pending)
             .OrderBy(m => m.ReceivedAt)
             .Take(batchSize)
             .ToList();

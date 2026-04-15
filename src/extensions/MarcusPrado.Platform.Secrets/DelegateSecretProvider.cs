@@ -12,14 +12,15 @@ public sealed class DelegateSecretProvider : ISecretProvider
 
     public DelegateSecretProvider(
         Func<string, CancellationToken, Task<string?>> retriever,
-        Action<string>? onRotation = null)
+        Action<string>? onRotation = null
+    )
     {
         _retriever = retriever;
         _onRotation = onRotation;
     }
 
-    public Task<string?> GetSecretAsync(string name, CancellationToken cancellationToken = default)
-        => _retriever(name, cancellationToken);
+    public Task<string?> GetSecretAsync(string name, CancellationToken cancellationToken = default) =>
+        _retriever(name, cancellationToken);
 
     public Task InvalidateCacheAsync(string name, CancellationToken cancellationToken = default)
     {

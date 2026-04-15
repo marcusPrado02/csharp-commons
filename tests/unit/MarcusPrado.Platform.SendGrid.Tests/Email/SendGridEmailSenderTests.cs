@@ -44,8 +44,7 @@ public sealed class SendGridExtensionsTests
 
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IEmailSender>()
-            .Should().BeOfType<SendGridEmailSender>();
+        sp.GetRequiredService<IEmailSender>().Should().BeOfType<SendGridEmailSender>();
     }
 
     [Fact]
@@ -77,11 +76,10 @@ public sealed class SendGridEmailSenderTests
     private static SendGridEmailSender BuildSender(ISendGridClient? client = null)
     {
         client ??= Substitute.For<ISendGridClient>();
-        return new SendGridEmailSender(client, new SendGridOptions
-        {
-            DefaultFrom = "noreply@example.com",
-            DefaultFromName = "Platform",
-        });
+        return new SendGridEmailSender(
+            client,
+            new SendGridOptions { DefaultFrom = "noreply@example.com", DefaultFromName = "Platform" }
+        );
     }
 
     [Fact]
@@ -112,7 +110,8 @@ public sealed class SendGridEmailSenderTests
         var httpMsg = new HttpResponseMessage(HttpStatusCode.Accepted);
         var response = new global::SendGrid.Response(HttpStatusCode.Accepted, httpMsg.Content, httpMsg.Headers);
 
-        client.SendEmailAsync(Arg.Any<SendGridMessage>(), Arg.Any<CancellationToken>())
+        client
+            .SendEmailAsync(Arg.Any<SendGridMessage>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(response));
 
         var sender = BuildSender(client);
@@ -127,7 +126,8 @@ public sealed class SendGridEmailSenderTests
     public async Task SendAsync_WhenApiThrows_ReturnsFailureResult()
     {
         var client = Substitute.For<ISendGridClient>();
-        client.SendEmailAsync(Arg.Any<SendGridMessage>(), Arg.Any<CancellationToken>())
+        client
+            .SendEmailAsync(Arg.Any<SendGridMessage>(), Arg.Any<CancellationToken>())
             .Returns<global::SendGrid.Response>(_ => throw new InvalidOperationException("network error"));
 
         var sender = BuildSender(client);

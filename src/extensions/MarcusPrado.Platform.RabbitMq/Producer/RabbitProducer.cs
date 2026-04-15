@@ -15,10 +15,7 @@ public sealed class RabbitProducer : IMessagePublisher, IAsyncDisposable
     private readonly RabbitMqOptions _options;
 
     /// <summary>Initialises the producer. Call <see cref="CreateAsync"/> instead of this constructor.</summary>
-    private RabbitProducer(
-        IChannel channel,
-        IMessageSerializer serializer,
-        RabbitMqOptions options)
+    private RabbitProducer(IChannel channel, IMessageSerializer serializer, RabbitMqOptions options)
     {
         _channel = channel;
         _serializer = serializer;
@@ -26,9 +23,7 @@ public sealed class RabbitProducer : IMessagePublisher, IAsyncDisposable
     }
 
     /// <summary>Creates and initialises a <see cref="RabbitProducer"/>.</summary>
-    public static async Task<RabbitProducer> CreateAsync(
-        RabbitMqOptions options,
-        IMessageSerializer serializer)
+    public static async Task<RabbitProducer> CreateAsync(RabbitMqOptions options, IMessageSerializer serializer)
     {
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(serializer);
@@ -41,7 +36,8 @@ public sealed class RabbitProducer : IMessagePublisher, IAsyncDisposable
             exchange: options.Exchange,
             type: options.ExchangeType,
             durable: true,
-            autoDelete: false);
+            autoDelete: false
+        );
 
         return new RabbitProducer(channel, serializer, options);
     }
@@ -51,7 +47,8 @@ public sealed class RabbitProducer : IMessagePublisher, IAsyncDisposable
         string topic,
         TMessage message,
         MessageMetadata? metadata = null,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
         where TMessage : class
     {
         ArgumentNullException.ThrowIfNull(message);
@@ -79,7 +76,8 @@ public sealed class RabbitProducer : IMessagePublisher, IAsyncDisposable
             mandatory: false,
             basicProperties: props,
             body: body,
-            cancellationToken: ct);
+            cancellationToken: ct
+        );
     }
 
     /// <inheritdoc/>

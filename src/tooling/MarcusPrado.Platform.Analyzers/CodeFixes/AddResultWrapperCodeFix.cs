@@ -50,15 +50,18 @@ public sealed class AddResultWrapperCodeFix : CodeFixProvider
                 CodeAction.Create(
                     title: "Wrap return type with Task<Result<Unit>>",
                     createChangedDocument: ct => WrapReturnTypeAsync(context.Document, methodDecl, ct),
-                    equivalenceKey: "AddResultWrapper"),
-                diagnostic);
+                    equivalenceKey: "AddResultWrapper"
+                ),
+                diagnostic
+            );
         }
     }
 
     private static async Task<Document> WrapReturnTypeAsync(
         Document document,
         MethodDeclarationSyntax methodDecl,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
         if (root == null)
@@ -66,9 +69,7 @@ public sealed class AddResultWrapperCodeFix : CodeFixProvider
             return document;
         }
 
-        var newReturnType = SyntaxFactory
-            .ParseTypeName("Task<Result<Unit>>")
-            .WithTriviaFrom(methodDecl.ReturnType);
+        var newReturnType = SyntaxFactory.ParseTypeName("Task<Result<Unit>>").WithTriviaFrom(methodDecl.ReturnType);
 
         // Remove async modifier if present on void methods (they become Task-returning)
         var newMethod = methodDecl.WithReturnType(newReturnType);

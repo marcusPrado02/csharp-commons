@@ -11,10 +11,7 @@ namespace MarcusPrado.Platform.Degradation;
 /// </summary>
 public static class DegradationEndpoints
 {
-    private static readonly JsonSerializerOptions _jsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-    };
+    private static readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
 
     /// <summary>
     /// Maps the degradation status and mode-change endpoints:
@@ -27,39 +24,43 @@ public static class DegradationEndpoints
     /// <returns>The same <see cref="IEndpointRouteBuilder"/> for chaining.</returns>
     public static IEndpointRouteBuilder MapDegradationEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/degradation/status", async (
-            IDegradationController controller,
-            CancellationToken ct) =>
-        {
-            var mode = await controller.GetModeAsync(ct);
-            return Results.Ok(new { mode = mode.ToString() });
-        });
-
-        endpoints.MapPost("/degradation/mode", async (
-            HttpContext httpContext,
-            IDegradationController controller,
-            CancellationToken ct) =>
-        {
-            SetModeRequest? request;
-            try
+        endpoints.MapGet(
+            "/degradation/status",
+            async (IDegradationController controller, CancellationToken ct) =>
             {
-                request = await JsonSerializer.DeserializeAsync<SetModeRequest>(
-                    httpContext.Request.Body, _jsonOptions, ct);
+                var mode = await controller.GetModeAsync(ct);
+                return Results.Ok(new { mode = mode.ToString() });
             }
-            catch (JsonException)
+        );
+
+        endpoints.MapPost(
+            "/degradation/mode",
+            async (HttpContext httpContext, IDegradationController controller, CancellationToken ct) =>
             {
-                return Results.BadRequest(new { error = "Invalid JSON body." });
+                SetModeRequest? request;
+                try
+                {
+                    request = await JsonSerializer.DeserializeAsync<SetModeRequest>(
+                        httpContext.Request.Body,
+                        _jsonOptions,
+                        ct
+                    );
+                }
+                catch (JsonException)
+                {
+                    return Results.BadRequest(new { error = "Invalid JSON body." });
+                }
+
+                if (request is null)
+                    return Results.BadRequest(new { error = "Request body is required." });
+
+                if (!Enum.TryParse<DegradationMode>(request.Mode, ignoreCase: true, out var parsedMode))
+                    return Results.BadRequest(new { error = $"Unknown degradation mode: '{request.Mode}'." });
+
+                await controller.SetModeAsync(parsedMode, ct);
+                return Results.Ok(new { mode = parsedMode.ToString() });
             }
-
-            if (request is null)
-                return Results.BadRequest(new { error = "Request body is required." });
-
-            if (!Enum.TryParse<DegradationMode>(request.Mode, ignoreCase: true, out var parsedMode))
-                return Results.BadRequest(new { error = $"Unknown degradation mode: '{request.Mode}'." });
-
-            await controller.SetModeAsync(parsedMode, ct);
-            return Results.Ok(new { mode = parsedMode.ToString() });
-        });
+        );
 
         return endpoints;
     }

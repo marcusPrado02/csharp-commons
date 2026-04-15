@@ -26,8 +26,7 @@ public sealed class PlatformJobFactory : IJobFactory
     {
         ArgumentNullException.ThrowIfNull(bundle);
         var jobType = bundle.JobDetail.JobType;
-        var job = _serviceProvider.GetService(jobType)
-            ?? ActivatorUtilities.CreateInstance(_serviceProvider, jobType);
+        var job = _serviceProvider.GetService(jobType) ?? ActivatorUtilities.CreateInstance(_serviceProvider, jobType);
         return (IJob)job;
     }
 

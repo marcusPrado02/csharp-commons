@@ -48,12 +48,14 @@ public sealed class PlatformErrorFilterBridgeTests
     public void OnError_WithException_DelegatesToPlatformFilter()
     {
         var platformFilter = Substitute.For<IPlatformErrorFilter>();
-        platformFilter.OnError(Arg.Any<IGraphQlError>(), Arg.Any<Exception>())
+        platformFilter
+            .OnError(Arg.Any<IGraphQlError>(), Arg.Any<Exception>())
             .Returns(new GraphQlError("Mapped error", "MAPPED"));
 
         var bridge = new PlatformErrorFilterBridge(platformFilter);
 
-        var error = ErrorBuilder.New()
+        var error = ErrorBuilder
+            .New()
             .SetMessage("original")
             .SetException(new InvalidOperationException("boom"))
             .Build();
@@ -110,7 +112,6 @@ public sealed class HttpContextResolverContextTests
         services.AddPlatformGraphQL();
         var sp = services.BuildServiceProvider();
 
-        sp.GetRequiredService<IPlatformResolverContext>()
-            .Should().BeOfType<HttpContextResolverContext>();
+        sp.GetRequiredService<IPlatformResolverContext>().Should().BeOfType<HttpContextResolverContext>();
     }
 }

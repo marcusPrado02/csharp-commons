@@ -7,7 +7,5 @@ public sealed class UnauthorizedException : AppException
 {
     /// <summary>Initializes an <see cref="UnauthorizedException"/>.</summary>
     public UnauthorizedException(string code, string message)
-        : base(Error.Unauthorized(code, message))
-    {
-    }
+        : base(Error.Unauthorized(code, message)) { }
 }

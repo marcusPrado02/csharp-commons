@@ -27,7 +27,8 @@ public static class AuthTestServer
     /// </summary>
     public static TestServer Create(
         Action<JwtAuthenticationOptions>? configureJwt = null,
-        Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
+        Action<ApiKeyAuthenticationOptions>? configureApiKey = null
+    )
     {
         var builder = new WebHostBuilder()
             .ConfigureServices(services =>
@@ -45,15 +46,18 @@ public static class AuthTestServer
                     {
                         opts.ValidKeys = [TestApiKey];
                         configureApiKey?.Invoke(opts);
-                    });
+                    }
+                );
 
                 services.AddPlatformAuthorization();
 
-                services.AddAuthorizationBuilder()
-                    .AddPolicy("RequirePermission", policy =>
-                        policy.AddRequirements(new PermissionRequirement(TestPermission)))
-                    .AddPolicy("RequireScope", policy =>
-                        policy.AddRequirements(new ScopeRequirement(TestScope)));
+                services
+                    .AddAuthorizationBuilder()
+                    .AddPolicy(
+                        "RequirePermission",
+                        policy => policy.AddRequirements(new PermissionRequirement(TestPermission))
+                    )
+                    .AddPolicy("RequireScope", policy => policy.AddRequirements(new ScopeRequirement(TestScope)));
 
                 services.AddRouting();
             })
@@ -65,28 +69,36 @@ public static class AuthTestServer
                 app.UseEndpoints(endpoints =>
                 {
                     // Returns the user-id from IUserContext — requires JWT
-                    endpoints.MapGet(JwtInfoRoute, async (HttpContext ctx) =>
-                    {
-                        if (!ctx.User.Identity!.IsAuthenticated)
-                        {
-                            ctx.Response.StatusCode = 401;
-                            return;
-                        }
-                        var userCtx = ctx.RequestServices.GetRequiredService<IUserContext>();
-                        await ctx.Response.WriteAsync(userCtx.UserId ?? "null");
-                    }).RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = PlatformAuthSchemes.Jwt });
+                    endpoints
+                        .MapGet(
+                            JwtInfoRoute,
+                            async (HttpContext ctx) =>
+                            {
+                                if (!ctx.User.Identity!.IsAuthenticated)
+                                {
+                                    ctx.Response.StatusCode = 401;
+                                    return;
+                                }
+                                var userCtx = ctx.RequestServices.GetRequiredService<IUserContext>();
+                                await ctx.Response.WriteAsync(userCtx.UserId ?? "null");
+                            }
+                        )
+                        .RequireAuthorization(
+                            new AuthorizeAttribute { AuthenticationSchemes = PlatformAuthSchemes.Jwt }
+                        );
 
                     // Requires a valid API key header
-                    endpoints.MapGet(ApiKeyRoute, () => "ok")
-                        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = PlatformAuthSchemes.ApiKey });
+                    endpoints
+                        .MapGet(ApiKeyRoute, () => "ok")
+                        .RequireAuthorization(
+                            new AuthorizeAttribute { AuthenticationSchemes = PlatformAuthSchemes.ApiKey }
+                        );
 
                     // Requires "read:users" permission
-                    endpoints.MapGet(PermissionRoute, () => "ok")
-                        .RequireAuthorization("RequirePermission");
+                    endpoints.MapGet(PermissionRoute, () => "ok").RequireAuthorization("RequirePermission");
 
                     // Requires "api:read" scope
-                    endpoints.MapGet(ScopeRoute, () => "ok")
-                        .RequireAuthorization("RequireScope");
+                    endpoints.MapGet(ScopeRoute, () => "ok").RequireAuthorization("RequireScope");
 
                     // Completely open endpoint
                     endpoints.MapGet(AnonymousRoute, () => "anon");
@@ -99,6 +111,6 @@ public static class AuthTestServer
     /// <summary>Creates an <see cref="HttpClient"/> from the server.</summary>
     public static HttpClient CreateClient(
         Action<JwtAuthenticationOptions>? configureJwt = null,
-        Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
-        => Create(configureJwt, configureApiKey).CreateClient();
+        Action<ApiKeyAuthenticationOptions>? configureApiKey = null
+    ) => Create(configureJwt, configureApiKey).CreateClient();
 }

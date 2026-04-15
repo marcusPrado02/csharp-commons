@@ -13,8 +13,20 @@ public sealed class FeatureVariant
     public double Weight { get; init; }
 
     /// <summary>Returns a boolean variant (on/off).</summary>
-    public static FeatureVariant On { get; } = new() { Key = "on", Value = "true", Weight = 100 };
+    public static FeatureVariant On { get; } =
+        new()
+        {
+            Key = "on",
+            Value = "true",
+            Weight = 100,
+        };
 
     /// <summary>Returns a boolean off variant.</summary>
-    public static FeatureVariant Off { get; } = new() { Key = "off", Value = "false", Weight = 0 };
+    public static FeatureVariant Off { get; } =
+        new()
+        {
+            Key = "off",
+            Value = "false",
+            Weight = 0,
+        };
 }

@@ -133,9 +133,7 @@ public sealed class CircuitBreakerExtensionsTests
     [Fact]
     public void AddPlatformCircuitBreakerRegistry_RegistersRegistryAsSingleton()
     {
-        var sp = new ServiceCollection()
-            .AddPlatformCircuitBreakerRegistry()
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddPlatformCircuitBreakerRegistry().BuildServiceProvider();
 
         var r1 = sp.GetService<CircuitBreakerRegistry>();
         var r2 = sp.GetService<CircuitBreakerRegistry>();
@@ -146,9 +144,7 @@ public sealed class CircuitBreakerExtensionsTests
     [Fact]
     public void AddPlatformCircuitBreakerRegistry_RegistersMetrics()
     {
-        var sp = new ServiceCollection()
-            .AddPlatformCircuitBreakerRegistry()
-            .BuildServiceProvider();
+        var sp = new ServiceCollection().AddPlatformCircuitBreakerRegistry().BuildServiceProvider();
 
         sp.GetService<CircuitBreakerMetrics>().Should().NotBeNull();
     }

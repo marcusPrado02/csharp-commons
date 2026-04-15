@@ -37,12 +37,29 @@ public partial class MessageSerializerBenchmark
     [ProtoContract]
     public sealed class OrderPlacedEvent
     {
-        [Key(0)][property: ProtoMember(1)] public Guid OrderId { get; set; }
-        [Key(1)][property: ProtoMember(2)] public string CustomerId { get; set; } = default!;
-        [Key(2)][property: ProtoMember(3)] public decimal Amount { get; set; }
-        [Key(3)][property: ProtoMember(4)] public DateTime PlacedAt { get; set; }
-        [Key(4)][property: ProtoMember(5)] public string CurrencyCode { get; set; } = default!;
-        [Key(5)][property: ProtoMember(6)] public List<string> ProductIds { get; set; } = default!;
+        [Key(0)]
+        [property: ProtoMember(1)]
+        public Guid OrderId { get; set; }
+
+        [Key(1)]
+        [property: ProtoMember(2)]
+        public string CustomerId { get; set; } = default!;
+
+        [Key(2)]
+        [property: ProtoMember(3)]
+        public decimal Amount { get; set; }
+
+        [Key(3)]
+        [property: ProtoMember(4)]
+        public DateTime PlacedAt { get; set; }
+
+        [Key(4)]
+        [property: ProtoMember(5)]
+        public string CurrencyCode { get; set; } = default!;
+
+        [Key(5)]
+        [property: ProtoMember(6)]
+        public List<string> ProductIds { get; set; } = default!;
     }
 
     // ── Pre-baked instances and byte arrays ──────────────────────────────────
@@ -54,10 +71,7 @@ public partial class MessageSerializerBenchmark
     private byte[] _messagePackBytes = default!;
     private byte[] _protobufBytes = default!;
 
-    private static readonly JsonSerializerOptions StjOptions = new()
-    {
-        TypeInfoResolver = AppJsonContext.Default,
-    };
+    private static readonly JsonSerializerOptions StjOptions = new() { TypeInfoResolver = AppJsonContext.Default };
 
     [GlobalSetup]
     public void Setup()
@@ -73,8 +87,7 @@ public partial class MessageSerializerBenchmark
         };
 
         _systemTextJsonBytes = JsonSerializer.SerializeToUtf8Bytes(_payload, StjOptions);
-        _newtonsoftBytes = System.Text.Encoding.UTF8.GetBytes(
-            JsonConvert.SerializeObject(_payload));
+        _newtonsoftBytes = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_payload));
         _messagePackBytes = MessagePackSerializer.Serialize(_payload);
 
         using var ms = new MemoryStream();
@@ -85,16 +98,13 @@ public partial class MessageSerializerBenchmark
     // ── Serialization ────────────────────────────────────────────────────────
 
     [Benchmark(Baseline = true, Description = "STJ serialize (source-gen)")]
-    public byte[] Serialize_SystemTextJson() =>
-        JsonSerializer.SerializeToUtf8Bytes(_payload, StjOptions);
+    public byte[] Serialize_SystemTextJson() => JsonSerializer.SerializeToUtf8Bytes(_payload, StjOptions);
 
     [Benchmark(Description = "Newtonsoft serialize")]
-    public byte[] Serialize_Newtonsoft() =>
-        System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_payload));
+    public byte[] Serialize_Newtonsoft() => System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_payload));
 
     [Benchmark(Description = "MessagePack serialize")]
-    public byte[] Serialize_MessagePack() =>
-        MessagePackSerializer.Serialize(_payload);
+    public byte[] Serialize_MessagePack() => MessagePackSerializer.Serialize(_payload);
 
     [Benchmark(Description = "protobuf-net serialize")]
     public byte[] Serialize_Protobuf()
@@ -112,8 +122,7 @@ public partial class MessageSerializerBenchmark
 
     [Benchmark(Description = "Newtonsoft deserialize")]
     public OrderPlacedEvent? Deserialize_Newtonsoft() =>
-        JsonConvert.DeserializeObject<OrderPlacedEvent>(
-            System.Text.Encoding.UTF8.GetString(_newtonsoftBytes));
+        JsonConvert.DeserializeObject<OrderPlacedEvent>(System.Text.Encoding.UTF8.GetString(_newtonsoftBytes));
 
     [Benchmark(Description = "MessagePack deserialize")]
     public OrderPlacedEvent Deserialize_MessagePack() =>

@@ -56,7 +56,8 @@ public sealed class CircuitBreakerRegistry
                     State = newState,
                     LastStateChange = stateChanged ? DateTimeOffset.UtcNow : existing.LastStateChange,
                 };
-            });
+            }
+        );
     }
 
     /// <summary>
@@ -70,7 +71,8 @@ public sealed class CircuitBreakerRegistry
         _entries.AddOrUpdate(
             name,
             addValueFactory: static (n) => new CircuitBreakerEntry(n, CircuitBreakerState.Closed, 0, null),
-            updateValueFactory: static (_, existing) => existing with { FailuresTotal = 0 });
+            updateValueFactory: static (_, existing) => existing with { FailuresTotal = 0 }
+        );
     }
 
     /// <summary>Manually overrides the state of the named circuit breaker.</summary>
@@ -90,7 +92,8 @@ public sealed class CircuitBreakerRegistry
                     State = state,
                     LastStateChange = stateChanged ? DateTimeOffset.UtcNow : existing.LastStateChange,
                 };
-            });
+            }
+        );
     }
 
     /// <summary>Returns a snapshot of all registered circuit breakers.</summary>
@@ -104,12 +107,15 @@ public sealed class CircuitBreakerRegistry
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         _entries.AddOrUpdate(
             name,
-            addValueFactory: static (n) => new CircuitBreakerEntry(n, CircuitBreakerState.Closed, 0, DateTimeOffset.UtcNow),
-            updateValueFactory: static (_, existing) => existing with
-            {
-                State = CircuitBreakerState.Closed,
-                FailuresTotal = 0,
-                LastStateChange = DateTimeOffset.UtcNow,
-            });
+            addValueFactory: static (n) =>
+                new CircuitBreakerEntry(n, CircuitBreakerState.Closed, 0, DateTimeOffset.UtcNow),
+            updateValueFactory: static (_, existing) =>
+                existing with
+                {
+                    State = CircuitBreakerState.Closed,
+                    FailuresTotal = 0,
+                    LastStateChange = DateTimeOffset.UtcNow,
+                }
+        );
     }
 }

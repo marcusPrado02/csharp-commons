@@ -38,7 +38,8 @@ public static class CacheStampedeExtensions
     /// <returns>The same <see cref="IServiceCollection"/> for chaining.</returns>
     public static IServiceCollection AddCacheWarmup(
         this IServiceCollection services,
-        Func<IDistributedCache, CancellationToken, Task> warmupAction)
+        Func<IDistributedCache, CancellationToken, Task> warmupAction
+    )
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(warmupAction);

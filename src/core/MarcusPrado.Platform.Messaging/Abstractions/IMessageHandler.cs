@@ -8,7 +8,5 @@ public interface IMessageHandler<TMessage>
     where TMessage : class
 {
     /// <summary>Processes the received <paramref name="envelope"/>.</summary>
-    Task HandleAsync(
-        MessageEnvelope<TMessage> envelope,
-        CancellationToken ct = default);
+    Task HandleAsync(MessageEnvelope<TMessage> envelope, CancellationToken ct = default);
 }

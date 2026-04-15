@@ -16,10 +16,7 @@ public sealed class OpenApiTests : IAsyncDisposable
     /// <summary>Initialises a WebApplication with Platform OpenAPI enabled.</summary>
     public OpenApiTests()
     {
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            EnvironmentName = "Development"
-        });
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
 
         builder.WebHost.UseTestServer();
         builder.Logging.ClearProviders();
@@ -61,8 +58,7 @@ public sealed class OpenApiTests : IAsyncDisposable
     {
         var json = await GetDocumentAsync();
 
-        json.GetProperty("info").GetProperty("title").GetString()
-            .Should().Be("Test API");
+        json.GetProperty("info").GetProperty("title").GetString().Should().Be("Test API");
     }
 
     // ── Test 3: info.version matches configured value ─────────────────────────
@@ -72,8 +68,7 @@ public sealed class OpenApiTests : IAsyncDisposable
     {
         var json = await GetDocumentAsync();
 
-        json.GetProperty("info").GetProperty("version").GetString()
-            .Should().Be("v1");
+        json.GetProperty("info").GetProperty("version").GetString().Should().Be("v1");
     }
 
     // ── Test 4: JWT security scheme present ───────────────────────────────────
@@ -83,9 +78,7 @@ public sealed class OpenApiTests : IAsyncDisposable
     {
         var json = await GetDocumentAsync();
 
-        var schemes = json
-            .GetProperty("components")
-            .GetProperty("securitySchemes");
+        var schemes = json.GetProperty("components").GetProperty("securitySchemes");
 
         schemes.TryGetProperty("Bearer", out var bearer).Should().BeTrue();
         bearer.GetProperty("type").GetString().Should().Be("http");
@@ -99,9 +92,7 @@ public sealed class OpenApiTests : IAsyncDisposable
     {
         var json = await GetDocumentAsync();
 
-        var schemes = json
-            .GetProperty("components")
-            .GetProperty("securitySchemes");
+        var schemes = json.GetProperty("components").GetProperty("securitySchemes");
 
         schemes.TryGetProperty("ApiKey", out var apiKey).Should().BeTrue();
         apiKey.GetProperty("type").GetString().Should().Be("apiKey");
@@ -123,12 +114,14 @@ public sealed class OpenApiTests : IAsyncDisposable
                 if (!method.Value.TryGetProperty("parameters", out var parameters))
                     continue;
 
-                var names = parameters.EnumerateArray()
-                    .Select(p => p.GetProperty("name").GetString())
-                    .ToList();
+                var names = parameters.EnumerateArray().Select(p => p.GetProperty("name").GetString()).ToList();
 
-                names.Should().Contain("X-Correlation-Id",
-                    because: $"operation {path.Name}.{method.Name} should have X-Correlation-Id");
+                names
+                    .Should()
+                    .Contain(
+                        "X-Correlation-Id",
+                        because: $"operation {path.Name}.{method.Name} should have X-Correlation-Id"
+                    );
             }
         }
     }
@@ -148,12 +141,11 @@ public sealed class OpenApiTests : IAsyncDisposable
                 if (!method.Value.TryGetProperty("parameters", out var parameters))
                     continue;
 
-                var names = parameters.EnumerateArray()
-                    .Select(p => p.GetProperty("name").GetString())
-                    .ToList();
+                var names = parameters.EnumerateArray().Select(p => p.GetProperty("name").GetString()).ToList();
 
-                names.Should().Contain("X-Tenant-Id",
-                    because: $"operation {path.Name}.{method.Name} should have X-Tenant-Id");
+                names
+                    .Should()
+                    .Contain("X-Tenant-Id", because: $"operation {path.Name}.{method.Name} should have X-Tenant-Id");
             }
         }
     }
@@ -195,10 +187,7 @@ public sealed class OpenApiOptionsIsolationTests : IAsyncDisposable
     /// <summary>Initialises a WebApplication with JWT disabled and API-key disabled.</summary>
     public OpenApiOptionsIsolationTests()
     {
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            EnvironmentName = "Development"
-        });
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
 
         builder.WebHost.UseTestServer();
         builder.Logging.ClearProviders();
@@ -231,8 +220,10 @@ public sealed class OpenApiOptionsIsolationTests : IAsyncDisposable
         var hasBearer = false;
         var hasApiKey = false;
 
-        if (json.TryGetProperty("components", out var components) &&
-            components.TryGetProperty("securitySchemes", out var schemes))
+        if (
+            json.TryGetProperty("components", out var components)
+            && components.TryGetProperty("securitySchemes", out var schemes)
+        )
         {
             hasBearer = schemes.TryGetProperty("Bearer", out _);
             hasApiKey = schemes.TryGetProperty("ApiKey", out _);

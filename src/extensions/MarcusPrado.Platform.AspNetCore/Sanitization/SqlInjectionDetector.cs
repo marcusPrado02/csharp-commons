@@ -6,11 +6,26 @@ public static class SqlInjectionDetector
     // Common SQL injection patterns
     private static readonly string[] _patterns =
     [
-        "--", ";--", ";", "/*", "*/", "xp_",
-        "UNION ", "UNION\t", "SELECT ", "SELECT\t",
-        "DROP ", "INSERT ", "UPDATE ", "DELETE ",
-        "EXEC ", "EXECUTE ", "CAST(", "CONVERT(",
-        "CHAR(", "NCHAR("
+        "--",
+        ";--",
+        ";",
+        "/*",
+        "*/",
+        "xp_",
+        "UNION ",
+        "UNION\t",
+        "SELECT ",
+        "SELECT\t",
+        "DROP ",
+        "INSERT ",
+        "UPDATE ",
+        "DELETE ",
+        "EXEC ",
+        "EXECUTE ",
+        "CAST(",
+        "CONVERT(",
+        "CHAR(",
+        "NCHAR(",
     ];
 
     /// <summary>Returns true if the input contains common SQL injection patterns.</summary>

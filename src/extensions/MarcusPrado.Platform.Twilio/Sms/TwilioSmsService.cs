@@ -39,16 +39,17 @@ public sealed class TwilioSmsService : ISmsService
             var to = new PhoneNumber(message.To);
 
             MessageResource resource = _client is not null
-                ? await MessageResource.CreateAsync(to, from: from, body: message.Body, client: _client)
+                ? await MessageResource
+                    .CreateAsync(to, from: from, body: message.Body, client: _client)
                     .ConfigureAwait(false)
-                : await MessageResource.CreateAsync(to, from: from, body: message.Body)
-                    .ConfigureAwait(false);
+                : await MessageResource.CreateAsync(to, from: from, body: message.Body).ConfigureAwait(false);
 
             var success = resource.ErrorCode is null;
             return new SmsResult(
                 success,
                 resource.Sid,
-                success ? null : $"[{resource.ErrorCode}] {resource.ErrorMessage}");
+                success ? null : $"[{resource.ErrorCode}] {resource.ErrorMessage}"
+            );
         }
 #pragma warning disable CA1031
         catch (Exception ex)

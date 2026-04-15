@@ -19,7 +19,8 @@ public sealed class TenantFilterTests : IDisposable
     {
         _ctx.TenantEntities.AddRange(
             new TenantTestEntity { Name = "A1", TenantId = "tenant-A" },
-            new TenantTestEntity { Name = "B1", TenantId = "tenant-B" });
+            new TenantTestEntity { Name = "B1", TenantId = "tenant-B" }
+        );
         await _ctx.SaveChangesAsync();
 
         var results = await _ctx.TenantEntities.ToListAsync();
@@ -43,7 +44,8 @@ public sealed class TenantFilterTests : IDisposable
     {
         _ctx.TenantEntities.AddRange(
             new TenantTestEntity { Name = "A3", TenantId = "tenant-A" },
-            new TenantTestEntity { Name = "B3", TenantId = "tenant-B" });
+            new TenantTestEntity { Name = "B3", TenantId = "tenant-B" }
+        );
         await _ctx.SaveChangesAsync();
 
         var results = await _ctx.TenantEntities.IgnoreQueryFilters().ToListAsync();

@@ -19,8 +19,7 @@ public sealed partial class HtmlSanitizerAdapter : IInputSanitizer
     }
 
     /// <inheritdoc/>
-    public string SanitizeHtml(string input)
-        => string.IsNullOrEmpty(input) ? input : _sanitizer.Sanitize(input);
+    public string SanitizeHtml(string input) => string.IsNullOrEmpty(input) ? input : _sanitizer.Sanitize(input);
 
     /// <inheritdoc/>
     public string StripHtml(string input)
