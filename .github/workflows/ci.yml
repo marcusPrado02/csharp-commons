@@ -229,25 +229,31 @@ jobs:
         env:
           PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          dotnet pack src/core --no-build -c Release \
-            -p:PackageVersion="$PACKAGE_VERSION" \
-            --output ./nupkgs
+          find src/core -name '*.csproj' | while read proj; do
+            dotnet pack "$proj" --no-build -c Release \
+              -p:PackageVersion="$PACKAGE_VERSION" \
+              --output ./nupkgs
+          done
 
       - name: Pack — extension libraries
         env:
           PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          dotnet pack src/extensions --no-build -c Release \
-            -p:PackageVersion="$PACKAGE_VERSION" \
-            --output ./nupkgs
+          find src/extensions -name '*.csproj' | while read proj; do
+            dotnet pack "$proj" --no-build -c Release \
+              -p:PackageVersion="$PACKAGE_VERSION" \
+              --output ./nupkgs
+          done
 
       - name: Pack — kit libraries
         env:
           PACKAGE_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          dotnet pack src/kits --no-build -c Release \
-            -p:PackageVersion="$PACKAGE_VERSION" \
-            --output ./nupkgs
+          find src/kits -name '*.csproj' | while read proj; do
+            dotnet pack "$proj" --no-build -c Release \
+              -p:PackageVersion="$PACKAGE_VERSION" \
+              --output ./nupkgs
+          done
 
       - name: List packages
         run: ls -lh ./nupkgs/
