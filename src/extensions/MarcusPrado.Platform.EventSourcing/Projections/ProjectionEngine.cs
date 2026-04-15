@@ -1,5 +1,8 @@
 namespace MarcusPrado.Platform.EventSourcing.Projections;
 
+/// <summary>
+/// Dispatches domain events to registered projections, updating the corresponding read models.
+/// </summary>
 public sealed class ProjectionEngine
 {
     // Key: event type, Value: list of handlers (async delegates)

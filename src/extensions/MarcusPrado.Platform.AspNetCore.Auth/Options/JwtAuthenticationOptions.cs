@@ -3,7 +3,7 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Options;
 /// <summary>
 /// Configuration options for the platform's JWT authentication handler.
 /// Bind this class from <c>appsettings.json</c> or configure it inline via
-/// <see cref="AuthServiceExtensions.AddPlatformAuth"/>.
+/// <c>AddPlatformAuth</c>.
 /// </summary>
 public sealed class JwtAuthenticationOptions : AuthenticationSchemeOptions
 {

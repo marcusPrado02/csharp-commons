@@ -2,11 +2,15 @@ using System.Text.Json;
 
 namespace MarcusPrado.Platform.EventSourcing;
 
+/// <summary>
+/// Thread-safe, in-memory implementation of <see cref="IEventStore"/> intended for testing and development.
+/// </summary>
 public sealed class InMemoryEventStore : IEventStore, IDisposable
 {
     private readonly Dictionary<string, List<StoredEvent>> _streams = new();
     private readonly SemaphoreSlim _lock = new(1, 1);
 
+    /// <inheritdoc />
     public async Task AppendAsync(string streamId, IEnumerable<IDomainEvent> events, long expectedVersion, CancellationToken cancellationToken = default)
     {
         await _lock.WaitAsync(cancellationToken);
@@ -40,6 +44,7 @@ public sealed class InMemoryEventStore : IEventStore, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public async Task<IReadOnlyList<StoredEvent>> LoadAsync(string streamId, long fromSequence = 0, CancellationToken cancellationToken = default)
     {
         await _lock.WaitAsync(cancellationToken);
@@ -55,6 +60,7 @@ public sealed class InMemoryEventStore : IEventStore, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public async Task<long> GetVersionAsync(string streamId, CancellationToken cancellationToken = default)
     {
         await _lock.WaitAsync(cancellationToken);
@@ -68,5 +74,6 @@ public sealed class InMemoryEventStore : IEventStore, IDisposable
         }
     }
 
+    /// <summary>Releases the semaphore used for thread synchronization.</summary>
     public void Dispose() => _lock.Dispose();
 }

@@ -11,6 +11,8 @@ public sealed class DapperRepository : IDapperRepository
 {
     private readonly Func<IDbConnection> _connectionFactory;
 
+    /// <summary>Initializes a new instance of <see cref="DapperRepository"/> with the provided connection factory.</summary>
+    /// <param name="connectionFactory">A factory that creates and returns an open-ready <see cref="IDbConnection"/>.</param>
     public DapperRepository(Func<IDbConnection> connectionFactory)
         => _connectionFactory = connectionFactory;
 

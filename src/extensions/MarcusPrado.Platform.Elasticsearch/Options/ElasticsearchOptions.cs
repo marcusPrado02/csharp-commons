@@ -15,6 +15,6 @@ public sealed class ElasticsearchOptions
     /// <summary>Gets or sets the optional certificate fingerprint for cloud deployments.</summary>
     public string? CloudId { get; set; }
 
-    /// <summary>Gets or sets the default number of results when <see cref="SearchQuery.Take"/> is not specified.</summary>
+    /// <summary>Gets or sets the default number of results when <c>SearchQuery.Take</c> is not specified.</summary>
     public int DefaultPageSize { get; set; } = 10;
 }

@@ -12,7 +12,7 @@ namespace MarcusPrado.Platform.Abstractions.Errors;
 /// allocations on the happy (success) path.
 /// </para>
 /// <para>
-/// Use the static factory methods (<see cref="Validation(string,string)"/>,
+/// Use the static factory methods (<c>Validation</c>,
 /// <see cref="NotFound"/>, <see cref="Technical"/>, …) instead of the primary
 /// constructor to benefit from semantic naming and correct default severities.
 /// </para>
@@ -96,11 +96,6 @@ public readonly record struct Error
 
     // ── Internal sentinel ─────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Sentinel value used on the success path to avoid nullability.
-    /// Never exposed to consumers — accessing <c>result.Error</c> on a
-    /// successful result throws <see cref="InvalidOperationException"/>.
-    /// </summary>
     // ── Code-based equality (Error identity = Code) ──────────────────────────
 
     /// <summary>

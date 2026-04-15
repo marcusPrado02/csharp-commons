@@ -2,11 +2,19 @@ namespace MarcusPrado.Platform.EventSourcing.Projections;
 
 using System.Text.Json;
 
+/// <summary>
+/// Replays all events from an event store stream through the projection engine to rebuild read models.
+/// </summary>
 public sealed class ProjectionRebuildJob
 {
     private readonly IEventStore _eventStore;
     private readonly ProjectionEngine _engine;
 
+    /// <summary>
+    /// Initializes the rebuild job with the event store and projection engine to use.
+    /// </summary>
+    /// <param name="eventStore">The event store from which events are loaded.</param>
+    /// <param name="engine">The projection engine that processes each replayed event.</param>
     public ProjectionRebuildJob(IEventStore eventStore, ProjectionEngine engine)
     {
         _eventStore = eventStore;

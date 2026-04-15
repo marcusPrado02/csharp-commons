@@ -5,6 +5,8 @@ public sealed partial class LoggingInterceptor : Interceptor
 {
     private readonly ILogger<LoggingInterceptor> _logger;
 
+    /// <summary>Initializes a new instance of <see cref="LoggingInterceptor"/> with the given logger.</summary>
+    /// <param name="logger">Logger used to record request lifecycle events.</param>
     public LoggingInterceptor(ILogger<LoggingInterceptor> logger)
         => _logger = logger;
 
@@ -20,6 +22,11 @@ public sealed partial class LoggingInterceptor : Interceptor
     [LoggerMessage(Level = LogLevel.Information, Message = "gRPC streaming [{Method}] started")]
     private static partial void LogStreamingStarted(ILogger logger, string method);
 
+    /// <summary>Intercepts a unary call, logging start, completion, and any errors with elapsed time.</summary>
+    /// <param name="request">The incoming request message.</param>
+    /// <param name="context">The server call context providing method metadata.</param>
+    /// <param name="continuation">The next handler in the gRPC pipeline.</param>
+    /// <returns>The response produced by the <paramref name="continuation"/>.</returns>
     public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(
         TRequest request,
         ServerCallContext context,
@@ -45,6 +52,11 @@ public sealed partial class LoggingInterceptor : Interceptor
 #pragma warning restore S2139
     }
 
+    /// <summary>Intercepts a client-streaming call, logging that the stream has started before forwarding.</summary>
+    /// <param name="requestStream">The stream of incoming request messages from the client.</param>
+    /// <param name="context">The server call context providing method metadata.</param>
+    /// <param name="continuation">The next handler in the gRPC pipeline.</param>
+    /// <returns>The response produced by the <paramref name="continuation"/>.</returns>
     public override async Task<TResponse> ClientStreamingServerHandler<TRequest, TResponse>(
         IAsyncStreamReader<TRequest> requestStream,
         ServerCallContext context,

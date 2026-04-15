@@ -8,6 +8,7 @@ public sealed class DatabasePerTenantStrategy : ITenantIsolationStrategy
 {
     private readonly Dictionary<string, string> _connections;
 
+    /// <summary>Initialises the strategy, optionally pre-seeding it with a map of tenant IDs to connection strings.</summary>
     public DatabasePerTenantStrategy(
         IReadOnlyDictionary<string, string>? connectionStrings = null)
     {
