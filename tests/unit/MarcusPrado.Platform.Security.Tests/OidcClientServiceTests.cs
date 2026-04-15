@@ -141,8 +141,8 @@ public class OidcClientServiceTests
 
         // Due to double-check locking, only one HTTP call should be made
         handler.CallCount.Should().Be(1);
-        task1.Result.Should().Be("token-1");
-        task2.Result.Should().Be("token-1");
+        (await task1).Should().Be("token-1");
+        (await task2).Should().Be("token-1");
     }
 
     [Fact]

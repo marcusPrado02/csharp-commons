@@ -54,9 +54,9 @@ public sealed class InMemoryAuditSinkTests
     }
 
     [Fact]
-    public void Clear_RemovesAllEntries()
+    public async Task Clear_RemovesAllEntries()
     {
-        _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Order", "o1")).Wait();
+        await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Order", "o1"));
         _sink.Clear();
         _sink.Entries.Should().BeEmpty();
     }
