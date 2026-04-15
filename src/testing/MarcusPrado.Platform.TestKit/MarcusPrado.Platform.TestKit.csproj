@@ -6,6 +6,10 @@
     <LangVersion>latest</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <!-- This project is a test-helper library, not a runnable test project.
+         Without this flag, 'dotnet test' picks it up via the xunit reference
+         and fails when it can't resolve Docker.DotNet at runtime. -->
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
