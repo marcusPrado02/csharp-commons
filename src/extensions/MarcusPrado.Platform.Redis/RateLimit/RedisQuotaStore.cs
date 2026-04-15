@@ -9,14 +9,14 @@ namespace MarcusPrado.Platform.Redis.RateLimit;
 /// </summary>
 public sealed class RedisQuotaStore : IQuotaStore
 {
-    private static readonly string LuaIncrExpire = @"
+    private static readonly string _luaIncrExpire = @"
 local current = redis.call('INCR', KEYS[1])
 if current == 1 then
   redis.call('EXPIRE', KEYS[1], ARGV[1])
 end
 return current";
 
-    private static readonly string LuaTryConsume = @"
+    private static readonly string _luaTryConsume = @"
 local current = redis.call('GET', KEYS[1])
 local count = tonumber(current) or 0
 if count >= tonumber(ARGV[2]) then
@@ -44,7 +44,7 @@ return 1";
         CancellationToken ct = default)
     {
         var result = await _db.ScriptEvaluateAsync(
-            LuaIncrExpire,
+            _luaIncrExpire,
             keys: new RedisKey[] { key },
             values: new RedisValue[] { windowSeconds });
         return (long)result;
@@ -58,7 +58,7 @@ return 1";
         CancellationToken ct = default)
     {
         var result = await _db.ScriptEvaluateAsync(
-            LuaTryConsume,
+            _luaTryConsume,
             keys: new RedisKey[] { key },
             values: new RedisValue[] { windowSeconds, limit });
         return (long)result == 1;

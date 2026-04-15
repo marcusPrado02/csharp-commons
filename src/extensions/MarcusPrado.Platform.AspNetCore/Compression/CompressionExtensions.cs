@@ -7,7 +7,7 @@ namespace MarcusPrado.Platform.AspNetCore.Extensions;
 /// </summary>
 public static class CompressionExtensions
 {
-    private static readonly string[] AdditionalMimeTypes =
+    private static readonly string[] _additionalMimeTypes =
     [
         "application/json",
         "application/x-protobuf",
@@ -31,7 +31,7 @@ public static class CompressionExtensions
             opts.EnableForHttps = true;
             opts.Providers.Add<BrotliCompressionProvider>();
             opts.Providers.Add<GzipCompressionProvider>();
-            opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(AdditionalMimeTypes);
+            opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(_additionalMimeTypes);
             configure?.Invoke(opts);
         });
 

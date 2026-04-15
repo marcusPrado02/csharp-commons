@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Handlers;
 public sealed class PermissionAuthorizationHandler
     : AuthorizationHandler<PermissionRequirement>
 {
-    private static readonly string[] PermissionClaimTypes =
+    private static readonly string[] _permissionClaimTypes =
         ["permission", "permissions"];
 
     /// <inheritdoc />
@@ -19,7 +19,7 @@ public sealed class PermissionAuthorizationHandler
     {
         var required = requirement.Permission.Value;
 
-        var hasPermission = PermissionClaimTypes
+        var hasPermission = _permissionClaimTypes
             .Any(t => context.User.HasClaim(t, required));
 
         if (hasPermission)

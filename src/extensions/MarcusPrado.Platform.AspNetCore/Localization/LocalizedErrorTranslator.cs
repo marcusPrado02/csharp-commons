@@ -22,7 +22,7 @@ namespace MarcusPrado.Platform.AspNetCore.Localization;
 public static class LocalizedErrorTranslator
 {
     // ResourceManager for the Errors resource family embedded in this assembly.
-    private static readonly ResourceManager Resources =
+    private static readonly ResourceManager _resources =
         new(
             "MarcusPrado.Platform.AspNetCore.Resources.Errors",
             typeof(LocalizedErrorTranslator).Assembly);
@@ -41,7 +41,7 @@ public static class LocalizedErrorTranslator
     {
         var key = error.Category.ToString(); // e.g. "NotFound", "Validation"
 
-        var localized = Resources.GetString(key, culture);
+        var localized = _resources.GetString(key, culture);
         return localized ?? error.Message;
     }
 

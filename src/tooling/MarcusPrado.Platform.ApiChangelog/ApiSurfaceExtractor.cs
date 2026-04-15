@@ -69,20 +69,20 @@ public static class ApiSurfaceExtractor
 
     private static List<ApiMember> ExtractMembers(Type type)
     {
-        const BindingFlags flags =
+        const BindingFlags Flags =
             BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
         var members = new List<ApiMember>();
 
         // Properties
-        foreach (var prop in type.GetProperties(flags).OrderBy(p => p.Name, StringComparer.Ordinal))
+        foreach (var prop in type.GetProperties(Flags).OrderBy(p => p.Name, StringComparer.Ordinal))
         {
             var sig = BuildPropertySignature(prop);
             members.Add(new ApiMember(prop.Name, sig, "property"));
         }
 
         // Methods (exclude property accessors, event accessors, record-generated methods)
-        foreach (var method in type.GetMethods(flags)
+        foreach (var method in type.GetMethods(Flags)
                      .Where(m => !m.IsSpecialName)
                      .OrderBy(m => m.Name, StringComparer.Ordinal)
                      .ThenBy(m => m.ToString(), StringComparer.Ordinal))
@@ -92,14 +92,14 @@ public static class ApiSurfaceExtractor
         }
 
         // Fields
-        foreach (var field in type.GetFields(flags).OrderBy(f => f.Name, StringComparer.Ordinal))
+        foreach (var field in type.GetFields(Flags).OrderBy(f => f.Name, StringComparer.Ordinal))
         {
             var sig = BuildFieldSignature(field);
             members.Add(new ApiMember(field.Name, sig, "field"));
         }
 
         // Events
-        foreach (var ev in type.GetEvents(flags).OrderBy(e => e.Name, StringComparer.Ordinal))
+        foreach (var ev in type.GetEvents(Flags).OrderBy(e => e.Name, StringComparer.Ordinal))
         {
             var sig = $"public event {GetFriendlyTypeName(ev.EventHandlerType)} {ev.Name}";
             members.Add(new ApiMember(ev.Name, sig, "event"));

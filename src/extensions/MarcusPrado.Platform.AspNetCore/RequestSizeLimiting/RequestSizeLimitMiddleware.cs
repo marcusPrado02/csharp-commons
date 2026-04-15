@@ -21,7 +21,7 @@ public sealed class RequestSizeLimitMiddleware
     private readonly RequestDelegate _next;
     private readonly RequestSizeLimitOptions _options;
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    private static readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -67,6 +67,6 @@ public sealed class RequestSizeLimitMiddleware
             detail = $"Request body exceeds the {limit} byte limit for tier {tier}."
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(problem, JsonOptions));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(problem, _jsonOptions));
     }
 }

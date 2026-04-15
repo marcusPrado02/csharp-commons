@@ -14,7 +14,7 @@ namespace MarcusPrado.Platform.AspNetCore.Localization;
 public sealed class ValidationMessageLocalizer
 {
     private readonly IStringLocalizerFactory _factory;
-    private static readonly CultureInfo FallbackCulture = CultureInfo.GetCultureInfo("en-US");
+    private static readonly CultureInfo _fallbackCulture = CultureInfo.GetCultureInfo("en-US");
 
     /// <summary>
     /// Initialises the localizer with the ASP.NET Core string-localizer factory.
@@ -49,9 +49,9 @@ public sealed class ValidationMessageLocalizer
         using var scope = new CultureScope(culture);
         var result = localizer[key];
 
-        if (result.ResourceNotFound && !culture.Equals(FallbackCulture))
+        if (result.ResourceNotFound && !culture.Equals(_fallbackCulture))
         {
-            using var fallbackScope = new CultureScope(FallbackCulture);
+            using var fallbackScope = new CultureScope(_fallbackCulture);
             var fallback = localizer[key];
             return fallback.ResourceNotFound ? key : fallback.Value;
         }

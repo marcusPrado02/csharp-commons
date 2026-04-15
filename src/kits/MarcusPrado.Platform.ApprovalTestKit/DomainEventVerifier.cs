@@ -8,7 +8,7 @@ namespace MarcusPrado.Platform.ApprovalTestKit;
 /// </summary>
 public static class DomainEventVerifier
 {
-    private static readonly JsonSerializerOptions DefaultOptions = new()
+    private static readonly JsonSerializerOptions _defaultOptions = new()
     {
         WriteIndented = true,
     };
@@ -31,7 +31,7 @@ public static class DomainEventVerifier
         ArgumentNullException.ThrowIfNull(domainEvent);
 
         var effectiveSettings = settings ?? PlatformVerifySettings.CreateDefault();
-        var json = JsonSerializer.Serialize(domainEvent, DefaultOptions);
+        var json = JsonSerializer.Serialize(domainEvent, _defaultOptions);
         return effectiveSettings.Apply(json);
     }
 }

@@ -11,7 +11,7 @@ namespace MarcusPrado.Platform.Degradation;
 /// </summary>
 public static class DegradationEndpoints
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    private static readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
     };
@@ -44,7 +44,7 @@ public static class DegradationEndpoints
             try
             {
                 request = await JsonSerializer.DeserializeAsync<SetModeRequest>(
-                    httpContext.Request.Body, JsonOptions, ct);
+                    httpContext.Request.Body, _jsonOptions, ct);
             }
             catch (JsonException)
             {

@@ -13,7 +13,7 @@ public sealed class IpFilterMiddleware
     private readonly IIpFilterStore _store;
     private readonly IpFilterOptions _options;
 
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    private static readonly JsonSerializerOptions _jsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
@@ -113,6 +113,6 @@ public sealed class IpFilterMiddleware
             detail = "Access denied from your IP address."
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(problem, JsonOptions));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(problem, _jsonOptions));
     }
 }

@@ -3,7 +3,7 @@ namespace MarcusPrado.Platform.Serilog.Sanitizer;
 /// <summary>Removes sensitive PII patterns from log message templates before logging.</summary>
 public static class LogSanitizer
 {
-    private static readonly (string Pattern, string Replacement)[] Patterns =
+    private static readonly (string Pattern, string Replacement)[] _patterns =
     {
         // Email addresses
         (@"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}", "***@***.***"),
@@ -24,7 +24,7 @@ public static class LogSanitizer
         }
 
         var result = input;
-        foreach (var (pattern, replacement) in Patterns)
+        foreach (var (pattern, replacement) in _patterns)
         {
             result = System.Text.RegularExpressions.Regex.Replace(result, pattern, replacement);
         }

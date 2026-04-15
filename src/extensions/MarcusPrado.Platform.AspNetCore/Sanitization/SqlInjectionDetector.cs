@@ -4,7 +4,7 @@ namespace MarcusPrado.Platform.AspNetCore.Sanitization;
 public static class SqlInjectionDetector
 {
     // Common SQL injection patterns
-    private static readonly string[] Patterns =
+    private static readonly string[] _patterns =
     [
         "--", ";--", ";", "/*", "*/", "xp_",
         "UNION ", "UNION\t", "SELECT ", "SELECT\t",
@@ -18,6 +18,6 @@ public static class SqlInjectionDetector
     {
         if (string.IsNullOrWhiteSpace(input)) return false;
         var upper = input.ToUpperInvariant();
-        return Patterns.Any(p => upper.Contains(p.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase));
+        return _patterns.Any(p => upper.Contains(p.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase));
     }
 }

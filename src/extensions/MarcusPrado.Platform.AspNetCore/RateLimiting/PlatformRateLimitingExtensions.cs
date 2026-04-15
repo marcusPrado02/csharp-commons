@@ -55,13 +55,13 @@ public static class PlatformRateLimitingExtensions
                         ((int)retryAfter.TotalSeconds).ToString(CultureInfo.InvariantCulture);
                 }
 
-                const string body =
+                const string Body =
                     "{\"status\":429,\"title\":\"Too Many Requests\"," +
                     "\"detail\":\"Rate limit exceeded. Try again after the Retry-After period.\"," +
                     "\"type\":\"https://tools.ietf.org/html/rfc6585#section-4\"}";
 
                 ctx.HttpContext.Response.ContentType = "application/problem+json";
-                await ctx.HttpContext.Response.WriteAsync(body, token);
+                await ctx.HttpContext.Response.WriteAsync(Body, token);
             };
         });
 

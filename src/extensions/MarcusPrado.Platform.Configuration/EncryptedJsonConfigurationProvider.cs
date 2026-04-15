@@ -10,7 +10,7 @@ namespace MarcusPrado.Platform.Configuration;
 /// </summary>
 public sealed partial class EncryptedJsonConfigurationProvider : JsonConfigurationProvider
 {
-    private static readonly Regex EncPattern = EncRegex();
+    private static readonly Regex _encPattern = EncRegex();
 
     private readonly Func<string, string> _decryptor;
 
@@ -38,7 +38,7 @@ public sealed partial class EncryptedJsonConfigurationProvider : JsonConfigurati
         foreach (var key in keys)
         {
             var value = Data[key];
-            if (value is not null && EncPattern.IsMatch(value))
+            if (value is not null && _encPattern.IsMatch(value))
             {
                 Data[key] = _decryptor(value);
             }

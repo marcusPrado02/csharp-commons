@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.Configuration;
 /// </summary>
 public sealed partial class EncryptedEnvironmentVariableProvider : ConfigurationProvider
 {
-    private static readonly Regex EncPattern = EncRegex();
+    private static readonly Regex _encPattern = EncRegex();
 
     private readonly Func<string, string> _decryptor;
 
@@ -36,7 +36,7 @@ public sealed partial class EncryptedEnvironmentVariableProvider : Configuration
             // Normalize key separator (environment variables use __ for hierarchy)
             var normalizedKey = key.Replace("__", ConfigurationPath.KeyDelimiter, StringComparison.Ordinal);
 
-            if (value is not null && EncPattern.IsMatch(value))
+            if (value is not null && _encPattern.IsMatch(value))
             {
                 Data[normalizedKey] = _decryptor(value);
             }

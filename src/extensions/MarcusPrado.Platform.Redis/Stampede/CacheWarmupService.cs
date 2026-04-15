@@ -14,19 +14,19 @@ namespace MarcusPrado.Platform.Redis.Stampede;
 /// </summary>
 public sealed class CacheWarmupService : IHostedService
 {
-    private static readonly Action<ILogger, int, Exception?> LogStarting =
+    private static readonly Action<ILogger, int, Exception?> _logStarting =
         LoggerMessage.Define<int>(
             LogLevel.Information,
             new EventId(1, "WarmupStarting"),
             "Cache warmup starting. {Count} action(s) registered.");
 
-    private static readonly Action<ILogger, Exception?> LogCompleted =
+    private static readonly Action<ILogger, Exception?> _logCompleted =
         LoggerMessage.Define(
             LogLevel.Information,
             new EventId(2, "WarmupCompleted"),
             "Cache warmup completed.");
 
-    private static readonly Action<ILogger, int, Exception?> LogActionFailed =
+    private static readonly Action<ILogger, int, Exception?> _logActionFailed =
         LoggerMessage.Define<int>(
             LogLevel.Error,
             new EventId(3, "WarmupActionFailed"),
@@ -63,7 +63,7 @@ public sealed class CacheWarmupService : IHostedService
     /// <param name="cancellationToken">Cancellation token.</param>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        LogStarting(_logger, _warmupActions.Count, null);
+        _logStarting(_logger, _warmupActions.Count, null);
 
         for (var i = 0; i < _warmupActions.Count; i++)
         {
@@ -73,11 +73,11 @@ public sealed class CacheWarmupService : IHostedService
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
-                LogActionFailed(_logger, i, ex);
+                _logActionFailed(_logger, i, ex);
             }
         }
 
-        LogCompleted(_logger, null);
+        _logCompleted(_logger, null);
     }
 
     /// <inheritdoc/>

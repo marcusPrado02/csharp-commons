@@ -6,7 +6,7 @@ namespace MarcusPrado.Platform.Nats.Consumer;
 /// </summary>
 public sealed class NatsConsumer : INatsConsumer
 {
-    private static readonly JsonSerializerOptions SerializerOptions =
+    private static readonly JsonSerializerOptions _serializerOptions =
         new(JsonSerializerDefaults.Web);
 
     private readonly INatsConnection _connection;
@@ -63,7 +63,7 @@ public sealed class NatsConsumer : INatsConsumer
                 continue;
             }
 
-            var payload = JsonSerializer.Deserialize<T>(msg.Data, SerializerOptions);
+            var payload = JsonSerializer.Deserialize<T>(msg.Data, _serializerOptions);
             if (payload is not null)
             {
                 await handler(payload, ct).ConfigureAwait(false);
@@ -108,7 +108,7 @@ public sealed class NatsConsumer : INatsConsumer
                 continue;
             }
 
-            var payload = JsonSerializer.Deserialize<T>(msg.Data, SerializerOptions);
+            var payload = JsonSerializer.Deserialize<T>(msg.Data, _serializerOptions);
             if (payload is not null)
             {
                 await handler(payload, ct).ConfigureAwait(false);

@@ -16,7 +16,7 @@ namespace MarcusPrado.Platform.Degradation;
 /// </summary>
 public sealed class DegradationMiddleware
 {
-    private static readonly HashSet<string> WriteMethods =
+    private static readonly HashSet<string> _writeMethods =
         new(StringComparer.OrdinalIgnoreCase) { "POST", "PUT", "DELETE", "PATCH" };
 
     private readonly RequestDelegate _next;
@@ -51,7 +51,7 @@ public sealed class DegradationMiddleware
                     "The service is currently in maintenance mode. Please try again later.");
                 return;
 
-            case DegradationMode.ReadOnly when WriteMethods.Contains(context.Request.Method):
+            case DegradationMode.ReadOnly when _writeMethods.Contains(context.Request.Method):
                 await WriteProblemAsync(
                     context,
                     (int)HttpStatusCode.MethodNotAllowed,

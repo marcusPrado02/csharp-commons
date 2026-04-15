@@ -10,7 +10,7 @@ namespace MarcusPrado.Platform.IntegrationTestEnvironment;
 /// </summary>
 public sealed class TestEnvironmentHealthCheck
 {
-    private static readonly TimeSpan DefaultPollInterval = TimeSpan.FromMilliseconds(500);
+    private static readonly TimeSpan _defaultPollInterval = TimeSpan.FromMilliseconds(500);
 
     private readonly ILogger<TestEnvironmentHealthCheck> _logger;
 
@@ -85,7 +85,7 @@ public sealed class TestEnvironmentHealthCheck
                     deadline);
             }
 
-            await Task.Delay(DefaultPollInterval, cts.Token).ConfigureAwait(false);
+            await Task.Delay(_defaultPollInterval, cts.Token).ConfigureAwait(false);
         }
 
         var unhealthy = containers

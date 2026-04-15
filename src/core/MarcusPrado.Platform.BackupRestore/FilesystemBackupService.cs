@@ -10,7 +10,7 @@ namespace MarcusPrado.Platform.BackupRestore;
 /// </summary>
 public sealed class FilesystemBackupService : IBackupService, IRestoreService
 {
-    private static readonly JsonSerializerOptions MetaJsonOptions = new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions _metaJsonOptions = new() { WriteIndented = true };
 
     // ── IBackupService ────────────────────────────────────────────────────────
 
@@ -238,7 +238,7 @@ public sealed class FilesystemBackupService : IBackupService, IRestoreService
     private static async Task WriteMetaAsync(BackupEntry entry, CancellationToken ct)
     {
         var metaPath = entry.ArchivePath + ".meta.json";
-        var json = JsonSerializer.Serialize(entry, MetaJsonOptions);
+        var json = JsonSerializer.Serialize(entry, _metaJsonOptions);
         await File.WriteAllTextAsync(metaPath, json, ct).ConfigureAwait(false);
     }
 }

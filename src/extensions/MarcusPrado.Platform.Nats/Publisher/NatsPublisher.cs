@@ -3,7 +3,7 @@ namespace MarcusPrado.Platform.Nats.Publisher;
 /// <summary>NATS-backed <see cref="INatsPublisher"/> that serializes payloads as JSON.</summary>
 public sealed class NatsPublisher : INatsPublisher
 {
-    private static readonly JsonSerializerOptions SerializerOptions =
+    private static readonly JsonSerializerOptions _serializerOptions =
         new(JsonSerializerDefaults.Web);
 
     private readonly INatsConnection _connection;
@@ -26,7 +26,7 @@ public sealed class NatsPublisher : INatsPublisher
         ArgumentNullException.ThrowIfNull(message);
         ArgumentException.ThrowIfNullOrWhiteSpace(subject);
 
-        var json = JsonSerializer.Serialize(message, SerializerOptions);
+        var json = JsonSerializer.Serialize(message, _serializerOptions);
         await _connection.PublishAsync(subject, json, cancellationToken: ct).ConfigureAwait(false);
     }
 }

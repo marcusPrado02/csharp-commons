@@ -13,7 +13,7 @@ namespace MarcusPrado.Platform.ExceptionEnrichment;
 /// </summary>
 public sealed class DeveloperExceptionPageEnricher : IMiddleware
 {
-    private static readonly JsonSerializerOptions SerializerOptions =
+    private static readonly JsonSerializerOptions _serializerOptions =
         new() { WriteIndented = true };
 
     private readonly IWebHostEnvironment _environment;
@@ -78,6 +78,6 @@ public sealed class DeveloperExceptionPageEnricher : IMiddleware
             },
         };
 
-        await context.Response.WriteAsync(JsonSerializer.Serialize(payload, SerializerOptions));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(payload, _serializerOptions));
     }
 }

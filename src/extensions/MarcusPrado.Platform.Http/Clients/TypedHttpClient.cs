@@ -16,7 +16,7 @@ public abstract class TypedHttpClient
 
     private readonly ILogger _logger;
 
-    private static readonly JsonSerializerOptions JsonOpts =
+    private static readonly JsonSerializerOptions _jsonOpts =
         new(JsonSerializerDefaults.Web);
 
     /// <summary>Initialises with the factory-provided client and a logger.</summary>
@@ -39,7 +39,7 @@ public abstract class TypedHttpClient
         TypedHttpClientLog.OutgoingRequest(_logger, "GET", requestUri);
         using var response = await Http.GetAsync(requestUri, ct);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<T>(JsonOpts, ct);
+        return await response.Content.ReadFromJsonAsync<T>(_jsonOpts, ct);
     }
 
     /// <summary>
@@ -52,9 +52,9 @@ public abstract class TypedHttpClient
         CancellationToken ct = default)
     {
         TypedHttpClientLog.OutgoingRequest(_logger, "POST", requestUri);
-        using var response = await Http.PostAsJsonAsync(requestUri, body, JsonOpts, ct);
+        using var response = await Http.PostAsJsonAsync(requestUri, body, _jsonOpts, ct);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<TResponse>(JsonOpts, ct);
+        return await response.Content.ReadFromJsonAsync<TResponse>(_jsonOpts, ct);
     }
 }
 

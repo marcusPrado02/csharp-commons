@@ -18,7 +18,7 @@ public sealed class EnforceResultTypeAnalyzer : DiagnosticAnalyzer
     /// <summary>The <see cref="DiagnosticDescriptor"/> for PLATFORM004.</summary>
     public static readonly DiagnosticDescriptor Descriptor = PlatformDiagnosticDescriptors.EnforceResultType;
 
-    private static readonly string[] ApplicationLayerKeywords = new[]
+    private static readonly string[] _applicationLayerKeywords = new[]
     {
         "Application",
         "Commands",
@@ -78,7 +78,7 @@ public sealed class EnforceResultTypeAnalyzer : DiagnosticAnalyzer
         var hasBlockNs = syntaxRoot
             .DescendantNodesAndSelf()
             .OfType<BaseNamespaceDeclarationSyntax>()
-            .Any(ns => ApplicationLayerKeywords.Any(kw => ns.Name.ToString().Contains(kw)));
+            .Any(ns => _applicationLayerKeywords.Any(kw => ns.Name.ToString().Contains(kw)));
 
         if (hasBlockNs)
         {
@@ -88,6 +88,6 @@ public sealed class EnforceResultTypeAnalyzer : DiagnosticAnalyzer
         return syntaxRoot
             .DescendantNodesAndSelf()
             .OfType<FileScopedNamespaceDeclarationSyntax>()
-            .Any(fs => ApplicationLayerKeywords.Any(kw => fs.Name.ToString().Contains(kw)));
+            .Any(fs => _applicationLayerKeywords.Any(kw => fs.Name.ToString().Contains(kw)));
     }
 }

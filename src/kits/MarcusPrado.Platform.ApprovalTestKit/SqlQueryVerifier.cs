@@ -10,7 +10,7 @@ namespace MarcusPrado.Platform.ApprovalTestKit;
 /// </summary>
 public static class SqlQueryVerifier
 {
-    private static readonly Regex WhitespacePattern = new(
+    private static readonly Regex _whitespacePattern = new(
         @"\s+",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
@@ -24,6 +24,6 @@ public static class SqlQueryVerifier
     public static string Normalise(string sql)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(sql);
-        return WhitespacePattern.Replace(sql.Trim(), " ");
+        return _whitespacePattern.Replace(sql.Trim(), " ");
     }
 }

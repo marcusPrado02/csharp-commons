@@ -12,7 +12,7 @@ namespace MarcusPrado.Platform.Application.Pipeline;
 public sealed class TracingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private static readonly ActivitySource Source = new("MarcusPrado.Platform.Application");
+    private static readonly ActivitySource _source = new("MarcusPrado.Platform.Application");
 
     /// <inheritdoc/>
     public async Task<TResponse> HandleAsync(
@@ -22,7 +22,7 @@ public sealed class TracingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
     {
         var operationName = typeof(TRequest).Name;
 
-        using var activity = Source.StartActivity(operationName, ActivityKind.Internal);
+        using var activity = _source.StartActivity(operationName, ActivityKind.Internal);
 
         activity?.SetTag("request.type", operationName);
 

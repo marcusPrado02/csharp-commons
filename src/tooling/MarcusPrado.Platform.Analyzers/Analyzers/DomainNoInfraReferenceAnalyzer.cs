@@ -18,7 +18,7 @@ public sealed class DomainNoInfraReferenceAnalyzer : DiagnosticAnalyzer
     /// <summary>The <see cref="DiagnosticDescriptor"/> for PLATFORM003.</summary>
     public static readonly DiagnosticDescriptor Descriptor = PlatformDiagnosticDescriptors.DomainNoInfraReference;
 
-    private static readonly string[] InfraNamespacePrefixes = new[]
+    private static readonly string[] _infraNamespacePrefixes = new[]
     {
         "Microsoft.EntityFrameworkCore",
         "Npgsql",
@@ -46,7 +46,7 @@ public sealed class DomainNoInfraReferenceAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        var isInfra = InfraNamespacePrefixes.Any(p =>
+        var isInfra = _infraNamespacePrefixes.Any(p =>
             namespaceName.StartsWith(p, System.StringComparison.Ordinal));
 
         if (!isInfra)

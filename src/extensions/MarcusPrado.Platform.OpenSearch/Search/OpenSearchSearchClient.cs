@@ -19,15 +19,15 @@ public sealed class OpenSearchSearchClient : ISearchClient, IIndexManager
     private readonly IOpenSearchClient _client;
 
 #pragma warning disable S3011 // Reflection access to private members is intentional here
-    private static readonly MethodInfo SearchCoreMethod =
+    private static readonly MethodInfo _searchCoreMethod =
         typeof(OpenSearchSearchClient).GetMethod(
             nameof(SearchCoreAsync), BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-    private static readonly MethodInfo GetByIdCoreMethod =
+    private static readonly MethodInfo _getByIdCoreMethod =
         typeof(OpenSearchSearchClient).GetMethod(
             nameof(GetByIdCoreAsync), BindingFlags.NonPublic | BindingFlags.Instance)!;
 
-    private static readonly MethodInfo IndexDocumentCoreMethod =
+    private static readonly MethodInfo _indexDocumentCoreMethod =
         typeof(OpenSearchSearchClient).GetMethod(
             nameof(IndexDocumentCoreAsync), BindingFlags.NonPublic | BindingFlags.Instance)!;
 #pragma warning restore S3011
@@ -46,7 +46,7 @@ public sealed class OpenSearchSearchClient : ISearchClient, IIndexManager
         AbsSearch.SearchQuery query, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(query);
-        return (Task<SearchResult<T>>)SearchCoreMethod
+        return (Task<SearchResult<T>>)_searchCoreMethod
             .MakeGenericMethod(typeof(T))
             .Invoke(this, [query, ct])!;
     }
@@ -57,7 +57,7 @@ public sealed class OpenSearchSearchClient : ISearchClient, IIndexManager
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(indexName);
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
-        return (Task<T?>)GetByIdCoreMethod
+        return (Task<T?>)_getByIdCoreMethod
             .MakeGenericMethod(typeof(T))
             .Invoke(this, [indexName, id, ct])!;
     }
@@ -106,7 +106,7 @@ public sealed class OpenSearchSearchClient : ISearchClient, IIndexManager
         ArgumentException.ThrowIfNullOrWhiteSpace(indexName);
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
         ArgumentNullException.ThrowIfNull(document);
-        return (Task)IndexDocumentCoreMethod
+        return (Task)_indexDocumentCoreMethod
             .MakeGenericMethod(typeof(T))
             .Invoke(this, [indexName, id, document, ct])!;
     }

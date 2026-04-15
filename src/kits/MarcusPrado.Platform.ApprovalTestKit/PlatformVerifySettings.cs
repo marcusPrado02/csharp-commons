@@ -10,13 +10,13 @@ namespace MarcusPrado.Platform.ApprovalTestKit;
 /// </summary>
 public sealed class PlatformVerifySettings
 {
-    private static readonly Regex GuidPattern = new(
+    private static readonly Regex _guidPattern = new(
         @"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
 
     // ISO 8601 DateTimeOffset: 2024-01-15T12:34:56.789+00:00 or 2024-01-15T12:34:56Z
-    private static readonly Regex DateTimeOffsetPattern = new(
+    private static readonly Regex _dateTimeOffsetPattern = new(
         @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(1));
@@ -41,7 +41,7 @@ public sealed class PlatformVerifySettings
     /// <returns>The current instance for chaining.</returns>
     public PlatformVerifySettings AddGuidScrubber()
     {
-        _scrubbers.Add(input => GuidPattern.Replace(input, "«Guid»"));
+        _scrubbers.Add(input => _guidPattern.Replace(input, "«Guid»"));
         return this;
     }
 
@@ -52,7 +52,7 @@ public sealed class PlatformVerifySettings
     /// <returns>The current instance for chaining.</returns>
     public PlatformVerifySettings AddDateTimeOffsetScrubber()
     {
-        _scrubbers.Add(input => DateTimeOffsetPattern.Replace(input, "«DateTimeOffset»"));
+        _scrubbers.Add(input => _dateTimeOffsetPattern.Replace(input, "«DateTimeOffset»"));
         return this;
     }
 

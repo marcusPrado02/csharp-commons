@@ -78,7 +78,7 @@ public abstract class AppDbContextBase : Microsoft.EntityFrameworkCore.DbContext
 
     private void FillAuditRecords()
     {
-        const string system = "system";
+        const string SystemActor = "system";
         var now = DateTimeOffset.UtcNow;
 
         foreach (var entry in ChangeTracker.Entries<IAuditable>())
@@ -87,13 +87,13 @@ public abstract class AppDbContextBase : Microsoft.EntityFrameworkCore.DbContext
             {
                 case EntityState.Added:
                     entry.Property(nameof(IAuditable.Audit)).CurrentValue =
-                        AuditRecord.Create(system, now);
+                        AuditRecord.Create(SystemActor, now);
                     break;
 
                 case EntityState.Modified:
                     var existing = (AuditRecord)entry.Property(nameof(IAuditable.Audit)).CurrentValue!;
                     entry.Property(nameof(IAuditable.Audit)).CurrentValue =
-                        existing.Update(system, now);
+                        existing.Update(SystemActor, now);
                     break;
             }
         }

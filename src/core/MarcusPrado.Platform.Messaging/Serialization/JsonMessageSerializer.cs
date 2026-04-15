@@ -5,7 +5,7 @@ namespace MarcusPrado.Platform.Messaging.Serialization;
 /// <summary><see cref="IMessageSerializer"/> backed by <see cref="System.Text.Json"/>.</summary>
 public sealed class JsonMessageSerializer : IMessageSerializer
 {
-    private static readonly JsonSerializerOptions Options = new()
+    private static readonly JsonSerializerOptions _options = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
@@ -15,13 +15,13 @@ public sealed class JsonMessageSerializer : IMessageSerializer
     public string Serialize<T>(T message)
         where T : class
     {
-        return JsonSerializer.Serialize(message, Options);
+        return JsonSerializer.Serialize(message, _options);
     }
 
     /// <inheritdoc/>
     public T? Deserialize<T>(string data)
         where T : class
     {
-        return JsonSerializer.Deserialize<T>(data, Options);
+        return JsonSerializer.Deserialize<T>(data, _options);
     }
 }

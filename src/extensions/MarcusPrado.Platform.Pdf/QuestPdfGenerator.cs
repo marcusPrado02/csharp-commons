@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.Pdf;
 /// <summary>Generates PDF documents using the QuestPDF library.</summary>
 public sealed class QuestPdfGenerator : IPdfGenerator
 {
-    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+    private static readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
 
     private readonly QuestPdfTemplateRegistry _registry;
 
@@ -49,7 +49,7 @@ public sealed class QuestPdfGenerator : IPdfGenerator
 
     private static byte[] GenerateDefault(PdfTemplate template)
     {
-        var json = JsonSerializer.Serialize(template.Data, JsonOptions);
+        var json = JsonSerializer.Serialize(template.Data, _jsonOptions);
 
         var pageSize = MapPageSize(template.PageSize, template.Landscape);
 

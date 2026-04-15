@@ -12,7 +12,7 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
     where TRequest : notnull
 {
     private const int MaxRetries = 3;
-    private static readonly TimeSpan BaseDelay = TimeSpan.FromMilliseconds(100);
+    private static readonly TimeSpan _baseDelay = TimeSpan.FromMilliseconds(100);
 
     private readonly ILogger<RetryBehavior<TRequest, TResponse>> _logger;
 
@@ -41,7 +41,7 @@ public sealed class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
                 attempt++;
 
                 var delay = TimeSpan.FromMilliseconds(
-                    BaseDelay.TotalMilliseconds * Math.Pow(2, attempt - 1));
+                    _baseDelay.TotalMilliseconds * Math.Pow(2, attempt - 1));
 
                 _logger.LogWarning(
                     ex,
