@@ -10,7 +10,7 @@ body = """
 ## [unreleased]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-### {{ group | title_case }}
+### {{ group }}
 {% for commit in commits %}
 - {% if commit.scope %}**{{ commit.scope }}**: {% endif %}{{ commit.message | trim }}\
 {% endfor %}
