@@ -20,7 +20,7 @@ public sealed class HealthChecksTests
     public async Task LivenessCheck_AlwaysReturnsHealthy()
     {
         var check = new LivenessCheck();
-        var ctx   = new HealthCheckContext();
+        var ctx = new HealthCheckContext();
 
         var result = await check.CheckHealthAsync(ctx);
 
@@ -30,7 +30,7 @@ public sealed class HealthChecksTests
     [Fact]
     public async Task LivenessCheck_MessageIsInformative()
     {
-        var check  = new LivenessCheck();
+        var check = new LivenessCheck();
         var result = await check.CheckHealthAsync(new HealthCheckContext());
 
         result.Description.Should().NotBeNullOrWhiteSpace();
@@ -41,7 +41,7 @@ public sealed class HealthChecksTests
     [Fact]
     public async Task ReadinessCheck_NoProbes_ReturnsHealthy()
     {
-        var check  = new ReadinessCheck([]);
+        var check = new ReadinessCheck([]);
         var result = await check.CheckHealthAsync(new HealthCheckContext());
 
         result.Status.Should().Be(HealthStatus.Healthy);
@@ -65,7 +65,7 @@ public sealed class HealthChecksTests
     public async Task ReadinessCheck_OneUnhealthyProbe_ReturnsUnhealthy()
     {
         var good = Substitute.For<IDependencyHealthProbe>();
-        var bad  = Substitute.For<IDependencyHealthProbe>();
+        var bad = Substitute.For<IDependencyHealthProbe>();
         good.Name.Returns("cache");
         bad.Name.Returns("postgres");
         good.CheckAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<(bool, string)>((true, "ok")));
@@ -161,7 +161,7 @@ public sealed class HealthChecksTests
         var client = host.CreateClient();
 
         var response = await client.GetAsync("/health/detail");
-        var body     = await response.Content.ReadAsStringAsync();
+        var body = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         body.Should().Contain("status");

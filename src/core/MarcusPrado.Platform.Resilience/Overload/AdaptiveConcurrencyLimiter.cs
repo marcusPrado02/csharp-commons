@@ -20,14 +20,14 @@ public sealed class AdaptiveConcurrencyLimiter
     /// <param name="maxLimit">Maximum limit (never increased above this).</param>
     /// <param name="backpressure">Optional back-pressure signal to set on overload.</param>
     public AdaptiveConcurrencyLimiter(
-        int initialLimit    = 100,
-        int minLimit        = 1,
-        int maxLimit        = 1000,
+        int initialLimit = 100,
+        int minLimit = 1,
+        int maxLimit = 1000,
         BackpressureSignal? backpressure = null)
     {
-        _limit        = initialLimit;
-        _minLimit     = minLimit;
-        _maxLimit     = maxLimit;
+        _limit = initialLimit;
+        _minLimit = minLimit;
+        _maxLimit = maxLimit;
         _backpressure = backpressure ?? new BackpressureSignal();
     }
 

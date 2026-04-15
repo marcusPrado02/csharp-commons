@@ -1,9 +1,9 @@
+global using FluentAssertions;
 global using MarcusPrado.Platform.Abstractions.Documents;
 global using MarcusPrado.Platform.Pdf;
 global using MarcusPrado.Platform.Pdf.Extensions;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
-global using Xunit;
-global using FluentAssertions;
 global using QuestPDF.Fluent;
 global using QuestPDF.Infrastructure;
+global using Xunit;

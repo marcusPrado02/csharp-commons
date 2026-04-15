@@ -46,7 +46,7 @@ public sealed class RequestSizeLimitMiddlewareTests
         using var server = CreateServer();
         using var client = server.CreateClient();
 
-        var content  = new ByteArrayContent(new byte[512]);
+        var content = new ByteArrayContent(new byte[512]);
         var response = await client.PostAsync("/", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -57,10 +57,10 @@ public sealed class RequestSizeLimitMiddlewareTests
     {
         // Exactly at the Free limit boundary (1 048 576 bytes) → allowed.
         const long freeLimit = 1L * 1024 * 1024;
-        using var server     = CreateServer();
-        using var client     = server.CreateClient();
+        using var server = CreateServer();
+        using var client = server.CreateClient();
 
-        var content  = new ByteArrayContent(new byte[freeLimit]);
+        var content = new ByteArrayContent(new byte[freeLimit]);
         var response = await client.PostAsync("/", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK,
@@ -71,11 +71,11 @@ public sealed class RequestSizeLimitMiddlewareTests
     public async Task BodyExceedsFreeTierLimit_Returns413WithProblemDetails()
     {
         // One byte over the 1 MB Free limit.
-        const long oneByte   = (1L * 1024 * 1024) + 1;
-        using var server     = CreateServer();
-        using var client     = server.CreateClient();
+        const long oneByte = (1L * 1024 * 1024) + 1;
+        using var server = CreateServer();
+        using var client = server.CreateClient();
 
-        var content  = new ByteArrayContent(new byte[oneByte]);
+        var content = new ByteArrayContent(new byte[oneByte]);
         var response = await client.PostAsync("/", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.RequestEntityTooLarge);
@@ -94,14 +94,14 @@ public sealed class RequestSizeLimitMiddlewareTests
     {
         // Pro tier = 10 MB; sending 5 MB should be allowed.
         const long fiveMb = 5L * 1024 * 1024;
-        using var server  = CreateServer(opts =>
+        using var server = CreateServer(opts =>
         {
             // Override the resolver to always return Pro for every request.
             opts.TierResolver = _ => RequestSizeTier.Pro;
         });
         using var client = server.CreateClient();
 
-        var content  = new ByteArrayContent(new byte[fiveMb]);
+        var content = new ByteArrayContent(new byte[fiveMb]);
         var response = await client.PostAsync("/", content);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK,
@@ -113,9 +113,9 @@ public sealed class RequestSizeLimitMiddlewareTests
     {
         // Send a Content-Length header claiming 2 MB but an empty body.
         // The middleware must reject based on the header alone.
-        const long twoMb    = 2L * 1024 * 1024;
-        using var server    = CreateServer();
-        using var client    = server.CreateClient();
+        const long twoMb = 2L * 1024 * 1024;
+        using var server = CreateServer();
+        using var client = server.CreateClient();
 
         var request = new HttpRequestMessage(HttpMethod.Post, "/")
         {

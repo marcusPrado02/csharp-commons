@@ -2,7 +2,7 @@ namespace MarcusPrado.Platform.BackupRestore.Tests;
 
 public sealed class FilesystemBackupServiceTests : IDisposable
 {
-    private readonly string _source  = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+    private readonly string _source = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
     private readonly string _backups = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
     private readonly FilesystemBackupService _svc = new();
 
@@ -15,8 +15,10 @@ public sealed class FilesystemBackupServiceTests : IDisposable
 
     public void Dispose()
     {
-        if (Directory.Exists(_source))  Directory.Delete(_source,  recursive: true);
-        if (Directory.Exists(_backups)) Directory.Delete(_backups, recursive: true);
+        if (Directory.Exists(_source))
+            Directory.Delete(_source, recursive: true);
+        if (Directory.Exists(_backups))
+            Directory.Delete(_backups, recursive: true);
     }
 
     [Fact]
@@ -86,21 +88,22 @@ public sealed class FilesystemBackupServiceTests : IDisposable
         var restoreTo = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         try
         {
-            var backup  = await _svc.CreateFullBackupAsync(_source, _backups);
+            var backup = await _svc.CreateFullBackupAsync(_source, _backups);
             var restore = await _svc.RestoreAsync(backup.Value, restoreTo);
             restore.IsSuccess.Should().BeTrue();
             File.Exists(Path.Combine(restoreTo, "file1.txt")).Should().BeTrue();
         }
         finally
         {
-            if (Directory.Exists(restoreTo)) Directory.Delete(restoreTo, recursive: true);
+            if (Directory.Exists(restoreTo))
+                Directory.Delete(restoreTo, recursive: true);
         }
     }
 
     [Fact]
     public async Task ValidateRestore_ValidArchive_ReturnsValid()
     {
-        var backup   = await _svc.CreateFullBackupAsync(_source, _backups);
+        var backup = await _svc.CreateFullBackupAsync(_source, _backups);
         var validate = await _svc.ValidateRestoreAsync(backup.Value);
         validate.IsSuccess.Should().BeTrue();
         validate.Value.IsValid.Should().BeTrue();
@@ -111,8 +114,8 @@ public sealed class FilesystemBackupServiceTests : IDisposable
     public async Task IncrementalBackup_OnlyChangedFiles_SmallArchive()
     {
         // Files are newer than reference date
-        var since   = DateTimeOffset.UtcNow.AddHours(-1);
-        var result  = await _svc.CreateIncrementalBackupAsync(_source, _backups, since);
+        var since = DateTimeOffset.UtcNow.AddHours(-1);
+        var result = await _svc.CreateIncrementalBackupAsync(_source, _backups, since);
         result.IsSuccess.Should().BeTrue();
         result.Value.Type.Should().Be(BackupType.Incremental);
     }

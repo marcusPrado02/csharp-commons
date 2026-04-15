@@ -15,7 +15,8 @@ public static partial class SqlSanitizer
     /// <summary>Replaces all literal values with '?' placeholders.</summary>
     public static string Sanitize(string sql)
     {
-        if (string.IsNullOrWhiteSpace(sql)) return sql;
+        if (string.IsNullOrWhiteSpace(sql))
+            return sql;
         var s = StringLiterals().Replace(sql, "?");
         return NumericLiterals().Replace(s, "?");
     }

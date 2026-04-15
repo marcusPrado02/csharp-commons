@@ -51,7 +51,7 @@ public sealed class RedisDistributedLock : IDistributedLock
         TimeSpan ttl,
         CancellationToken ct = default)
     {
-        var token    = Guid.NewGuid().ToString("N");
+        var token = Guid.NewGuid().ToString("N");
         var acquired = await _db.StringSetAsync(key, token, ttl, When.NotExists);
         return acquired ? new RedisLockHandle(_db, key, token) : null;
     }

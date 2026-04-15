@@ -15,7 +15,7 @@ public sealed class RateLimitingTests
     [Fact]
     public void AddPlatformRateLimiting_Defaults_RegistersOptions()
     {
-        var sp   = BuildServiceProvider();
+        var sp = BuildServiceProvider();
         var opts = sp.GetService<PlatformRateLimitingOptions>();
 
         opts.Should().NotBeNull();
@@ -32,8 +32,8 @@ public sealed class RateLimitingTests
             .AddPlatformRateLimiting(o =>
             {
                 o.TenantPermitLimit = 50;
-                o.UserPermitLimit   = 10;
-                o.IpPermitLimit     = 25;
+                o.UserPermitLimit = 10;
+                o.IpPermitLimit = 25;
             })
             .BuildServiceProvider();
 
@@ -48,7 +48,7 @@ public sealed class RateLimitingTests
     [Fact]
     public void TenantPolicy_NoHeader_UsesAnonKey()
     {
-        var policy    = new TenantRateLimitPolicy(new PlatformRateLimitingOptions());
+        var policy = new TenantRateLimitPolicy(new PlatformRateLimitingOptions());
         var partition = policy.GetPartition(new DefaultHttpContext());
 
         partition.PartitionKey.Should().Be("__anon__");
@@ -57,8 +57,8 @@ public sealed class RateLimitingTests
     [Fact]
     public void TenantPolicy_WithHeader_UsesTenantIdAsKey()
     {
-        var policy  = new TenantRateLimitPolicy(new PlatformRateLimitingOptions());
-        var ctx     = new DefaultHttpContext();
+        var policy = new TenantRateLimitPolicy(new PlatformRateLimitingOptions());
+        var ctx = new DefaultHttpContext();
         ctx.Request.Headers["X-Tenant-ID"] = "tenant-42";
 
         var partition = policy.GetPartition(ctx);
@@ -76,7 +76,7 @@ public sealed class RateLimitingTests
     [Fact]
     public void UserPolicy_Anonymous_UsesAnonKey()
     {
-        var policy    = new UserRateLimitPolicy(new PlatformRateLimitingOptions());
+        var policy = new UserRateLimitPolicy(new PlatformRateLimitingOptions());
         var partition = policy.GetPartition(new DefaultHttpContext());
 
         partition.PartitionKey.Should().Be("__anon__");
@@ -86,7 +86,7 @@ public sealed class RateLimitingTests
     public void UserPolicy_WithNameIdentifier_UsesSubjectAsKey()
     {
         var policy = new UserRateLimitPolicy(new PlatformRateLimitingOptions());
-        var ctx    = new DefaultHttpContext();
+        var ctx = new DefaultHttpContext();
 
         ctx.User = new ClaimsPrincipal(new ClaimsIdentity(
             new[] { new Claim(ClaimTypes.NameIdentifier, "user-99") },
@@ -118,7 +118,7 @@ public sealed class RateLimitingTests
     public void IpPolicy_WithRemoteIp_UsesIpAsKey()
     {
         var policy = new IpRateLimitPolicy(new PlatformRateLimitingOptions());
-        var ctx    = new DefaultHttpContext();
+        var ctx = new DefaultHttpContext();
         ctx.Connection.RemoteIpAddress = System.Net.IPAddress.Parse("10.0.0.1");
 
         var partition = policy.GetPartition(ctx);
@@ -231,7 +231,7 @@ public sealed class RateLimitingTests
 
         await client.SendAsync(BuildTenantRequest(tenantA));    // exhaust tenantA
         var rejectA = await client.SendAsync(BuildTenantRequest(tenantA));
-        var passB   = await client.SendAsync(BuildTenantRequest(tenantB));
+        var passB = await client.SendAsync(BuildTenantRequest(tenantB));
 
         rejectA.StatusCode.Should().Be(HttpStatusCode.TooManyRequests,
             because: "tenantA has exhausted its quota");
@@ -267,7 +267,7 @@ public sealed class RateLimitingTests
                 services.AddPlatformRateLimiting(o =>
                 {
                     o.TenantPermitLimit = tenantPermit;
-                    o.UserPermitLimit   = userPermit;
+                    o.UserPermitLimit = userPermit;
                 });
             })
             .Configure(app =>

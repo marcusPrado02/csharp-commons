@@ -28,7 +28,7 @@ public sealed class SnsSmsService : ISmsService
         var request = new PublishRequest
         {
             PhoneNumber = message.To,
-            Message     = message.Body,
+            Message = message.Body,
             MessageAttributes = BuildMessageAttributes(message.From),
         };
 
@@ -51,7 +51,7 @@ public sealed class SnsSmsService : ISmsService
         {
             ["AWS.SNS.SMS.SMSType"] = new MessageAttributeValue
             {
-                DataType    = "String",
+                DataType = "String",
                 StringValue = _options.SmsType,
             },
         };
@@ -61,7 +61,7 @@ public sealed class SnsSmsService : ISmsService
         {
             attrs["AWS.SNS.SMS.SenderID"] = new MessageAttributeValue
             {
-                DataType    = "String",
+                DataType = "String",
                 StringValue = senderId,
             };
         }

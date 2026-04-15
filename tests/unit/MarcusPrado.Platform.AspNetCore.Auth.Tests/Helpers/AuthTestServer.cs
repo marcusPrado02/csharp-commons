@@ -10,23 +10,23 @@ namespace MarcusPrado.Platform.AspNetCore.Auth.Tests.Helpers;
 public static class AuthTestServer
 {
     // ── Routes ───────────────────────────────────────────────────────────────
-    public const string JwtInfoRoute       = "/auth/jwt-info";
-    public const string ApiKeyRoute        = "/auth/apikey";
-    public const string PermissionRoute    = "/auth/permission";
-    public const string ScopeRoute         = "/auth/scope";
-    public const string AnonymousRoute     = "/auth/anon";
+    public const string JwtInfoRoute = "/auth/jwt-info";
+    public const string ApiKeyRoute = "/auth/apikey";
+    public const string PermissionRoute = "/auth/permission";
+    public const string ScopeRoute = "/auth/scope";
+    public const string AnonymousRoute = "/auth/anon";
 
     // ── Test auth configuration ───────────────────────────────────────────────
-    public const string TestApiKey   = "test-api-key-abc123";
+    public const string TestApiKey = "test-api-key-abc123";
     public const string TestPermission = "read:users";
-    public const string TestScope    = "api:read";
+    public const string TestScope = "api:read";
 
     /// <summary>
     /// Creates a <see cref="TestServer"/> with both JWT and API-key schemes
     /// and permission / scope authorization policies wired up.
     /// </summary>
     public static TestServer Create(
-        Action<JwtAuthenticationOptions>?    configureJwt    = null,
+        Action<JwtAuthenticationOptions>? configureJwt = null,
         Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
     {
         var builder = new WebHostBuilder()
@@ -35,9 +35,9 @@ public static class AuthTestServer
                 services.AddPlatformAuth(
                     opts =>
                     {
-                        opts.SigningKey   = JwtTokenFactory.TestSigningKey;
-                        opts.Issuer      = JwtTokenFactory.TestIssuer;
-                        opts.Audience    = JwtTokenFactory.TestAudience;
+                        opts.SigningKey = JwtTokenFactory.TestSigningKey;
+                        opts.Issuer = JwtTokenFactory.TestIssuer;
+                        opts.Audience = JwtTokenFactory.TestAudience;
                         opts.ValidateLifetime = true;
                         configureJwt?.Invoke(opts);
                     },
@@ -98,7 +98,7 @@ public static class AuthTestServer
 
     /// <summary>Creates an <see cref="HttpClient"/> from the server.</summary>
     public static HttpClient CreateClient(
-        Action<JwtAuthenticationOptions>?    configureJwt    = null,
+        Action<JwtAuthenticationOptions>? configureJwt = null,
         Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
         => Create(configureJwt, configureApiKey).CreateClient();
 }

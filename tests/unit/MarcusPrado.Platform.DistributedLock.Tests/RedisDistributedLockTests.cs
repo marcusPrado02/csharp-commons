@@ -61,8 +61,10 @@ public sealed class RedisDistributedLockTests
             {
                 var val = ci.ArgAt<RedisValue>(1);
                 callCount++;
-                if (callCount == 1) first = val;
-                else second = val;
+                if (callCount == 1)
+                    first = val;
+                else
+                    second = val;
                 return Task.FromResult(true);
             });
 

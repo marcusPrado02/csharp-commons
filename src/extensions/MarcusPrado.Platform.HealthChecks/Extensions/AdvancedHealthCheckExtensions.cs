@@ -60,9 +60,9 @@ public static class AdvancedHealthCheckExtensions
             var all = history.GetAll();
             var payload = all.SelectMany(kvp => kvp.Value).OrderByDescending(r => r.CheckedAt).Select(r => new
             {
-                name        = r.Name,
-                status      = r.Status.ToString(),
-                checkedAt   = r.CheckedAt,
+                name = r.Name,
+                status = r.Status.ToString(),
+                checkedAt = r.CheckedAt,
                 description = r.Description,
             });
 

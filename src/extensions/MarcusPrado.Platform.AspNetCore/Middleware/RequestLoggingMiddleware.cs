@@ -21,7 +21,7 @@ public sealed class RequestLoggingMiddleware
         RequestDelegate next,
         ILogger<RequestLoggingMiddleware> logger)
     {
-        _next   = next;
+        _next = next;
         _logger = logger;
     }
 
@@ -36,7 +36,7 @@ public sealed class RequestLoggingMiddleware
         }
         finally
         {
-            var elapsed    = Stopwatch.GetElapsedTime(start);
+            var elapsed = Stopwatch.GetElapsedTime(start);
             var statusCode = context.Response.StatusCode;
 
             if (statusCode >= 500)

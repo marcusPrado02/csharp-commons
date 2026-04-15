@@ -17,7 +17,7 @@ public sealed class ContractCompatibilityCheckerTests
     public void Check_DetectsFieldRemoval()
     {
         const string previous = """{"orderId":"String","amount":"Number"}""";
-        const string current  = """{"orderId":"String"}""";
+        const string current = """{"orderId":"String"}""";
 
         var report = ContractCompatibilityChecker.Check(previous, current);
 
@@ -30,7 +30,7 @@ public sealed class ContractCompatibilityCheckerTests
     public void Check_DetectsTypeChange()
     {
         const string previous = """{"amount":"Number"}""";
-        const string current  = """{"amount":"String"}""";
+        const string current = """{"amount":"String"}""";
 
         var report = ContractCompatibilityChecker.Check(previous, current);
 
@@ -43,7 +43,7 @@ public sealed class ContractCompatibilityCheckerTests
     public void Check_AllowsAddingNewFields()
     {
         const string previous = """{"orderId":"String"}""";
-        const string current  = """{"orderId":"String","newField":"String"}""";
+        const string current = """{"orderId":"String","newField":"String"}""";
 
         var report = ContractCompatibilityChecker.Check(previous, current);
 

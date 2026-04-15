@@ -1,7 +1,7 @@
 global using MarcusPrado.Platform.Abstractions.Errors;
-global using MarcusPrado.Platform.Abstractions.Validation;
 global using MarcusPrado.Platform.Abstractions.Results;
 global using MarcusPrado.Platform.Abstractions.Storage;
+global using MarcusPrado.Platform.Abstractions.Validation;
 global using MarcusPrado.Platform.Application.CQRS;
 global using MarcusPrado.Platform.Application.Errors;
 global using MarcusPrado.Platform.Application.Idempotency;

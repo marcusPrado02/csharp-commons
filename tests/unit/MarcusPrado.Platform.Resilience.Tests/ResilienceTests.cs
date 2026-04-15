@@ -26,16 +26,17 @@ public sealed class RetryPolicyTests
     public async Task ExecuteAsync_SuccessAfterTwoFailures_ReturnsResult()
     {
         var attempts = 0;
-        var policy   = new RetryPolicy(new RetryOptions
+        var policy = new RetryPolicy(new RetryOptions
         {
-            MaxRetries  = 3,
-            BaseDelay   = TimeSpan.FromMilliseconds(1),
+            MaxRetries = 3,
+            BaseDelay = TimeSpan.FromMilliseconds(1),
         });
 
         var result = await policy.ExecuteAsync(_ =>
         {
             attempts++;
-            if (attempts < 3) throw new InvalidOperationException("transient");
+            if (attempts < 3)
+                throw new InvalidOperationException("transient");
             return Task.FromResult(99);
         });
 
@@ -49,7 +50,7 @@ public sealed class RetryPolicyTests
         var policy = new RetryPolicy(new RetryOptions
         {
             MaxRetries = 2,
-            BaseDelay  = TimeSpan.FromMilliseconds(1),
+            BaseDelay = TimeSpan.FromMilliseconds(1),
         });
 
         var act = async () => await policy.ExecuteAsync<int>(
@@ -62,10 +63,10 @@ public sealed class RetryPolicyTests
     public async Task ExecuteAsync_ShouldRetryReturnsFalse_DoesNotRetry()
     {
         var attempts = 0;
-        var policy   = new RetryPolicy(new RetryOptions
+        var policy = new RetryPolicy(new RetryOptions
         {
-            MaxRetries  = 5,
-            BaseDelay   = TimeSpan.FromMilliseconds(1),
+            MaxRetries = 5,
+            BaseDelay = TimeSpan.FromMilliseconds(1),
             ShouldRetry = _ => false,
         });
 
@@ -113,7 +114,8 @@ public sealed class CircuitBreakerPolicyTests
         for (var i = 0; i < 3; i++)
         {
 #pragma warning disable CA1031
-            try { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
+            try
+            { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
             catch { /* swallow */ }
 #pragma warning restore CA1031
         }
@@ -127,11 +129,12 @@ public sealed class CircuitBreakerPolicyTests
         var policy = new CircuitBreakerPolicy(new CircuitBreakerOptions
         {
             FailureThreshold = 1,
-            BreakDuration    = TimeSpan.FromHours(1),
+            BreakDuration = TimeSpan.FromHours(1),
         });
 
 #pragma warning disable CA1031
-        try { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
+        try
+        { await policy.ExecuteAsync<int>(_ => throw new InvalidOperationException()); }
         catch { /* trip the breaker */ }
 #pragma warning restore CA1031
 
@@ -167,7 +170,8 @@ public sealed class HedgingPolicyTests
         var result = await policy.ExecuteAsync(async ct =>
         {
             var n = Interlocked.Increment(ref callCount);
-            if (n == 1) await Task.Delay(500, ct);   // primary is slow
+            if (n == 1)
+                await Task.Delay(500, ct);   // primary is slow
             return n;
         });
 
@@ -245,7 +249,7 @@ public sealed class AdaptiveConcurrencyLimiterTests
     public async Task ExecuteAsync_LimitOf1_TwoParallelCalls_SecondThrowsOverload()
     {
         var limiter = new AdaptiveConcurrencyLimiter(1);
-        var tcs     = new TaskCompletionSource<int>();
+        var tcs = new TaskCompletionSource<int>();
 
         // occupy the single slot
         var first = limiter.ExecuteAsync(_ => tcs.Task);
@@ -280,13 +284,14 @@ public sealed class ResilientExecutorTests
             .WithRetry(new RetryOptions
             {
                 MaxRetries = 2,
-                BaseDelay  = TimeSpan.FromMilliseconds(1),
+                BaseDelay = TimeSpan.FromMilliseconds(1),
             });
 
         var result = await executor.ExecuteAsync(_ =>
         {
             attempts++;
-            if (attempts < 2) throw new InvalidOperationException("transient");
+            if (attempts < 2)
+                throw new InvalidOperationException("transient");
             return Task.FromResult(9);
         });
 
@@ -315,16 +320,16 @@ public sealed class BackoffTests
         var d1 = ExponentialBackoff.Calculate(1, TimeSpan.FromMilliseconds(100));
         var d2 = ExponentialBackoff.Calculate(2, TimeSpan.FromMilliseconds(100));
 
-        d0.TotalMilliseconds.Should().BeApproximately(100,  0.001);
-        d1.TotalMilliseconds.Should().BeApproximately(200,  0.001);
-        d2.TotalMilliseconds.Should().BeApproximately(400,  0.001);
+        d0.TotalMilliseconds.Should().BeApproximately(100, 0.001);
+        d1.TotalMilliseconds.Should().BeApproximately(200, 0.001);
+        d2.TotalMilliseconds.Should().BeApproximately(400, 0.001);
     }
 
     [Fact]
     public void DecorrelatedJitter_StaysWithinBounds()
     {
         var baseDelay = TimeSpan.FromMilliseconds(100);
-        var maxDelay  = TimeSpan.FromSeconds(2);
+        var maxDelay = TimeSpan.FromSeconds(2);
 
         for (var i = 0; i < 50; i++)
         {

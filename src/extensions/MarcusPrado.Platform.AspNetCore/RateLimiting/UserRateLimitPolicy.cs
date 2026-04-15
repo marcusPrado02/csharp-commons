@@ -32,8 +32,8 @@ public sealed class UserRateLimitPolicy : IRateLimiterPolicy<string>
             userId,
             _ => new SlidingWindowRateLimiterOptions
             {
-                PermitLimit       = _options.UserPermitLimit,
-                Window            = _options.UserWindow,
+                PermitLimit = _options.UserPermitLimit,
+                Window = _options.UserWindow,
                 SegmentsPerWindow = _options.UserSegmentsPerWindow,
             });
     }

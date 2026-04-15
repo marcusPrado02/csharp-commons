@@ -31,7 +31,7 @@ public sealed class IpRateLimitPolicy : IRateLimiterPolicy<string>
             _ => new FixedWindowRateLimiterOptions
             {
                 PermitLimit = _options.IpPermitLimit,
-                Window      = _options.IpWindow,
+                Window = _options.IpWindow,
             });
     }
 

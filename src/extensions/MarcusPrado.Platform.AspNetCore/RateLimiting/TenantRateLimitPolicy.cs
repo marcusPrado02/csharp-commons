@@ -31,7 +31,7 @@ public sealed class TenantRateLimitPolicy : IRateLimiterPolicy<string>
             _ => new FixedWindowRateLimiterOptions
             {
                 PermitLimit = _options.TenantPermitLimit,
-                Window      = _options.TenantWindow,
+                Window = _options.TenantWindow,
             });
     }
 

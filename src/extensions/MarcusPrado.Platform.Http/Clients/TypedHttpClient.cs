@@ -24,7 +24,7 @@ public abstract class TypedHttpClient
     {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentNullException.ThrowIfNull(logger);
-        Http    = http;
+        Http = http;
         _logger = logger;
     }
 

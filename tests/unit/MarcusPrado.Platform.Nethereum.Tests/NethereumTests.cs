@@ -62,7 +62,7 @@ public sealed class NethereumWalletManagerTests
     public async Task CreateWalletAsync_ReturnsNonEmptyAddress()
     {
         var manager = new NethereumWalletManager();
-        var wallet  = await manager.CreateWalletAsync();
+        var wallet = await manager.CreateWalletAsync();
 
         wallet.Address.Should().NotBeNullOrWhiteSpace();
         wallet.Address.Should().StartWith("0x");
@@ -83,7 +83,7 @@ public sealed class NethereumWalletManagerTests
     public async Task SignMessageAsync_KnownWallet_ReturnsHexSignature()
     {
         var manager = new NethereumWalletManager();
-        var wallet  = await manager.CreateWalletAsync();
+        var wallet = await manager.CreateWalletAsync();
 
         var sig = await manager.SignMessageAsync(wallet.Address, [0x01, 0x02, 0x03]);
 
@@ -105,9 +105,9 @@ public sealed class NethereumSmartContractClientTests
     [Fact]
     public async Task CallAsync_NoAbiRegistered_ThrowsInvalidOperationException()
     {
-        var web3     = Substitute.For<IWeb3>();
+        var web3 = Substitute.For<IWeb3>();
         var registry = new ContractRegistry();
-        var client   = new NethereumSmartContractClient(web3, registry);
+        var client = new NethereumSmartContractClient(web3, registry);
 
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => client.CallAsync<string>("0xNOCONTRACT", "balanceOf", ["0xADDR"]));
@@ -116,9 +116,9 @@ public sealed class NethereumSmartContractClientTests
     [Fact]
     public async Task SendAsync_NoAbiRegistered_ThrowsInvalidOperationException()
     {
-        var web3     = Substitute.For<IWeb3>();
+        var web3 = Substitute.For<IWeb3>();
         var registry = new ContractRegistry();
-        var client   = new NethereumSmartContractClient(web3, registry);
+        var client = new NethereumSmartContractClient(web3, registry);
 
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => client.SendAsync("0xNOCONTRACT", "transfer", ["0xTO", 100]));

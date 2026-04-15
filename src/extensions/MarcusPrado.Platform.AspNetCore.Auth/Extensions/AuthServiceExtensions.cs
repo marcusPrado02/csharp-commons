@@ -25,7 +25,7 @@ public static class AuthServiceExtensions
     /// </param>
     public static IServiceCollection AddPlatformAuth(
         this IServiceCollection services,
-        Action<JwtAuthenticationOptions>?    configureJwt    = null,
+        Action<JwtAuthenticationOptions>? configureJwt = null,
         Action<ApiKeyAuthenticationOptions>? configureApiKey = null)
     {
         services.AddScoped<IUserContext, DefaultUserContext>();

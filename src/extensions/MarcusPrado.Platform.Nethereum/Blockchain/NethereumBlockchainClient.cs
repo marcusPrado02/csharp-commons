@@ -25,8 +25,8 @@ public sealed class NethereumBlockchainClient : IBlockchainClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(address);
 
-        var wei     = await _web3.Eth.GetBalance.SendRequestAsync(address).ConfigureAwait(false);
-        var ether   = Web3.Convert.FromWei(wei.Value);
+        var wei = await _web3.Eth.GetBalance.SendRequestAsync(address).ConfigureAwait(false);
+        var ether = Web3.Convert.FromWei(wei.Value);
         return ether.ToString("0.####################");
     }
 
@@ -84,9 +84,9 @@ public sealed class NethereumWalletManager : IWalletManager
     /// <inheritdoc />
     public Task<Wallet> CreateWalletAsync(CancellationToken ct = default)
     {
-        var key     = EthECKey.GenerateKey();
+        var key = EthECKey.GenerateKey();
         var address = key.GetPublicAddress();
-        var pubKey  = Convert.ToHexString(key.GetPubKey());
+        var pubKey = Convert.ToHexString(key.GetPubKey());
 
         _keyStore[address] = key;
 
@@ -106,7 +106,7 @@ public sealed class NethereumWalletManager : IWalletManager
                 $"No key found for wallet '{walletAddress}'. Use CreateWalletAsync first.");
         }
 
-        var signer    = new EthereumMessageSigner();
+        var signer = new EthereumMessageSigner();
         var signature = signer.EncodeUTF8AndSign(
             System.Convert.ToBase64String(message), key);
 

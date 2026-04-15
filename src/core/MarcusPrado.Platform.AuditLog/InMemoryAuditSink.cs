@@ -21,11 +21,11 @@ public sealed class InMemoryAuditSink : IAuditLogger
 
     /// <inheritdoc />
     public Task<IReadOnlyList<AuditEntry>> QueryAsync(
-        string            resource,
-        string?           resourceId = null,
-        DateTimeOffset?   from       = null,
-        DateTimeOffset?   to         = null,
-        CancellationToken ct         = default)
+        string resource,
+        string? resourceId = null,
+        DateTimeOffset? from = null,
+        DateTimeOffset? to = null,
+        CancellationToken ct = default)
     {
         var q = _log.Where(e => e.Resource == resource);
 

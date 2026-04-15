@@ -36,7 +36,7 @@ public sealed class MongoDocumentRepositoryTests
     [Fact]
     public void Constructor_WithDatabase_Succeeds()
     {
-        var db  = Substitute.For<IMongoDatabase>();
+        var db = Substitute.For<IMongoDatabase>();
         var col = Substitute.For<IMongoCollection<DocumentEnvelope<Product>>>();
         db.GetCollection<DocumentEnvelope<Product>>(Arg.Any<string>()).Returns(col);
 
@@ -47,7 +47,7 @@ public sealed class MongoDocumentRepositoryTests
     [Fact]
     public void Constructor_WithExplicitCollectionName_UsesIt()
     {
-        var db  = Substitute.For<IMongoDatabase>();
+        var db = Substitute.For<IMongoDatabase>();
         var col = Substitute.For<IMongoCollection<DocumentEnvelope<Product>>>();
         db.GetCollection<DocumentEnvelope<Product>>(Arg.Any<string>()).Returns(col);
 
@@ -101,7 +101,7 @@ public sealed class MongoDocumentRepositoryAdditionalTests
     [Fact]
     public void Constructor_WithExplicitCollectionName_UsesProvidedName()
     {
-        var db  = Substitute.For<IMongoDatabase>();
+        var db = Substitute.For<IMongoDatabase>();
         var col = Substitute.For<IMongoCollection<DocumentEnvelope<Product>>>();
         db.GetCollection<DocumentEnvelope<Product>>(Arg.Any<string>()).Returns(col);
 

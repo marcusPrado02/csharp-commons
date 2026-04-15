@@ -32,29 +32,29 @@ public sealed class JwtAuthenticationHandler(
             return AuthenticateResult.Fail("Empty Bearer token.");
 
         var opts = Options;
-        var key  = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(opts.SigningKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(opts.SigningKey));
 
         var validationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey         = key,
-            ValidateIssuer           = !string.IsNullOrEmpty(opts.Issuer),
-            ValidIssuer              = opts.Issuer,
-            ValidateAudience         = !string.IsNullOrEmpty(opts.Audience),
-            ValidAudience            = opts.Audience,
-            ValidateLifetime         = opts.ValidateLifetime,
-            ClockSkew                = TimeSpan.Zero,
+            IssuerSigningKey = key,
+            ValidateIssuer = !string.IsNullOrEmpty(opts.Issuer),
+            ValidIssuer = opts.Issuer,
+            ValidateAudience = !string.IsNullOrEmpty(opts.Audience),
+            ValidAudience = opts.Audience,
+            ValidateLifetime = opts.ValidateLifetime,
+            ClockSkew = TimeSpan.Zero,
         };
 
         try
         {
-            var handler    = new JsonWebTokenHandler();
-            var result     = await handler.ValidateTokenAsync(token, validationParameters);
+            var handler = new JsonWebTokenHandler();
+            var result = await handler.ValidateTokenAsync(token, validationParameters);
 
             if (!result.IsValid)
                 return AuthenticateResult.Fail(result.Exception?.Message ?? "Token validation failed.");
 
-            var identity  = new ClaimsIdentity(result.ClaimsIdentity.Claims, Scheme.Name);
+            var identity = new ClaimsIdentity(result.ClaimsIdentity.Claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
 
             // Populate the request-scoped IUserContext

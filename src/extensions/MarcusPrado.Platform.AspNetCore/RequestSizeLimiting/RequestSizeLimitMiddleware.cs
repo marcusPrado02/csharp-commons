@@ -32,14 +32,14 @@ public sealed class RequestSizeLimitMiddleware
         ArgumentNullException.ThrowIfNull(next);
         ArgumentNullException.ThrowIfNull(options);
 
-        _next    = next;
+        _next = next;
         _options = options;
     }
 
     /// <summary>Processes the request, checking body size against the resolved tier limit.</summary>
     public async Task InvokeAsync(HttpContext context)
     {
-        var tier  = _options.TierResolver(context);
+        var tier = _options.TierResolver(context);
         var limit = _options.GetLimit(tier);
 
         // Fast-path: Content-Length header present — reject before touching the body.
@@ -57,13 +57,13 @@ public sealed class RequestSizeLimitMiddleware
         RequestSizeTier tier,
         long limit)
     {
-        context.Response.StatusCode  = StatusCodes.Status413RequestEntityTooLarge;
+        context.Response.StatusCode = StatusCodes.Status413RequestEntityTooLarge;
         context.Response.ContentType = "application/problem+json";
 
         var problem = new
         {
             status = 413,
-            title  = "Payload Too Large",
+            title = "Payload Too Large",
             detail = $"Request body exceeds the {limit} byte limit for tier {tier}."
         };
 

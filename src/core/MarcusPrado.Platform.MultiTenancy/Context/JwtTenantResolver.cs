@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.MultiTenancy.Context;
 public sealed class JwtTenantResolver : ITenantResolver
 {
     private const string AuthorizationHeader = "authorization";
-    private const string TidClaim            = "tid";
+    private const string TidClaim = "tid";
 
     /// <inheritdoc />
     public string? Resolve(IReadOnlyDictionary<string, string> headers)
@@ -23,10 +23,12 @@ public sealed class JwtTenantResolver : ITenantResolver
             ? authValue["Bearer ".Length..].Trim()
             : null;
 
-        if (string.IsNullOrWhiteSpace(token)) return null;
+        if (string.IsNullOrWhiteSpace(token))
+            return null;
 
         var handler = new JsonWebTokenHandler();
-        if (!handler.CanReadToken(token)) return null;
+        if (!handler.CanReadToken(token))
+            return null;
 
         var jwt = handler.ReadJsonWebToken(token);
         return jwt.TryGetClaim(TidClaim, out var claim) ? claim.Value : null;

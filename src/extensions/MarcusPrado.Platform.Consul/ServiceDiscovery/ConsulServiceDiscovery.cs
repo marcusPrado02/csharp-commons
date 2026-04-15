@@ -49,15 +49,15 @@ public sealed class ConsulServiceDiscovery : IServiceDiscovery
         var interval = registration.Interval ?? _options.DefaultCheckInterval;
         var agentReg = new AgentServiceRegistration
         {
-            ID      = registration.ServiceId,
-            Name    = registration.ServiceName,
+            ID = registration.ServiceId,
+            Name = registration.ServiceName,
             Address = registration.Address,
-            Port    = registration.Port,
-            Tags    = registration.Tags?.ToArray(),
-            Check   = registration.HealthUrl is not null
+            Port = registration.Port,
+            Tags = registration.Tags?.ToArray(),
+            Check = registration.HealthUrl is not null
                 ? new AgentServiceCheck
                 {
-                    HTTP     = registration.HealthUrl,
+                    HTTP = registration.HealthUrl,
                     Interval = interval,
                     DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1),
                 }

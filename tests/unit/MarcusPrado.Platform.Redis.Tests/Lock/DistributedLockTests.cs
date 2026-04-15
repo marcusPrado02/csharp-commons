@@ -1,5 +1,5 @@
-using MarcusPrado.Platform.Redis.Lock;
 using FluentAssertions;
+using MarcusPrado.Platform.Redis.Lock;
 using NSubstitute;
 
 namespace MarcusPrado.Platform.Redis.Tests.Lock;
@@ -11,7 +11,7 @@ public sealed class DistributedLockTests
     {
         var executed = false;
         var mockLock = Substitute.For<IDistributedLock>();
-        var handle   = Substitute.For<ILockHandle>();
+        var handle = Substitute.For<ILockHandle>();
 
         mockLock.AcquireAsync(
                     Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<int>(),
@@ -32,7 +32,7 @@ public sealed class DistributedLockTests
     public async Task WithLockAsync_ReturnsResultFromFunc()
     {
         var mockLock = Substitute.For<IDistributedLock>();
-        var handle   = Substitute.For<ILockHandle>();
+        var handle = Substitute.For<ILockHandle>();
 
         mockLock.AcquireAsync(
                     Arg.Any<string>(), Arg.Any<TimeSpan>(), Arg.Any<int>(),

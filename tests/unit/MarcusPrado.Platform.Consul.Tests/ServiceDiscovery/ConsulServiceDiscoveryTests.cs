@@ -93,8 +93,11 @@ public sealed class ConsulServiceDiscoveryTests
         {
             Service = new AgentService
             {
-                ID = "svc-1", Service = "my-svc",
-                Address = "10.0.0.1", Port = 8080, Tags = ["v1"],
+                ID = "svc-1",
+                Service = "my-svc",
+                Address = "10.0.0.1",
+                Port = 8080,
+                Tags = ["v1"],
             },
             Checks = [new HealthCheck { Status = HealthStatus.Passing }],
         };

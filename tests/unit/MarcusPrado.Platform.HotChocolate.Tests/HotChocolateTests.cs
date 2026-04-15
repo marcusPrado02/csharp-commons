@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MarcusPrado.Platform.HotChocolate.Tests;
 

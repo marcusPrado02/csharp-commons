@@ -26,14 +26,14 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
 
         var options = new PaymentIntentCreateOptions
         {
-            Customer    = request.CustomerId,
-            Amount      = ToStripeAmount(request.Amount),
-            Currency    = request.Currency.ToLowerInvariant(),
+            Customer = request.CustomerId,
+            Amount = ToStripeAmount(request.Amount),
+            Currency = request.Currency.ToLowerInvariant(),
             Description = request.Description,
-            Confirm     = true,
+            Confirm = true,
             AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
             {
-                Enabled       = true,
+                Enabled = true,
                 AllowRedirects = "never",
             },
         };
@@ -65,7 +65,7 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
         var options = new RefundCreateOptions
         {
             PaymentIntent = paymentId,
-            Amount        = amount.HasValue ? ToStripeAmount(amount.Value) : null,
+            Amount = amount.HasValue ? ToStripeAmount(amount.Value) : null,
         };
 
         var refund = await _refunds.CreateAsync(options, cancellationToken: ct)
@@ -90,13 +90,13 @@ public sealed class StripePaymentService : AbsPayment.IPaymentService
 
     private static PaymentStatus MapStatus(string status) => status switch
     {
-        "succeeded"                  => PaymentStatus.Succeeded,
-        "canceled"                   => PaymentStatus.Cancelled,
-        "requires_payment_method"    => PaymentStatus.Pending,
-        "requires_confirmation"      => PaymentStatus.Pending,
-        "requires_action"            => PaymentStatus.Pending,
-        "processing"                 => PaymentStatus.Pending,
-        _                            => PaymentStatus.Failed,
+        "succeeded" => PaymentStatus.Succeeded,
+        "canceled" => PaymentStatus.Cancelled,
+        "requires_payment_method" => PaymentStatus.Pending,
+        "requires_confirmation" => PaymentStatus.Pending,
+        "requires_action" => PaymentStatus.Pending,
+        "processing" => PaymentStatus.Pending,
+        _ => PaymentStatus.Failed,
     };
 
     private static long ToStripeAmount(decimal amount) => (long)(amount * 100);

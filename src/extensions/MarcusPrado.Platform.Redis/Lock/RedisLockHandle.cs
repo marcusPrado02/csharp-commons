@@ -21,8 +21,8 @@ internal sealed class RedisLockHandle : ILockHandle
 
     internal RedisLockHandle(IDatabase db, string key, string token)
     {
-        _db   = db;
-        Key   = key;
+        _db = db;
+        Key = key;
         Token = token;
     }
 

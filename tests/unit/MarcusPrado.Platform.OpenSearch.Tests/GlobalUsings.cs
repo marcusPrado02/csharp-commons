@@ -1,3 +1,4 @@
+global using FluentAssertions;
 global using MarcusPrado.Platform.Abstractions.Search;
 global using MarcusPrado.Platform.OpenSearch.Extensions;
 global using MarcusPrado.Platform.OpenSearch.Options;
@@ -6,4 +7,3 @@ global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
 global using OpenSearch.Client;
 global using Xunit;
-global using FluentAssertions;

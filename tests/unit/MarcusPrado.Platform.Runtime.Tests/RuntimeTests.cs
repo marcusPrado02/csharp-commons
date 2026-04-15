@@ -100,7 +100,7 @@ public sealed class EnvConfigurationTests
     {
         var config = BuildConfig(new() { ["App:Name"] = "TestService" });
         var envCfg = new EnvConfiguration(config);
-        var key    = new ConfigurationKey<string>("App:Name");
+        var key = new ConfigurationKey<string>("App:Name");
 
         var result = envCfg.Get(key);
 
@@ -113,7 +113,7 @@ public sealed class EnvConfigurationTests
         System.Environment.SetEnvironmentVariable("APP__NAME", "EnvService");
         var config = BuildConfig(new() { ["App:Name"] = "ConfigService" });
         var envCfg = new EnvConfiguration(config);
-        var key    = new ConfigurationKey<string>("App:Name");
+        var key = new ConfigurationKey<string>("App:Name");
 
         var result = envCfg.Get(key);
 
@@ -125,7 +125,7 @@ public sealed class EnvConfigurationTests
     public void Get_MissingKey_ReturnsNull()
     {
         var envCfg = new EnvConfiguration(BuildConfig(new()));
-        var key    = new ConfigurationKey<string>("Missing:Key");
+        var key = new ConfigurationKey<string>("Missing:Key");
 
         var result = envCfg.Get(key);
 
@@ -137,7 +137,7 @@ public sealed class EnvConfigurationTests
     {
         var config = BuildConfig(new()
         {
-            ["Service:Name"]    = "TestApp",
+            ["Service:Name"] = "TestApp",
             ["Service:Version"] = "2.0.0",
         });
         var envCfg = new EnvConfiguration(config);
@@ -160,7 +160,7 @@ public sealed class EnvConfigurationTests
 
     private sealed class ServiceSettings
     {
-        public string Name    { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public string Version { get; set; } = string.Empty;
     }
 }
@@ -170,8 +170,8 @@ public sealed class GracefulShutdownTests
     [Fact]
     public async Task RunAsync_AllHandlersExecuted()
     {
-        var executed  = 0;
-        var shutdown  = new GracefulShutdown();
+        var executed = 0;
+        var shutdown = new GracefulShutdown();
         shutdown.Register(_ => { executed++; return Task.CompletedTask; });
         shutdown.Register(_ => { executed++; return Task.CompletedTask; });
 
@@ -194,7 +194,7 @@ public sealed class GracefulShutdownTests
     public async Task RunAsync_CustomTimeout_IsRespected()
     {
         var shutdown = new GracefulShutdown(TimeSpan.FromSeconds(5));
-        var started  = false;
+        var started = false;
 
         shutdown.Register(async ct =>
         {

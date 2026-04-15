@@ -32,11 +32,11 @@ public sealed record InstanceInfo
         var hostname = Dns.GetHostName();
         return new InstanceInfo
         {
-            ServiceName    = Env("SERVICE_NAME",    "unknown"),
+            ServiceName = Env("SERVICE_NAME", "unknown"),
             ServiceVersion = Env("SERVICE_VERSION", "0.0.0"),
-            PodName        = Env("POD_NAME",        hostname),
-            NodeName       = Env("NODE_NAME",       hostname),
-            Region         = Env("REGION",          "local"),
+            PodName = Env("POD_NAME", hostname),
+            NodeName = Env("NODE_NAME", hostname),
+            Region = Env("REGION", "local"),
         };
     }
 

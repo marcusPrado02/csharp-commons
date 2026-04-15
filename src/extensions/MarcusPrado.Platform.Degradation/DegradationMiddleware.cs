@@ -29,7 +29,7 @@ public sealed class DegradationMiddleware
     /// <param name="controller">The degradation controller used to read the current mode.</param>
     public DegradationMiddleware(RequestDelegate next, IDegradationController controller)
     {
-        _next       = next ?? throw new ArgumentNullException(nameof(next));
+        _next = next ?? throw new ArgumentNullException(nameof(next));
         _controller = controller ?? throw new ArgumentNullException(nameof(controller));
     }
 
@@ -75,7 +75,7 @@ public sealed class DegradationMiddleware
         string title,
         string detail)
     {
-        context.Response.StatusCode  = statusCode;
+        context.Response.StatusCode = statusCode;
         context.Response.ContentType = MediaTypeNames.Application.Json;
 
         var body = new

@@ -18,7 +18,7 @@ public sealed class DatabaseConnectivityVerification : IStartupVerification
             throw new ArgumentException("Name must not be null or whitespace.", nameof(name));
         ArgumentNullException.ThrowIfNull(probe);
 
-        Name   = name;
+        Name = name;
         _probe = probe;
     }
 
@@ -32,7 +32,7 @@ public sealed class DatabaseConnectivityVerification : IStartupVerification
         {
             var reachable = await _probe().WaitAsync(ct);
             return reachable
-                ? new VerificationResult(true,  Name, null)
+                ? new VerificationResult(true, Name, null)
                 : new VerificationResult(false, Name, "Database probe returned false.");
         }
         catch (OperationCanceledException ex)

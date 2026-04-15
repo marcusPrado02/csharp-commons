@@ -30,7 +30,7 @@ public sealed class KeyRotationService : IDataEncryption
             throw new FormatException("Ciphertext is missing version prefix.");
 
         var version = int.Parse(ciphertext[1..colonIdx], System.Globalization.CultureInfo.InvariantCulture);
-        var data    = ciphertext[(colonIdx + 1)..];
+        var data = ciphertext[(colonIdx + 1)..];
 
         if (!_keys.TryGetValue(version, out var enc))
             throw new KeyNotFoundException($"No key registered for version {version}.");

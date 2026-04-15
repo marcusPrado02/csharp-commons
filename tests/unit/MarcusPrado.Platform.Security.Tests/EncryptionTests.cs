@@ -14,7 +14,7 @@ public sealed class EncryptionTests
     [Fact]
     public void Encrypt_ResultDiffersFromPlaintext()
     {
-        var enc    = new AesGcmEncryption(CreateKey());
+        var enc = new AesGcmEncryption(CreateKey());
         var result = enc.Encrypt("hello world");
 
         result.Should().NotBe("hello world");
@@ -23,11 +23,11 @@ public sealed class EncryptionTests
     [Fact]
     public void EncryptDecrypt_RoundTrip_RecoverOriginalPlaintext()
     {
-        var enc       = new AesGcmEncryption(CreateKey());
+        var enc = new AesGcmEncryption(CreateKey());
         var plaintext = "sensitive data 1234";
 
         var ciphertext = enc.Encrypt(plaintext);
-        var recovered  = enc.Decrypt(ciphertext);
+        var recovered = enc.Decrypt(ciphertext);
 
         recovered.Should().Be(plaintext);
     }
@@ -46,12 +46,12 @@ public sealed class EncryptionTests
     [Fact]
     public void Decrypt_TamperedCiphertext_ThrowsCryptographicException()
     {
-        var enc        = new AesGcmEncryption(CreateKey());
+        var enc = new AesGcmEncryption(CreateKey());
         var ciphertext = enc.Encrypt("tamper me");
 
         // Flip a byte deep in the ciphertext payload
-        var bytes    = Convert.FromBase64String(ciphertext);
-        bytes[^1]   ^= 0xFF;
+        var bytes = Convert.FromBase64String(ciphertext);
+        bytes[^1] ^= 0xFF;
         var tampered = Convert.ToBase64String(bytes);
 
         var act = () => enc.Decrypt(tampered);
@@ -74,15 +74,15 @@ public sealed class EncryptionTests
     [Fact]
     public void EncryptingValueConverter_EncryptsThenDecryptsCorrectly()
     {
-        var enc       = new AesGcmEncryption(CreateKey());
+        var enc = new AesGcmEncryption(CreateKey());
         var converter = new EncryptingValueConverter(enc);
 
-        var toProvider   = (Func<string, string>)converter.ConvertToProviderExpression.Compile();
+        var toProvider = (Func<string, string>)converter.ConvertToProviderExpression.Compile();
         var fromProvider = (Func<string, string>)converter.ConvertFromProviderExpression.Compile();
 
-        var plaintext  = "my secret value";
-        var encrypted  = toProvider(plaintext);
-        var decrypted  = fromProvider(encrypted);
+        var plaintext = "my secret value";
+        var encrypted = toProvider(plaintext);
+        var decrypted = fromProvider(encrypted);
 
         encrypted.Should().NotBe(plaintext);
         decrypted.Should().Be(plaintext);
@@ -94,7 +94,7 @@ public sealed class EncryptionTests
     public void KeyRotationService_Encrypt_PrefixesWithVersion()
     {
         var keys = new Dictionary<int, byte[]> { [1] = CreateKey() };
-        var svc  = new KeyRotationService(keys, currentVersion: 1);
+        var svc = new KeyRotationService(keys, currentVersion: 1);
 
         var result = svc.Encrypt("data");
 
@@ -108,13 +108,13 @@ public sealed class EncryptionTests
         var newKey = CreateKey();
 
         // Encrypt with old key (version 1)
-        var oldKeys    = new Dictionary<int, byte[]> { [1] = oldKey };
-        var oldSvc     = new KeyRotationService(oldKeys, currentVersion: 1);
+        var oldKeys = new Dictionary<int, byte[]> { [1] = oldKey };
+        var oldSvc = new KeyRotationService(oldKeys, currentVersion: 1);
         var ciphertext = oldSvc.Encrypt("legacy secret");
 
         // Decrypt with service that knows both keys, current is v2
         var allKeys = new Dictionary<int, byte[]> { [1] = oldKey, [2] = newKey };
-        var newSvc  = new KeyRotationService(allKeys, currentVersion: 2);
+        var newSvc = new KeyRotationService(allKeys, currentVersion: 2);
 
         var recovered = newSvc.Decrypt(ciphertext);
 
@@ -125,7 +125,7 @@ public sealed class EncryptionTests
     public void KeyRotationService_Decrypt_UnknownVersion_ThrowsKeyNotFoundException()
     {
         var keys = new Dictionary<int, byte[]> { [1] = CreateKey() };
-        var svc  = new KeyRotationService(keys, currentVersion: 1);
+        var svc = new KeyRotationService(keys, currentVersion: 1);
 
         // Forge a version-99 prefix
         var act = () => svc.Decrypt("v99:somedata");

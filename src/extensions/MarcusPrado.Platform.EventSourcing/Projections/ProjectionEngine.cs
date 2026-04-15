@@ -34,7 +34,8 @@ public sealed class ProjectionEngine
     public async Task DispatchAsync(IDomainEvent domainEvent, CancellationToken cancellationToken = default)
     {
         var eventType = domainEvent.GetType();
-        if (!_handlers.TryGetValue(eventType, out var handlers)) return;
+        if (!_handlers.TryGetValue(eventType, out var handlers))
+            return;
 
         foreach (var handler in handlers)
             await handler(domainEvent, cancellationToken);

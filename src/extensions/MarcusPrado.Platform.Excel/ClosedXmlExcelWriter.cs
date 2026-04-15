@@ -11,7 +11,7 @@ public sealed class ClosedXmlExcelWriter : IExcelWriter
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        using var workbook  = new XLWorkbook();
+        using var workbook = new XLWorkbook();
         var worksheet = workbook.Worksheets.Add(document.SheetName);
 
         // Write headers (row 1)

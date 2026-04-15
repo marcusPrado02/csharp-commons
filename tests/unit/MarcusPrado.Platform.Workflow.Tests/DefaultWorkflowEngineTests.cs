@@ -4,8 +4,8 @@ public sealed class DefaultWorkflowEngineTests
 {
     private static WorkflowDefinition SimpleDefinition(string id = "order.process") =>
         new(
-            Id:    id,
-            Name:  "Order Process",
+            Id: id,
+            Name: "Order Process",
             Steps:
             [
                 new WorkflowStep(
@@ -81,7 +81,7 @@ public sealed class DefaultWorkflowEngineTests
     public async Task CancelWorkflow_InProgress_ReturnsCancelled()
     {
         var engine = Engine();
-        var start  = await engine.StartWorkflowAsync("order.process");
+        var start = await engine.StartWorkflowAsync("order.process");
         var cancel = await engine.CancelAsync(start.Value.Id, "user requested");
         cancel.Value.Status.Should().Be(WorkflowStatus.Cancelled);
         cancel.Value.CancellationReason.Should().Be("user requested");
@@ -106,7 +106,7 @@ public sealed class DefaultWorkflowEngineTests
         ]);
         var engine = new DefaultWorkflowEngine();
         engine.RegisterDefinition(def);
-        var start  = await engine.StartWorkflowAsync("comp.wf");
+        var start = await engine.StartWorkflowAsync("comp.wf");
         var result = await engine.CompensateAsync(start.Value.Id);
 
         result.Value.Status.Should().Be(WorkflowStatus.Compensated);
@@ -124,8 +124,8 @@ public sealed class DefaultWorkflowEngineTests
     public async Task SendEvent_ExistingInstance_UpdatesContext()
     {
         var engine = Engine();
-        var start  = await engine.StartWorkflowAsync("order.process");
-        var send   = await engine.SendEventAsync(start.Value.Id, "payment.confirmed", new { Amount = 100 });
+        var start = await engine.StartWorkflowAsync("order.process");
+        var send = await engine.SendEventAsync(start.Value.Id, "payment.confirmed", new { Amount = 100 });
         send.IsSuccess.Should().BeTrue();
     }
 

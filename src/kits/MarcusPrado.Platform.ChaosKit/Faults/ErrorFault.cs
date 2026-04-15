@@ -27,8 +27,10 @@ public sealed class ErrorFault
     /// </exception>
     public void Inject()
     {
-        if (_config.FaultException is null) return;
-        if (Random.Shared.NextDouble() >= _config.InjectionRate) return;
+        if (_config.FaultException is null)
+            return;
+        if (Random.Shared.NextDouble() >= _config.InjectionRate)
+            return;
 
         throw _config.FaultException;
     }

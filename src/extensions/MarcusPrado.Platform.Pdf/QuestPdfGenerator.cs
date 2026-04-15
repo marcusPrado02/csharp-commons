@@ -73,11 +73,11 @@ public sealed class QuestPdfGenerator : IPdfGenerator
     {
         var s = size switch
         {
-            PdfPageSize.A4     => PageSizes.A4,
-            PdfPageSize.A3     => PageSizes.A3,
+            PdfPageSize.A4 => PageSizes.A4,
+            PdfPageSize.A3 => PageSizes.A3,
             PdfPageSize.Letter => PageSizes.Letter,
-            PdfPageSize.Legal  => PageSizes.Legal,
-            _                  => PageSizes.A4,
+            PdfPageSize.Legal => PageSizes.Legal,
+            _ => PageSizes.A4,
         };
 
         return landscape ? new PageSize(s.Height, s.Width) : s;

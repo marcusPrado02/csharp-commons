@@ -26,8 +26,8 @@ public sealed class InMemoryAuditSinkTests
     [Fact]
     public async Task Query_ByResource_FiltersByResource()
     {
-        await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Order",    "o1"));
-        await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Product",  "p1"));
+        await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Order", "o1"));
+        await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Product", "p1"));
         var results = await _sink.QueryAsync("Order");
         results.Should().HaveCount(1);
         results[0].Resource.Should().Be("Order");
@@ -46,7 +46,7 @@ public sealed class InMemoryAuditSinkTests
     [Fact]
     public async Task Query_ByDateRange_FiltersCorrectly()
     {
-        var past   = DateTimeOffset.UtcNow.AddHours(-2);
+        var past = DateTimeOffset.UtcNow.AddHours(-2);
         var future = DateTimeOffset.UtcNow.AddHours(1);
         await _sink.LogAsync(AuditEntry.Create(AuditAction.Created, "Order", "o1"));
         var results = await _sink.QueryAsync("Order", from: past, to: future);
@@ -65,7 +65,7 @@ public sealed class InMemoryAuditSinkTests
     public void AuditEntry_Create_SetsTimestampToUtcNow()
     {
         var before = DateTimeOffset.UtcNow;
-        var entry  = AuditEntry.Create(AuditAction.Login, "User", "u1");
+        var entry = AuditEntry.Create(AuditAction.Login, "User", "u1");
         entry.Timestamp.Should().BeOnOrAfter(before);
         entry.Timestamp.Should().BeOnOrBefore(DateTimeOffset.UtcNow);
     }
@@ -81,7 +81,7 @@ public sealed class InMemoryAuditSinkTests
     [Fact]
     public async Task Log_WithMetadata_StoresMetadata()
     {
-        var meta  = new Dictionary<string, string> { ["key"] = "value" };
+        var meta = new Dictionary<string, string> { ["key"] = "value" };
         var entry = AuditEntry.Create(AuditAction.Custom, "Resource", "r1", metadata: meta);
         await _sink.LogAsync(entry);
         _sink.Entries[0].Metadata.Should().ContainKey("key");

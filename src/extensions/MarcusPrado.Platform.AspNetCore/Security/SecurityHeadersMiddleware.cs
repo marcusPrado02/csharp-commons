@@ -13,7 +13,7 @@ public sealed class SecurityHeadersMiddleware
     /// <summary>Initialises the middleware.</summary>
     public SecurityHeadersMiddleware(RequestDelegate next, Security.SecurityHeadersOptions options)
     {
-        _next    = next;
+        _next = next;
         _options = options;
     }
 

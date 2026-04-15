@@ -22,10 +22,10 @@ public static class PlatformProblemDetailsFactory
         var status = ExceptionMapper.GetStatusCode(exception);
         var pd = new MvcProblemDetails
         {
-            Status   = status,
-            Title    = GetTitle(status),
-            Detail   = exception.Message,
-            Type     = ExceptionMapper.GetProblemTypeUri(status),
+            Status = status,
+            Title = GetTitle(status),
+            Detail = exception.Message,
+            Type = ExceptionMapper.GetProblemTypeUri(status),
             Instance = context.Request.Path,
         };
 
@@ -41,9 +41,9 @@ public static class PlatformProblemDetailsFactory
         return new MvcProblemDetails
         {
             Status = statusCode,
-            Title  = GetTitle(statusCode),
+            Title = GetTitle(statusCode),
             Detail = detail,
-            Type   = ExceptionMapper.GetProblemTypeUri(statusCode),
+            Type = ExceptionMapper.GetProblemTypeUri(statusCode),
         };
     }
 
@@ -83,6 +83,6 @@ public static class PlatformProblemDetailsFactory
         409 => "Conflict",
         422 => "Unprocessable Content",
         500 => "Internal Server Error",
-        _   => "An error occurred",
+        _ => "An error occurred",
     };
 }

@@ -3,10 +3,10 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text.Json;
+using MarcusPrado.Platform.Abstractions.Errors;
+using MarcusPrado.Platform.Abstractions.Validation;
 using MarcusPrado.Platform.AspNetCore.Endpoints;
 using MarcusPrado.Platform.AspNetCore.Filters;
-using MarcusPrado.Platform.Abstractions.Validation;
-using MarcusPrado.Platform.Abstractions.Errors;
 using MarcusPrado.Platform.Contracts.Http;
 
 namespace MarcusPrado.Platform.AspNetCore.Tests;

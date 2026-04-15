@@ -28,8 +28,8 @@ public sealed partial class StartupVerificationHostedService : IHostedService
         ArgumentNullException.ThrowIfNull(logger);
 
         _verifications = verifications;
-        _lifetime      = lifetime;
-        _logger        = logger;
+        _lifetime = lifetime;
+        _logger = logger;
     }
 
     /// <summary>

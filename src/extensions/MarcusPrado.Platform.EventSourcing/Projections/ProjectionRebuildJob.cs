@@ -28,9 +28,11 @@ public sealed class ProjectionRebuildJob
         foreach (var storedEvent in events)
         {
             var eventType = Type.GetType(storedEvent.EventType);
-            if (eventType is null) continue;
+            if (eventType is null)
+                continue;
 
-            if (JsonSerializer.Deserialize(storedEvent.Payload, eventType) is not IDomainEvent domainEvent) continue;
+            if (JsonSerializer.Deserialize(storedEvent.Payload, eventType) is not IDomainEvent domainEvent)
+                continue;
 
             await _engine.DispatchAsync(domainEvent, cancellationToken);
         }

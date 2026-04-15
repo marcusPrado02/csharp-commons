@@ -16,12 +16,12 @@ if (args2.Length == 0)
 return args2[0] switch
 {
     "scaffold" => ScaffoldCommand.Execute(args2[1..]),
-    "config"   => ConfigCommand.Execute(args2[1..]),
-    "catalog"  => CatalogCommand.Execute(args2[1..]),
-    "arch"     => ArchCommand.Execute(args2[1..]),
-    "dlq"      => DlqCommand.Execute(args2[1..]),
-    "health"   => await HealthCommand.ExecuteAsync(args2[1..]).ConfigureAwait(false),
-    _          => PrintHelp(),
+    "config" => ConfigCommand.Execute(args2[1..]),
+    "catalog" => CatalogCommand.Execute(args2[1..]),
+    "arch" => ArchCommand.Execute(args2[1..]),
+    "dlq" => DlqCommand.Execute(args2[1..]),
+    "health" => await HealthCommand.ExecuteAsync(args2[1..]).ConfigureAwait(false),
+    _ => PrintHelp(),
 };
 
 static int PrintHelp()

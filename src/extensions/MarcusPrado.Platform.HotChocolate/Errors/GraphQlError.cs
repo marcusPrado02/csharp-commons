@@ -12,8 +12,8 @@ public sealed class GraphQlError : IGraphQlError
         IReadOnlyDictionary<string, object?>? extensions = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(message);
-        Message    = message;
-        Code       = code;
+        Message = message;
+        Code = code;
         Extensions = extensions;
     }
 

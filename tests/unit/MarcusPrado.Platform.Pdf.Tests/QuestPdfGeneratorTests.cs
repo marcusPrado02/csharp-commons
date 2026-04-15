@@ -22,7 +22,7 @@ public sealed class QuestPdfGeneratorTests
     public async Task GenerateAsync_DefaultTemplate_ReturnsPdfBytes()
     {
         var generator = BuildGenerator();
-        var template  = new PdfTemplate("invoice", new { OrderId = 1, Total = 99.99m });
+        var template = new PdfTemplate("invoice", new { OrderId = 1, Total = 99.99m });
 
         var bytes = await generator.GenerateAsync(template);
 
@@ -34,7 +34,7 @@ public sealed class QuestPdfGeneratorTests
     public async Task GenerateAsync_LandscapeOrientation_GeneratesValidPdf()
     {
         var generator = BuildGenerator();
-        var template  = new PdfTemplate("report", new { }, Landscape: true);
+        var template = new PdfTemplate("report", new { }, Landscape: true);
 
         var bytes = await generator.GenerateAsync(template);
 

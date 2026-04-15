@@ -5,12 +5,12 @@ namespace MarcusPrado.Platform.Workflow;
 /// Internal mutations use <c>with</c> expressions on this record.
 /// </summary>
 public sealed record WorkflowInstance(
-    Guid                       Id,
-    string                     DefinitionId,
-    WorkflowStatus             Status,
-    object?                    Context,
-    IReadOnlyList<string>      CompletedStepIds,
-    DateTimeOffset             StartedAt,
-    DateTimeOffset?            CompletedAt,
-    string?                    CancellationReason,
-    string?                    FailureReason);
+    Guid Id,
+    string DefinitionId,
+    WorkflowStatus Status,
+    object? Context,
+    IReadOnlyList<string> CompletedStepIds,
+    DateTimeOffset StartedAt,
+    DateTimeOffset? CompletedAt,
+    string? CancellationReason,
+    string? FailureReason);

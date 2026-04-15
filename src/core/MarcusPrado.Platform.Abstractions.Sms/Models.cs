@@ -12,6 +12,6 @@ public sealed record SmsMessage(
 /// <param name="MessageId">Optional provider-assigned identifier for the sent message.</param>
 /// <param name="Error">Optional error description when <paramref name="Success"/> is <see langword="false"/>.</param>
 public sealed record SmsResult(
-    bool   Success,
+    bool Success,
     string? MessageId = null,
-    string? Error     = null);
+    string? Error = null);

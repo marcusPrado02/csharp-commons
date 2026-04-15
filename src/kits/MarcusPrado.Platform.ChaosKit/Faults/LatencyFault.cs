@@ -25,8 +25,10 @@ public sealed class LatencyFault
     /// <returns>A task that completes after the injected delay (if triggered).</returns>
     public async Task InjectAsync(CancellationToken cancellationToken = default)
     {
-        if (_config.LatencyDelay is null) return;
-        if (Random.Shared.NextDouble() >= _config.InjectionRate) return;
+        if (_config.LatencyDelay is null)
+            return;
+        if (Random.Shared.NextDouble() >= _config.InjectionRate)
+            return;
 
         await Task.Delay(_config.LatencyDelay.Value, cancellationToken).ConfigureAwait(false);
     }

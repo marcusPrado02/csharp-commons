@@ -25,7 +25,8 @@ public sealed partial class HtmlSanitizerAdapter : IInputSanitizer
     /// <inheritdoc/>
     public string StripHtml(string input)
     {
-        if (string.IsNullOrEmpty(input)) return input;
+        if (string.IsNullOrEmpty(input))
+            return input;
         // Use regex to strip all HTML tags, preserving text content
         return HtmlTagPattern().Replace(input, string.Empty);
     }

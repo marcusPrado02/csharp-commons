@@ -22,7 +22,7 @@ public sealed class TwilioOptionsTests
         var opts = new TwilioOptions
         {
             AccountSid = "ACXXXX",
-            AuthToken  = "tok",
+            AuthToken = "tok",
             DefaultFrom = "+15550001111",
         };
 
@@ -41,7 +41,7 @@ public sealed class TwilioExtensionsTests
         services.AddPlatformTwilio(o =>
         {
             o.AccountSid = "ACTEST";
-            o.AuthToken  = "token";
+            o.AuthToken = "token";
         });
 
         var sp = services.BuildServiceProvider();
@@ -59,7 +59,7 @@ public sealed class TwilioSmsServiceTests
         // When a client is injected, TwilioClient.Init should NOT be called
         // (no exception expected despite empty credentials)
         var client = Substitute.For<ITwilioRestClient>();
-        var opts   = new TwilioOptions { DefaultFrom = "+15550000000" };
+        var opts = new TwilioOptions { DefaultFrom = "+15550000000" };
 
         var act = () => new TwilioSmsService(opts, client);
 
@@ -70,8 +70,8 @@ public sealed class TwilioSmsServiceTests
     public async Task SendAsync_WhenClientFaults_ReturnsFailureResult()
     {
         var client = Substitute.For<ITwilioRestClient>();
-        var opts   = new TwilioOptions { DefaultFrom = "+15550000000" };
-        var svc    = new TwilioSmsService(opts, client);
+        var opts = new TwilioOptions { DefaultFrom = "+15550000000" };
+        var svc = new TwilioSmsService(opts, client);
 
         // Twilio internals will throw because mock returns null response
         var result = await svc.SendAsync(new SmsMessage("+15551111111", "hello"));
@@ -84,8 +84,8 @@ public sealed class TwilioSmsServiceTests
     public async Task SendAsync_WithNullMessage_ThrowsArgumentNullException()
     {
         var client = Substitute.For<ITwilioRestClient>();
-        var opts   = new TwilioOptions { DefaultFrom = "+15550000000" };
-        var svc    = new TwilioSmsService(opts, client);
+        var opts = new TwilioOptions { DefaultFrom = "+15550000000" };
+        var svc = new TwilioSmsService(opts, client);
 
         await Assert.ThrowsAsync<ArgumentNullException>(() => svc.SendAsync(null!));
     }

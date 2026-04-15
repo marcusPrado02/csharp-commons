@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentAssertions;
 using Hangfire;
 using Hangfire.Common;
@@ -6,7 +7,6 @@ using MarcusPrado.Platform.Hangfire.Registrar;
 using MarcusPrado.Platform.Hangfire.Scheduler;
 using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
-using System.Reflection;
 using Xunit;
 
 namespace MarcusPrado.Platform.Hangfire.Tests;

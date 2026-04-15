@@ -28,9 +28,9 @@ public sealed class AwsSnsOptionsTests
     {
         var opts = new AwsSnsOptions
         {
-            Region   = "eu-west-1",
+            Region = "eu-west-1",
             SenderId = "PLATFORM",
-            SmsType  = "Promotional",
+            SmsType = "Promotional",
         };
 
         opts.Region.Should().Be("eu-west-1");
@@ -44,7 +44,7 @@ public sealed class SnsSmsServiceTests
     private static SnsSmsService BuildService(
         IAmazonSimpleNotificationService? sns = null, AwsSnsOptions? opts = null)
     {
-        sns  ??= Substitute.For<IAmazonSimpleNotificationService>();
+        sns ??= Substitute.For<IAmazonSimpleNotificationService>();
         opts ??= new AwsSnsOptions();
         return new SnsSmsService(sns, opts);
     }
@@ -77,7 +77,7 @@ public sealed class SnsSmsServiceTests
         sns.PublishAsync(Arg.Any<PublishRequest>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new PublishResponse { MessageId = "msg-001" }));
 
-        var svc    = BuildService(sns);
+        var svc = BuildService(sns);
         var result = await svc.SendAsync(new SmsMessage("+15550001111", "Hello"));
 
         result.Success.Should().BeTrue();
@@ -91,7 +91,7 @@ public sealed class SnsSmsServiceTests
         sns.PublishAsync(Arg.Any<PublishRequest>(), Arg.Any<CancellationToken>())
             .Returns<PublishResponse>(_ => throw new AmazonSimpleNotificationServiceException("SNS error"));
 
-        var svc    = BuildService(sns);
+        var svc = BuildService(sns);
         var result = await svc.SendAsync(new SmsMessage("+15550001111", "Hello"));
 
         result.Success.Should().BeFalse();

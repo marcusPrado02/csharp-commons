@@ -133,11 +133,11 @@ public sealed class W3CTraceContextPropagatorTests
 
     private static Activity CreateActivity()
     {
-        var source  = new ActivitySource("TestSource");
+        var source = new ActivitySource("TestSource");
         var listener = new ActivityListener
         {
-            ShouldListenTo        = _ => true,
-            Sample                = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllDataAndRecorded,
+            ShouldListenTo = _ => true,
+            Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllDataAndRecorded,
         };
         ActivitySource.AddActivityListener(listener);
 

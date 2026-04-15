@@ -12,7 +12,7 @@ public sealed class CircuitBreakerPolicy
     private readonly CircuitBreakerOptions _options;
     private readonly object _sync = new();
     private CircuitBreakerState _state = CircuitBreakerState.Closed;
-    private int  _consecutiveFailures;
+    private int _consecutiveFailures;
     private DateTime _openedAt = DateTime.MinValue;
 
     /// <summary>Initialises with the provided options.</summary>
@@ -70,8 +70,8 @@ public sealed class CircuitBreakerPolicy
                 if (_consecutiveFailures >= _options.FailureThreshold
                     && _state != CircuitBreakerState.Open)
                 {
-                    _state     = CircuitBreakerState.Open;
-                    _openedAt  = DateTime.UtcNow;
+                    _state = CircuitBreakerState.Open;
+                    _openedAt = DateTime.UtcNow;
                     _options.OnOpen?.Invoke();
                 }
             }

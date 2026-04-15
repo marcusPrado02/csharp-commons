@@ -1,9 +1,9 @@
+global using FluentAssertions;
+global using MailKit.Net.Smtp;
+global using MailKit.Security;
 global using MarcusPrado.Platform.Abstractions.Email;
 global using MarcusPrado.Platform.MailKit.Email;
 global using MarcusPrado.Platform.MailKit.Options;
-global using MailKit.Net.Smtp;
-global using MailKit.Security;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
 global using Xunit;
-global using FluentAssertions;

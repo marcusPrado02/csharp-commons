@@ -28,8 +28,8 @@ public sealed class ExternalDependencyHealthCheck : IHealthCheck
     {
         ArgumentNullException.ThrowIfNull(http);
         ArgumentException.ThrowIfNullOrWhiteSpace(url);
-        _http    = http;
-        _url     = url;
+        _http = http;
+        _url = url;
         _timeout = timeout ?? TimeSpan.FromSeconds(1);
     }
 

@@ -22,14 +22,15 @@ public static class ProblemDetailsExtensions
         app.UseExceptionHandler(errApp => errApp.Run(async context =>
         {
             var feature = context.Features.Get<IExceptionHandlerFeature>();
-            if (feature is null) return;
+            if (feature is null)
+                return;
 
             var exception = feature.Error;
-            var logger    = context.RequestServices
+            var logger = context.RequestServices
                 .GetRequiredService<ILoggerFactory>()
                 .CreateLogger("PlatformProblemDetails");
 
-            var pd     = PlatformProblemDetailsFactory.Create(exception, context);
+            var pd = PlatformProblemDetailsFactory.Create(exception, context);
             var status = pd.Status ?? StatusCodes.Status500InternalServerError;
 
             if (status >= 500)

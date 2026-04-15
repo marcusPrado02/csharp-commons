@@ -5,9 +5,9 @@ namespace MarcusPrado.Platform.Security.Encryption;
 public sealed class AesGcmEncryption : IDataEncryption, IDisposable
 {
     // AES-256-GCM: 32-byte key, 12-byte nonce, 16-byte tag
-    private const int KeySize   = 32;
+    private const int KeySize = 32;
     private const int NonceSize = 12;
-    private const int TagSize   = 16;
+    private const int TagSize = 16;
 
     private readonly byte[] _key;
 
@@ -23,9 +23,9 @@ public sealed class AesGcmEncryption : IDataEncryption, IDisposable
         ArgumentNullException.ThrowIfNull(plaintext);
 
         var plaintextBytes = System.Text.Encoding.UTF8.GetBytes(plaintext);
-        var nonce          = new byte[NonceSize];
-        var ciphertext     = new byte[plaintextBytes.Length];
-        var tag            = new byte[TagSize];
+        var nonce = new byte[NonceSize];
+        var ciphertext = new byte[plaintextBytes.Length];
+        var tag = new byte[TagSize];
 
         RandomNumberGenerator.Fill(nonce);
 
@@ -48,9 +48,9 @@ public sealed class AesGcmEncryption : IDataEncryption, IDisposable
         var data = Convert.FromBase64String(ciphertext);
 
         var headerSize = NonceSize + TagSize;
-        var nonce      = data[..NonceSize];
-        var tag        = data[NonceSize..headerSize];
-        var encrypted  = data[headerSize..];
+        var nonce = data[..NonceSize];
+        var tag = data[NonceSize..headerSize];
+        var encrypted = data[headerSize..];
         var plaintext = new byte[encrypted.Length];
 
         using var aes = new AesGcm(_key, TagSize);

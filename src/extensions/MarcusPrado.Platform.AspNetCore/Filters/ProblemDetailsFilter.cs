@@ -23,7 +23,7 @@ public sealed class ProblemDetailsFilter : IExceptionFilter
     /// <inheritdoc />
     public void OnException(ExceptionContext context)
     {
-        var ex         = context.Exception;
+        var ex = context.Exception;
         var statusCode = ExceptionMapper.GetStatusCode(ex);
 
         _logger.LogError(ex, "Unhandled controller exception");
@@ -31,12 +31,12 @@ public sealed class ProblemDetailsFilter : IExceptionFilter
         var problem = new ProblemDetails
         {
             Status = statusCode,
-            Title  = ExceptionMapper.GetTitle(statusCode),
-            Type   = ExceptionMapper.GetProblemType(statusCode),
+            Title = ExceptionMapper.GetTitle(statusCode),
+            Type = ExceptionMapper.GetProblemType(statusCode),
             Detail = ex.Message,
         };
 
-        context.Result             = new ObjectResult(problem) { StatusCode = statusCode };
-        context.ExceptionHandled   = true;
+        context.Result = new ObjectResult(problem) { StatusCode = statusCode };
+        context.ExceptionHandled = true;
     }
 }

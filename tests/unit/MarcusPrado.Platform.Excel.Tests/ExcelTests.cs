@@ -8,7 +8,7 @@ public sealed class ClosedXmlExcelWriterTests
     public async Task WriteAsync_ReturnsNonEmptyBytes()
     {
         var writer = new ClosedXmlExcelWriter();
-        var doc    = new ExcelDocument(
+        var doc = new ExcelDocument(
             "Sheet1",
             ["Name", "Age"],
             [["Alice", "30"], ["Bob", "25"]]);
@@ -44,7 +44,7 @@ public sealed class ClosedXmlExcelReaderTests
             [["Alice", "95"], ["Bob", "87"]]);
 
         var bytes = await writer.WriteAsync(doc);
-        var rows  = await reader.ReadAsync(bytes);
+        var rows = await reader.ReadAsync(bytes);
 
         // Row 1 = headers, Row 2 = Alice, Row 3 = Bob
         rows.Should().HaveCount(3);
@@ -58,7 +58,7 @@ public sealed class ClosedXmlExcelReaderTests
     {
         var writer = new ClosedXmlExcelWriter();
         var reader = new ClosedXmlExcelReader();
-        var bytes  = await writer.WriteAsync(new ExcelDocument("S", ["H1"], []));
+        var bytes = await writer.WriteAsync(new ExcelDocument("S", ["H1"], []));
 
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
             () => reader.ReadAsync(bytes, sheetIndex: 99));
@@ -101,7 +101,7 @@ public sealed class ClosedXmlExcelWriterAdditionalTests
         var doc = new ExcelDocument("Sheet", ["Col1", "Col2"], rows);
 
         var bytes = await writer.WriteAsync(doc);
-        var read  = await reader.ReadAsync(bytes);
+        var read = await reader.ReadAsync(bytes);
 
         // 1 header row + 5 data rows
         read.Should().HaveCount(6);
@@ -111,7 +111,7 @@ public sealed class ClosedXmlExcelWriterAdditionalTests
     public async Task WriteAsync_SingleColumn_WorksCorrectly()
     {
         var writer = new ClosedXmlExcelWriter();
-        var doc    = new ExcelDocument("Sheet", ["Only"], [["Value1"], ["Value2"]]);
+        var doc = new ExcelDocument("Sheet", ["Only"], [["Value1"], ["Value2"]]);
 
         var bytes = await writer.WriteAsync(doc);
 

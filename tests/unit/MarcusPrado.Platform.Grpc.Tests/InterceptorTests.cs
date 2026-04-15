@@ -9,8 +9,8 @@ public sealed class InterceptorTests
     [Fact]
     public void CorrelationInterceptor_CanBeInstantiated()
     {
-        var log  = NullLogger<CorrelationInterceptor>.Instance;
-        var sut  = new CorrelationInterceptor(log);
+        var log = NullLogger<CorrelationInterceptor>.Instance;
+        var sut = new CorrelationInterceptor(log);
         sut.Should().NotBeNull();
     }
 

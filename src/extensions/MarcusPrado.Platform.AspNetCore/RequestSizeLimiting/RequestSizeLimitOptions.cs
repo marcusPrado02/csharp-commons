@@ -5,8 +5,8 @@ namespace MarcusPrado.Platform.AspNetCore.RequestSizeLimiting;
 /// </summary>
 public sealed class RequestSizeLimitOptions
 {
-    private const long OneMegabyte     = 1L * 1024 * 1024;
-    private const long TenMegabytes    = 10L * 1024 * 1024;
+    private const long OneMegabyte = 1L * 1024 * 1024;
+    private const long TenMegabytes = 10L * 1024 * 1024;
     private const long HundredMegabytes = 100L * 1024 * 1024;
 
     /// <summary>
@@ -19,8 +19,8 @@ public sealed class RequestSizeLimitOptions
     /// </summary>
     public Dictionary<RequestSizeTier, long> TierLimits { get; set; } = new()
     {
-        [RequestSizeTier.Free]       = OneMegabyte,
-        [RequestSizeTier.Pro]        = TenMegabytes,
+        [RequestSizeTier.Free] = OneMegabyte,
+        [RequestSizeTier.Pro] = TenMegabytes,
         [RequestSizeTier.Enterprise] = HundredMegabytes
     };
 

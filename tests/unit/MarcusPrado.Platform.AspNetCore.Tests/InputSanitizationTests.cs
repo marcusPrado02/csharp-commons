@@ -1,5 +1,5 @@
-using MarcusPrado.Platform.AspNetCore.Sanitization;
 using FluentAssertions;
+using MarcusPrado.Platform.AspNetCore.Sanitization;
 using Xunit;
 
 namespace MarcusPrado.Platform.AspNetCore.Tests;

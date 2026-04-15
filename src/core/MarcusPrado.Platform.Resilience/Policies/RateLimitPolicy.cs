@@ -16,7 +16,7 @@ public sealed class RateLimitPolicy
     /// <summary>Creates the policy with the given limit and window.</summary>
     public RateLimitPolicy(int limit, TimeSpan window)
     {
-        _limit  = limit;
+        _limit = limit;
         _window = window;
     }
 
@@ -31,7 +31,7 @@ public sealed class RateLimitPolicy
             var now = DateTime.UtcNow;
             if (now - _windowStart >= _window)
             {
-                _count       = 0;
+                _count = 0;
                 _windowStart = now;
             }
 

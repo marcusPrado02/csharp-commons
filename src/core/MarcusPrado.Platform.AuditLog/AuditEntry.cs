@@ -13,16 +13,16 @@ namespace MarcusPrado.Platform.AuditLog;
 /// <param name="UserAgent">The user-agent string of the client, if available.</param>
 /// <param name="Metadata">Additional arbitrary key-value metadata associated with the entry.</param>
 public sealed record AuditEntry(
-    Guid            Id,
-    AuditAction     Action,
-    string          Resource,
-    string          ResourceId,
-    string?         ActorId,
-    string?         TenantId,
-    DateTimeOffset  Timestamp,
-    string?         Changes,
-    string?         IpAddress,
-    string?         UserAgent,
+    Guid Id,
+    AuditAction Action,
+    string Resource,
+    string ResourceId,
+    string? ActorId,
+    string? TenantId,
+    DateTimeOffset Timestamp,
+    string? Changes,
+    string? IpAddress,
+    string? UserAgent,
     IDictionary<string, string>? Metadata = null)
 {
     /// <summary>Creates a new audit entry with auto-generated ID and current UTC timestamp.</summary>
@@ -38,13 +38,13 @@ public sealed record AuditEntry(
     /// <returns>A new <see cref="AuditEntry"/> with a generated <see cref="Guid"/> and the current UTC timestamp.</returns>
     public static AuditEntry Create(
         AuditAction action,
-        string      resource,
-        string      resourceId,
-        string?     actorId   = null,
-        string?     tenantId  = null,
-        string?     changes   = null,
-        string?     ipAddress = null,
-        string?     userAgent = null,
+        string resource,
+        string resourceId,
+        string? actorId = null,
+        string? tenantId = null,
+        string? changes = null,
+        string? ipAddress = null,
+        string? userAgent = null,
         IDictionary<string, string>? metadata = null)
             => new(
                 Guid.NewGuid(), action, resource, resourceId,

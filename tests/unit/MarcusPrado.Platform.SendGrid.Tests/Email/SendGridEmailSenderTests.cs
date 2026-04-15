@@ -23,7 +23,7 @@ public sealed class SendGridOptionsTests
     {
         var opts = new SendGridOptions
         {
-            ApiKey      = "SG.test",
+            ApiKey = "SG.test",
             DefaultFrom = "sender@example.com",
             DefaultFromName = "Sender",
         };

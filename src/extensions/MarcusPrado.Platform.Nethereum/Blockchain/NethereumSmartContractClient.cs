@@ -16,8 +16,8 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
     {
         ArgumentNullException.ThrowIfNull(web3);
         ArgumentNullException.ThrowIfNull(registry);
-        _web3               = web3;
-        _registry           = registry;
+        _web3 = web3;
+        _registry = registry;
         _defaultFromAddress = defaultFromAddress;
     }
 
@@ -32,9 +32,9 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
         ArgumentException.ThrowIfNullOrWhiteSpace(function);
         ArgumentNullException.ThrowIfNull(args);
 
-        var abi      = GetRequiredAbi(contractAddress);
+        var abi = GetRequiredAbi(contractAddress);
         var contract = _web3.Eth.GetContract(abi, contractAddress);
-        var fn       = contract.GetFunction(function);
+        var fn = contract.GetFunction(function);
 
         return await fn.CallAsync<T>(args).ConfigureAwait(false);
     }
@@ -50,9 +50,9 @@ public sealed class NethereumSmartContractClient : ISmartContractClient
         ArgumentException.ThrowIfNullOrWhiteSpace(function);
         ArgumentNullException.ThrowIfNull(args);
 
-        var abi      = GetRequiredAbi(contractAddress);
+        var abi = GetRequiredAbi(contractAddress);
         var contract = _web3.Eth.GetContract(abi, contractAddress);
-        var fn       = contract.GetFunction(function);
+        var fn = contract.GetFunction(function);
 
         return await fn.SendTransactionAsync(_defaultFromAddress, args).ConfigureAwait(false);
     }

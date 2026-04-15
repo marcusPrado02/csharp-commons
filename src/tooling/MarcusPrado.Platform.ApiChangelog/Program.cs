@@ -17,8 +17,8 @@ if (args.Length == 0 || args[0] is "--help" or "-h")
 return args[0] switch
 {
     "extract" => Extract(args[1..]),
-    "diff"    => Diff(args[1..]),
-    _         => PrintError($"Unknown command '{args[0]}'. Run with --help for usage."),
+    "diff" => Diff(args[1..]),
+    _ => PrintError($"Unknown command '{args[0]}'. Run with --help for usage."),
 };
 
 // ── Commands ──────────────────────────────────────────────────────────────────
@@ -31,7 +31,7 @@ static int Extract(string[] args)
     }
 
     var dllPath = args[0];
-    var output  = GetArg(args[1..], "--output");
+    var output = GetArg(args[1..], "--output");
 
     if (!File.Exists(dllPath))
     {
@@ -41,8 +41,8 @@ static int Extract(string[] args)
 #pragma warning disable S3885 // Must load from path — Assembly.Load does not accept file paths
     var assembly = Assembly.LoadFile(Path.GetFullPath(dllPath));
 #pragma warning restore S3885
-    var surface  = ApiSurfaceExtractor.Extract(assembly);
-    var json     = JsonSerializer.Serialize(surface, ApiChangelogJsonOptions.Default);
+    var surface = ApiSurfaceExtractor.Extract(assembly);
+    var json = JsonSerializer.Serialize(surface, ApiChangelogJsonOptions.Default);
 
     if (output is not null)
     {
@@ -66,19 +66,23 @@ static int Extract(string[] args)
 static int Diff(string[] args)
 {
     var baseline = GetArg(args, "--baseline");
-    var current  = GetArg(args, "--current");
-    var version  = GetArg(args, "--version") ?? "current";
-    var output   = GetArg(args, "--output");
+    var current = GetArg(args, "--current");
+    var version = GetArg(args, "--version") ?? "current";
+    var output = GetArg(args, "--output");
 
-    if (baseline is null) return PrintError("--baseline is required");
-    if (current  is null) return PrintError("--current is required");
-    if (!File.Exists(baseline)) return PrintError($"Baseline not found: {baseline}");
-    if (!File.Exists(current))  return PrintError($"Current not found: {current}");
+    if (baseline is null)
+        return PrintError("--baseline is required");
+    if (current is null)
+        return PrintError("--current is required");
+    if (!File.Exists(baseline))
+        return PrintError($"Baseline not found: {baseline}");
+    if (!File.Exists(current))
+        return PrintError($"Current not found: {current}");
 
     var baselineSurface = JsonSerializer.Deserialize<ApiSurface>(File.ReadAllText(baseline))!;
-    var currentSurface  = JsonSerializer.Deserialize<ApiSurface>(File.ReadAllText(current))!;
+    var currentSurface = JsonSerializer.Deserialize<ApiSurface>(File.ReadAllText(current))!;
 
-    var diff     = ApiDiffEngine.Compare(baselineSurface, currentSurface);
+    var diff = ApiDiffEngine.Compare(baselineSurface, currentSurface);
     var markdown = ChangelogRenderer.Render(diff, version, DateTimeOffset.UtcNow);
 
     if (output is not null)

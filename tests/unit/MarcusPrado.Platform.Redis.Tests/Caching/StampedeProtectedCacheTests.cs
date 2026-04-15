@@ -1,15 +1,15 @@
+using FluentAssertions;
 using MarcusPrado.Platform.Redis.Caching;
 using MarcusPrado.Platform.Redis.Lock;
-using FluentAssertions;
 using NSubstitute;
 
 namespace MarcusPrado.Platform.Redis.Tests.Caching;
 
 public sealed class StampedeProtectedCacheTests
 {
-    private readonly ICache _inner   = Substitute.For<ICache>();
+    private readonly ICache _inner = Substitute.For<ICache>();
     private readonly IDistributedLock _lock = Substitute.For<IDistributedLock>();
-    private readonly ILockHandle _handle   = Substitute.For<ILockHandle>();
+    private readonly ILockHandle _handle = Substitute.For<ILockHandle>();
 
     public StampedeProtectedCacheTests()
     {
@@ -25,7 +25,7 @@ public sealed class StampedeProtectedCacheTests
         _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
               .Returns(Task.FromResult<string?>("val"));
 
-        var sut    = new StampedeProtectedCache(_inner, _lock);
+        var sut = new StampedeProtectedCache(_inner, _lock);
         var result = await sut.GetAsync<string>("k");
 
         result.Should().Be("val");
@@ -56,7 +56,7 @@ public sealed class StampedeProtectedCacheTests
         _inner.ExistsAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
               .Returns(Task.FromResult(true));
 
-        var sut    = new StampedeProtectedCache(_inner, _lock);
+        var sut = new StampedeProtectedCache(_inner, _lock);
         var result = await sut.ExistsAsync("k");
 
         result.Should().BeTrue();
@@ -68,7 +68,7 @@ public sealed class StampedeProtectedCacheTests
         _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
               .Returns(Task.FromResult<string?>("cached"));
 
-        var sut    = new StampedeProtectedCache(_inner, _lock);
+        var sut = new StampedeProtectedCache(_inner, _lock);
         var called = false;
 
         var result = await sut.GetOrAddAsync<string>("k",
@@ -84,7 +84,7 @@ public sealed class StampedeProtectedCacheTests
         _inner.GetAsync<string>(Arg.Any<string>(), Arg.Any<CancellationToken>())
               .Returns(Task.FromResult<string?>(null));
 
-        var sut    = new StampedeProtectedCache(_inner, _lock);
+        var sut = new StampedeProtectedCache(_inner, _lock);
         var called = false;
 
         var result = await sut.GetOrAddAsync<string>("k",

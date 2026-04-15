@@ -25,7 +25,7 @@ public sealed class StripeSubscriptionService : AbsPayment.ISubscriptionService
         var options = new SubscriptionCreateOptions
         {
             Customer = request.CustomerId,
-            Items    = [new SubscriptionItemOptions { Price = request.PriceId }],
+            Items = [new SubscriptionItemOptions { Price = request.PriceId }],
             Description = request.Description,
         };
 

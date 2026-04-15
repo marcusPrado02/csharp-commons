@@ -109,8 +109,8 @@ public sealed class ExceptionMiddlewareTests
 
         using var doc = await PlatformTestServer.ReadJsonAsync(response);
         var root = doc.RootElement;
-        root.TryGetProperty("type",   out _).Should().BeTrue("'type' is an RFC 9457 required field");
-        root.TryGetProperty("title",  out _).Should().BeTrue("'title' is an RFC 9457 required field");
+        root.TryGetProperty("type", out _).Should().BeTrue("'type' is an RFC 9457 required field");
+        root.TryGetProperty("title", out _).Should().BeTrue("'title' is an RFC 9457 required field");
         root.TryGetProperty("status", out _).Should().BeTrue("'status' is an RFC 9457 required field");
     }
 }

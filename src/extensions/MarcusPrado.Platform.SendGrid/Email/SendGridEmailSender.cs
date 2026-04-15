@@ -78,7 +78,7 @@ public sealed class SendGridEmailSender : IEmailSender
 
         var msg = new SendGridMessage
         {
-            From    = from,
+            From = from,
             Subject = message.Subject,
         };
 

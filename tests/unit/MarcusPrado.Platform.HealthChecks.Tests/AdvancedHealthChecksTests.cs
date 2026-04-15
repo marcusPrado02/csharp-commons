@@ -1,14 +1,14 @@
+using System.Net;
+using System.Net.Http.Json;
+using FluentAssertions;
 using MarcusPrado.Platform.HealthChecks.Checks;
 using MarcusPrado.Platform.HealthChecks.Extensions;
-using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
 using Xunit;
 
 namespace MarcusPrado.Platform.HealthChecks.Tests;
@@ -139,7 +139,7 @@ public sealed class AdvancedHealthChecksTests
     public void HealthCheckHistory_RecordAndRetrieve_ReturnsSameRecord()
     {
         var history = new HealthCheckHistory(maxHistoryPerCheck: 5);
-        var record  = new HealthCheckRecord("db", HealthStatus.Healthy, DateTimeOffset.UtcNow, "ok");
+        var record = new HealthCheckRecord("db", HealthStatus.Healthy, DateTimeOffset.UtcNow, "ok");
 
         history.Record(record);
 
@@ -163,7 +163,7 @@ public sealed class AdvancedHealthChecksTests
     {
         var history = new HealthCheckHistory(maxHistoryPerCheck: 5);
         history.Record(new HealthCheckRecord("alpha", HealthStatus.Healthy, DateTimeOffset.UtcNow, null));
-        history.Record(new HealthCheckRecord("beta",  HealthStatus.Degraded, DateTimeOffset.UtcNow, null));
+        history.Record(new HealthCheckRecord("beta", HealthStatus.Degraded, DateTimeOffset.UtcNow, null));
 
         var all = history.GetAll();
 
@@ -213,14 +213,14 @@ public sealed class AdvancedHealthChecksTests
     private static MemoryPressureHealthCheck MakeMemoryCheck(long degraded, long unhealthy)
         => new(Options.Create(new MemoryPressureOptions
         {
-            DegradedThresholdBytes  = degraded,
+            DegradedThresholdBytes = degraded,
             UnhealthyThresholdBytes = unhealthy,
         }));
 
     private static ThreadPoolStarvationHealthCheck MakeThreadPoolCheck(int degraded, int unhealthy)
         => new(Options.Create(new ThreadPoolStarvationOptions
         {
-            DegradedMinAvailableWorkers  = degraded,
+            DegradedMinAvailableWorkers = degraded,
             UnhealthyMinAvailableWorkers = unhealthy,
         }));
 

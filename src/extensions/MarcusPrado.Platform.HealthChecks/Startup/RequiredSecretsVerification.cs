@@ -21,7 +21,7 @@ public sealed class RequiredSecretsVerification : IStartupVerification
         ArgumentNullException.ThrowIfNull(requiredKeys);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        _requiredKeys  = requiredKeys;
+        _requiredKeys = requiredKeys;
         _configuration = configuration;
     }
 

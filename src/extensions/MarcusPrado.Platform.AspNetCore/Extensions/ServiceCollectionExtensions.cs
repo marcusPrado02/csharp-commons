@@ -25,11 +25,11 @@ public static class ServiceCollectionExtensions
     /// <returns>The same <paramref name="services"/> for chaining.</returns>
     public static IServiceCollection AddPlatformCore(this IServiceCollection services)
     {
-        services.AddSingleton<IClock,          SystemClock>();
-        services.AddSingleton<IGuidFactory,    DefaultGuidFactory>();
+        services.AddSingleton<IClock, SystemClock>();
+        services.AddSingleton<IGuidFactory, DefaultGuidFactory>();
         services.AddSingleton<IJsonSerializer, SystemTextJsonSerializer>();
         services.AddScoped<ICorrelationContext, DefaultCorrelationContext>();
-        services.AddScoped<ITenantContext,      DefaultTenantContext>();
+        services.AddScoped<ITenantContext, DefaultTenantContext>();
         return services;
     }
 

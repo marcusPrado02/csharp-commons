@@ -234,7 +234,8 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         var consumer1 = new AsyncEventingBasicConsumer(ch1);
         consumer1.ReceivedAsync += async (_, ea) =>
         {
-            lock (received1) received1.Add(Encoding.UTF8.GetString(ea.Body.Span));
+            lock (received1)
+                received1.Add(Encoding.UTF8.GetString(ea.Body.Span));
             await ch1.BasicAckAsync(ea.DeliveryTag, false);
         };
         await ch1.BasicConsumeAsync(queue, autoAck: false, consumer1);
@@ -242,7 +243,8 @@ public sealed class RabbitMqIntegrationTests : IAsyncLifetime
         var consumer2 = new AsyncEventingBasicConsumer(ch2);
         consumer2.ReceivedAsync += async (_, ea) =>
         {
-            lock (received2) received2.Add(Encoding.UTF8.GetString(ea.Body.Span));
+            lock (received2)
+                received2.Add(Encoding.UTF8.GetString(ea.Body.Span));
             await ch2.BasicAckAsync(ea.DeliveryTag, false);
         };
         await ch2.BasicConsumeAsync(queue, autoAck: false, consumer2);

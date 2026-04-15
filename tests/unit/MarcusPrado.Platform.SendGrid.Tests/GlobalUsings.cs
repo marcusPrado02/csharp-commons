@@ -1,11 +1,11 @@
+global using System.Net;
+global using FluentAssertions;
 global using MarcusPrado.Platform.Abstractions.Email;
 global using MarcusPrado.Platform.SendGrid.Email;
 global using MarcusPrado.Platform.SendGrid.Extensions;
 global using MarcusPrado.Platform.SendGrid.Options;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
-global using Xunit;
-global using FluentAssertions;
 global using SendGrid;
 global using SendGrid.Helpers.Mail;
-global using System.Net;
+global using Xunit;

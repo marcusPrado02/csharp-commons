@@ -38,7 +38,7 @@ public sealed class MemoryPressureHealthCheck : IHealthCheck
 
         var data = new Dictionary<string, object>
         {
-            ["allocated_bytes"]          = allocated,
+            ["allocated_bytes"] = allocated,
             ["degraded_threshold_bytes"] = _options.DegradedThresholdBytes,
             ["unhealthy_threshold_bytes"] = _options.UnhealthyThresholdBytes,
         };

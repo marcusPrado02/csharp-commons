@@ -43,9 +43,9 @@ public static class RabbitMqTracePropagator
 
             return raw switch
             {
-                byte[] bytes  => Encoding.UTF8.GetString(bytes),
-                string s      => s,
-                _             => null,
+                byte[] bytes => Encoding.UTF8.GetString(bytes),
+                string s => s,
+                _ => null,
             };
         });
     }

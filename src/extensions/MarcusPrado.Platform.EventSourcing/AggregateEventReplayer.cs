@@ -21,10 +21,12 @@ public static class AggregateEventReplayer
         foreach (var storedEvent in events)
         {
             var eventType = Type.GetType(storedEvent.EventType);
-            if (eventType is null) continue;
+            if (eventType is null)
+                continue;
 
             var domainEvent = JsonSerializer.Deserialize(storedEvent.Payload, eventType);
-            if (domainEvent is null) continue;
+            if (domainEvent is null)
+                continue;
 
             var applyMethod = state.GetType().GetMethod("Apply", [eventType]);
             applyMethod?.Invoke(state, [domainEvent]);

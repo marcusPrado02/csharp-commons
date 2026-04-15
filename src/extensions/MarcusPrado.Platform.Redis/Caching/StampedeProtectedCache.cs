@@ -26,8 +26,8 @@ public sealed class StampedeProtectedCache : ICache
     {
         ArgumentNullException.ThrowIfNull(inner);
         ArgumentNullException.ThrowIfNull(distributedLock);
-        _inner   = inner;
-        _lock    = distributedLock;
+        _inner = inner;
+        _lock = distributedLock;
         _lockTtl = lockTtl ?? TimeSpan.FromSeconds(5);
     }
 

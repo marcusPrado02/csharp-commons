@@ -9,7 +9,7 @@ namespace MarcusPrado.Platform.DataAccess.Tracing;
 public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
 {
     // OTel DB semantic convention attribute names
-    private const string DbSystem    = "db.system";
+    private const string DbSystem = "db.system";
     private const string DbStatement = "db.statement";
     private const string DbOperation = "db.operation";
 
@@ -57,7 +57,8 @@ public sealed class EfCoreTracingInterceptor : DbCommandInterceptor
             "db.query",
             ActivityKind.Client);
 
-        if (activity is null) return;
+        if (activity is null)
+            return;
 
         activity.SetTag(DbSystem, "sql");
         activity.SetTag(DbStatement, SqlSanitizer.Sanitize(command.CommandText));

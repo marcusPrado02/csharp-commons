@@ -25,8 +25,8 @@ public sealed class IpFilterMiddleware
         ArgumentNullException.ThrowIfNull(store);
         ArgumentNullException.ThrowIfNull(options);
 
-        _next    = next;
-        _store   = store;
+        _next = next;
+        _store = store;
         _options = options;
     }
 
@@ -102,13 +102,13 @@ public sealed class IpFilterMiddleware
 
     private static async Task WriteForbiddenAsync(HttpContext context)
     {
-        context.Response.StatusCode  = StatusCodes.Status403Forbidden;
+        context.Response.StatusCode = StatusCodes.Status403Forbidden;
         context.Response.ContentType = "application/problem+json";
 
         var problem = new
         {
-            type   = "https://tools.ietf.org/html/rfc9110#section-15.5.4",
-            title  = "Forbidden",
+            type = "https://tools.ietf.org/html/rfc9110#section-15.5.4",
+            title = "Forbidden",
             status = 403,
             detail = "Access denied from your IP address."
         };

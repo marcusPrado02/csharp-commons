@@ -121,7 +121,8 @@ public class ConcurrencyLimiterBenchmark : IDisposable
         return Task.WhenAll(Enumerable.Range(0, 8).Select(async _ =>
         {
             await _semaphore.WaitAsync().ConfigureAwait(false);
-            try { await SimulateWorkAsync().ConfigureAwait(false); }
+            try
+            { await SimulateWorkAsync().ConfigureAwait(false); }
             finally { _semaphore.Release(); }
         }));
     }

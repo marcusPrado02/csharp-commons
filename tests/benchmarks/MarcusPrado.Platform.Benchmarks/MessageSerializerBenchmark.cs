@@ -37,12 +37,12 @@ public partial class MessageSerializerBenchmark
     [ProtoContract]
     public sealed class OrderPlacedEvent
     {
-        [Key(0)] [property: ProtoMember(1)] public Guid OrderId { get; set; }
-        [Key(1)] [property: ProtoMember(2)] public string CustomerId { get; set; } = default!;
-        [Key(2)] [property: ProtoMember(3)] public decimal Amount { get; set; }
-        [Key(3)] [property: ProtoMember(4)] public DateTime PlacedAt { get; set; }
-        [Key(4)] [property: ProtoMember(5)] public string CurrencyCode { get; set; } = default!;
-        [Key(5)] [property: ProtoMember(6)] public List<string> ProductIds { get; set; } = default!;
+        [Key(0)][property: ProtoMember(1)] public Guid OrderId { get; set; }
+        [Key(1)][property: ProtoMember(2)] public string CustomerId { get; set; } = default!;
+        [Key(2)][property: ProtoMember(3)] public decimal Amount { get; set; }
+        [Key(3)][property: ProtoMember(4)] public DateTime PlacedAt { get; set; }
+        [Key(4)][property: ProtoMember(5)] public string CurrencyCode { get; set; } = default!;
+        [Key(5)][property: ProtoMember(6)] public List<string> ProductIds { get; set; } = default!;
     }
 
     // ── Pre-baked instances and byte arrays ──────────────────────────────────

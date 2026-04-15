@@ -20,7 +20,7 @@ public sealed class RetryPolicy
         Func<CancellationToken, Task<T>> action,
         CancellationToken cancellationToken = default)
     {
-        var exceptions   = new List<Exception>();
+        var exceptions = new List<Exception>();
         var previousDelay = TimeSpan.Zero;
 
         for (var attempt = 0; attempt <= _options.MaxRetries; attempt++)

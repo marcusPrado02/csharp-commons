@@ -12,12 +12,12 @@ public sealed class JwtAuthenticationHandlerTests : IDisposable
     [Fact]
     public async Task ValidToken_ShouldReturn200_WithUserId()
     {
-        var token    = JwtTokenFactory.CreateValidToken(subject: "user-42");
-        var request  = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.JwtInfoRoute);
+        var token = JwtTokenFactory.CreateValidToken(subject: "user-42");
+        var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.JwtInfoRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         var response = await _client.SendAsync(request);
-        var body     = await response.Content.ReadAsStringAsync();
+        var body = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         body.Should().Be("user-42");
@@ -50,7 +50,7 @@ public sealed class JwtAuthenticationHandlerTests : IDisposable
     [Fact]
     public async Task ExpiredToken_ShouldReturn_401()
     {
-        var token   = JwtTokenFactory.CreateExpiredToken();
+        var token = JwtTokenFactory.CreateExpiredToken();
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.JwtInfoRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -62,7 +62,7 @@ public sealed class JwtAuthenticationHandlerTests : IDisposable
     [Fact]
     public async Task InvalidSignature_ShouldReturn_401()
     {
-        var token   = JwtTokenFactory.CreateTokenWithWrongKey();
+        var token = JwtTokenFactory.CreateTokenWithWrongKey();
         var request = new HttpRequestMessage(HttpMethod.Get, AuthTestServer.JwtInfoRoute);
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

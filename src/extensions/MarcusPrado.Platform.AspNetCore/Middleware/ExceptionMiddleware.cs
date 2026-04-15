@@ -53,10 +53,10 @@ public sealed class ExceptionMiddleware
         // so that all fields — including extensions — appear at the top level.
         var body = new Dictionary<string, object?>(StringComparer.Ordinal)
         {
-            ["status"]  = statusCode,
-            ["title"]   = ExceptionMapper.GetTitle(statusCode),
-            ["type"]    = ExceptionMapper.GetProblemType(statusCode),
-            ["detail"]  = exception.Message,
+            ["status"] = statusCode,
+            ["title"] = ExceptionMapper.GetTitle(statusCode),
+            ["type"] = ExceptionMapper.GetProblemType(statusCode),
+            ["detail"] = exception.Message,
             ["traceId"] = Activity.Current?.Id ?? context.TraceIdentifier,
         };
 
@@ -64,7 +64,7 @@ public sealed class ExceptionMiddleware
         if (exception is ValidationException validationEx && validationEx.Errors.Count > 0)
             body["errors"] = validationEx.Errors;
 
-        context.Response.StatusCode  = statusCode;
+        context.Response.StatusCode = statusCode;
 
         // Pass content-type directly to WriteAsJsonAsync so it is not overridden
         await context.Response.WriteAsJsonAsync(

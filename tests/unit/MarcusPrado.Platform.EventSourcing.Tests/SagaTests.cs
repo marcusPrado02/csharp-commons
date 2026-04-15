@@ -73,7 +73,9 @@ public sealed class SagaOrchestratorTests
             new SagaStep<OrderCommand>("Boom", (_, _) => throw new Exception("boom")),
             saga.State);
 
-        try { await CreateOrchestrator().ExecuteAsync(saga); } catch { /* expected */ }
+        try
+        { await CreateOrchestrator().ExecuteAsync(saga); }
+        catch { /* expected */ }
 
         saga.Status.Should().Be(SagaStatus.Failed);
     }

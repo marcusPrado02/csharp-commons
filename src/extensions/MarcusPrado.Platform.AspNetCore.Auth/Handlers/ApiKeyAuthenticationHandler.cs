@@ -37,7 +37,7 @@ public sealed class ApiKeyAuthenticationHandler(
             new Claim("apikey", apiKey),
             new Claim(ClaimTypes.Name, "api-client"),
         };
-        var identity  = new ClaimsIdentity(claims, Scheme.Name);
+        var identity = new ClaimsIdentity(claims, Scheme.Name);
         var principal = new ClaimsPrincipal(identity);
 
         var userContext = Context.RequestServices.GetRequiredService<IUserContext>();

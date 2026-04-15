@@ -19,11 +19,11 @@ public sealed class ApiEnvelopeFilter : IEndpointFilter
         return result switch
         {
             // Already wrapped — pass through unchanged
-            ApiEnvelope      => result,
+            ApiEnvelope => result,
             // No body — pass through
-            null             => result,
+            null => result,
             // Wrap anything else
-            _                => new ApiEnvelope<object> { Success = true, Data = result },
+            _ => new ApiEnvelope<object> { Success = true, Data = result },
         };
     }
 }

@@ -38,7 +38,8 @@ public sealed class BulkheadPolicy : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+            return;
         _semaphore.Dispose();
         _disposed = true;
     }

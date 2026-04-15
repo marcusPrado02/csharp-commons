@@ -17,8 +17,8 @@ public sealed class ClosedXmlExcelReader : IExcelReader
         if (sheetIndex < 1)
             throw new ArgumentOutOfRangeException(nameof(sheetIndex), "Sheet index must be ≥ 1.");
 
-        using var stream    = new MemoryStream(excelBytes);
-        using var workbook  = new XLWorkbook(stream);
+        using var stream = new MemoryStream(excelBytes);
+        using var workbook = new XLWorkbook(stream);
 
         if (sheetIndex > workbook.Worksheets.Count)
         {

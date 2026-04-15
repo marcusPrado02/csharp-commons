@@ -12,7 +12,8 @@ public sealed class CertificateRevocationChecker
     /// <summary>Returns true if the certificate has been revoked, false if valid.</summary>
     public bool IsRevoked(X509Certificate2 certificate, X509Certificate2Collection? chain = null)
     {
-        if (!_options.CheckRevocation) return false;
+        if (!_options.CheckRevocation)
+            return false;
 
         using var certChain = new X509Chain();
         certChain.ChainPolicy.RevocationMode = _options.RevocationMode;
@@ -22,7 +23,8 @@ public sealed class CertificateRevocationChecker
             certChain.ChainPolicy.ExtraStore.AddRange(chain);
 
         var isValid = certChain.Build(certificate);
-        if (isValid) return false;
+        if (isValid)
+            return false;
 
         return certChain.ChainStatus.Any(s =>
             s.Status.HasFlag(X509ChainStatusFlags.Revoked));

@@ -74,14 +74,14 @@ public static class HealthCheckExtensions
         context.Response.ContentType = "application/json";
         var result = new
         {
-            status  = report.Status.ToString(),
+            status = report.Status.ToString(),
             entries = report.Entries.ToDictionary(
                 k => k.Key,
                 v => new
                 {
-                    status      = v.Value.Status.ToString(),
+                    status = v.Value.Status.ToString(),
                     description = v.Value.Description,
-                    exception   = v.Value.Exception?.Message,
+                    exception = v.Value.Exception?.Message,
                 }),
         };
         await context.Response.WriteAsJsonAsync(result);

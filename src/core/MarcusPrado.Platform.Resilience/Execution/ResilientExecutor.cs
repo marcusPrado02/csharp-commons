@@ -9,10 +9,10 @@ namespace MarcusPrado.Platform.Resilience.Execution;
 /// </summary>
 public sealed class ResilientExecutor : IDisposable
 {
-    private RetryPolicy?          _retry;
+    private RetryPolicy? _retry;
     private CircuitBreakerPolicy? _circuitBreaker;
-    private BulkheadPolicy?       _bulkhead;
-    private TimeSpan?             _timeout;
+    private BulkheadPolicy? _bulkhead;
+    private TimeSpan? _timeout;
 
     /// <summary>Adds a retry policy.</summary>
     public ResilientExecutor WithRetry(RetryOptions options)
@@ -51,23 +51,23 @@ public sealed class ResilientExecutor : IDisposable
 
         if (_bulkhead is not null)
         {
-            var bh    = _bulkhead;
+            var bh = _bulkhead;
             var inner = pipeline;
-            pipeline  = ct => bh.ExecuteAsync(inner, ct);
+            pipeline = ct => bh.ExecuteAsync(inner, ct);
         }
 
         if (_circuitBreaker is not null)
         {
-            var cb    = _circuitBreaker;
+            var cb = _circuitBreaker;
             var inner = pipeline;
-            pipeline  = ct => cb.ExecuteAsync(inner, ct);
+            pipeline = ct => cb.ExecuteAsync(inner, ct);
         }
 
         if (_retry is not null)
         {
             var retry = _retry;
             var inner = pipeline;
-            pipeline  = ct => retry.ExecuteAsync(inner, ct);
+            pipeline = ct => retry.ExecuteAsync(inner, ct);
         }
 
         if (_timeout.HasValue)

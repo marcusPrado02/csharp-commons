@@ -16,7 +16,8 @@ public static class SqlInjectionDetector
     /// <summary>Returns true if the input contains common SQL injection patterns.</summary>
     public static bool ContainsSqlInjection(string? input)
     {
-        if (string.IsNullOrWhiteSpace(input)) return false;
+        if (string.IsNullOrWhiteSpace(input))
+            return false;
         var upper = input.ToUpperInvariant();
         return _patterns.Any(p => upper.Contains(p.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase));
     }

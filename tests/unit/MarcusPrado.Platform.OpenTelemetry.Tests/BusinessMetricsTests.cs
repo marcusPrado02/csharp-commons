@@ -1,7 +1,7 @@
 using System.Diagnostics.Metrics;
+using FluentAssertions;
 using MarcusPrado.Platform.Observability.Metrics;
 using MarcusPrado.Platform.OpenTelemetry.Metrics;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

@@ -10,8 +10,8 @@ namespace MarcusPrado.Platform.Abstractions.Search;
 /// <param name="SortDescending">When <see langword="true"/>, results are sorted in descending order.</param>
 public sealed record SearchQuery(
     string IndexName, string Query,
-    int    Skip       = 0,
-    int    Take       = 10,
+    int Skip = 0,
+    int Take = 10,
     IReadOnlyDictionary<string, string>? Filters = null,
     string? SortField = null, bool SortDescending = false);
 
@@ -22,5 +22,5 @@ public sealed record SearchQuery(
 /// <param name="TookMs">The time in milliseconds the search engine took to execute the query.</param>
 public sealed record SearchResult<T>(
     IReadOnlyList<T> Hits,
-    long             Total,
-    double           TookMs);
+    long Total,
+    double TookMs);

@@ -28,7 +28,7 @@ public sealed class EndpointConventionsTests
     public async Task ApiEnvelopeFilter_WrapsPrimitive_InEnvelope()
     {
         var filter = new ApiEnvelopeFilter();
-        var ctx    = BuildContext();
+        var ctx = BuildContext();
 
         var result = await filter.InvokeAsync(ctx, _ => ValueTask.FromResult<object?>(42));
 
@@ -41,8 +41,8 @@ public sealed class EndpointConventionsTests
     [Fact]
     public async Task ApiEnvelopeFilter_AlreadyEnvelope_PassesThrough()
     {
-        var filter  = new ApiEnvelopeFilter();
-        var ctx     = BuildContext();
+        var filter = new ApiEnvelopeFilter();
+        var ctx = BuildContext();
         var existing = new ApiEnvelope<string> { Success = true, Data = "hi" };
 
         var result = await filter.InvokeAsync(ctx, _ => ValueTask.FromResult<object?>(existing));
@@ -54,7 +54,7 @@ public sealed class EndpointConventionsTests
     public async Task ApiEnvelopeFilter_NullResult_PassesThrough()
     {
         var filter = new ApiEnvelopeFilter();
-        var ctx    = BuildContext();
+        var ctx = BuildContext();
 
         var result = await filter.InvokeAsync(ctx, _ => ValueTask.FromResult<object?>(null));
 

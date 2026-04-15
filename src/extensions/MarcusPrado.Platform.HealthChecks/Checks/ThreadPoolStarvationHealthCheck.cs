@@ -38,9 +38,9 @@ public sealed class ThreadPoolStarvationHealthCheck : IHealthCheck
 
         var data = new Dictionary<string, object>
         {
-            ["available_worker_threads"]          = workerThreads,
+            ["available_worker_threads"] = workerThreads,
             ["available_completion_port_threads"] = completionPortThreads,
-            ["max_worker_threads"]                = maxWorker,
+            ["max_worker_threads"] = maxWorker,
         };
 
         if (workerThreads <= _options.UnhealthyMinAvailableWorkers)

@@ -25,7 +25,7 @@ public static class ConsulExtensions
             var config = new ConsulClientConfiguration
             {
                 Address = new Uri(opts.Address),
-                Token   = opts.Token,
+                Token = opts.Token,
             };
             return new ConsulClient(config);
         });

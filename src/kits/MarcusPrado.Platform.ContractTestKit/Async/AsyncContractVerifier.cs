@@ -66,7 +66,8 @@ public static class AsyncContractVerifier
             foreach (var reqProp in required.EnumerateArray())
             {
                 var propName = reqProp.GetString();
-                if (propName is null) continue;
+                if (propName is null)
+                    continue;
 
                 if (!payload.TryGetProperty(propName, out var propValue) ||
                     propValue.ValueKind == JsonValueKind.Null ||
@@ -104,7 +105,8 @@ public static class AsyncContractVerifier
 
     private static string? ValidateType(string propName, JsonElement value, string? expectedType)
     {
-        if (expectedType is null) return null;
+        if (expectedType is null)
+            return null;
 
         var actualKind = value.ValueKind;
 
@@ -127,7 +129,8 @@ public static class AsyncContractVerifier
 
     private static bool IsInteger(JsonElement element)
     {
-        if (element.TryGetInt64(out _)) return true;
+        if (element.TryGetInt64(out _))
+            return true;
         var raw = element.GetRawText();
         return !raw.Contains('.') && !raw.Contains('e') && !raw.Contains('E');
     }

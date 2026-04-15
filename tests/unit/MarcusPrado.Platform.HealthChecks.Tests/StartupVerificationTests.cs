@@ -126,7 +126,7 @@ public sealed class StartupVerificationTests
     public async Task HostedService_AllVerificationsPass_DoesNotStopApplication()
     {
         var lifetime = Substitute.For<IHostApplicationLifetime>();
-        var logger   = Substitute.For<ILogger<StartupVerificationHostedService>>();
+        var logger = Substitute.For<ILogger<StartupVerificationHostedService>>();
 
         var passing = Substitute.For<IStartupVerification>();
         passing.Name.Returns("pass");
@@ -144,7 +144,7 @@ public sealed class StartupVerificationTests
     public async Task HostedService_OneVerificationFails_CallsStopApplication()
     {
         var lifetime = Substitute.For<IHostApplicationLifetime>();
-        var logger   = Substitute.For<ILogger<StartupVerificationHostedService>>();
+        var logger = Substitute.For<ILogger<StartupVerificationHostedService>>();
 
         var failing = Substitute.For<IStartupVerification>();
         failing.Name.Returns("fail");
@@ -169,8 +169,8 @@ public sealed class StartupVerificationTests
 
         services.AddStartupVerification();
 
-        var sp          = services.BuildServiceProvider();
-        var hostedSvcs  = sp.GetServices<IHostedService>();
+        var sp = services.BuildServiceProvider();
+        var hostedSvcs = sp.GetServices<IHostedService>();
         hostedSvcs.Should().ContainSingle(s => s is StartupVerificationHostedService);
     }
 
@@ -180,7 +180,7 @@ public sealed class StartupVerificationTests
         var services = new ServiceCollection();
         services.AddDatabaseConnectivityVerification(() => Task.FromResult(true));
 
-        var sp            = services.BuildServiceProvider();
+        var sp = services.BuildServiceProvider();
         var verifications = sp.GetServices<IStartupVerification>();
         verifications.Should().ContainSingle(v => v is DatabaseConnectivityVerification);
     }
@@ -192,7 +192,7 @@ public sealed class StartupVerificationTests
         services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
         services.AddRequiredSecretsVerification("SomeKey");
 
-        var sp            = services.BuildServiceProvider();
+        var sp = services.BuildServiceProvider();
         var verifications = sp.GetServices<IStartupVerification>();
         verifications.Should().ContainSingle(v => v is RequiredSecretsVerification);
     }

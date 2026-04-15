@@ -35,9 +35,9 @@ internal sealed class DefaultUserContext : IUserContext
     /// <inheritdoc />
     public void SetUser(ClaimsPrincipal principal)
     {
-        _principal      = principal;
+        _principal = principal;
         IsAuthenticated = principal.Identity?.IsAuthenticated == true;
-        UserId          = principal.FindFirstValue(ClaimTypes.NameIdentifier)
+        UserId = principal.FindFirstValue(ClaimTypes.NameIdentifier)
                           ?? principal.FindFirstValue("sub");
 
         // Permissions: collected from multiple claim types

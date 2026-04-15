@@ -31,7 +31,8 @@ public sealed partial class EncryptedEnvironmentVariableProvider : Configuration
             var key = entry.Key?.ToString();
             var value = entry.Value?.ToString();
 
-            if (key is null) continue;
+            if (key is null)
+                continue;
 
             // Normalize key separator (environment variables use __ for hierarchy)
             var normalizedKey = key.Replace("__", ConfigurationPath.KeyDelimiter, StringComparison.Ordinal);
