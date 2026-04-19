@@ -114,9 +114,7 @@ jobs:
         with:
           directory: ./coverage
           token: ${{ secrets.CODECOV_TOKEN }}
-          # Non-blocking: coverage is a quality metric, not a build gate.
-          # Set to true once a coverage baseline is established.
-          fail_ci_if_error: false
+          fail_ci_if_error: true
 
   # ────────────────────────────────────────────────────────────────────────────
   # 3. ANALYZE
