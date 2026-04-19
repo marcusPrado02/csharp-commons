@@ -164,7 +164,7 @@ jobs:
       # Non-blocking (--severity moderate exits non-zero for moderate+ CVEs).
       # Set fail_on_vuln: true below once a clean baseline is established.
       - name: NuGet security audit
-        run: dotnet nuget audit --severity moderate || true
+        run: dotnet nuget audit --severity moderate
 
   # ────────────────────────────────────────────────────────────────────────────
   # 4. PACK
