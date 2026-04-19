@@ -5,6 +5,7 @@
 #   build    → restore + compile (gate for all downstream jobs)
 #   test     → unit tests + XPlat Code Coverage → Codecov
 #   analyze  → dotnet format --verify-no-changes + CSharpier check
+#   mutation → Stryker.NET mutation testing (schedule + workflow_dispatch)
 #   pack     → NuGet packages for core + extensions + kits (main & v* tags)
 #   publish  → push packages to GitHub Packages (v* tags only)
 #   release  → create GitHub Release with auto-generated changelog (v* tags only)
@@ -18,6 +19,9 @@ on:
     tags: ['v*']
   pull_request:
     branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'  # Weekly Monday 05:00 UTC — mutation testing
 
 # Minimal default permissions — each job that needs more declares its own.
 permissions:
@@ -360,3 +364,56 @@ jobs:
         with:
           body_path: ${{ steps.cliff.outputs.notes_path }}
           files: ./nupkgs/*.nupkg
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # 7. MUTATION
+  #    Stryker.NET mutation testing on core libraries.
+  #    Runs only on weekly schedule or manual dispatch — mutation is slow.
+  #    70% mutation score threshold: enough to catch obvious gaps.
+  # ────────────────────────────────────────────────────────────────────────────
+  mutation:
+    name: Mutation Testing (Stryker)
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Run Stryker.NET on core libraries
+        run: |
+          dotnet stryker \
+            --project "src/core/**/*.csproj" \
+            --threshold-break 60 \
+            --threshold-low 70 \
+            --reporters '["html", "json"]'
+
+      - name: Upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stryker-report
+          path: StrykerOutput/
+          retention-days: 30

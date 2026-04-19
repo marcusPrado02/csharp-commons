@@ -25,6 +25,10 @@
                $(MSBuildProjectDirectory.Contains('/src/kits/'))       Or
                $(MSBuildProjectDirectory.Contains('/src/tooling/'))">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Generate XML docs so Intellisense and NuGet consumers get documentation.
+         CS1591 is kept in WarningsNotAsErrors so undocumented members are warnings,
+         not errors — allowing incremental adoption without blocking the build. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <!--
       CS1591  – missing XML documentation comment (incremental – not enforced yet)
       CS1574  – XML comment cref that cannot be resolved
